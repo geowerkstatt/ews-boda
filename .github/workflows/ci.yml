@@ -4,9 +4,8 @@ on:
   push:
 
 jobs:
-  ci-backend:
+  ci:
     runs-on: ubuntu-latest
-    name: Build/test backend and frontend
 
     steps:
     - uses: actions/checkout@v3
