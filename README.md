@@ -1,3 +1,5 @@
+[![CI](https://github.com/GeoWerkstatt/ews-boda/actions/workflows/ci.yml/badge.svg)](https://github.com/GeoWerkstatt/ews-boda/actions/workflows/ci.yml)
+
 # Grundlagedaten EWS
 
 Web-Applikation zur Verwaltung von Bohrdaten aus Erdwärmesonden (EWS) beim Amt für Umwelt des Kantons Solothurn.
