@@ -39,7 +39,7 @@
     "build": "react-scripts build",
     "test": "start-server-and-test start http-get://localhost:44472 cy:run",
     "eject": "react-scripts eject",
-    "lint": "eslint ./src/",
+    "lint": "eslint ./src/ && eslint ./cypress/",
     "cy:run": "cypress run",
     "cy": "cypress open"
   },
