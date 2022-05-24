@@ -37,7 +37,7 @@
     "prestart": "node aspnetcore-https && node aspnetcore-react",
     "start": "rimraf ./build && react-scripts start",
     "build": "react-scripts build",
-    "test": "set PORT=58327 && start-server-and-test start http-get://localhost:58327 cy:run",
+    "test": "start-server-and-test start http-get://localhost:44472 cy:run",
     "eject": "react-scripts eject",
     "lint": "eslint ./src/",
     "cy:run": "cypress run",
