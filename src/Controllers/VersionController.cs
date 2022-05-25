@@ -7,5 +7,5 @@ namespace EWS;
 public class VersionController : ControllerBase
 {
     [HttpGet]
-    public string Get() => "0.1.0";
+    public string Get() => "0.1.0";;
 }

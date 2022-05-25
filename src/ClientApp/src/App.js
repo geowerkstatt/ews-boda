@@ -11,7 +11,8 @@ import "@fontsource/roboto/700.css";
 
 import "./custom.css";
 
-export default function App() {
+export default function App()
+           {
   return (
     <React.Fragment>
       <CssBaseline />
