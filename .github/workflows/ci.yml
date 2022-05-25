@@ -4,9 +4,9 @@ on:
   push:
 
 jobs:
-  ci-backend:
+  ci:
     runs-on: ubuntu-latest
-    name: Build/test backend and frontend
+    name: Build and run tests
 
     steps:
     - uses: actions/checkout@v3
@@ -14,14 +14,14 @@ jobs:
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 6.0.x
-        
+
     # Run the npm ci command before building
     # the dotnet project, because the project
     # itself calls npm install if the node_modules
     # folder does not exist.
     - working-directory: ./src/ClientApp
       run: npm ci
-      
+
     - run: dotnet build
     - run: dotnet test --no-build --verbosity normal
     - working-directory: ./src/ClientApp
@@ -29,4 +29,4 @@ jobs:
     - working-directory: ./src/ClientApp
       run: npm run lint
     - working-directory: ./src/ClientApp
-      run: npm test    
+      run: npm test
