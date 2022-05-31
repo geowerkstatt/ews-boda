@@ -14,8 +14,8 @@
     <RepositoryUrl>https://github.com/GeoWerkstatt/ews-boda.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
-  
-  <ItemGroup>
+
+  <ItemGroup Condition=" '$(MSBuildProjectExtension)' != '.dcproj' ">
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
