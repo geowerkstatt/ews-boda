@@ -23,7 +23,7 @@ jobs:
       run: npm ci
 
     - run: dotnet build EWS.sln
-    - run: dotnet test --no-build --verbosity normal
+    - run: dotnet test EWS.sln --no-build --verbosity normal
     - working-directory: ./src/ClientApp
       run: npm run build --if-present
     - working-directory: ./src/ClientApp
