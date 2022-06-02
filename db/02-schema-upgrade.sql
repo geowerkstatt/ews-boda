@@ -124,7 +124,7 @@ ALTER TABLE bohrung.vorkommnis
     DROP COLUMN IF EXISTS subtyp,
     DROP COLUMN IF EXISTS h_subtyp;
 
--- Add settings table
+-- Add table "settings"
 CREATE TABLE IF NOT EXISTS bohrung.settings (
     key varchar(80) PRIMARY KEY NOT NULL,
     value varchar(80)
