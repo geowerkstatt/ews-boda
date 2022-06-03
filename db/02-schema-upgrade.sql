@@ -2,6 +2,8 @@
 -- * Remove obsolete tables/columns
 -- * Rename and simplify some objects
 
+\connect ews
+
 -- Remove obsolete table "vegasBohrungen"
 DROP VIEW  IF EXISTS bohrung.bohrung_novegas;
 DROP TABLE IF EXISTS bohrung."vegasBohrungen";
