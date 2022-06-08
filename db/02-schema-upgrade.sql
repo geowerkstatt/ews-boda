@@ -30,7 +30,7 @@ ALTER TABLE bohrung.standort RENAME COLUMN gembfs TO gemeinde;
 -- Upgrade table "bohrung" and associated views
 DROP VIEW IF EXISTS bohrung."141016_Stammdaten_Lieferung_ab2014";
 CREATE VIEW bohrung."141016_Stammdaten_Lieferung_ab2014" AS
-SELECT a.standort_id, a.bezeichnung, a.bemerkung AS bohrungbemerkung, b.bohrprofil_id, b.bohrung_id, b.datum, b.bemerkung, b.kote, b.endteufe, b.tektonik, b.fmfelso, b.fmeto, b.quali, b.qualibem, b.wkb_geometry95, b.new_date, b.mut_date, b.new_usr, b.mut_usr, b.h_quali, b.h_tektonik, b.h_fmeto, b.h_fmfelso FROM bohrung.bohrung a, bohrung.bohrprofil b WHERE a.bohrung_id = b.bohrung_id AND b.new_date > '2014-01-01 00:00:00'::timestamp;
+SELECT a.standort_id, a.bezeichnung, a.bemerkung AS bohrungbemerkung, b.bohrprofil_id, b.bohrung_id, b.datum, b.bemerkung, b.kote, b.endteufe, b.tektonik, b.fmfelso, b.fmeto, b.quali, b.qualibem, b.wkb_geometry, b.new_date, b.mut_date, b.new_usr, b.mut_usr, b.h_quali, b.h_tektonik, b.h_fmeto, b.h_fmfelso FROM bohrung.bohrung a, bohrung.bohrprofil b WHERE a.bohrung_id = b.bohrung_id AND b.new_date > '2014-01-01 00:00:00'::timestamp;
 
 DROP VIEW IF EXISTS bohrung."Alle unarchivierten Bohrprofile mit Bohrnamen";
 CREATE VIEW bohrung."Alle unarchivierten Bohrprofile mit Bohrnamen" AS
@@ -46,7 +46,7 @@ SELECT a.bohrung_id, b.bohrprofil_id, a.standort_id, a.bezeichnung, a.bemerkung,
 
 DROP VIEW IF EXISTS bohrung."aktuelleBohrprofile_neu_neu";
 CREATE VIEW bohrung."aktuelleBohrprofile_neu_neu" AS
-SELECT a.standort_id, a.bezeichnung, a.bemerkung AS bohrungbemerkung, b.bohrprofil_id, b.bohrung_id, b.datum, b.bemerkung, b.kote, b.endteufe, b.tektonik, b.fmfelso, b.fmeto, b.quali, b.qualibem, b.wkb_geometry95, b.new_date, b.mut_date, b.new_usr, b.mut_usr, b.h_quali, b.h_tektonik, b.h_fmeto, b.h_fmfelso FROM bohrung.bohrung a, bohrung.bohrprofil b WHERE a.bohrung_id = b.bohrung_id AND b.new_date > '2014-01-01 00:00:00'::timestamp;
+SELECT a.standort_id, a.bezeichnung, a.bemerkung AS bohrungbemerkung, b.bohrprofil_id, b.bohrung_id, b.datum, b.bemerkung, b.kote, b.endteufe, b.tektonik, b.fmfelso, b.fmeto, b.quali, b.qualibem, b.wkb_geometry, b.new_date, b.mut_date, b.new_usr, b.mut_usr, b.h_quali, b.h_tektonik, b.h_fmeto, b.h_fmfelso FROM bohrung.bohrung a, bohrung.bohrprofil b WHERE a.bohrung_id = b.bohrung_id AND b.new_date > '2014-01-01 00:00:00'::timestamp;
 
 DROP VIEW IF EXISTS bohrung."BOE_Stammdaten";
 CREATE VIEW bohrung."BOE_Stammdaten" AS
@@ -58,7 +58,7 @@ SELECT b.standort_id, a.bohrprofil_id, a.bohrung_id, a.kote, a.endteufe, c1.kurz
 
 DROP VIEW IF EXISTS bohrung."BOE_Stammdaten_Klartext_LV95";
 CREATE VIEW bohrung."BOE_Stammdaten_Klartext_LV95" AS
-SELECT b.standort_id, a.bohrprofil_id, a.bohrung_id, a.kote, a.endteufe, c1.kurztext AS tektonik, c2.kurztext AS fmfelso, c3.kurztext AS fmeto, c4.kurztext AS quali, a.qualibem, public.st_x(a.wkb_geometry95) AS x_lv95, public.st_y(a.wkb_geometry95) AS y_lv95, a.new_usr, a.new_date, a.mut_date, a.mut_usr FROM bohrung.bohrprofil a JOIN bohrung.bohrung b ON a.bohrung_id = b.bohrung_id LEFT JOIN bohrung.code c1 ON a.tektonik = c1.code_id LEFT JOIN bohrung.code c2 ON a.fmfelso = c2.code_id LEFT JOIN bohrung.code c3 ON a.fmeto = c3.code_id LEFT JOIN bohrung.code c4 ON a.quali = c4.code_id ORDER BY b.standort_id;
+SELECT b.standort_id, a.bohrprofil_id, a.bohrung_id, a.kote, a.endteufe, c1.kurztext AS tektonik, c2.kurztext AS fmfelso, c3.kurztext AS fmeto, c4.kurztext AS quali, a.qualibem, public.st_x(a.wkb_geometry) AS x_lv95, public.st_y(a.wkb_geometry) AS y_lv95, a.new_usr, a.new_date, a.mut_date, a.mut_usr FROM bohrung.bohrprofil a JOIN bohrung.bohrung b ON a.bohrung_id = b.bohrung_id LEFT JOIN bohrung.code c1 ON a.tektonik = c1.code_id LEFT JOIN bohrung.code c2 ON a.fmfelso = c2.code_id LEFT JOIN bohrung.code c3 ON a.fmeto = c3.code_id LEFT JOIN bohrung.code c4 ON a.quali = c4.code_id ORDER BY b.standort_id;
 
 DROP VIEW IF EXISTS bohrung."Stammdaten_DIA";
 CREATE VIEW bohrung."Stammdaten_DIA" AS
@@ -95,31 +95,31 @@ CREATE VIEW bohrung.bohrungen_mit_bte AS
 SELECT b.standort_id, s.schicht_id, s.bohrprofil_id, bp.kote::double precision - s.tiefe AS z, s.tiefe AS depth, bp.kote, s.quali, s.qualibem, s.bemerkung, s.h_quali, bp.endteufe, c.kurztext FROM bohrung.schicht s JOIN bohrung.bohrprofil bp ON s.bohrprofil_id = bp.bohrprofil_id JOIN bohrung.code c ON s.quali = c.code_id JOIN bohrung.bohrung b ON bp.bohrung_id = b.bohrung_id WHERE s.schichten_id = 8;
 
 ALTER TABLE bohrung.bohrprofil
-    DROP COLUMN IF EXISTS wkb_geometry,
+    DROP COLUMN IF EXISTS wkb_geometry95, -- The wkb_geometry column already contains LV95 data, therefore wkb_geometry95 is not needed anymore
     DROP COLUMN IF EXISTS archive_date,
     DROP COLUMN IF EXISTS archive;
 
--- Move geometry from "bohrprofil" to "bohrung"
-ALTER TABLE bohrung.bohrung ADD COLUMN IF NOT EXISTS wkb_geometry95 geometry;
+-- Move geometry from "bohrprofil" to "bohrung":
+ALTER TABLE bohrung.bohrung ADD COLUMN IF NOT EXISTS wkb_geometry geometry;
 
 UPDATE bohrung.bohrung b
-SET wkb_geometry95 = bp.wkb_geometry95
+SET wkb_geometry = bp.wkb_geometry
 FROM bohrung.bohrprofil bp
 WHERE bp.bohrung_id = b.bohrung_id;
 
 DROP VIEW IF EXISTS bohrung."141016_Stammdaten_Lieferung_ab2014";
 CREATE VIEW bohrung."141016_Stammdaten_Lieferung_ab2014" AS
-SELECT a.standort_id, a.bezeichnung, a.bemerkung AS bohrungbemerkung, b.bohrprofil_id, b.bohrung_id, b.datum, b.bemerkung, b.kote, b.endteufe, b.tektonik, b.fmfelso, b.fmeto, b.quali, b.qualibem, a.wkb_geometry95, b.new_date, b.mut_date, b.new_usr, b.mut_usr, b.h_quali, b.h_tektonik, b.h_fmeto, b.h_fmfelso FROM bohrung.bohrung a, bohrung.bohrprofil b WHERE a.bohrung_id = b.bohrung_id AND b.new_date > '2014-01-01 00:00:00'::timestamp;
+SELECT a.standort_id, a.bezeichnung, a.bemerkung AS bohrungbemerkung, b.bohrprofil_id, b.bohrung_id, b.datum, b.bemerkung, b.kote, b.endteufe, b.tektonik, b.fmfelso, b.fmeto, b.quali, b.qualibem, a.wkb_geometry, b.new_date, b.mut_date, b.new_usr, b.mut_usr, b.h_quali, b.h_tektonik, b.h_fmeto, b.h_fmfelso FROM bohrung.bohrung a, bohrung.bohrprofil b WHERE a.bohrung_id = b.bohrung_id AND b.new_date > '2014-01-01 00:00:00'::timestamp;
 
 DROP VIEW IF EXISTS bohrung."aktuelleBohrprofile_neu_neu";
 CREATE VIEW bohrung."aktuelleBohrprofile_neu_neu" AS
-SELECT a.standort_id, a.bezeichnung, a.bemerkung AS bohrungbemerkung, b.bohrprofil_id, b.bohrung_id, b.datum, b.bemerkung, b.kote, b.endteufe, b.tektonik, b.fmfelso, b.fmeto, b.quali, b.qualibem, a.wkb_geometry95, b.new_date, b.mut_date, b.new_usr, b.mut_usr, b.h_quali, b.h_tektonik, b.h_fmeto, b.h_fmfelso FROM bohrung.bohrung a, bohrung.bohrprofil b WHERE a.bohrung_id = b.bohrung_id AND b.new_date > '2014-01-01 00:00:00'::timestamp;
+SELECT a.standort_id, a.bezeichnung, a.bemerkung AS bohrungbemerkung, b.bohrprofil_id, b.bohrung_id, b.datum, b.bemerkung, b.kote, b.endteufe, b.tektonik, b.fmfelso, b.fmeto, b.quali, b.qualibem, a.wkb_geometry, b.new_date, b.mut_date, b.new_usr, b.mut_usr, b.h_quali, b.h_tektonik, b.h_fmeto, b.h_fmfelso FROM bohrung.bohrung a, bohrung.bohrprofil b WHERE a.bohrung_id = b.bohrung_id AND b.new_date > '2014-01-01 00:00:00'::timestamp;
 
 DROP VIEW IF EXISTS bohrung."BOE_Stammdaten_Klartext_LV95";
 CREATE VIEW bohrung."BOE_Stammdaten_Klartext_LV95" AS
-SELECT b.standort_id, a.bohrprofil_id, a.bohrung_id, a.kote, a.endteufe, c1.kurztext AS tektonik, c2.kurztext AS fmfelso, c3.kurztext AS fmeto, c4.kurztext AS quali, a.qualibem, public.st_x(b.wkb_geometry95) AS x_lv95, public.st_y(b.wkb_geometry95) AS y_lv95, a.new_usr, a.new_date, a.mut_date, a.mut_usr FROM bohrung.bohrprofil a JOIN bohrung.bohrung b ON a.bohrung_id = b.bohrung_id LEFT JOIN bohrung.code c1 ON a.tektonik = c1.code_id LEFT JOIN bohrung.code c2 ON a.fmfelso = c2.code_id LEFT JOIN bohrung.code c3 ON a.fmeto = c3.code_id LEFT JOIN bohrung.code c4 ON a.quali = c4.code_id ORDER BY b.standort_id;
+SELECT b.standort_id, a.bohrprofil_id, a.bohrung_id, a.kote, a.endteufe, c1.kurztext AS tektonik, c2.kurztext AS fmfelso, c3.kurztext AS fmeto, c4.kurztext AS quali, a.qualibem, public.st_x(b.wkb_geometry) AS x_lv95, public.st_y(b.wkb_geometry) AS y_lv95, a.new_usr, a.new_date, a.mut_date, a.mut_usr FROM bohrung.bohrprofil a JOIN bohrung.bohrung b ON a.bohrung_id = b.bohrung_id LEFT JOIN bohrung.code c1 ON a.tektonik = c1.code_id LEFT JOIN bohrung.code c2 ON a.fmfelso = c2.code_id LEFT JOIN bohrung.code c3 ON a.fmeto = c3.code_id LEFT JOIN bohrung.code c4 ON a.quali = c4.code_id ORDER BY b.standort_id;
 
-ALTER TABLE bohrung.bohrprofil DROP COLUMN IF EXISTS wkb_geometry95;
+ALTER TABLE bohrung.bohrprofil DROP COLUMN IF EXISTS wkb_geometry;
 
 -- Upgrade table "vorkommnis"
 ALTER TABLE bohrung.vorkommnis
