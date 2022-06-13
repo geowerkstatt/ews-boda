@@ -4,7 +4,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AnalysisLevel>latest-all</AnalysisLevel>
-    <NoWarn>CS1591</NoWarn>
+    <NoWarn>CS1591,CS8618</NoWarn>
     <VersionPrefix>0.1</VersionPrefix>
     <Product>ews-boda</Product>
     <Authors>GeoWerkstatt GmbH</Authors>
