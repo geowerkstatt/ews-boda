@@ -1,22 +1,6 @@
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
-}
-
-code {
-  color: #E01A76;
-}
-
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
+.ol-viewport {
+  min-height: 640px;
+  min-width: 65vw;
+  height: 100%;
   width: 100%;
-  text-align: center;
 }

@@ -39,7 +39,7 @@ namespace EWS.Models
         /// Bemerkungen zur Bohrung.
         /// </summary>
         [Column("bemerkung")]
-        public string Bemerkung { get; set; }
+        public string? Bemerkung { get; set; }
 
         /// <summary>
         /// Klassierung der Ablenkung.
