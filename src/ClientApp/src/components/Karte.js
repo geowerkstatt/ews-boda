@@ -29,7 +29,6 @@ export default function Karte() {
     fetch("/bohrung")
       .then((response) => response.json())
       .then((fetchedFeatures) => {
-        console.log(fetchedFeatures);
         const parsedFeatures = fetchedFeatures.map(
           (f) => new Feature({ geometry: new Point([f.geometrie.x, f.geometrie.y]), name: f.bezeichnung, id: f.id })
         );
@@ -95,7 +94,6 @@ export default function Karte() {
   // Set Bohrungen to layer and center map around Bohrungen
   useEffect(() => {
     if (bohrungen?.length) {
-      console.log(bohrungen);
       bohrungenLayer.setSource(
         new VectorSource({
           features: bohrungen,
@@ -110,7 +108,6 @@ export default function Karte() {
   // Set Kantonsgrenze to layer
   useEffect(() => {
     if (kantonsgrenze?.length) {
-      console.log(kantonsgrenze);
       kantonsgrenzeLayer.setSource(
         new VectorSource({
           features: kantonsgrenze,
