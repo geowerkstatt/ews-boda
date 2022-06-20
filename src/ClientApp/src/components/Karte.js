@@ -31,7 +31,12 @@ export default function Karte() {
       .then((response) => response.json())
       .then((fetchedFeatures) => {
         const parsedFeatures = fetchedFeatures.map(
-          (f) => new Feature({ geometry: new Point([f.geometrie.x, f.geometrie.y]), name: f.bezeichnung, id: f.id })
+          (f) =>
+            new Feature({
+              geometry: new Point([f.geometrie.coordinates[0], f.geometrie.coordinates[1]]),
+              name: f.bezeichnung,
+              id: f.id,
+            })
         );
         setBohrungen(parsedFeatures);
       });

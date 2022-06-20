@@ -1,8 +1,6 @@
 ﻿using EWS.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Drawing;
-
 namespace EWS;
 
 [ApiController]
@@ -41,7 +39,7 @@ public class BohrungController : ControllerBase
             QualitaetBemerkung = bohrung.QualitaetBemerkung,
             QuelleRef = bohrung.QuelleRef,
             UserMutation = bohrung.UserMutation,
-            Geometrie = new Point((int)bohrung.Geometrie.X, (int)bohrung.Geometrie.Y),
+            Geometrie = bohrung.Geometrie,
         };
     }
 }
