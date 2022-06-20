@@ -19,7 +19,6 @@ export default function Search(props) {
       name="search-bar"
       onChange={(event, newValue) => {
         setValue(newValue);
-        console.log(newValue);
       }}
       options={options.map((option) => option.title)}
       renderInput={(params) => <TextField {...params} label="Suche" />}
