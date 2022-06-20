@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
@@ -9,6 +9,7 @@ import Search from "./Search";
 import Karte from "./Karte";
 
 export function Home() {
+  const [searchValue, setSearchValue] = useState();
   return (
     <Box
       component="main"
@@ -31,7 +32,7 @@ export function Home() {
                 flexDirection: "column",
               }}
             >
-              <Search></Search>
+              <Search setValue={setSearchValue}></Search>
             </Paper>
           </Grid>
           <Grid item xs={12}>
@@ -47,9 +48,11 @@ export function Home() {
             </Paper>
           </Grid>
           <Grid item xs={12}>
-            <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-              <Suchresultate />
-            </Paper>
+            {searchValue && (
+              <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+                <Suchresultate />
+              </Paper>
+            )}
           </Grid>
         </Grid>
       </Container>
