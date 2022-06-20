@@ -10,6 +10,7 @@ import Projection from "ol/proj/Projection";
 import { addProjection } from "ol/proj";
 import { Vector } from "ol/layer";
 import { Point } from "ol/geom";
+import { Stroke, Style } from "ol/style";
 import "ol/ol.css";
 
 export default function Karte() {
@@ -73,12 +74,18 @@ export default function Karte() {
 
     const kantonsgrenzeLayer = new Vector({
       source: new VectorSource(),
+      style: new Style({
+        stroke: new Stroke({
+          color: "#8b0000",
+          width: 3,
+        }),
+      }),
     });
 
     // Create map and add layers
     const initialMap = new Map({
       target: mapElement.current,
-      layers: [landeskarte, kantonsgrenzeLayer, bohrungenLayer],
+      layers: [landeskarte, bohrungenLayer, kantonsgrenzeLayer],
       view: new View({
         projection: projection,
         zoom: 2,
