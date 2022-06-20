@@ -14,32 +14,8 @@ public class BohrungController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<BohrungDTO>>> GetAsync()
+    public async Task<ActionResult<IEnumerable<Bohrung>>> GetAsync()
     {
-        return await context.Bohrungen.Select(x => BohrungToDTO(x)).ToListAsync().ConfigureAwait(false);
-    }
-
-    private static BohrungDTO BohrungToDTO(Bohrung bohrung)
-    {
-        return new BohrungDTO
-        {
-            Id = bohrung.Id,
-            StandortId = bohrung.StandortId,
-            Bezeichnung = bohrung.Bezeichnung,
-            Bemerkung = bohrung.Bemerkung,
-            Ablenkung = bohrung.Ablenkung,
-            Datum = bohrung.Datum,
-            DurchmesserBohrloch = bohrung.DurchmesserBohrloch,
-            Erstellungsdatum = bohrung.Erstellungsdatum,
-            UserErstellung = bohrung.UserErstellung,
-            HAblenkung = bohrung.HAblenkung,
-            HQualitaet = bohrung.HQualitaet,
-            Mutationsdatum = bohrung.Mutationsdatum,
-            Qualitaet = bohrung.Qualitaet,
-            QualitaetBemerkung = bohrung.QualitaetBemerkung,
-            QuelleRef = bohrung.QuelleRef,
-            UserMutation = bohrung.UserMutation,
-            Geometrie = bohrung.Geometrie,
-        };
+        return await context.Bohrungen.Select(x => x).ToListAsync().ConfigureAwait(false);
     }
 }
