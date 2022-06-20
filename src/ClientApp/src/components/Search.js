@@ -16,6 +16,7 @@ export default function Search(props) {
 
   return (
     <Autocomplete
+      name="search-bar"
       onChange={(event, newValue) => {
         setValue(newValue);
         console.log(newValue);
