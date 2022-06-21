@@ -14,8 +14,6 @@ public class BohrungController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Bohrung>>> GetAsync()
-    {
-        return await context.Bohrungen.Select(x => x).ToListAsync().ConfigureAwait(false);
-    }
+    public async Task<IEnumerable<Bohrung>> GetAsync()
+        => await context.Bohrungen.AsNoTracking().ToListAsync().ConfigureAwait(false);
 }
