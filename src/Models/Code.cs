@@ -32,13 +32,13 @@ namespace EWS.Models
         /// Ausführliche Bezeichnung des Codes.
         /// </summary>
         [Column("text")]
-        public string Text { get; set; }
+        public string? Text { get; set; }
 
         /// <summary>
         /// Vermutliche Reihenfolge von Codes eines Codetypen.
         /// </summary>
         [Column("sort")]
-        public int Sortierung { get; set; }
+        public int? Sortierung { get; set; }
 
         /// <summary>
         /// Datum des Imports des Objektes.
@@ -50,7 +50,7 @@ namespace EWS.Models
         /// Timestamp der letzten Änderung.
         /// </summary>
         [Column("mut_date")]
-        public DateTime Mutationsdatum { get; set; }
+        public DateTime? Mutationsdatum { get; set; }
 
         /// <summary>
         /// Kürzel des Benutzers beim Anlegen des Objekts.
@@ -62,6 +62,6 @@ namespace EWS.Models
         /// Kürzel des Benutzers bei letzter Änderung.
         /// </summary>
         [Column("mut_usr")]
-        public string UserMutation { get; set; }
+        public string? UserMutation { get; set; }
     }
 }

@@ -32,25 +32,25 @@ namespace EWS.Models
         /// Tiefe des Vorkommnisses [m].
         /// </summary>
         [Column("tiefe")]
-        public float Tiefe { get; set; }
+        public float? Tiefe { get; set; }
 
         /// <summary>
         /// Bemerkung zum Vorkommnis.
         /// </summary>
         [Column("bemerkung")]
-        public string Bemerkung { get; set; }
+        public string? Bemerkung { get; set; }
 
         /// <summary>
         /// Qualitätsangabe zum Vorkommnis.
         /// </summary>
         [Column("quali")]
-        public int Qualitaet { get; set; }
+        public int? Qualitaet { get; set; }
 
         /// <summary>
         /// Bemerkung zur Qualitätsangabe.
         /// </summary>
         [Column("qualibem")]
-        public string QualitaetBemerkung { get; set; }
+        public string? QualitaetBemerkung { get; set; }
 
         /// <summary>
         /// Foreign Key: ID des Codetyps für Feld quali.
@@ -74,7 +74,7 @@ namespace EWS.Models
         /// Timestamp der letzten Änderung.
         /// </summary>
         [Column("mut_date")]
-        public DateTime Mutationsdatum { get; set; }
+        public DateTime? Mutationsdatum { get; set; }
 
         /// <summary>
         /// Kürzel des Benutzers beim Anlegen des Objekts.
@@ -86,6 +86,6 @@ namespace EWS.Models
         /// Kürzel des Benutzers bei letzter Änderung.
         /// </summary>
         [Column("mut_usr")]
-        public string UserMutation { get; set; }
+        public string? UserMutation { get; set; }
     }
 }

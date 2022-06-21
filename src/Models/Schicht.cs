@@ -44,13 +44,13 @@ namespace EWS.Models
         /// Bemerkung zur Qualitätsangabe.
         /// </summary>
         [Column("qualibem")]
-        public string QualitaetBemerkung { get; set; }
+        public string? QualitaetBemerkung { get; set; }
 
         /// <summary>
         /// Bemerkung zur Schicht.
         /// </summary>
         [Column("bemerkung")]
-        public string Bemerkung { get; set; }
+        public string? Bemerkung { get; set; }
 
         /// <summary>
         /// Foreign Key: ID des Codetyps für Feld quali.
@@ -68,7 +68,7 @@ namespace EWS.Models
         /// Timestamp der letzten Änderung.
         /// </summary>
         [Column("mut_date")]
-        public DateTime Mutationsdatum { get; set; }
+        public DateTime? Mutationsdatum { get; set; }
 
         /// <summary>
         /// Kürzel des Benutzers beim Anlegen des Objekts.
@@ -80,6 +80,6 @@ namespace EWS.Models
         /// Kürzel des Benutzers bei letzter Änderung.
         /// </summary>
         [Column("mut_usr")]
-        public string UserMutation { get; set; }
+        public string? UserMutation { get; set; }
     }
 }

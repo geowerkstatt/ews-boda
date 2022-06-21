@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EWS.Models
 {
-     /// <summary>
-     /// Repräsentiert einen Standort in der Datenbank.
-     /// </summary>
+    /// <summary>
+    /// Repräsentiert einen Standort in der Datenbank.
+    /// </summary>
     [Table("standort")]
     public class Standort
     {
@@ -26,19 +26,19 @@ namespace EWS.Models
         /// Bemerkung zum Standort.
         /// </summary>
         [Column("bemerkung")]
-        public string Bemerkung { get; set; }
+        public string? Bemerkung { get; set; }
 
         /// <summary>
         /// Gemeindenummer.
         /// </summary>
         [Column("gemeinde")]
-        public int Gemeinde { get; set; }
+        public int? Gemeinde { get; set; }
 
         /// <summary>
         /// Grundbuchnummer.
         /// </summary>
         [Column("gbnummer")]
-        public string GrundbuchNr { get; set; }
+        public string? GrundbuchNr { get; set; }
 
         /// <summary>
         /// Freigabe durch das Afu.
@@ -50,13 +50,13 @@ namespace EWS.Models
         /// Kürzel des Afu-Benutzers bei der Freigabe des Objekts.
         /// </summary>
         [Column("afu_usr")]
-        public string AfuUser { get; set; }
+        public string? AfuUser { get; set; }
 
         /// <summary>
         /// Datum der Freigabe des Objekts durch das Afu.
         /// </summary>
         [Column("afu_date")]
-        public DateTime AfuDatum { get; set; }
+        public DateTime? AfuDatum { get; set; }
 
         /// <summary>
         /// Datum des Imports des Objektes.
@@ -68,7 +68,7 @@ namespace EWS.Models
         /// Timestamp der letzten Änderung.
         /// </summary>
         [Column("mut_date")]
-        public DateTime Mutationsdatum { get; set; }
+        public DateTime? Mutationsdatum { get; set; }
 
         /// <summary>
         /// Kürzel des Benutzers beim Anlegen des Objekts.
@@ -80,6 +80,6 @@ namespace EWS.Models
         /// Kürzel des Benutzers bei letzter Änderung.
         /// </summary>
         [Column("mut_usr")]
-        public string UserMutation { get; set; }
+        public string? UserMutation { get; set; }
     }
 }

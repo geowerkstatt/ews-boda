@@ -32,7 +32,7 @@ namespace EWS.Models
         /// Vorgabe für Reihenfolge der Schichten bei Erfassung in Tabelle schicht.
         /// </summary>
         [Column("sort")]
-        public int Sortierung { get; set; }
+        public int? Sortierung { get; set; }
 
         /// <summary>
         /// Datum des Imports des Objektes.
@@ -44,7 +44,7 @@ namespace EWS.Models
         /// Timestamp der letzten Änderung.
         /// </summary>
         [Column("mut_date")]
-        public DateTime Mutationsdatum { get; set; }
+        public DateTime? Mutationsdatum { get; set; }
 
         /// <summary>
         /// Kürzel des Benutzers beim Anlegen des Objekts.
@@ -56,6 +56,6 @@ namespace EWS.Models
         /// Kürzel des Benutzers bei letzter Änderung.
         /// </summary>
         [Column("mut_usr")]
-        public string UserMutation { get; set; }
+        public string? UserMutation { get; set; }
     }
 }
