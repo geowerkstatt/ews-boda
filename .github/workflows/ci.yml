@@ -22,7 +22,7 @@ jobs:
     - working-directory: ./src/ClientApp
       run: npm ci
 
-    - run: dotnet build EWS.sln
+    - run: dotnet build EWS.sln /warnaserror
     - run: dotnet test EWS.sln --no-build --verbosity normal
     - working-directory: ./src/ClientApp
       run: npm run build --if-present
