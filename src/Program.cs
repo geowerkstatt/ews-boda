@@ -1,15 +1,15 @@
 ﻿using EWS;
 using Microsoft.EntityFrameworkCore;
+using NetTopologySuite.IO.Converters;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllersWithViews();
+builder.Services
+    .AddControllersWithViews()
+    .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new GeoJsonConverterFactory()));
 
 var connectionString = builder.Configuration.GetConnectionString("BohrungContext");
 builder.Services.AddDbContext<EwsContext>(x => x.UseNpgsql(connectionString, option => option.UseNetTopologySuite()));
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-
-builder.Services.AddControllers()
-    .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new NetTopologySuite.IO.Converters.GeoJsonConverterFactory()));
 
 var app = builder.Build();
 
