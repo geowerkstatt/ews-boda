@@ -1,0 +1,4 @@
+- name: Benutzerhandbuch
+  href: articles/
+- name: Programmierschnittstelle
+  href: api/
