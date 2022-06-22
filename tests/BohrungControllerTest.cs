@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace EWS;
 
 [TestClass]
-public class BohrungControllerTest
+public class BohrungControllerTest : TestBase
 {
     [TestMethod]
     public async Task GetAllAsync()

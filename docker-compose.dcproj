@@ -9,6 +9,7 @@
     <DockerServiceName>ews</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="docker-compose-for-workflow.yml" />
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />
   </ItemGroup>

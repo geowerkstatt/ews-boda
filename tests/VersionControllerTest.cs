@@ -3,7 +3,8 @@
 namespace EWS;
 
 [TestClass]
-public class VersionControllerTest
+public class VersionControllerTest : TestBase
+{
 {
     [TestMethod]
     public void Get()

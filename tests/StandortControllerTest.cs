@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 namespace EWS;
 
 [TestClass]
-public class StandortControllerTest
+public class StandortControllerTest : TestBase
+{
 {
     [TestMethod]
     public async Task GetAllAsync()
