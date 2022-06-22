@@ -9,7 +9,6 @@ builder.Services
 
 var connectionString = builder.Configuration.GetConnectionString("BohrungContext");
 builder.Services.AddDbContext<EwsContext>(x => x.UseNpgsql(connectionString, option => option.UseNetTopologySuite()));
-AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var app = builder.Build();
 
