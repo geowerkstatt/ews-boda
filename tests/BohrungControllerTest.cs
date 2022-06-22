@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NetTopologySuite.Geometries;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,11 +8,17 @@ namespace EWS;
 [TestClass]
 public class BohrungControllerTest
 {
+    private EwsContext context;
+
+    [TestInitialize]
+    public void TestInitialize() => context = ContextFactory.CreateContext();
+
+    [TestCleanup]
+    public void TestCleanup() => context.Dispose();
+
     [TestMethod]
     public async Task GetAllAsync()
     {
-        using var context = new EwsContext(new DbContextOptionsBuilder<EwsContext>()
-            .UseNpgsql("Host=localhost; Username=postgres;Password=VINTAGEMAGIC;Database=ews", option => option.UseNetTopologySuite()).Options);
         var controller = new BohrungController(context);
         var bohrungen = await controller.GetAsync().ConfigureAwait(false);
 
@@ -39,8 +44,6 @@ public class BohrungControllerTest
     [TestMethod]
     public async Task GetByStandortGemeindeAsync()
     {
-        using var context = new EwsContext(new DbContextOptionsBuilder<EwsContext>()
-            .UseNpgsql("Host=localhost; Username=postgres;Password=VINTAGEMAGIC;Database=ews", option => option.UseNetTopologySuite()).Options);
         var controller = new BohrungController(context);
         var bohrungen = await controller.GetAsync(2450).ConfigureAwait(false);
 
@@ -66,8 +69,6 @@ public class BohrungControllerTest
     [TestMethod]
     public async Task GetByStandortGrundbuchnummer()
     {
-        using var context = new EwsContext(new DbContextOptionsBuilder<EwsContext>()
-            .UseNpgsql("Host=localhost; Username=postgres;Password=VINTAGEMAGIC;Database=ews", option => option.UseNetTopologySuite()).Options);
         var controller = new BohrungController(context);
         var bohrungen = await controller.GetAsync(null, "vkflnsvlswy1nfbg4kucmk1bwzaqt7c72mba55vu").ConfigureAwait(false);
 
@@ -93,8 +94,6 @@ public class BohrungControllerTest
     [TestMethod]
     public async Task GetByStandortBezeichnung()
     {
-        using var context = new EwsContext(new DbContextOptionsBuilder<EwsContext>()
-            .UseNpgsql("Host=localhost; Username=postgres;Password=VINTAGEMAGIC;Database=ews", option => option.UseNetTopologySuite()).Options);
         var controller = new BohrungController(context);
         var bohrungen = await controller.GetAsync(null, null, "Unbranded Fresh Fish").ConfigureAwait(false);
 
@@ -120,8 +119,6 @@ public class BohrungControllerTest
     [TestMethod]
     public async Task GetBySeveralParameters()
     {
-        using var context = new EwsContext(new DbContextOptionsBuilder<EwsContext>()
-            .UseNpgsql("Host=localhost; Username=postgres;Password=VINTAGEMAGIC;Database=ews", option => option.UseNetTopologySuite()).Options);
         var controller = new BohrungController(context);
         var bohrungen = await controller.GetAsync(2475, "wj7qafzqpk7xh0zkt6px3ujisxqqwxbloxeiljz3", "Refined Concrete Tuna").ConfigureAwait(false);
 
