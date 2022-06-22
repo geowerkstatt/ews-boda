@@ -12,7 +12,7 @@ export default function Suchresultate(props) {
   return (
     <React.Fragment>
       <Title>Suchresultate</Title>
-      <Table size="small">
+      <Table name="seach-results-table" size="small">
         <TableHead>
           <TableRow>
             <TableCell>Gemeinde</TableCell>

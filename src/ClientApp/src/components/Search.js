@@ -47,7 +47,8 @@ export default function Search(props) {
         onChange={(event) => {
           setGbnummer(event.target.value);
         }}
-        type="number"
+        type="string"
+        name="gbnummer"
         variant="standard"
         label="GB-Nummer"
         sx={{ minWidth: 100 }}
@@ -57,6 +58,7 @@ export default function Search(props) {
           setBezeichnung(event.target.value);
         }}
         type="text"
+        name="bezeichnung"
         variant="standard"
         label="Bezeichnung"
       />
@@ -81,7 +83,7 @@ export default function Search(props) {
         />
       </LocalizationProvider>
       <Box sx={{ flexGrow: 1 }}></Box>
-      <Button variant="outlined" type="submit">
+      <Button variant="outlined" name="submit-button" type="submit">
         Filtern
       </Button>
     </Box>
