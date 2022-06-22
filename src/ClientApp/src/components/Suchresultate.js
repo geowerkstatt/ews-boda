@@ -5,37 +5,32 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Title from "./Title";
+import { GemeindenMap } from "../GemeindenMap";
 
-function createData(id, date, name) {
-  return { id, date, name };
-}
-
-const rows = [
-  createData(0, "16 Mar, 2019", "Elvis Presley"),
-  createData(1, "16 Mar, 2019", "Paul McCartney"),
-  createData(2, "16 Mar, 2019", "Tom Scholz"),
-  createData(3, "16 Mar, 2019", "Michael Jackson"),
-  createData(4, "15 Mar, 2019", "Bruce Springsteen"),
-];
-
-export default function Suchresultate() {
+export default function Suchresultate(props) {
+  const { standorte } = props;
   return (
     <React.Fragment>
       <Title>Suchresultate</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Datum</TableCell>
-            <TableCell>Name</TableCell>
+            <TableCell>Gemeinde</TableCell>
+            <TableCell>GB-Nummer</TableCell>
+            <TableCell>Bezeichnung</TableCell>
+            <TableCell>Anzahl Bohrungen</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.name}</TableCell>
-            </TableRow>
-          ))}
+          {standorte &&
+            standorte.map((standort) => (
+              <TableRow key={standort.id}>
+                <TableCell>{GemeindenMap[standort.gemeinde]}</TableCell>
+                <TableCell>{standort.grundbuchNr}</TableCell>
+                <TableCell>{standort.bezeichnung}</TableCell>
+                <TableCell>10</TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </React.Fragment>

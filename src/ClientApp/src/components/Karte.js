@@ -13,9 +13,9 @@ import { Point } from "ol/geom";
 import { Stroke, Style } from "ol/style";
 import "ol/ol.css";
 
-export default function Karte() {
+export default function Karte(props) {
+  const { bohrungen } = props;
   const [map, setMap] = useState();
-  const [bohrungen, setBohrungen] = useState();
   const [bohrungenLayer, setBohrungenLayer] = useState();
   const [kantonsgrenze, setKantonsgrenze] = useState();
   const [kantonsgrenzeLayer, setKantonsgrenzeLayer] = useState();
@@ -24,23 +24,6 @@ export default function Karte() {
   const mapRef = useRef();
   mapRef.current = map;
   mapElement.current = map;
-
-  // Get Bohrungen from database
-  useEffect(() => {
-    fetch("/bohrung")
-      .then((response) => response.json())
-      .then((fetchedFeatures) => {
-        const parsedFeatures = fetchedFeatures.map(
-          (f) =>
-            new Feature({
-              geometry: new Point([f.geometrie.coordinates[0], f.geometrie.coordinates[1]]),
-              name: f.bezeichnung,
-              id: f.id,
-            })
-        );
-        setBohrungen(parsedFeatures);
-      });
-  }, []);
 
   // Get Kantonsgrenze
   useEffect(() => {
@@ -105,15 +88,30 @@ export default function Karte() {
 
   // Set Bohrungen to layer and center map around Bohrungen
   useEffect(() => {
-    if (bohrungen?.length) {
+    if (bohrungen) {
+      let parsedFeatures;
+      if (bohrungen.length) {
+        parsedFeatures = bohrungen.map(
+          (f) =>
+            new Feature({
+              geometry: new Point([f.geometrie.coordinates[0], f.geometrie.coordinates[1]]),
+              name: f.bezeichnung,
+              id: f.id,
+            })
+        );
+      } else {
+        parsedFeatures = [];
+      }
       bohrungenLayer.setSource(
         new VectorSource({
-          features: bohrungen,
+          features: parsedFeatures,
         })
       );
-      map.getView().fit(bohrungenLayer.getSource().getExtent(), {
-        padding: [30, 30, 30, 30],
-      });
+      if (bohrungen.length) {
+        map.getView().fit(bohrungenLayer.getSource().getExtent(), {
+          padding: [30, 30, 30, 30],
+        });
+      }
     }
   }, [bohrungen, bohrungenLayer, map]);
 
