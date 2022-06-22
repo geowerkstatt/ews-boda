@@ -5,7 +5,6 @@ namespace EWS;
 [TestClass]
 public class VersionControllerTest : TestBase
 {
-{
     [TestMethod]
     public void Get()
     {

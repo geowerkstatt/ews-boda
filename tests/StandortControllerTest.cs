@@ -8,7 +8,6 @@ namespace EWS;
 [TestClass]
 public class StandortControllerTest : TestBase
 {
-{
     [TestMethod]
     public async Task GetAllAsync()
     {
