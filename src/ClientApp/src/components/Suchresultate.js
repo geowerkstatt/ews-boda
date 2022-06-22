@@ -28,7 +28,7 @@ export default function Suchresultate(props) {
                 <TableCell>{GemeindenMap[standort.gemeinde]}</TableCell>
                 <TableCell>{standort.grundbuchNr}</TableCell>
                 <TableCell>{standort.bezeichnung}</TableCell>
-                <TableCell>{standort.anzahlBohrungen}</TableCell>
+                <TableCell>0</TableCell>
               </TableRow>
             ))}
         </TableBody>

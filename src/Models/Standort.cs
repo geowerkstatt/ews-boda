@@ -9,12 +9,6 @@ namespace EWS.Models
     [Table("standort")]
     public class Standort
     {
-        private readonly EwsContext context;
-        public Standort(EwsContext context)
-        {
-            this.context = context;
-        }
-
         /// <summary>
         /// Die Id des Standorts.
         /// </summary>
@@ -87,16 +81,5 @@ namespace EWS.Models
         /// </summary>
         [Column("mut_usr")]
         public string? UserMutation { get; set; }
-
-        /// <summary>
-        /// Anzahl der Bohrungen die dem Standort zugeordnet sind.
-        /// </summary>
-        public int AnzahlBohrungen
-        {
-            get
-            {
-                return context.Bohrungen.Where(b => b.StandortId == Id).Count();
-            }
-        }
     }
 }
