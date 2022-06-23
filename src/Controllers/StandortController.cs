@@ -1,7 +1,6 @@
 ﻿using EWS.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Globalization;
 
 namespace EWS;
 
@@ -17,38 +16,32 @@ public class StandortController : ControllerBase
 
     [HttpGet]
     public async Task<IEnumerable<Standort>> GetAsync(
-        [FromQuery] int? gemeindenummer = null,
-        [FromQuery] string? gbnummer = null,
-        [FromQuery] string? bezeichnung = null,
-        [FromQuery] string? erstellungsdatum = null,
-        [FromQuery] string? mutationsdatum = null)
+         int? gemeindenummer = null, string? gbnummer = null, string? bezeichnung = null, DateTime? erstellungsdatum = null, DateTime? mutationsdatum = null)
     {
-        var standorte = context.Standorte.AsQueryable();
+        var standorte = context.Standorte.Include(s => s.Bohrungen).AsQueryable();
         if (gemeindenummer != null)
         {
             standorte = standorte.Where(s => s.Gemeinde == gemeindenummer);
         }
 
-        if (gbnummer != null)
+        if (!string.IsNullOrEmpty(gbnummer))
         {
             standorte = standorte.Where(s => s.GrundbuchNr == gbnummer);
         }
 
-        if (bezeichnung != null)
+        if (!string.IsNullOrEmpty(bezeichnung))
         {
             standorte = standorte.Where(s => s.Bezeichnung == bezeichnung);
         }
 
-        var cultureInfo = new CultureInfo("de_CH", false);
-
         if (erstellungsdatum != null)
         {
-            standorte = standorte.Where(s => s.Erstellungsdatum == DateTime.Parse(erstellungsdatum, cultureInfo));
+            standorte = standorte.Where(s => s.Erstellungsdatum.Date == erstellungsdatum.Value.ToUniversalTime().Date);
         }
 
         if (mutationsdatum != null)
         {
-            standorte = standorte.Where(s => s.Mutationsdatum == DateTime.Parse(mutationsdatum, cultureInfo));
+            standorte = standorte.Where(s => s.Mutationsdatum.Value.Date == mutationsdatum.Value.Date);
         }
 
         return await standorte.AsNoTracking().ToListAsync().ConfigureAwait(false);

@@ -81,5 +81,10 @@ namespace EWS.Models
         /// </summary>
         [Column("mut_usr")]
         public string? UserMutation { get; set; }
+
+        /// <summary>
+        /// Bohrungen die dem Standort zugeordnet sind.
+        /// </summary>
+        public List<Bohrung> Bohrungen { get; set; }
     }
 }

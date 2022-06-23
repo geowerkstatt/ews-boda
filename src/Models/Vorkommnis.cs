@@ -56,13 +56,23 @@ namespace EWS.Models
         /// Foreign Key: ID des Codetyps für Feld quali.
         /// </summary>
         [Column("h_quali")]
-        public int HQualitaet { get; set; }
+        public int HQualitaetId { get; set; }
+
+        /// <summary>
+        /// Codetyp für Feld quali.
+        /// </summary>
+        public Code HQualitaet { get; set; }
 
         /// <summary>
         /// Foreign Key: ID des Codetyps für Feld typ.
         /// </summary>
         [Column("h_typ")]
-        public int HTyp { get; set; }
+        public int HTypId { get; set; }
+
+        /// <summary>
+        /// Codetyp für Feld typ.
+        /// </summary>
+        public CodeTyp HTyp { get; set; }
 
         /// <summary>
         /// Datum des Imports des Objektes.

@@ -42,10 +42,15 @@ namespace EWS.Models
         public string? Bemerkung { get; set; }
 
         /// <summary>
-        /// Klassierung der Ablenkung.
+        /// Foreign Key: ID Klassierung der Ablenkung.
         /// </summary>
         [Column("ablenkung")]
-        public int? Ablenkung { get; set; }
+        public int? AblenkungId { get; set; }
+
+        /// <summary>
+        /// Codetyp Klassierung der Ablenkung.
+        /// </summary>
+        public CodeTyp? Ablenkung { get; set; }
 
         /// <summary>
         /// Durchmesser der Bohrlöcher [mm].
@@ -99,7 +104,12 @@ namespace EWS.Models
         /// Foreign Key: ID des Codetyps für Feld quali.
         /// </summary>
         [Column("h_quali")]
-        public int HQualitaet { get; set; }
+        public int HQualitaetId { get; set; }
+
+        /// <summary>
+        /// QCodetyps für Feld quali.
+        /// </summary>
+        public CodeTyp? HQualitaet { get; set; }
 
         /// <summary>
         /// Foreign Key: ID des Codetyps für Feld ablenkung.
@@ -112,5 +122,10 @@ namespace EWS.Models
         /// </summary>
         [Column("wkb_geometry")]
         public Point? Geometrie { get; set; }
+
+        /// <summary>
+        /// Bohrprofile die der Bohrung zugeordnet sind.
+        /// </summary>
+        public List<Bohrprofil> Bohrprofile { get; set; }
     }
 }

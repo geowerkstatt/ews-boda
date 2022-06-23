@@ -23,6 +23,12 @@ namespace EWS.Models
         public int CodetypId { get; set; }
 
         /// <summary>
+        /// Codetyp des Codes.
+        /// </summary>
+        [Column("codetyp_id")]
+        public CodeTyp Codetyp { get; set; }
+
+        /// <summary>
         /// Kurzbezeichnung des Codes.
         /// </summary>
         [Column("kurztext")]

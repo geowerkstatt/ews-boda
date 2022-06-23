@@ -2,6 +2,7 @@
 using EWS.Models;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
+using System.Globalization;
 
 namespace EWS
 {
@@ -14,6 +15,11 @@ namespace EWS
         /// </summary>
         public static void SeedData(this EwsContext context)
         {
+            using var transaction = context.Database.BeginTransaction();
+
+            // Set Bogus Data System Clock
+            Bogus.DataSets.Date.SystemClock = () => DateTime.Parse("01.01.2022 00:00:00", new CultureInfo("de_CH", false));
+
             // Seed CodeTypen
             var codetyp_ids = 1;
             var codetypenRange = Enumerable.Range(codetyp_ids, 20);
@@ -23,7 +29,7 @@ namespace EWS
                .RuleFor(o => o.Text, f => f.Random.Words())
                .RuleFor(o => o.Kurztext, f => f.Address.StreetName())
                .RuleFor(o => o.Erstellungsdatum, f => f.Date.Past().ToUniversalTime())
-               .RuleFor(o => o.Mutationsdatum, f => f.Date.Recent().ToUniversalTime())
+               .RuleFor(o => o.Mutationsdatum, f => f.Date.Past().ToUniversalTime())
                .RuleFor(o => o.UserErstellung, f => f.Person.UserName)
                .RuleFor(o => o.UserMutation, f => f.Internet.UserName().OrNull(f, .8f));
             CodeTyp SeededCodetypen(int seed) => fakeCodeTypen.UseSeed(seed).Generate();
@@ -41,9 +47,10 @@ namespace EWS
                .RuleFor(o => o.Kurztext, f => f.Address.City())
                .RuleFor(o => o.Sortierung, f => f.Random.Int(0, 30000))
                .RuleFor(o => o.Erstellungsdatum, f => f.Date.Past().ToUniversalTime())
-               .RuleFor(o => o.Mutationsdatum, f => f.Date.Recent().ToUniversalTime())
+               .RuleFor(o => o.Mutationsdatum, f => f.Date.Past().ToUniversalTime())
                .RuleFor(o => o.UserErstellung, f => f.Person.UserName)
-               .RuleFor(o => o.UserMutation, f => f.Internet.UserName().OrNull(f, .6f));
+               .RuleFor(o => o.UserMutation, f => f.Internet.UserName().OrNull(f, .6f))
+               .RuleFor(o => o.Codetyp, _ => default!);
 
             Code SeededCodes(int seed) => fakeCodes.UseSeed(seed).Generate();
             context.Codes.AddRange(codesRange.Select(SeededCodes));
@@ -62,7 +69,7 @@ namespace EWS
                .RuleFor(o => o.Kurztext, f => f.Random.Words())
                .RuleFor(o => o.Sortierung, f => f.Random.Int(0, 30000))
                .RuleFor(o => o.Erstellungsdatum, f => f.Date.Past().ToUniversalTime())
-               .RuleFor(o => o.Mutationsdatum, f => f.Date.Recent().ToUniversalTime())
+               .RuleFor(o => o.Mutationsdatum, f => f.Date.Past().ToUniversalTime())
                .RuleFor(o => o.UserErstellung, f => f.Person.UserName)
                .RuleFor(o => o.UserMutation, f => f.Internet.UserName());
             CodeSchicht SeededCodeschichten(int seed) => fakeCodeschichten.UseSeed(seed).Generate();
@@ -80,12 +87,13 @@ namespace EWS
                .RuleFor(o => o.Gemeinde, f => f.Random.Int(2401, 2622))
                .RuleFor(o => o.GrundbuchNr, f => f.Random.AlphaNumeric(40))
                .RuleFor(o => o.Erstellungsdatum, f => f.Date.Past().ToUniversalTime())
-               .RuleFor(o => o.Mutationsdatum, f => f.Date.Recent().ToUniversalTime())
+               .RuleFor(o => o.Mutationsdatum, f => f.Date.Past().ToUniversalTime())
                .RuleFor(o => o.UserErstellung, f => f.Person.UserName)
                .RuleFor(o => o.UserMutation, f => f.Internet.UserName().OrNull(f, .1f))
                .RuleFor(o => o.FreigabeAfu, f => f.Random.Bool())
                .RuleFor(o => o.AfuUser, f => f.Person.FullName)
-               .RuleFor(o => o.AfuDatum, f => f.Date.Past().ToUniversalTime());
+               .RuleFor(o => o.AfuDatum, f => f.Date.Past().ToUniversalTime())
+               .RuleFor(o => o.Bohrungen, _ => default!);
             Standort SeededStandorte(int seed) => fakeStandorte.UseSeed(seed).Generate();
             context.Standorte.AddRange(standorteRange.Select(SeededStandorte));
             context.SaveChanges();
@@ -98,20 +106,23 @@ namespace EWS
                .RuleFor(o => o.Id, f => bohrung_ids++)
                .RuleFor(o => o.Datum, f => f.Date.Past().ToUniversalTime())
                .RuleFor(o => o.DurchmesserBohrloch, f => f.Random.Int(0, 30000))
-               .RuleFor(o => o.Ablenkung, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 9).Select(s => s.Id).ToList()))
+               .RuleFor(o => o.AblenkungId, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 9).Select(s => s.Id).ToList()))
+               .RuleFor(o => o.Ablenkung, _ => default!)
                .RuleFor(o => o.Qualitaet, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 3).Select(s => s.Id).ToList()))
                .RuleFor(o => o.QuelleRef, f => f.Company.CompanyName())
                .RuleFor(o => o.QualitaetBemerkung, f => f.Rant.Review())
                .RuleFor(o => o.Bezeichnung, f => f.Commerce.ProductName())
                .RuleFor(o => o.Erstellungsdatum, f => f.Date.Past().ToUniversalTime())
-               .RuleFor(o => o.Mutationsdatum, f => f.Date.Recent().ToUniversalTime())
+               .RuleFor(o => o.Mutationsdatum, f => f.Date.Past().ToUniversalTime())
                .RuleFor(o => o.UserErstellung, f => f.Person.UserName)
                .RuleFor(o => o.UserMutation, f => f.Internet.UserName())
                .RuleFor(o => o.Bemerkung, f => f.Company.CatchPhrase().OrNull(f, .2f))
-               .RuleFor(o => o.HQualitaet, f => 3)
+               .RuleFor(o => o.HQualitaetId, f => 3)
+               .RuleFor(o => o.HQualitaet, _ => default!)
                .RuleFor(o => o.HAblenkung, f => 9)
                .RuleFor(o => o.Geometrie, f => new Point(new Coordinate(f.Random.Int(2592400, 2644800), f.Random.Int(1213500, 1261500)))) // Geometries in bounding box of Kanton Solothurn
-               .RuleFor(o => o.StandortId, f => f.PickRandom(standorteRange));
+               .RuleFor(o => o.StandortId, f => f.PickRandom(standorteRange))
+               .RuleFor(o => o.Bohrprofile, _ => default!);
 
             Bohrung SeededBohrungen(int seed) => fakeBohrungen.UseSeed(seed).Generate();
             context.Bohrungen.AddRange(bohrungenRange.Select(SeededBohrungen));
@@ -128,19 +139,26 @@ namespace EWS
                .RuleFor(o => o.Kote, f => f.Random.Int(0, 30000))
                .RuleFor(o => o.Tektonik, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 10).Select(s => s.Id).ToList()))
                .RuleFor(o => o.Endteufe, f => f.Random.Int(0, 30000))
-               .RuleFor(o => o.Qualitaet, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 12).Select(s => s.Id).ToList()))
+               .RuleFor(o => o.QualitaetId, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 12).Select(s => s.Id).ToList()))
+               .RuleFor(o => o.Qualitaet, _ => default!)
                .RuleFor(o => o.QualitaetBemerkung, f => f.Rant.Review().OrNull(f, .8f))
                .RuleFor(o => o.FormationFels, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 5).Select(s => s.Id).ToList()))
                .RuleFor(o => o.FormationEndtiefe, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 5).Select(s => s.Id).ToList()))
                .RuleFor(o => o.Erstellungsdatum, f => f.Date.Past().ToUniversalTime())
-               .RuleFor(o => o.Mutationsdatum, f => f.Date.Recent().ToUniversalTime())
+               .RuleFor(o => o.Mutationsdatum, f => f.Date.Past().ToUniversalTime())
                .RuleFor(o => o.UserErstellung, f => f.Person.UserName)
                .RuleFor(o => o.UserMutation, f => f.Internet.UserName().OrNull(f, .2f))
                .RuleFor(o => o.Datum, f => f.Date.Past().ToUniversalTime())
-               .RuleFor(o => o.HTektonik, f => 10)
-               .RuleFor(o => o.HQualitaet, f => 12)
-               .RuleFor(o => o.HFormationFels, f => 5)
-               .RuleFor(o => o.HFormationEndtiefe, f => 5);
+               .RuleFor(o => o.HTektonikId, f => 10)
+               .RuleFor(o => o.HTektonik, _ => default!)
+               .RuleFor(o => o.HQualitaetId, f => 12)
+               .RuleFor(o => o.HQualitaet, _ => default!)
+               .RuleFor(o => o.HFormationFelsId, f => 5)
+               .RuleFor(o => o.HFormationFels, _ => default!)
+               .RuleFor(o => o.HFormationEndtiefeId, f => 5)
+               .RuleFor(o => o.HFormationEndtiefe, _ => default!)
+               .RuleFor(o => o.Schichten, _ => default!)
+               .RuleFor(o => o.Vorkomnisse, _ => default!);
             Bohrprofil SeededBohrprofile(int seed) => fakeBohrprofile.UseSeed(seed).Generate();
             context.Bohrprofile.AddRange(bohrprofileRange.Select(SeededBohrprofile));
             context.SaveChanges();
@@ -152,16 +170,19 @@ namespace EWS
                .StrictMode(true)
                .RuleFor(o => o.Id, f => schicht_ids++)
                .RuleFor(o => o.Tiefe, f => f.Random.Float())
-               .RuleFor(o => o.Qualitaet, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 11).Select(s => s.Id).ToList()))
+               .RuleFor(o => o.QualitaetId, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 11).Select(s => s.Id).ToList()))
+               .RuleFor(o => o.Qualitaet, _ => default!)
                .RuleFor(o => o.QualitaetBemerkung, f => f.Rant.Review().OrNull(f, .9f))
                .RuleFor(o => o.Erstellungsdatum, f => f.Date.Past().ToUniversalTime())
-               .RuleFor(o => o.Mutationsdatum, f => f.Date.Recent().ToUniversalTime())
+               .RuleFor(o => o.Mutationsdatum, f => f.Date.Past().ToUniversalTime())
                .RuleFor(o => o.UserErstellung, f => f.Person.UserName)
                .RuleFor(o => o.UserMutation, f => f.Internet.UserName())
                .RuleFor(o => o.Bemerkung, f => f.Company.CatchPhrase())
-               .RuleFor(o => o.HQualitaet, f => 11)
+               .RuleFor(o => o.HQualitaetId, f => 11)
+               .RuleFor(o => o.HQualitaet, _ => default!)
                .RuleFor(o => o.BohrprofilId, f => f.PickRandom(bohrprofileRange))
-               .RuleFor(o => o.SchichtenId, f => f.PickRandom(codeschichtenRange));
+               .RuleFor(o => o.CodeSchichtId, f => f.PickRandom(codeschichtenRange))
+               .RuleFor(o => o.CodeSchicht, _ => default!);
             Schicht SeededSchichten(int seed) => fakeSchichten.UseSeed(seed).Generate();
             context.Schichten.AddRange(schichtenRange.Select(SeededSchichten));
             context.SaveChanges();
@@ -176,14 +197,16 @@ namespace EWS
                .RuleFor(o => o.Qualitaet, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 3).Select(s => s.Id).ToList()))
                .RuleFor(o => o.QualitaetBemerkung, f => f.Rant.Review().OrNull(f, .8f))
                .RuleFor(o => o.Erstellungsdatum, f => f.Date.Past().ToUniversalTime())
-               .RuleFor(o => o.Mutationsdatum, f => f.Date.Recent().ToUniversalTime())
+               .RuleFor(o => o.Mutationsdatum, f => f.Date.Past().ToUniversalTime())
                .RuleFor(o => o.UserErstellung, f => f.Person.UserName)
                .RuleFor(o => o.UserMutation, f => f.Internet.UserName())
                .RuleFor(o => o.Bemerkung, f => f.Random.Word())
-               .RuleFor(o => o.HQualitaet, f => 3)
+               .RuleFor(o => o.HQualitaetId, f => 3)
+               .RuleFor(o => o.HQualitaet, _ => default!)
                .RuleFor(o => o.BohrprofilId, f => f.PickRandom(bohrprofileRange))
                .RuleFor(o => o.Typ, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 2).Select(s => s.Id).ToList()))
-               .RuleFor(o => o.HTyp, f => 2);
+               .RuleFor(o => o.HTypId, f => 2)
+               .RuleFor(o => o.HTyp, _ => default!);
             Vorkommnis SeededVorkommnisse(int seed) => fakeVorkommnisse.UseSeed(seed).Generate();
             context.Vorkommnisse.AddRange(vorkommnisseRange.Select(SeededVorkommnisse));
             context.SaveChanges();
@@ -197,6 +220,8 @@ namespace EWS
             context.Database.ExecuteSqlRaw($"SELECT setval(pg_get_serial_sequence('bohrung.bohrprofil', 'bohrprofil_id'),{bohrprofil_ids - 1})");
             context.Database.ExecuteSqlRaw($"SELECT setval(pg_get_serial_sequence('bohrung.schicht', 'schicht_id'),{schicht_ids - 1})");
             context.Database.ExecuteSqlRaw($"SELECT setval(pg_get_serial_sequence('bohrung.vorkommnis', 'vorkommnis_id'),{vorkommnis_ids - 1})");
+
+            transaction.Commit();
         }
     }
 }

@@ -10,8 +10,7 @@ internal static class ContextFactory
     /// <returns>The initialized <see cref="EwsContext"/>.</returns>
     public static EwsContext CreateContext()
     {
-        var context = new EwsContext(new DbContextOptionsBuilder<EwsContext>()
+        return new EwsContext(new DbContextOptionsBuilder<EwsContext>()
             .UseNpgsql("Host=localhost; Username=postgres;Password=VINTAGEMAGIC;Database=ews", option => option.UseNetTopologySuite()).Options);
-        return context;
     }
 }
