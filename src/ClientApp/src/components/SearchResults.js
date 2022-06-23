@@ -7,7 +7,7 @@ import TableRow from "@mui/material/TableRow";
 import Title from "./Title";
 import { GemeindenMap } from "../GemeindenMap";
 
-export default function Suchresultate(props) {
+export default function SearchResults(props) {
   const { standorte } = props;
   return (
     <React.Fragment>

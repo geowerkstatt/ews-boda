@@ -13,8 +13,8 @@ import { Point } from "ol/geom";
 import { Stroke, Style } from "ol/style";
 import "ol/ol.css";
 
-export default function Karte(props) {
-  const { bohrungen } = props;
+export default function MainMap(props) {
+  const { standorte } = props;
   const [map, setMap] = useState();
   const [bohrungenLayer, setBohrungenLayer] = useState();
   const [kantonsgrenze, setKantonsgrenze] = useState();
@@ -76,6 +76,7 @@ export default function Karte(props) {
       layers: [landeskarte, bohrungenLayer, kantonsgrenzeLayer],
       view: new View({
         projection: projection,
+        maxZoom: 14,
         zoom: 2,
       }),
     });
@@ -88,8 +89,9 @@ export default function Karte(props) {
 
   // Set Bohrungen to layer and center map around Bohrungen
   useEffect(() => {
-    if (bohrungen) {
+    if (standorte && bohrungenLayer) {
       let parsedFeatures;
+      let bohrungen = standorte?.flatMap((s) => s.bohrungen);
       if (bohrungen.length) {
         parsedFeatures = bohrungen.map(
           (f) =>
@@ -113,7 +115,7 @@ export default function Karte(props) {
         });
       }
     }
-  }, [bohrungen, bohrungenLayer, map]);
+  }, [standorte, bohrungenLayer, map]);
 
   // Set Kantonsgrenze to layer
   useEffect(() => {

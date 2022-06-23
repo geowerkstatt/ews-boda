@@ -4,14 +4,13 @@ import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import Suchresultate from "./Suchresultate";
+import SearchResults from "./SearchResults";
 import Search from "./Search";
-import Karte from "./Karte";
+import MainMap from "./MainMap";
 
 export function Home() {
-  const [bohrungen, setBohrungen] = useState("");
   const [standorte, setStandorte] = useState([]);
-  const [gemeindenummer, setGemeindenummer] = useState("");
+  const [gemeindenummer, setGemeindenummer] = useState(null);
   const [gbnummer, setGbnummer] = useState("");
   const [bezeichnung, setBezeichnung] = useState("");
   const [erstellungsDatum, setErstellungsDatum] = useState(null);
@@ -22,14 +21,8 @@ export function Home() {
     event.preventDefault();
     let query = `?gemeindenummer=${gemeindenummer ?? ""}`;
     query += `&gbnummer=${gbnummer}&bezeichnung=${bezeichnung}`;
-    query += `&erstellungsdatum=${erstellungsDatum ? new Date(erstellungsDatum).toLocaleDateString("de-CH") : ""}`;
-    query += `&mutationsdatum=${mutationsDatum ? new Date(mutationsDatum).toLocaleDateString("de-CH") : ""}`;
-
-    fetch("/bohrung" + query)
-      .then((response) => response.json())
-      .then((fetchedFeatures) => {
-        setBohrungen(fetchedFeatures);
-      });
+    query += `&erstellungsdatum=${erstellungsDatum ? new Date(erstellungsDatum).toUTCString() : ""}`;
+    query += `&mutationsdatum=${mutationsDatum ? new Date(mutationsDatum).toUTCString() : ""}`;
 
     fetch("/standort" + query)
       .then((response) => response.json())
@@ -43,13 +36,14 @@ export function Home() {
       });
   };
 
-  // Get Bohrungen from database
+  // Get all Standorte from database
   useEffect(() => {
-    let fetchurl = "/bohrung";
+    let fetchurl = "/standort";
     fetch(fetchurl)
       .then((response) => response.json())
       .then((fetchedFeatures) => {
-        setBohrungen(fetchedFeatures);
+        setStandorte(fetchedFeatures);
+        setStandorte(fetchedFeatures);
       });
   }, []);
 
@@ -96,18 +90,18 @@ export function Home() {
                 padding: "0 0 0 0",
               }}
             >
-              <Karte bohrungen={bohrungen} />
+              <MainMap standorte={standorte} />
             </Paper>
           </Grid>
           <Grid item xs={12}>
-            {hasResults && (
+            {hasResults && standorte.lenght !== 0 && (
               <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                <Suchresultate standorte={standorte} />
+                <SearchResults standorte={standorte} />
               </Paper>
             )}
             {standorte.lenght === 0 && (
               <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                <div>Keine Results</div>
+                <div>Keine Resultate gefunden</div>
               </Paper>
             )}
           </Grid>
