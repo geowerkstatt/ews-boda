@@ -41,7 +41,7 @@ public class StandortController : ControllerBase
 
         if (mutationsdatum != null)
         {
-            standorte = standorte.Where(s => s.Mutationsdatum != null && s.Mutationsdatum!.Value.Date == mutationsdatum.Value.Date);
+            standorte = standorte.Where(s => s.Mutationsdatum != null && s.Mutationsdatum!.Value.Date == mutationsdatum.Value.ToUniversalTime().Date);
         }
 
         return await standorte.AsNoTracking().ToListAsync().ConfigureAwait(false);
