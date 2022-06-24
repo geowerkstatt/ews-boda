@@ -292,6 +292,7 @@ csharp_style_inlined_variable_declaration = true:suggestion
 csharp_style_deconstructed_variable_declaration = true:suggestion
 csharp_style_unused_value_assignment_preference = discard_variable:suggestion
 csharp_style_unused_value_expression_statement_preference = discard_variable:silent
+csharp_style_prefer_method_group_conversion = true:silent
 
 [*.{cs,vb}]
 #### Naming styles ####
@@ -340,3 +341,4 @@ dotnet_naming_style.pascal_case.required_prefix =
 dotnet_naming_style.pascal_case.required_suffix =
 dotnet_naming_style.pascal_case.word_separator =
 dotnet_naming_style.pascal_case.capitalization = pascal_case
+dotnet_diagnostic.CA1002.severity = silent

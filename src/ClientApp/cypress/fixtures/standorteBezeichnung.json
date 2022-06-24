@@ -1,0 +1,93 @@
+[
+  {
+    "id": 35999,
+    "bezeichnung": "Sleek Rubber Tuna",
+    "bemerkung": "Finland",
+    "gemeinde": 2454,
+    "grundbuchNr": "0hknyue6595dc6a0q04tgmyx77uciqvrn8as3t2v",
+    "freigabeAfu": true,
+    "afuUser": "Daniel Dibbert",
+    "afuDatum": "2021-05-22T09:24:31.352324",
+    "erstellungsdatum": "2021-01-18T13:57:44.151286",
+    "mutationsdatum": "2021-01-13T18:47:44.375764",
+    "userErstellung": "Daniel.Dibbert16",
+    "userMutation": "Sonia62",
+    "bohrungen": [
+      {
+        "id": 43976,
+        "standortId": 35999,
+        "bezeichnung": "Sleek Soft Keyboard",
+        "datum": "2021-02-05T00:00:00",
+        "bemerkung": "Ergonomic regional application",
+        "ablenkungId": 166,
+        "ablenkung": null,
+        "durchmesserBohrloch": 5833,
+        "qualitaet": 374,
+        "qualitaetBemerkung": "I saw one of these in Haiti and I bought one.",
+        "quelleRef": "Borer, O'Connell and Larkin",
+        "erstellungsdatum": "2021-01-08T03:29:33.981532",
+        "mutationsdatum": "2021-10-14T10:33:37.571841",
+        "userErstellung": "Dixie12",
+        "userMutation": "Darian57",
+        "hQualitaetId": 3,
+        "hQualitaet": null,
+        "hAblenkung": 9,
+        "geometrie": {
+          "type": "Point",
+          "coordinates": [2619796, 1238367]
+        },
+        "bohrprofile": null
+      },
+      {
+        "id": 45796,
+        "standortId": 35999,
+        "bezeichnung": "Handmade Rubber Soap",
+        "datum": "2021-04-14T00:00:00",
+        "bemerkung": "Horizontal 6th generation contingency",
+        "ablenkungId": 231,
+        "ablenkung": null,
+        "durchmesserBohrloch": 6490,
+        "qualitaet": 129,
+        "qualitaetBemerkung": "one of my hobbies is antique-shopping. and when i'm antique-shopping this works great.",
+        "quelleRef": "McCullough - Brown",
+        "erstellungsdatum": "2021-12-07T21:26:08.673402",
+        "mutationsdatum": "2021-11-10T09:46:16.553694",
+        "userErstellung": "Darrel.McKenzie",
+        "userMutation": "Lilly94",
+        "hQualitaetId": 3,
+        "hQualitaet": null,
+        "hAblenkung": 9,
+        "geometrie": {
+          "type": "Point",
+          "coordinates": [2603417, 1223026]
+        },
+        "bohrprofile": null
+      },
+      {
+        "id": 46670,
+        "standortId": 35999,
+        "bezeichnung": "Refined Fresh Hat",
+        "datum": "2021-09-07T00:00:00",
+        "bemerkung": "Persevering directional software",
+        "ablenkungId": 187,
+        "ablenkung": null,
+        "durchmesserBohrloch": 19926,
+        "qualitaet": 374,
+        "qualitaetBemerkung": "this product is standard.",
+        "quelleRef": "Hills LLC",
+        "erstellungsdatum": "2021-08-04T04:16:19.129022",
+        "mutationsdatum": "2021-01-10T15:28:35.151535",
+        "userErstellung": "Jodi36",
+        "userMutation": "Rebecca.Ziemann",
+        "hQualitaetId": 3,
+        "hQualitaet": null,
+        "hAblenkung": 9,
+        "geometrie": {
+          "type": "Point",
+          "coordinates": [2634499, 1225789]
+        },
+        "bohrprofile": null
+      }
+    ]
+  }
+]

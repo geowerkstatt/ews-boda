@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using NetTopologySuite.Geometries;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using NetTopologySuite.Geometries;
 
 namespace EWS.Models
 {
@@ -33,43 +33,48 @@ namespace EWS.Models
         /// Datum der Bohrung.
         /// </summary>
         [Column("datum")]
-        public DateTime Datum { get; set; }
+        public DateTime? Datum { get; set; }
 
         /// <summary>
         /// Bemerkungen zur Bohrung.
         /// </summary>
         [Column("bemerkung")]
-        public string Bemerkung { get; set; }
+        public string? Bemerkung { get; set; }
 
         /// <summary>
-        /// Klassierung der Ablenkung.
+        /// Foreign Key: ID Klassierung der Ablenkung.
         /// </summary>
         [Column("ablenkung")]
-        public int Ablenkung { get; set; }
+        public int? AblenkungId { get; set; }
+
+        /// <summary>
+        /// Codetyp Klassierung der Ablenkung.
+        /// </summary>
+        public CodeTyp? Ablenkung { get; set; }
 
         /// <summary>
         /// Durchmesser der Bohrlöcher [mm].
         /// </summary>
         [Column("durchmesserbohrloch")]
-        public int DurchmesserBohrloch { get; set; }
+        public int? DurchmesserBohrloch { get; set; }
 
         /// <summary>
         /// Qualität der Angaben zur Bohrung.
         /// </summary>
         [Column("quali")]
-        public int Qualitaet { get; set; }
+        public int? Qualitaet { get; set; }
 
         /// <summary>
         /// Bemerkung zur Qualitätsangabe.
         /// </summary>
         [Column("qualibem")]
-        public string QualitaetBemerkung { get; set; }
+        public string? QualitaetBemerkung { get; set; }
 
         /// <summary>
         /// Autor geologische Aufnahme (Firma, Bearbeiter, Jahr).
         /// </summary>
         [Column("quelleref")]
-        public string QuelleRef { get; set; }
+        public string? QuelleRef { get; set; }
 
         /// <summary>
         /// Datum des Imports des Objektes.
@@ -81,7 +86,7 @@ namespace EWS.Models
         /// Timestamp der letzten Änderung.
         /// </summary>
         [Column("mut_date")]
-        public DateTime Mutationsdatum { get; set; }
+        public DateTime? Mutationsdatum { get; set; }
 
         /// <summary>
         /// Kürzel des Benutzers beim Anlegen des Objekts.
@@ -93,13 +98,18 @@ namespace EWS.Models
         /// Kürzel des Benutzers bei letzter Änderung.
         /// </summary>
         [Column("mut_usr")]
-        public string UserMutation { get; set; }
+        public string? UserMutation { get; set; }
 
         /// <summary>
         /// Foreign Key: ID des Codetyps für Feld quali.
         /// </summary>
         [Column("h_quali")]
-        public int HQualitaet { get; set; }
+        public int HQualitaetId { get; set; }
+
+        /// <summary>
+        /// QCodetyps für Feld quali.
+        /// </summary>
+        public CodeTyp? HQualitaet { get; set; }
 
         /// <summary>
         /// Foreign Key: ID des Codetyps für Feld ablenkung.
@@ -111,6 +121,11 @@ namespace EWS.Models
         /// Koordinate der Bohrung.
         /// </summary>
         [Column("wkb_geometry")]
-        public Point Geometrie { get; set; }
+        public Point? Geometrie { get; set; }
+
+        /// <summary>
+        /// Bohrprofile die der Bohrung zugeordnet sind.
+        /// </summary>
+        public List<Bohrprofil> Bohrprofile { get; set; }
     }
 }

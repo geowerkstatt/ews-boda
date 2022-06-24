@@ -32,37 +32,47 @@ namespace EWS.Models
         /// Tiefe des Vorkommnisses [m].
         /// </summary>
         [Column("tiefe")]
-        public float Tiefe { get; set; }
+        public float? Tiefe { get; set; }
 
         /// <summary>
         /// Bemerkung zum Vorkommnis.
         /// </summary>
         [Column("bemerkung")]
-        public string Bemerkung { get; set; }
+        public string? Bemerkung { get; set; }
 
         /// <summary>
         /// Qualitätsangabe zum Vorkommnis.
         /// </summary>
         [Column("quali")]
-        public int Qualitaet { get; set; }
+        public int? Qualitaet { get; set; }
 
         /// <summary>
         /// Bemerkung zur Qualitätsangabe.
         /// </summary>
         [Column("qualibem")]
-        public string QualitaetBemerkung { get; set; }
+        public string? QualitaetBemerkung { get; set; }
 
         /// <summary>
         /// Foreign Key: ID des Codetyps für Feld quali.
         /// </summary>
         [Column("h_quali")]
-        public int HQualitaet { get; set; }
+        public int HQualitaetId { get; set; }
+
+        /// <summary>
+        /// Codetyp für Feld quali.
+        /// </summary>
+        public Code HQualitaet { get; set; }
 
         /// <summary>
         /// Foreign Key: ID des Codetyps für Feld typ.
         /// </summary>
         [Column("h_typ")]
-        public int HTyp { get; set; }
+        public int HTypId { get; set; }
+
+        /// <summary>
+        /// Codetyp für Feld typ.
+        /// </summary>
+        public CodeTyp HTyp { get; set; }
 
         /// <summary>
         /// Datum des Imports des Objektes.
@@ -74,7 +84,7 @@ namespace EWS.Models
         /// Timestamp der letzten Änderung.
         /// </summary>
         [Column("mut_date")]
-        public DateTime Mutationsdatum { get; set; }
+        public DateTime? Mutationsdatum { get; set; }
 
         /// <summary>
         /// Kürzel des Benutzers beim Anlegen des Objekts.
@@ -86,6 +96,6 @@ namespace EWS.Models
         /// Kürzel des Benutzers bei letzter Änderung.
         /// </summary>
         [Column("mut_usr")]
-        public string UserMutation { get; set; }
+        public string? UserMutation { get; set; }
     }
 }

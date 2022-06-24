@@ -1,6 +1,5 @@
 ﻿using EWS.Models;
 using Microsoft.EntityFrameworkCore;
-using NetTopologySuite.Geometries;
 
 namespace EWS
 {

@@ -23,10 +23,15 @@ namespace EWS.Models
         public int BohrprofilId { get; set; }
 
         /// <summary>
-        /// Foreign Key: ID der Tabelle Schicht.
+        /// Foreign Key: ID der Tabelle Codeschicht.
         /// </summary>
         [Column("schichten_id")]
-        public int SchichtenId { get; set; }
+        public int CodeSchichtId { get; set; }
+
+        /// <summary>
+        /// Codeschicht der Schicht.
+        /// </summary>
+        public CodeSchicht CodeSchicht { get; set; }
 
         /// <summary>
         /// Tiefe der Schichtgrenze [m].
@@ -35,28 +40,38 @@ namespace EWS.Models
         public float Tiefe { get; set; }
 
         /// <summary>
-        /// Qualitätsangabe zur Schicht.
+        /// Foreign Key: ID Qualitätsangabe zur Schicht.
         /// </summary>
         [Column("quali")]
-        public int Qualitaet { get; set; }
+        public int QualitaetId { get; set; }
+
+        /// <summary>
+        /// Qualitätsangabe zur Schicht.
+        /// </summary>
+        public Code Qualitaet { get; set; }
 
         /// <summary>
         /// Bemerkung zur Qualitätsangabe.
         /// </summary>
         [Column("qualibem")]
-        public string QualitaetBemerkung { get; set; }
+        public string? QualitaetBemerkung { get; set; }
 
         /// <summary>
         /// Bemerkung zur Schicht.
         /// </summary>
         [Column("bemerkung")]
-        public string Bemerkung { get; set; }
+        public string? Bemerkung { get; set; }
 
         /// <summary>
         /// Foreign Key: ID des Codetyps für Feld quali.
         /// </summary>
         [Column("h_quali")]
-        public int HQualitaet { get; set; }
+        public int HQualitaetId { get; set; }
+
+        /// <summary>
+        /// Codetyp für Feld quali.
+        /// </summary>
+        public CodeTyp HQualitaet { get; set; }
 
         /// <summary>
         /// Datum des Imports des Objektes.
@@ -68,7 +83,7 @@ namespace EWS.Models
         /// Timestamp der letzten Änderung.
         /// </summary>
         [Column("mut_date")]
-        public DateTime Mutationsdatum { get; set; }
+        public DateTime? Mutationsdatum { get; set; }
 
         /// <summary>
         /// Kürzel des Benutzers beim Anlegen des Objekts.
@@ -80,6 +95,6 @@ namespace EWS.Models
         /// Kürzel des Benutzers bei letzter Änderung.
         /// </summary>
         [Column("mut_usr")]
-        public string UserMutation { get; set; }
+        public string? UserMutation { get; set; }
     }
 }
