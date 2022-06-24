@@ -34,14 +34,17 @@ public class StandortController : ControllerBase
             standorte = standorte.Where(s => s.Bezeichnung == bezeichnung);
         }
 
+        // Use universal time zone to convert time.
+        TimeZoneInfo ut = TimeZoneInfo.Utc;
+
         if (erstellungsdatum != null)
         {
-            standorte = standorte.Where(s => s.Erstellungsdatum.Date == erstellungsdatum.Value.ToUniversalTime().Date);
+            standorte = standorte.Where(s => s.Erstellungsdatum.Date == TimeZoneInfo.ConvertTimeToUtc(erstellungsdatum.Value, ut).Date);
         }
 
         if (mutationsdatum != null)
         {
-            standorte = standorte.Where(s => s.Mutationsdatum != null && s.Mutationsdatum!.Value.Date == mutationsdatum.Value.ToUniversalTime().Date);
+            standorte = standorte.Where(s => s.Mutationsdatum != null && s.Mutationsdatum!.Value.Date == TimeZoneInfo.ConvertTimeToUtc(mutationsdatum.Value, ut).Date);
         }
 
         return await standorte.AsNoTracking().ToListAsync().ConfigureAwait(false);
