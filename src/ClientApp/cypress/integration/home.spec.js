@@ -30,7 +30,7 @@ describe("Home page tests", () => {
     cy.get("input[name=gbnummer]").should("be.visible").click({ force: true }).type(gbnummer);
     cy.get("button[name=submit-button]").should("be.visible").click();
     cy.get("div[name=home-container]").should("contain", "Suchresultate");
-    cy.get("tbody").children().should("have.length", 16);
+    cy.get("tbody").children().should("have.length", 3);
   });
 
   it("Show search result box if search for bezeichnung", function () {
@@ -43,6 +43,6 @@ describe("Home page tests", () => {
     cy.get("input[name=bezeichnung]").should("be.visible").click({ force: true }).type("Rustic Wooden Keyboard");
     cy.get("button[name=submit-button]").should("be.visible").click();
     cy.get("div[name=home-container]").should("contain", "Suchresultate");
-    cy.get("tbody").children().should("have.length", 21);
+    cy.get("tbody").children().should("have.length", 1);
   });
 });
