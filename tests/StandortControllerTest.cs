@@ -35,9 +35,9 @@ public class StandortControllerTest
         Assert.AreEqual("iwbyrzqsabb8pd8ahyd2izkurkxu9xt5q60jndil", standortToTest.GrundbuchNr);
         Assert.AreEqual("Carolyn_Lehner5", standortToTest.UserErstellung);
         Assert.AreEqual("Kennith.Pollich", standortToTest.UserMutation);
-        Assert.AreEqual(new DateTime(2021, 3, 6, 0, 0, 0).Date, standortToTest.AfuDatum!.Value.Date);
-        Assert.AreEqual(new DateTime(2021, 8, 6, 0, 0, 0).Date, standortToTest.Erstellungsdatum.Date);
-        Assert.AreEqual(new DateTime(2021, 12, 9, 0, 0, 0).Date, standortToTest.Mutationsdatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 3, 6, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.AfuDatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 8, 6, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.Erstellungsdatum.Date);
+        Assert.AreEqual(new DateTime(2021, 12, 9, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.Mutationsdatum!.Value.Date);
     }
 
     [TestMethod]
@@ -57,9 +57,9 @@ public class StandortControllerTest
         Assert.AreEqual("vkflnsvlswy1nfbg4kucmk1bwzaqt7c72mba55vu", standortToTest.GrundbuchNr);
         Assert.AreEqual("Elijah_Schmeler31", standortToTest.UserErstellung);
         Assert.AreEqual("Josefa_Effertz", standortToTest.UserMutation);
-        Assert.AreEqual(new DateTime(2021, 2, 12, 0, 0, 0).Date, standortToTest.AfuDatum!.Value.Date);
-        Assert.AreEqual(new DateTime(2021, 10, 1, 0, 0, 0).Date, standortToTest.Erstellungsdatum.Date);
-        Assert.AreEqual(new DateTime(2021, 12, 9, 0, 0, 0).Date, standortToTest.Mutationsdatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 2, 12, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.AfuDatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 10, 1, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.Erstellungsdatum.Date);
+        Assert.AreEqual(new DateTime(2021, 12, 9, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.Mutationsdatum!.Value.Date);
     }
 
     [TestMethod]
@@ -79,55 +79,55 @@ public class StandortControllerTest
         Assert.AreEqual("2ir0g1jdx6vfw8gpt27vr9keunmrxty6xwea94ce", standortToTest.GrundbuchNr);
         Assert.AreEqual("Beverly.Zulauf", standortToTest.UserErstellung);
         Assert.AreEqual("Dusty51", standortToTest.UserMutation);
-        Assert.AreEqual(new DateTime(2021, 11, 5, 0, 0, 0).Date, standortToTest.AfuDatum!.Value.Date);
-        Assert.AreEqual(new DateTime(2021, 3, 16, 0, 0, 0).Date, standortToTest.Erstellungsdatum.Date);
-        Assert.AreEqual(new DateTime(2021, 4, 18, 0, 0, 0).Date, standortToTest.Mutationsdatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 11, 5, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.AfuDatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 3, 16, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.Erstellungsdatum.Date);
+        Assert.AreEqual(new DateTime(2021, 4, 18, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.Mutationsdatum!.Value.Date);
     }
 
     [TestMethod]
     public async Task GetByErstellungsdatum()
     {
         var controller = new StandortController(context);
-        var standorte = await controller.GetAsync(null, null, null, new DateTime(2021, 11, 15, 0, 0, 0).ToUniversalTime()).ConfigureAwait(false);
+        var standorte = await controller.GetAsync(null, null, null, new DateTime(2021, 11, 15, 0, 0, 0, DateTimeKind.Utc)).ConfigureAwait(false);
 
         Assert.AreEqual(17, standorte.Count());
-        var standortId = 32529;
+        var standortId = 33836;
         var standortToTest = standorte.Single(b => b.Id == standortId);
 
-        Assert.AreEqual("Paul Macejkovic", standortToTest.AfuUser);
-        Assert.AreEqual("Nicaragua", standortToTest.Bemerkung);
-        Assert.AreEqual("Handcrafted Cotton Keyboard", standortToTest.Bezeichnung);
-        Assert.AreEqual(true, standortToTest.FreigabeAfu);
-        Assert.AreEqual(2531, standortToTest.Gemeinde);
-        Assert.AreEqual("kqqcdebqud2qy8pyekwqm8whm6tzi2ieuz0v1hdd", standortToTest.GrundbuchNr);
-        Assert.AreEqual("Paul_Macejkovic", standortToTest.UserErstellung);
-        Assert.AreEqual("Kathlyn_Hilll31", standortToTest.UserMutation);
-        Assert.AreEqual(new DateTime(2021, 1, 23, 0, 0, 0).Date, standortToTest.AfuDatum!.Value.Date);
-        Assert.AreEqual(new DateTime(2021, 11, 14, 0, 0, 0).Date, standortToTest.Erstellungsdatum.Date);
-        Assert.AreEqual(new DateTime(2021, 8, 9, 0, 0, 0).Date, standortToTest.Mutationsdatum!.Value.Date);
+        Assert.AreEqual("Mamie Gutmann", standortToTest.AfuUser);
+        Assert.AreEqual("Namibia", standortToTest.Bemerkung);
+        Assert.AreEqual("Sleek Frozen Fish", standortToTest.Bezeichnung);
+        Assert.AreEqual(false, standortToTest.FreigabeAfu);
+        Assert.AreEqual(2551, standortToTest.Gemeinde);
+        Assert.AreEqual("rcf2cbp8t8b4amsm2ght9xqh8o3kag52kt5959ag", standortToTest.GrundbuchNr);
+        Assert.AreEqual("Mamie_Gutmann", standortToTest.UserErstellung);
+        Assert.AreEqual("Ernestine21", standortToTest.UserMutation);
+        Assert.AreEqual(new DateTime(2021, 3, 29, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.AfuDatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 11, 15, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.Erstellungsdatum.Date);
+        Assert.AreEqual(new DateTime(2021, 12, 7, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.Mutationsdatum!.Value.Date);
     }
 
     [TestMethod]
     public async Task GetByMutationsdatum()
     {
         var controller = new StandortController(context);
-        var standorte = await controller.GetAsync(null, null, null, new DateTime(2021, 11, 3, 0, 0, 0).ToUniversalTime()).ConfigureAwait(false);
+        var standorte = await controller.GetAsync(null, null, null, new DateTime(2021, 11, 3, 0, 0, 0, DateTimeKind.Utc)).ConfigureAwait(false);
 
         Assert.AreEqual(16, standorte.Count());
-        var standortId = 34640;
+        var standortId = 34950;
         var standortToTest = standorte.Single(b => b.Id == standortId);
 
-        Assert.AreEqual("Jesus Mante", standortToTest.AfuUser);
-        Assert.AreEqual("Cuba", standortToTest.Bemerkung);
-        Assert.AreEqual("Awesome Fresh Fish", standortToTest.Bezeichnung);
-        Assert.AreEqual(true, standortToTest.FreigabeAfu);
-        Assert.AreEqual(2550, standortToTest.Gemeinde);
-        Assert.AreEqual("dlsitmex40f3re3gbbdmd6wkqivvf6z1iinhja9d", standortToTest.GrundbuchNr);
-        Assert.AreEqual("Jesus_Mante50", standortToTest.UserErstellung);
-        Assert.AreEqual("Clint14", standortToTest.UserMutation);
-        Assert.AreEqual(new DateTime(2021, 12, 20, 0, 0, 0).Date, standortToTest.AfuDatum!.Value.Date);
-        Assert.AreEqual(new DateTime(2021, 11, 2, 0, 0, 0).Date, standortToTest.Erstellungsdatum.Date);
-        Assert.AreEqual(new DateTime(2021, 5, 25, 0, 0, 0).Date, standortToTest.Mutationsdatum!.Value.Date);
+        Assert.AreEqual("Penny Lindgren", standortToTest.AfuUser);
+        Assert.AreEqual("Honduras", standortToTest.Bemerkung);
+        Assert.AreEqual("Sleek Soft Shirt", standortToTest.Bezeichnung);
+        Assert.AreEqual(false, standortToTest.FreigabeAfu);
+        Assert.AreEqual(2541, standortToTest.Gemeinde);
+        Assert.AreEqual("ahbv40f1ez1eys4ndpozrpz6eyij7ffurlohnncs", standortToTest.GrundbuchNr);
+        Assert.AreEqual("Penny_Lindgren79", standortToTest.UserErstellung);
+        Assert.AreEqual("Marjorie40", standortToTest.UserMutation);
+        Assert.AreEqual(new DateTime(2021, 6, 14, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.AfuDatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 11, 3, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.Erstellungsdatum.Date);
+        Assert.AreEqual(new DateTime(2021, 12, 5, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.Mutationsdatum!.Value.Date);
     }
 
     [TestMethod]
@@ -147,9 +147,9 @@ public class StandortControllerTest
         Assert.AreEqual("wj7qafzqpk7xh0zkt6px3ujisxqqwxbloxeiljz3", standortToTest.GrundbuchNr);
         Assert.AreEqual("Warren54", standortToTest.UserErstellung);
         Assert.AreEqual("Abdullah61", standortToTest.UserMutation);
-        Assert.AreEqual(new DateTime(2021, 8, 31, 0, 0, 0).Date, standortToTest.AfuDatum!.Value.Date);
-        Assert.AreEqual(new DateTime(2021, 8, 1, 0, 0, 0).Date, standortToTest.Erstellungsdatum.Date);
-        Assert.AreEqual(new DateTime(2021, 1, 12, 0, 0, 0).Date, standortToTest.Mutationsdatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 8, 31, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.AfuDatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 8, 1, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.Erstellungsdatum.Date);
+        Assert.AreEqual(new DateTime(2021, 1, 12, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.Mutationsdatum!.Value.Date);
     }
 
     [TestMethod]
@@ -171,8 +171,8 @@ public class StandortControllerTest
         Assert.AreEqual("iwbyrzqsabb8pd8ahyd2izkurkxu9xt5q60jndil", standortToTest.GrundbuchNr);
         Assert.AreEqual("Carolyn_Lehner5", standortToTest.UserErstellung);
         Assert.AreEqual("Kennith.Pollich", standortToTest.UserMutation);
-        Assert.AreEqual(new DateTime(2021, 3, 6, 0, 0, 0).Date, standortToTest.AfuDatum!.Value.Date);
-        Assert.AreEqual(new DateTime(2021, 8, 6, 0, 0, 0).Date, standortToTest.Erstellungsdatum.Date);
-        Assert.AreEqual(new DateTime(2021, 12, 9, 0, 0, 0).Date, standortToTest.Mutationsdatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 3, 6, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.AfuDatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 8, 6, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.Erstellungsdatum.Date);
+        Assert.AreEqual(new DateTime(2021, 12, 9, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.Mutationsdatum!.Value.Date);
     }
 }
