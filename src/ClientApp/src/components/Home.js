@@ -99,7 +99,7 @@ export function Home() {
                 <SearchResults standorte={standorte} />
               </Paper>
             )}
-            {standorte.lenght === 0 && (
+            {standorte.length === 0 && (
               <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
                 <div>Keine Resultate gefunden</div>
               </Paper>
