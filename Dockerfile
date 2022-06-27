@@ -6,7 +6,7 @@ ARG REVISION
 # Set default shell
 SHELL ["/bin/bash", "-c"]
 
-# Install Node.js and mono
+# Install missing packages
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get install -y nodejs mono-complete unzip
 
