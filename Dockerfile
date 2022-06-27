@@ -6,23 +6,33 @@ ARG REVISION
 # Set default shell
 SHELL ["/bin/bash", "-c"]
 
-# Install Node.js
+# Install missing packages
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
-RUN apt-get install -y nodejs
+RUN apt-get install -y nodejs mono-complete unzip
+
+# Download and unzip latest DocFX release
+RUN curl https://github.com/dotnet/docfx/releases/latest/download/docfx.zip -LO --silent --show-error && \
+  unzip -o -q docfx.zip
 
 # Restore dependencies and tools
 COPY src/EWS.csproj .
 RUN dotnet restore "EWS.csproj"
 
+# Set environment variables
+ENV PUBLISH_DIR=/app/publish
+ENV GENERATE_SOURCEMAP=false
+
 # Create optimized production build
 COPY src/ .
-ENV GENERATE_SOURCEMAP=false
-ENV PUBLISH_DIR=/app/publish
 RUN dotnet publish "EWS.csproj" \
   -c Release \
   -p:VersionPrefix=${VERSION} \
   -p:SourceRevisionId=${REVISION} \
   -o ${PUBLISH_DIR}
+
+# Build documentation
+COPY docs/ ./docs/
+RUN mono docfx.exe build -o ${PUBLISH_DIR}/wwwroot/help docs/docfx.json
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 ENV HOME=/app

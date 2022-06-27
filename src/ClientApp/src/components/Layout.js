@@ -15,6 +15,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import HomeIcon from "@mui/icons-material/Home";
 import GroupIcon from "@mui/icons-material/Group";
+import InfoIcon from "@mui/icons-material/Info";
 import { Footer } from "./Footer";
 
 import { AppBar } from "./AppBar";
@@ -86,6 +87,12 @@ export function Layout(props) {
                 <GroupIcon />
               </ListItemIcon>
               <ListItemText primary="Benutzerverwaltung" />
+            </ListItemButton>
+            <ListItemButton component="a" target="_blank" href="/help/index.html">
+              <ListItemIcon>
+                <InfoIcon />
+              </ListItemIcon>
+              <ListItemText primary="Hilfe" />
             </ListItemButton>
           </List>
         </Drawer>

@@ -1,1 +1,1 @@
-docfx ./docfx.json --serve
+docfx -o ../build/help ./docfx.json --serve
