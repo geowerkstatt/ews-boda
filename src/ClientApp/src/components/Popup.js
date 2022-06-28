@@ -4,6 +4,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import Alert from "@mui/material/Alert";
 
 function Popup(props) {
   const { popupElement, closePopup, selectedFeature, popupVisible } = props;
@@ -40,6 +41,7 @@ function Popup(props) {
           </CardActions>
         </Card>
       )}
+      {popupVisible && !selectedFeature && <Alert severity="warning">Wählen Sie zuerst eine Bohrung!</Alert>}
     </div>
   );
 }
