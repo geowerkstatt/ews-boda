@@ -1,16 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
-import { Box, Button } from "@mui/material";
+import { Autocomplete, Box, Button, Typography } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import Typography from "@mui/material/Typography";
 import { GemeindenMap } from "../GemeindenMap";
 
 export default function Search(props) {
   const {
-    search,
+    getStandorte,
     setGemeindenummer,
     setGbnummer,
     setBezeichnung,
@@ -18,7 +16,22 @@ export default function Search(props) {
     setErstellungsDatum,
     mutationsDatum,
     setMutationsDatum,
+    hasFilters,
+    resetSearch,
   } = props;
+  const [inputValue, setInputValue] = useState("");
+  const [value, setValue] = useState(null);
+
+  const search = (event) => {
+    event.preventDefault();
+    getStandorte();
+  };
+
+  const reset = () => {
+    setInputValue("");
+    setValue(null);
+    resetSearch();
+  };
 
   return (
     <Box
@@ -33,12 +46,18 @@ export default function Search(props) {
       autoComplete="off"
     >
       <Typography component="h1" variant="h6" color="inherit" noWrap>
-        Nach Standort filtern
+        Nach Standort suchen
       </Typography>
       <Autocomplete
         name="gemeinde"
+        value={value}
         onChange={(event, newGemeinde) => {
+          setValue(newGemeinde);
           setGemeindenummer(Object.keys(GemeindenMap).find((key) => GemeindenMap[key] === newGemeinde));
+        }}
+        inputValue={inputValue}
+        onInputChange={(event, newInputValue) => {
+          setInputValue(newInputValue);
         }}
         options={Object.values(GemeindenMap)}
         renderInput={(params) => <TextField variant="standard" type="string" {...params} label="Gemeinde" />}
@@ -83,8 +102,13 @@ export default function Search(props) {
         />
       </LocalizationProvider>
       <Box sx={{ flexGrow: 1 }}></Box>
+      {hasFilters && (
+        <Button sx={{ marginBottom: 1 }} variant="outlined" onClick={reset}>
+          Suche zurücksetzen
+        </Button>
+      )}
       <Button variant="outlined" name="submit-button" type="submit">
-        Filtern
+        Suchen
       </Button>
     </Box>
   );

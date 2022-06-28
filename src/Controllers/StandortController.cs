@@ -18,7 +18,7 @@ public class StandortController : ControllerBase
     public async Task<IEnumerable<Standort>> GetAsync(
          int? gemeindenummer = null, string? gbnummer = null, string? bezeichnung = null, DateTime? erstellungsdatum = null, DateTime? mutationsdatum = null)
     {
-        var standorte = context.Standorte.Include(s => s.Bohrungen).AsQueryable();
+        var standorte = context.Standorte.AsNoTracking().Include(s => s.Bohrungen).ThenInclude(p => p.Bohrprofile).AsQueryable();
         if (gemeindenummer != null)
         {
             standorte = standorte.Where(s => s.Gemeinde == gemeindenummer);
@@ -48,5 +48,51 @@ public class StandortController : ControllerBase
         }
 
         return await standorte.AsNoTracking().ToListAsync().ConfigureAwait(false);
+    }
+
+    [HttpPost]
+    public IActionResult Create(Standort standort)
+    {
+        context.Standorte.Add(standort);
+        context.SaveChanges();
+        return CreatedAtAction(nameof(Standort), standort);
+    }
+
+    [HttpPut]
+    public IActionResult Edit(Standort standort)
+    {
+        var standortToEdit = context.Standorte.SingleOrDefault(x => x.Id == standort.Id);
+        if (standortToEdit == null)
+        {
+            return new NotFoundResult();
+        }
+        else
+        {
+            standortToEdit.Bezeichnung = standort.Bezeichnung;
+            standortToEdit.Bemerkung = standort.Bemerkung;
+            standortToEdit.Gemeinde = standort.Gemeinde;
+            standortToEdit.GrundbuchNr = standort.GrundbuchNr;
+            standortToEdit.Bohrungen = standort.Bohrungen;
+            standortToEdit.Mutationsdatum = DateTime.UtcNow;
+            standortToEdit.UserMutation = standort.UserMutation;
+            context.SaveChanges();
+            return Ok();
+        }
+    }
+
+    [HttpDelete]
+    public IActionResult Delete(int id)
+    {
+        var standortToDelete = context.Standorte.SingleOrDefault(x => x.Id == id);
+        if (standortToDelete == null)
+        {
+            return new NotFoundResult();
+        }
+        else
+        {
+            context.Remove(standortToDelete);
+            context.SaveChanges();
+            return Ok();
+        }
     }
 }

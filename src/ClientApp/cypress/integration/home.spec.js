@@ -10,12 +10,12 @@ describe("Home page tests", () => {
     );
 
     cy.visit("/");
-    cy.get("div[name=home-container]").should("not.contain", "Suchresultate");
+    cy.get("div[name=home-container]").should("not.contain", "Standorte");
 
     // use click 'force: true' because element is covered by another element.
     cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
     cy.get("button[name=submit-button]").should("be.visible").click();
-    cy.get("div[name=home-container]").should("contain", "Suchresultate");
+    cy.get("div[name=home-container]").should("contain", "Standorte");
     cy.get("tbody").children().should("have.length", 4);
   });
 
@@ -26,10 +26,10 @@ describe("Home page tests", () => {
       standorteGbnummer
     );
     cy.visit("/");
-    cy.get("div[name=home-container]").should("not.contain", "Suchresultate");
+    cy.get("div[name=home-container]").should("not.contain", "Standorte");
     cy.get("input[name=gbnummer]").should("be.visible").click({ force: true }).type(gbnummer);
     cy.get("button[name=submit-button]").should("be.visible").click();
-    cy.get("div[name=home-container]").should("contain", "Suchresultate");
+    cy.get("div[name=home-container]").should("contain", "Standorte");
     cy.get("tbody").children().should("have.length", 3);
   });
 
@@ -39,10 +39,10 @@ describe("Home page tests", () => {
       standorteBezeichnung
     );
     cy.visit("/");
-    cy.get("div[name=home-container]").should("not.contain", "Suchresultate");
+    cy.get("div[name=home-container]").should("not.contain", "Standorte");
     cy.get("input[name=bezeichnung]").should("be.visible").click({ force: true }).type("Rustic Wooden Keyboard");
     cy.get("button[name=submit-button]").should("be.visible").click();
-    cy.get("div[name=home-container]").should("contain", "Suchresultate");
+    cy.get("div[name=home-container]").should("contain", "Standorte");
     cy.get("tbody").children().should("have.length", 1);
   });
 

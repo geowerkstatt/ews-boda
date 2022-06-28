@@ -4,6 +4,12 @@
   width: 100%;
 }
 
+.detail-map .ol-viewport {
+  min-height: 330px;
+  height: 100%;
+  width: 100%;
+}
+
 .ol-control {
   position: sticky;
   padding-left: 10px;

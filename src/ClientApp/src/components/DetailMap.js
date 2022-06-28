@@ -1,42 +1,24 @@
 import React, { useState, useEffect, useRef } from "react";
-import ReactDOMServer from "react-dom/server";
-import AllOutIcon from "@mui/icons-material/AllOut";
 import Map from "ol/Map";
 import View from "ol/View";
 import TileLayer from "ol/layer/Tile";
 import WMTS from "ol/source/WMTS";
 import VectorSource from "ol/source/Vector";
 import Feature from "ol/Feature";
-import Overlay from "ol/Overlay";
 import { optionsFromCapabilities } from "ol/source/WMTS";
 import { WMTSCapabilities } from "ol/format";
 import { Projection, addProjection } from "ol/proj";
 import { Vector } from "ol/layer";
 import { Point } from "ol/geom";
 import { Style, Circle, Fill, Stroke } from "ol/style";
-import { Select } from "ol/interaction";
-import { click } from "ol/events/condition";
-import { ZoomToExtent, defaults as defaultControls } from "ol/control";
-import { ZoomToLatest } from "./ZoomToLatestControl";
-import Popup from "./Popup";
 import "ol/ol.css";
 
-export default function MainMap(props) {
+export default function DetailMap(props) {
   const { standorte } = props;
   const [map, setMap] = useState();
   const [bohrungenLayer, setBohrungenLayer] = useState();
-  const [latestExtent, setLatestExtent] = useState();
-  const [doZoom, setDoZoom] = useState(true);
-  const [selectedFeature, setSelectedFeature] = useState();
-  const [popupVisible, setPopupVisible] = useState(false);
-  const [popup, setPopup] = useState();
 
   const mapElement = useRef();
-  const popupElement = useRef();
-
-  const handleZoomToLatestExtend = () => setDoZoom(true);
-  const resetZoom = () => setDoZoom(false);
-  const closePopup = () => setPopupVisible(false);
 
   const defaultStyle = new Style({
     image: new Circle({
@@ -51,26 +33,6 @@ export default function MainMap(props) {
     }),
   });
 
-  const selectedStyleFunction = (feature) => {
-    if (selectedFeature !== feature) {
-      setSelectedFeature(feature);
-      return new Style({
-        image: new Circle({
-          radius: 5,
-          stroke: new Stroke({
-            color: [233, 197, 19, 1],
-            width: 5,
-          }),
-          fill: new Fill({
-            color: [25, 118, 210, 0.3],
-          }),
-        }),
-      });
-    } else {
-      return defaultStyle;
-    }
-  };
-
   // Initialize map on first render
   useEffect(() => {
     // Add custom projection for LV95
@@ -81,19 +43,6 @@ export default function MainMap(props) {
     });
     addProjection(projection);
 
-    // Add controls
-    const htmlIcon = ReactDOMServer.renderToStaticMarkup(<AllOutIcon />);
-    const icon = new DOMParser().parseFromString(htmlIcon, "text/html").getElementsByTagName("svg")[0];
-    icon.setAttribute("style", "padding-right: 2px; padding-bottom: 2px");
-
-    const controls = defaultControls().extend([
-      new ZoomToLatest(handleZoomToLatestExtend),
-      new ZoomToExtent({
-        label: icon,
-        extent: projection.getExtent(),
-      }),
-    ]);
-
     // Create map and feature layer
     const bohrungenLayer = new Vector({
       zIndex: 1,
@@ -102,46 +51,18 @@ export default function MainMap(props) {
     });
 
     const initialMap = new Map({
-      controls: controls,
       target: mapElement.current,
       layers: [bohrungenLayer],
       view: new View({
         projection: projection,
-        maxZoom: 12,
+        maxZoom: 8,
         zoom: 2,
       }),
     });
 
-    // Add selection logic
-    const clearSelect = () => {
-      selectClick.getFeatures().clear();
-      setSelectedFeature(null);
-      popup.setPosition(null);
-    };
-
-    const selectClick = new Select({
-      condition: click,
-      style: selectedStyleFunction,
-    });
-    initialMap.addInteraction(selectClick);
-
-    // Clear selection on random click
-    initialMap.on("click", clearSelect);
-    initialMap.getView().on("change:resolution", resetZoom);
-
-    // Add info popup
-    let popup = new Overlay({
-      element: popupElement.current,
-      autoPan: true,
-      autoPanAnimation: { duration: 250 },
-    });
-
-    initialMap.addOverlay(popup);
-
     // Save map and vector layer references to state
     setMap(initialMap);
     setBohrungenLayer(bohrungenLayer);
-    setPopup(popup);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -213,7 +134,6 @@ export default function MainMap(props) {
       );
       if (bohrungen.length) {
         const currentExtent = bohrungenLayer.getSource().getExtent();
-        setLatestExtent(currentExtent);
         map.getView().fit(currentExtent, {
           padding: [30, 30, 30, 30],
         });
@@ -221,33 +141,9 @@ export default function MainMap(props) {
     }
   }, [standorte, bohrungenLayer, map]);
 
-  // Handle event from zoom to latest control
-  useEffect(() => {
-    if (map && doZoom && latestExtent) {
-      map.getView().fit(latestExtent, {
-        padding: [30, 30, 30, 30],
-      });
-    }
-  }, [doZoom, latestExtent, map]);
-
-  // Handle event from info button control
-  useEffect(() => {
-    if (selectedFeature) {
-      popup && popup.setPosition(selectedFeature.values_.geometry.flatCoordinates);
-      popup && popup.setPositioning("top-center");
-      setPopupVisible(true);
-    }
-  }, [map, popup, selectedFeature]);
-
   return (
     <div>
-      <div ref={mapElement} className="map-container"></div>
-      <Popup
-        closePopup={closePopup}
-        selectedFeature={selectedFeature}
-        popupVisible={popupVisible}
-        popupElement={popupElement}
-      ></Popup>
+      <div ref={mapElement} className="detail-map"></div>
     </div>
   );
 }

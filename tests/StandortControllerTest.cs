@@ -1,5 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using EWS.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,12 +12,16 @@ namespace EWS;
 public class StandortControllerTest
 {
     private EwsContext context;
+    private readonly string testStandortBezeichnung = "Blue Jeans Pelati";
 
     [TestInitialize]
     public void TestInitialize() => context = ContextFactory.CreateContext();
 
     [TestCleanup]
-    public void TestCleanup() => context.Dispose();
+    public void TestCleanup()
+    {
+        context.Dispose();
+    }
 
     [TestMethod]
     public async Task GetAllAsync()
@@ -182,5 +189,96 @@ public class StandortControllerTest
         Assert.AreEqual(new DateTime(2021, 3, 6).Date, standortToTest.AfuDatum!.Value.Date);
         Assert.AreEqual(new DateTime(2021, 8, 6).Date, standortToTest.Erstellungsdatum.Date);
         Assert.AreEqual(new DateTime(2021, 12, 9).Date, standortToTest.Mutationsdatum!.Value.Date);
+    }
+
+    [TestMethod]
+    public void AddMinimalStandortReturnsCreatedResult()
+    {
+        var newStandort = new Standort
+        {
+            Bezeichnung = testStandortBezeichnung,
+            UserErstellung = "Marky Mark Tribute Band Member",
+        };
+        var controller = new StandortController(context);
+        var response = controller.Create(newStandort);
+        Assert.IsInstanceOfType(response, typeof(CreatedAtActionResult));
+        controller.Delete(newStandort.Id);
+    }
+
+    [TestMethod]
+    public void AddFullStandortReturnsCreatedResult()
+    {
+        var newStandort = new Standort
+        {
+            Bohrungen = new List<Bohrung>(),
+            Bemerkung = "Mamady Doumbo",
+            Gemeinde = 4321,
+            GrundbuchNr = "hiKbSwsDBTXDyRf",
+            Bezeichnung = testStandortBezeichnung,
+            UserErstellung = "Marky Mark Tribute Band Member",
+            Erstellungsdatum = DateTime.UtcNow,
+        };
+        var controller = new StandortController(context);
+        var response = controller.Create(newStandort);
+        Assert.IsInstanceOfType(response, typeof(CreatedAtActionResult));
+        controller.Delete(newStandort.Id);
+    }
+
+    [TestMethod]
+    public void DeleteStandortReturnsOk()
+    {
+        context.Standorte.Add(new Standort
+        {
+            Bemerkung = "Ismaila Kida",
+            Gemeinde = 1234,
+            GrundbuchNr = "cKt6QheQdD7WDjJ",
+            Bezeichnung = testStandortBezeichnung,
+            UserErstellung = "Marky Mark Tribute Band Member",
+            Erstellungsdatum = DateTime.UtcNow,
+        });
+        context.SaveChanges();
+        Assert.AreEqual(6001, context.Standorte.Count());
+
+        var standortToDelete = context.Standorte.Single(s => s.Bezeichnung == testStandortBezeichnung);
+        var controller = new StandortController(context);
+        var response = controller.Delete(standortToDelete.Id);
+
+        Assert.IsInstanceOfType(response, typeof(OkResult));
+        Assert.AreEqual(6000, context.Standorte.Count());
+    }
+
+    [TestMethod]
+    public void TryDeleteInexistentStandortReturnsNotFound()
+    {
+        var controller = new StandortController(context);
+        var response = controller.Delete(1600433);
+
+        Assert.IsInstanceOfType(response, typeof(NotFoundResult));
+        Assert.AreEqual(6000, context.Standorte.Count());
+    }
+
+    [TestMethod]
+    public void EditStandortReturnsOk()
+    {
+        var controller = new StandortController(context);
+        var standortToEdit = context.Standorte.Single(s => s.Id == 31098);
+        var editedBezeichnung = "We love Pasta more than Pesto";
+        standortToEdit.Bezeichnung = editedBezeichnung;
+        var response = controller.Edit(standortToEdit);
+        Assert.AreEqual(context.Standorte.Single(s => s.Id == 31098).Bezeichnung, "We love Pasta more than Pesto");
+        Assert.IsInstanceOfType(response, typeof(OkResult));
+        Assert.AreEqual(6000, context.Standorte.Count());
+    }
+
+    [TestMethod]
+    public void TryEditInexistentStandortReturnsNotFound()
+    {
+        var inexistentStandort = new Standort
+        {
+            Id = 447375,
+        };
+        var controller = new StandortController(context);
+        var response = controller.Edit(inexistentStandort);
+        Assert.IsInstanceOfType(response, typeof(NotFoundResult));
     }
 }
