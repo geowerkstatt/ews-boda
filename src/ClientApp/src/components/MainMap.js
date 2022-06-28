@@ -1,79 +1,114 @@
 import React, { useState, useEffect, useRef } from "react";
+import ReactDOMServer from "react-dom/server";
+import AllOutIcon from "@mui/icons-material/AllOut";
 import Map from "ol/Map";
 import View from "ol/View";
 import TileLayer from "ol/layer/Tile";
-import TileWMS from "ol/source/TileWMS";
+import WMTS from "ol/source/WMTS";
 import VectorSource from "ol/source/Vector";
-import GeoJSON from "ol/format/GeoJSON";
 import Feature from "ol/Feature";
-import Projection from "ol/proj/Projection";
-import { addProjection } from "ol/proj";
+import Overlay from "ol/Overlay";
+import { optionsFromCapabilities } from "ol/source/WMTS";
+import { WMTSCapabilities } from "ol/format";
+import { Projection, addProjection } from "ol/proj";
 import { Vector } from "ol/layer";
 import { Point } from "ol/geom";
-import { Stroke, Style } from "ol/style";
+import { Style, Circle, Fill, Stroke } from "ol/style";
+import { Select } from "ol/interaction";
+import { click } from "ol/events/condition";
+import { ZoomToExtent, defaults as defaultControls } from "ol/control";
+import { ZoomToLatest } from "./ZoomToLatestControl";
+import { InfoButton } from "./InfoButtonControl";
+import Popup from "./Popup";
 import "ol/ol.css";
 
 export default function MainMap(props) {
   const { standorte } = props;
   const [map, setMap] = useState();
   const [bohrungenLayer, setBohrungenLayer] = useState();
-  const [kantonsgrenze, setKantonsgrenze] = useState();
-  const [kantonsgrenzeLayer, setKantonsgrenzeLayer] = useState();
+  const [latestExtent, setLatestExtent] = useState();
+  const [doZoom, setDoZoom] = useState(true);
+  const [selectedFeature, setSelectedFeature] = useState();
+  const [showInfo, setShowInfo] = useState(false);
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [popup, setPopup] = useState();
 
   const mapElement = useRef();
-  const mapRef = useRef();
-  mapRef.current = map;
-  mapElement.current = map;
+  const popupElement = useRef();
 
-  // Get Kantonsgrenze
-  useEffect(() => {
-    fetch(
-      "https://api3.geo.admin.ch/rest/services/api/MapServer/ch.swisstopo.swissboundaries3d-kanton-flaeche.fill/11?geometryFormat=geojson&sr=2056"
-    )
-      .then((response) => response.json())
-      .then((fetchedFeatures) => {
-        setKantonsgrenze([new GeoJSON().readFeature(fetchedFeatures.feature)]);
+  const handleZoomToLatestExtend = () => setDoZoom(true);
+  const resetZoom = () => setDoZoom(false);
+  const handleInfoClick = () => setShowInfo(true);
+  const closePopup = () => setPopupVisible(false);
+
+  const defaultStyle = new Style({
+    image: new Circle({
+      radius: 4,
+      stroke: new Stroke({
+        color: [25, 118, 210, 1],
+        width: 2,
+      }),
+      fill: new Fill({
+        color: [25, 118, 210, 0.3],
+      }),
+    }),
+  });
+
+  const selectedStyleFunction = (feature) => {
+    if (selectedFeature !== feature) {
+      setSelectedFeature(feature);
+      return new Style({
+        image: new Circle({
+          radius: 5,
+          stroke: new Stroke({
+            color: [233, 197, 19, 1],
+            width: 5,
+          }),
+          fill: new Fill({
+            color: [25, 118, 210, 0.3],
+          }),
+        }),
       });
-  }, []);
+    } else {
+      return defaultStyle;
+    }
+  };
 
   // Initialize map on first render
   useEffect(() => {
     // Add custom projection for LV95
     const projection = new Projection({
       code: "EPSG:2056",
-      extent: [2485071.58, 1075346.31, 2828515.82, 1299941.79],
+      extent: [2572670, 1211017, 2664529, 1263980],
       units: "m",
     });
     addProjection(projection);
 
-    const landeskarte = new TileLayer({
-      source: new TileWMS({
-        url: "https://wms.geo.admin.ch/?VERSION=1.3.0&lang=de",
-        params: { LAYERS: "ch.swisstopo.pixelkarte-grau", TILED: true },
-        serverType: "mapserver",
-        projection: projection,
-        crossOrigin: "anonymous",
-      }),
-    });
+    //Add controls
+    const htmlIcon = ReactDOMServer.renderToStaticMarkup(<AllOutIcon />);
+    const icon = new DOMParser().parseFromString(htmlIcon, "text/html").getElementsByTagName("svg")[0];
+    icon.setAttribute("style", "padding-right: 2px; padding-bottom: 2px");
 
+    const controls = defaultControls().extend([
+      new ZoomToLatest(handleZoomToLatestExtend),
+      new InfoButton(handleInfoClick),
+      new ZoomToExtent({
+        label: icon,
+        extent: projection.getExtent(),
+      }),
+    ]);
+
+    // Create map and feature layer
     const bohrungenLayer = new Vector({
+      zIndex: 1,
       source: new VectorSource(),
+      style: defaultStyle,
     });
 
-    const kantonsgrenzeLayer = new Vector({
-      source: new VectorSource(),
-      style: new Style({
-        stroke: new Stroke({
-          color: "#8b0000",
-          width: 3,
-        }),
-      }),
-    });
-
-    // Create map and add layers
     const initialMap = new Map({
+      controls: controls,
       target: mapElement.current,
-      layers: [landeskarte, bohrungenLayer, kantonsgrenzeLayer],
+      layers: [bohrungenLayer],
       view: new View({
         projection: projection,
         maxZoom: 14,
@@ -81,13 +116,62 @@ export default function MainMap(props) {
       }),
     });
 
+    //Add selection logic
+    const clearSelect = () => {
+      selectClick.getFeatures().clear();
+      setSelectedFeature(null);
+      popup.setPosition(null);
+    };
+
+    const selectClick = new Select({
+      condition: click,
+      style: selectedStyleFunction,
+    });
+    initialMap.addInteraction(selectClick);
+
+    // Clear selection on random click
+    initialMap.on("click", clearSelect);
+    initialMap.getView().on("change:resolution", resetZoom);
+
+    // Add info popup
+    let popup = new Overlay({
+      element: popupElement.current,
+      autoPan: true,
+      autoPanAnimation: { duration: 250 },
+    });
+
+    initialMap.addOverlay(popup);
+
     // Save map and vector layer references to state
     setMap(initialMap);
     setBohrungenLayer(bohrungenLayer);
-    setKantonsgrenzeLayer(kantonsgrenzeLayer);
+    setPopup(popup);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Set Bohrungen to layer and center map around Bohrungen
+  // Handle asynchronous calls to layer sources
+  // Baselayer
+  useEffect(() => {
+    const parser = new WMTSCapabilities();
+    const url = "https://geo.so.ch/api/wmts/1.0.0/WMTSCapabilities.xml";
+    fetch(url)
+      .then(function (response) {
+        return response.text();
+      })
+      .then(function (text) {
+        const result = parser.read(text);
+        const options = optionsFromCapabilities(result, {
+          layer: "ch.so.agi.hintergrundkarte_sw",
+        });
+        const landeskarte = new TileLayer({
+          source: new WMTS(options),
+          zIndex: 0,
+        });
+        map && map.addLayer(landeskarte);
+      });
+  }, [map]);
+
+  // BohrungenLayer
   useEffect(() => {
     if (standorte && bohrungenLayer) {
       let parsedFeatures;
@@ -97,8 +181,25 @@ export default function MainMap(props) {
           (f) =>
             new Feature({
               geometry: new Point([f.geometrie.coordinates[0], f.geometrie.coordinates[1]]),
-              name: f.bezeichnung,
-              id: f.id,
+              Id: f.id,
+              Ablenkung: f.ablenkung,
+              AblenkungId: f.ablenkungId,
+              Bemerkung: f.bemerkung,
+              Bezeichnung: f.bezeichnung,
+              Bohrprofile: f.bohrprofile,
+              Datum: f.datuem,
+              DurchmesserBohrloch: f.durchmesserBohrloch,
+              Erstellungsdatum: f.erstellungsdatum,
+              hAblenkung: f.hAblenkung,
+              hQualitaet: f.hQualitaet,
+              hQualitaetId: f.hQualitaetId,
+              Mutationsdatum: f.mutationsdatum,
+              Qualität: f.qualitaet,
+              QualitaetBemerkung: f.qualitaetBemerkung,
+              QuelleRef: f.quelleRef,
+              StandortId: f.standortId,
+              UserErstellung: f.userErstellung,
+              UserMutation: f.userMutation,
             })
         );
       } else {
@@ -110,27 +211,52 @@ export default function MainMap(props) {
         })
       );
       if (bohrungen.length) {
-        map.getView().fit(bohrungenLayer.getSource().getExtent(), {
+        const currentExtent = bohrungenLayer.getSource().getExtent();
+        setLatestExtent(currentExtent);
+        map.getView().fit(currentExtent, {
           padding: [30, 30, 30, 30],
         });
       }
     }
   }, [standorte, bohrungenLayer, map]);
 
-  // Set Kantonsgrenze to layer
+  // Handle event from zoom to latest control
   useEffect(() => {
-    if (kantonsgrenze?.length) {
-      kantonsgrenzeLayer.setSource(
-        new VectorSource({
-          features: kantonsgrenze,
-        })
-      );
+    if (map && doZoom && latestExtent) {
+      map.getView().fit(latestExtent, {
+        padding: [30, 30, 30, 30],
+      });
     }
-  }, [kantonsgrenzeLayer, kantonsgrenze]);
+  }, [doZoom, latestExtent, map]);
+
+  // Handle event from info button control
+  useEffect(() => {
+    if (showInfo) {
+      if (selectedFeature) {
+        popup && popup.setPosition(selectedFeature.values_.geometry.flatCoordinates);
+        popup && popup.setPositioning("top-center");
+        setPopupVisible(true);
+      } else {
+        popup && popup.setPosition(map.getView().getCenter());
+        popup && popup.setPositioning("top-center");
+        setPopupVisible(true);
+        setTimeout(() => {
+          setPopupVisible(false);
+        }, 3000);
+      }
+    }
+    setShowInfo(false);
+  }, [map, popup, selectedFeature, showInfo]);
 
   return (
     <div>
       <div ref={mapElement} className="map-container"></div>
+      <Popup
+        closePopup={closePopup}
+        selectedFeature={selectedFeature}
+        popupVisible={popupVisible}
+        popupElement={popupElement}
+      ></Popup>
     </div>
   );
 }

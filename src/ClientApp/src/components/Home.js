@@ -15,7 +15,7 @@ export function Home() {
   const [bezeichnung, setBezeichnung] = useState("");
   const [erstellungsDatum, setErstellungsDatum] = useState(null);
   const [mutationsDatum, setMutationsDatum] = useState(null);
-  const [hasResults, setHasResults] = useState(false);
+  const [hasFilters, setHasFilters] = useState(false);
 
   const search = (event) => {
     event.preventDefault();
@@ -27,10 +27,9 @@ export function Home() {
     fetch("/standort" + query)
       .then((response) => response.json())
       .then((fetchedFeatures) => {
-        setHasResults(
-          fetchedFeatures.length > 0 &&
-            // at least one filter paramter is set
-            (gemeindenummer || gbnummer || bezeichnung || erstellungsDatum || mutationsDatum)
+        setHasFilters(
+          // at least one filter paramter is set
+          gemeindenummer || gbnummer || bezeichnung || erstellungsDatum || mutationsDatum
         );
         setStandorte(fetchedFeatures);
       });
@@ -42,7 +41,6 @@ export function Home() {
     fetch(fetchurl)
       .then((response) => response.json())
       .then((fetchedFeatures) => {
-        setStandorte(fetchedFeatures);
         setStandorte(fetchedFeatures);
       });
   }, []);
@@ -94,12 +92,12 @@ export function Home() {
             </Paper>
           </Grid>
           <Grid item xs={12}>
-            {hasResults && standorte.lenght !== 0 && (
+            {hasFilters && standorte.length > 0 && (
               <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
                 <SearchResults standorte={standorte} />
               </Paper>
             )}
-            {standorte.length === 0 && (
+            {hasFilters && standorte.length === 0 && (
               <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
                 <div>Keine Resultate gefunden</div>
               </Paper>
