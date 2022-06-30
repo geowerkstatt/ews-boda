@@ -84,7 +84,7 @@ export default function MainMap(props) {
     });
     addProjection(projection);
 
-    //Add controls
+    // Add controls
     const htmlIcon = ReactDOMServer.renderToStaticMarkup(<AllOutIcon />);
     const icon = new DOMParser().parseFromString(htmlIcon, "text/html").getElementsByTagName("svg")[0];
     icon.setAttribute("style", "padding-right: 2px; padding-bottom: 2px");
@@ -116,7 +116,7 @@ export default function MainMap(props) {
       }),
     });
 
-    //Add selection logic
+    // Add selection logic
     const clearSelect = () => {
       selectClick.getFeatures().clear();
       setSelectedFeature(null);
