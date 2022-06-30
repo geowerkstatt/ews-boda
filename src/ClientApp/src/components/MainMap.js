@@ -182,24 +182,8 @@ export default function MainMap(props) {
             new Feature({
               geometry: new Point([f.geometrie.coordinates[0], f.geometrie.coordinates[1]]),
               Id: f.id,
-              Ablenkung: f.ablenkung,
-              AblenkungId: f.ablenkungId,
-              Bemerkung: f.bemerkung,
               Bezeichnung: f.bezeichnung,
-              Bohrprofile: f.bohrprofile,
-              Datum: f.datuem,
-              DurchmesserBohrloch: f.durchmesserBohrloch,
-              Erstellungsdatum: f.erstellungsdatum,
-              hAblenkung: f.hAblenkung,
-              hQualitaet: f.hQualitaet,
-              hQualitaetId: f.hQualitaetId,
-              Mutationsdatum: f.mutationsdatum,
-              Qualität: f.qualitaet,
-              QualitaetBemerkung: f.qualitaetBemerkung,
-              QuelleRef: f.quelleRef,
-              StandortId: f.standortId,
-              UserErstellung: f.userErstellung,
-              UserMutation: f.userMutation,
+              "Standort Id": f.standortId,
             })
         );
       } else {

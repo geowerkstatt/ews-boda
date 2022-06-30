@@ -9,7 +9,7 @@ import Alert from "@mui/material/Alert";
 function Popup(props) {
   const { popupElement, closePopup, selectedFeature, popupVisible } = props;
 
-  const relevantAttributes = ["Bezeichnung", "Bemerkung"];
+  const relevantAttributes = ["Bezeichnung", "Standort Id"];
   const filteredFeature =
     selectedFeature?.values_ &&
     Object.keys(selectedFeature?.values_)
@@ -26,7 +26,7 @@ function Popup(props) {
         <Card sx={{ minWidth: 275 }}>
           <CardContent>
             <Typography variant="h6" gutterBottom>
-              {selectedFeature.values_.Bezeichnung}
+              Bohrung Id: {selectedFeature.values_.Id}
             </Typography>
             {Object.keys(filteredFeature).map((key, keyIndex) => (
               <Typography color="text.secondary" key={keyIndex}>
