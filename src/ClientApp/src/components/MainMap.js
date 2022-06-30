@@ -18,7 +18,6 @@ import { Select } from "ol/interaction";
 import { click } from "ol/events/condition";
 import { ZoomToExtent, defaults as defaultControls } from "ol/control";
 import { ZoomToLatest } from "./ZoomToLatestControl";
-import { InfoButton } from "./InfoButtonControl";
 import Popup from "./Popup";
 import "ol/ol.css";
 
@@ -29,7 +28,6 @@ export default function MainMap(props) {
   const [latestExtent, setLatestExtent] = useState();
   const [doZoom, setDoZoom] = useState(true);
   const [selectedFeature, setSelectedFeature] = useState();
-  const [showInfo, setShowInfo] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
   const [popup, setPopup] = useState();
 
@@ -38,7 +36,6 @@ export default function MainMap(props) {
 
   const handleZoomToLatestExtend = () => setDoZoom(true);
   const resetZoom = () => setDoZoom(false);
-  const handleInfoClick = () => setShowInfo(true);
   const closePopup = () => setPopupVisible(false);
 
   const defaultStyle = new Style({
@@ -91,7 +88,6 @@ export default function MainMap(props) {
 
     const controls = defaultControls().extend([
       new ZoomToLatest(handleZoomToLatestExtend),
-      new InfoButton(handleInfoClick),
       new ZoomToExtent({
         label: icon,
         extent: projection.getExtent(),
@@ -215,22 +211,12 @@ export default function MainMap(props) {
 
   // Handle event from info button control
   useEffect(() => {
-    if (showInfo) {
-      if (selectedFeature) {
-        popup && popup.setPosition(selectedFeature.values_.geometry.flatCoordinates);
-        popup && popup.setPositioning("top-center");
-        setPopupVisible(true);
-      } else {
-        popup && popup.setPosition(map.getView().getCenter());
-        popup && popup.setPositioning("top-center");
-        setPopupVisible(true);
-        setTimeout(() => {
-          setPopupVisible(false);
-        }, 3000);
-      }
+    if (selectedFeature) {
+      popup && popup.setPosition(selectedFeature.values_.geometry.flatCoordinates);
+      popup && popup.setPositioning("top-center");
+      setPopupVisible(true);
     }
-    setShowInfo(false);
-  }, [map, popup, selectedFeature, showInfo]);
+  }, [map, popup, selectedFeature]);
 
   return (
     <div>
