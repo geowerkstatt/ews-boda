@@ -16,7 +16,7 @@ export default function SearchResults(props) {
         <TableHead>
           <TableRow>
             <TableCell>Gemeinde</TableCell>
-            <TableCell>GB-Nummer</TableCell>
+            <TableCell>Grundbuchnummer</TableCell>
             <TableCell>Bezeichnung</TableCell>
             <TableCell>Anzahl Bohrungen</TableCell>
           </TableRow>

@@ -50,7 +50,7 @@ export default function Search(props) {
         type="string"
         name="gbnummer"
         variant="standard"
-        label="GB-Nummer"
+        label="Grundbuchnummer"
         sx={{ minWidth: 100 }}
       />
       <TextField
