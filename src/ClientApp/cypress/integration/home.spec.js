@@ -45,4 +45,9 @@ describe("Home page tests", () => {
     cy.get("div[name=home-container]").should("contain", "Suchresultate");
     cy.get("tbody").children().should("have.length", 1);
   });
+
+  it("Show map", function () {
+    cy.visit("/");
+    cy.get("div[class=map-container]").should("be.visible");
+  });
 });
