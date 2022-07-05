@@ -29,5 +29,17 @@ namespace EWS
             modelBuilder.HasPostgresExtension("postgis");
             base.OnModelCreating(modelBuilder);
         }
+
+        public override int SaveChanges()
+        {
+            ChangeTracker.UpdateUsersAndDatesOnDateUserSettable();
+            return base.SaveChanges();
+        }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            ChangeTracker.UpdateUsersAndDatesOnDateUserSettable();
+            return await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        }
     }
 }

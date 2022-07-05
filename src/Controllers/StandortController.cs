@@ -39,7 +39,7 @@ public class StandortController : ControllerBase
 
         if (erstellungsdatum != null)
         {
-            standorte = standorte.Where(s => s.Erstellungsdatum.Date == TimeZoneInfo.ConvertTimeToUtc(erstellungsdatum.Value, ut).Date);
+            standorte = standorte.Where(s => s.Erstellungsdatum != null && s.Erstellungsdatum!.Value.Date == TimeZoneInfo.ConvertTimeToUtc(erstellungsdatum.Value, ut).Date);
         }
 
         if (mutationsdatum != null)
@@ -73,8 +73,6 @@ public class StandortController : ControllerBase
             standortToEdit.Gemeinde = standort.Gemeinde;
             standortToEdit.GrundbuchNr = standort.GrundbuchNr;
             standortToEdit.Bohrungen = standort.Bohrungen;
-            standortToEdit.Mutationsdatum = DateTime.UtcNow;
-            standortToEdit.UserMutation = standort.UserMutation;
             context.SaveChanges();
             return Ok();
         }

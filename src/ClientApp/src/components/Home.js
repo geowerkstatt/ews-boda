@@ -75,7 +75,6 @@ export function Home() {
   }
 
   async function addStandort(data) {
-    data.erstellungsdatum = new Date().toISOString();
     data.bohrungen = [];
     const response = await fetch("/standort", {
       method: "POST",
@@ -216,7 +215,7 @@ export function Home() {
             )}
             {hasFilters && standorte.length === 0 && (
               <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                <div>Keine passenden Standorte gefunden</div>
+                <div>Keine passenden Standorte gefunden.</div>
               </Paper>
             )}
           </Grid>

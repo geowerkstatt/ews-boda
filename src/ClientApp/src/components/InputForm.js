@@ -125,9 +125,7 @@ export default function InputForm(props) {
               )}
             />
             <TextField
-              defaultValue={
-                standort ? new Date(standort?.erstellungsdatum).toLocaleDateString() : new Date().toLocaleDateString()
-              }
+              defaultValue={new Date(standort?.erstellungsdatum).toLocaleDateString()}
               InputProps={{
                 readOnly: true,
               }}
@@ -157,11 +155,7 @@ export default function InputForm(props) {
             />
             <TextField
               name="mutationsdatum"
-              defaultValue={
-                standort?.mutationsdatum
-                  ? new Date(standort?.mutationsdatum).toLocaleDateString()
-                  : new Date().toLocaleDateString()
-              }
+              defaultValue={standort?.mutationsdatum ? new Date(standort?.mutationsdatum).toLocaleDateString() : null}
               InputProps={{
                 readOnly: true,
               }}
@@ -183,7 +177,7 @@ export default function InputForm(props) {
                     readOnly: true,
                   }}
                   margin="normal"
-                  label="Afu Freigabe erfolgt durch"
+                  label="AfU Freigabe erfolgt durch"
                   type="text"
                   variant="standard"
                 />
@@ -191,13 +185,13 @@ export default function InputForm(props) {
             />
             <TextField
               name="afuDatum"
-              defaultValue={new Date(standort?.afuDatum).toLocaleDateString()}
+              defaultValue={standort?.afuDatum ? new Date(standort?.afuDatum).toLocaleDateString() : null}
               InputProps={{
                 readOnly: true,
               }}
               sx={{ width: "47%" }}
               margin="normal"
-              label="Afu Freigabe erfolgt am"
+              label="AfU Freigabe erfolgt am"
               type="text"
               variant="standard"
             />
