@@ -16,6 +16,7 @@ import ListItemText from "@mui/material/ListItemText";
 import HomeIcon from "@mui/icons-material/Home";
 import GroupIcon from "@mui/icons-material/Group";
 import InfoIcon from "@mui/icons-material/Info";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { Footer } from "./Footer";
 
 import { AppBar } from "./AppBar";
@@ -93,6 +94,12 @@ export function Layout(props) {
                 <InfoIcon />
               </ListItemIcon>
               <ListItemText primary="Hilfe" />
+            </ListItemButton>
+            <ListItemButton component="a" target="_blank" href="/export">
+              <ListItemIcon>
+                <FileDownloadIcon />
+              </ListItemIcon>
+              <ListItemText primary="Daten exportieren" />
             </ListItemButton>
           </List>
         </Drawer>
