@@ -68,11 +68,7 @@ public class StandortController : ControllerBase
         }
         else
         {
-            standortToEdit.Bezeichnung = standort.Bezeichnung;
-            standortToEdit.Bemerkung = standort.Bemerkung;
-            standortToEdit.Gemeinde = standort.Gemeinde;
-            standortToEdit.GrundbuchNr = standort.GrundbuchNr;
-            standortToEdit.Bohrungen = standort.Bohrungen;
+            context.Entry(standortToEdit).CurrentValues.SetValues(standort);
             context.SaveChanges();
             return Ok();
         }
