@@ -18,7 +18,7 @@ public class StandortController : ControllerBase
     public async Task<IEnumerable<Standort>> GetAsync(
          int? gemeindenummer = null, string? gbnummer = null, string? bezeichnung = null, DateTime? erstellungsdatum = null, DateTime? mutationsdatum = null)
     {
-        var standorte = context.Standorte.AsNoTracking().Include(s => s.Bohrungen).ThenInclude(p => p.Bohrprofile).AsQueryable();
+        var standorte = context.Standorte.Include(s => s.Bohrungen).ThenInclude(p => p.Bohrprofile).AsQueryable();
         if (gemeindenummer != null)
         {
             standorte = standorte.Where(s => s.Gemeinde == gemeindenummer);
@@ -64,7 +64,7 @@ public class StandortController : ControllerBase
         var standortToEdit = context.Standorte.SingleOrDefault(x => x.Id == standort.Id);
         if (standortToEdit == null)
         {
-            return new NotFoundResult();
+            return NotFound();
         }
         else
         {
@@ -84,7 +84,7 @@ public class StandortController : ControllerBase
         var standortToDelete = context.Standorte.SingleOrDefault(x => x.Id == id);
         if (standortToDelete == null)
         {
-            return new NotFoundResult();
+            return NotFound();
         }
         else
         {
