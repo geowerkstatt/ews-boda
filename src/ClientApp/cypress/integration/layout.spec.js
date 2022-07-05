@@ -9,10 +9,6 @@ describe("General app tests", () => {
 
     cy.visit("/");
     cy.get('a[href*="/export"]').click();
-    cy.readFile("cypress\\Downloads\\data_export.csv", "utf8")
-      .should("exist")
-      .then((content) => {
-        content.should("have.text", "Angelo Kägi");
-      });
+    cy.readFile("cypress\\Downloads\\data_export.csv", "utf8").should("exist").should("contains", "Angelo Kägi");
   });
 });
