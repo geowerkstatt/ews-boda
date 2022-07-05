@@ -30,6 +30,7 @@ public class ExportController : ControllerBase
             "COPY (SELECT * FROM bohrung.data_export) TO STDOUT WITH DELIMITER ',' CSV HEADER;",
             cancellationToken).ConfigureAwait(false);
 
+        Response.Headers.ContentDisposition = "attachment; filename=data_export.csv";
         return Content(await reader.ReadToEndAsync().ConfigureAwait(false), "text/csv", Encoding.UTF8);
     }
 }
