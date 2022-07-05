@@ -24,9 +24,12 @@ else
 
     // Only seed if database is empty
     if (!context.Standorte.Any()) context.SeedData();
+
+    // Use HTTPS redirection in development environment only due to unwanted redirects
+    // with jwilder/nginx-proxy reverse proxy in production mode.
+    app.UseHttpsRedirection();
 }
 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
