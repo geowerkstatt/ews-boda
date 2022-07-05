@@ -12,7 +12,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import Title from "./Title";
 import Tooltip from "@mui/material/Tooltip";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 export default function SearchResults(props) {
   const { standorte, openEditForm, openAddForm, onDelete } = props;
@@ -37,13 +36,7 @@ export default function SearchResults(props) {
             <TableCell>Grundbuchnummer</TableCell>
             <TableCell>Bezeichnung</TableCell>
             <TableCell>Anzahl Bohrungen</TableCell>
-            <TableCell>
-              <Tooltip title="Standort hinzufügen">
-                <IconButton color="primary" onClick={openAddForm}>
-                  <AddCircleIcon />
-                </IconButton>
-              </Tooltip>
-            </TableCell>
+            <TableCell></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -75,7 +68,6 @@ export default function SearchResults(props) {
               rowsPerPageOptions={[5, 10, 15, 20, 50]}
               page={page}
               count={standorte.length}
-              component="div"
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
               rowsPerPage={rowsPerPage}

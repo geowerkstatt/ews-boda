@@ -39,7 +39,7 @@ export default function Search(props) {
       onSubmit={search}
       sx={{
         "& .MuiTextField-root": { m: 1, width: "100%", pr: "15px" },
-        minHeight: "608px",
+        minHeight: "500px",
         display: "flex",
         flexDirection: "column",
       }}

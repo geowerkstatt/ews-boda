@@ -10,6 +10,10 @@ import Search from "./Search";
 import MainMap from "./MainMap";
 import Dialog from "@mui/material/Dialog";
 import Alert from "@mui/material/Alert";
+import Tooltip from "@mui/material/Tooltip";
+import Button from "@mui/material/Button";
+import AddIcon from "@mui/icons-material/Add";
+
 import ConfirmationDialog from "./ConfirmationDialog";
 
 export function Home() {
@@ -144,12 +148,27 @@ export function Home() {
       <Toolbar />
       <Container name="home-container" maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={12} md={4} lg={3}>
+          <Grid sx={{ display: "flex", flexDirection: "column" }} item xs={12} sm={12} md={4} lg={3}>
+            <Tooltip title="Standort hinzufügen">
+              <Button
+                sx={{
+                  mb: 2,
+                  mt: 3,
+                }}
+                variant="contained"
+                onClick={openAddForm}
+              >
+                Neuen Standort erstellen
+                <AddIcon
+                  sx={{
+                    ml: 1,
+                  }}
+                />
+              </Button>
+            </Tooltip>
             <Paper
               sx={{
                 p: 2,
-                display: "flex",
-                flexDirection: "column",
               }}
             >
               <Search
@@ -166,7 +185,8 @@ export function Home() {
               ></Search>
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={10} md={8} lg={9}>
+
+          <Grid item xs={12} sm={12} md={8} lg={9}>
             <Paper
               sx={{
                 p: 2,
@@ -201,7 +221,7 @@ export function Home() {
             )}
           </Grid>
         </Grid>
-        <Dialog open={openForm} onClose={() => setOpenForm(false)} fullWidth={true} maxWidth="sm">
+        <Dialog open={openForm} onClose={() => setOpenForm(false)} fullWidth={true} maxWidth="md">
           <InputForm
             handleClose={() => setOpenForm(false)}
             editStandort={editStandort}
