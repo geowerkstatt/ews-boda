@@ -11,8 +11,8 @@ namespace EWS;
 [TestClass]
 public class StandortControllerTest
 {
-    private EwsContext context;
     private readonly string testStandortBezeichnung = "Blue Jeans Pelati";
+    private EwsContext context;
 
     [TestInitialize]
     public void TestInitialize() => context = ContextFactory.CreateContext();
