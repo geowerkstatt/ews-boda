@@ -1,5 +1,6 @@
 ﻿using EWS.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,17 @@ namespace EWS;
 [TestClass]
 public class StandortControllerTest
 {
-    private readonly string testStandortBezeichnung = "Blue Jeans Pelati";
+    private const string testStandortBezeichnung = "Blue Jeans Pelati";
     private EwsContext context;
+    private StandortController controller;
 
     [TestInitialize]
-    public void TestInitialize() => context = ContextFactory.CreateContext();
+    public void TestInitialize()
+    {
+
+        context = ContextFactory.CreateContext();
+        controller = new StandortController(context);
+    }
 
     [TestCleanup]
     public void TestCleanup()
@@ -26,7 +33,6 @@ public class StandortControllerTest
     [TestMethod]
     public async Task GetAllAsync()
     {
-        var controller = new StandortController(context);
         var standorte = await controller.GetAsync().ConfigureAwait(false);
 
         Assert.AreEqual(6000, standorte.Count());
@@ -51,7 +57,6 @@ public class StandortControllerTest
     [TestMethod]
     public async Task GetByStandortGrundbuchnummer()
     {
-        var controller = new StandortController(context);
         var standorte = await controller.GetAsync(null, "vkflnsvlswy1nfbg4kucmk1bwzaqt7c72mba55vu").ConfigureAwait(false);
 
         Assert.AreEqual(1, standorte.Count());
@@ -74,7 +79,6 @@ public class StandortControllerTest
     [TestMethod]
     public async Task GetByStandortBezeichnung()
     {
-        var controller = new StandortController(context);
         var standorte = await controller.GetAsync(null, null, "Unbranded Fresh Fish").ConfigureAwait(false);
 
         Assert.AreEqual(2, standorte.Count());
@@ -98,7 +102,6 @@ public class StandortControllerTest
     [TestMethod]
     public async Task GetByErstellungsdatum()
     {
-        var controller = new StandortController(context);
         var standorte = await controller.GetAsync(null, null, null, new DateTime(2021, 11, 15)).ConfigureAwait(false);
 
         Assert.AreEqual(18, standorte.Count());
@@ -122,7 +125,6 @@ public class StandortControllerTest
     [TestMethod]
     public async Task GetByMutationsdatum()
     {
-        var controller = new StandortController(context);
         var standorte = await controller.GetAsync(null, null, null, new DateTime(2021, 11, 3)).ConfigureAwait(false);
 
         Assert.AreEqual(17, standorte.Count());
@@ -146,7 +148,6 @@ public class StandortControllerTest
     [TestMethod]
     public async Task GetBySeveralParameters()
     {
-        var controller = new StandortController(context);
         var standorte = await controller.GetAsync(2475, "wj7qafzqpk7xh0zkt6px3ujisxqqwxbloxeiljz3", "Refined Concrete Tuna").ConfigureAwait(false);
 
         Assert.AreEqual(1, standorte.Count());
@@ -169,7 +170,6 @@ public class StandortControllerTest
     [TestMethod]
     public async Task GetWithEmptyStrings()
     {
-        var controller = new StandortController(context);
         var standorte = await controller.GetAsync(null, "", "", null, null).ConfigureAwait(false);
 
         Assert.AreEqual(6000, standorte.Count());
@@ -192,6 +192,16 @@ public class StandortControllerTest
     }
 
     [TestMethod]
+    public void AddInvalidStandortThrowsException()
+    {
+        var newStandort = new Standort
+        {
+            Bemerkung = "Various green toads blocking the road.",
+        };
+        Assert.ThrowsException<DbUpdateException>(() => controller.Create(newStandort));
+    }
+
+    [TestMethod]
     public void AddMinimalStandortReturnsCreatedResult()
     {
         var newStandort = new Standort
@@ -199,7 +209,6 @@ public class StandortControllerTest
             Bezeichnung = testStandortBezeichnung,
             UserErstellung = "Marky Mark Tribute Band Member",
         };
-        var controller = new StandortController(context);
         var response = controller.Create(newStandort);
         Assert.IsInstanceOfType(response, typeof(CreatedAtActionResult));
         controller.Delete(newStandort.Id);
@@ -216,7 +225,6 @@ public class StandortControllerTest
             GrundbuchNr = "hiKbSwsDBTXDyRf",
             Bezeichnung = testStandortBezeichnung,
         };
-        var controller = new StandortController(context);
         var response = controller.Create(newStandort);
         Assert.IsInstanceOfType(response, typeof(CreatedAtActionResult));
         controller.Delete(newStandort.Id);
@@ -236,7 +244,6 @@ public class StandortControllerTest
         Assert.AreEqual(6001, context.Standorte.Count());
 
         var standortToDelete = context.Standorte.Single(s => s.Bezeichnung == testStandortBezeichnung);
-        var controller = new StandortController(context);
         var response = controller.Delete(standortToDelete.Id);
 
         Assert.IsInstanceOfType(response, typeof(OkResult));
@@ -256,7 +263,6 @@ public class StandortControllerTest
     [TestMethod]
     public void EditStandortReturnsOk()
     {
-        var controller = new StandortController(context);
         var standortToEdit = context.Standorte.Single(s => s.Id == 31098);
         var editedBezeichnung = "We love Pasta more than Pesto";
         standortToEdit.Bezeichnung = editedBezeichnung;
@@ -267,13 +273,20 @@ public class StandortControllerTest
     }
 
     [TestMethod]
+    public void SubmitInvalidEditThrowsException()
+    {
+        var standortToEdit = context.Standorte.Single(s => s.Id == 31099);
+        standortToEdit.Bezeichnung = null;
+        Assert.ThrowsException<DbUpdateException>(() => controller.Edit(standortToEdit));
+    }
+
+    [TestMethod]
     public void TryEditInexistentStandortReturnsNotFound()
     {
         var inexistentStandort = new Standort
         {
             Id = 447375,
         };
-        var controller = new StandortController(context);
         var response = controller.Edit(inexistentStandort);
         Assert.IsInstanceOfType(response, typeof(NotFoundResult));
     }
