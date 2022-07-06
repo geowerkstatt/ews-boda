@@ -122,7 +122,7 @@ namespace EWS
                .RuleFor(o => o.HQualitaetId, f => 3)
                .RuleFor(o => o.HQualitaet, _ => default!)
                .RuleFor(o => o.HAblenkung, f => 9)
-               .RuleFor(o => o.Geometrie, f => new Point(new Coordinate(f.Random.Int(2592400, 2644800), f.Random.Int(1213500, 1261500)))) // Geometries in bounding box of Kanton Solothurn
+               .RuleFor(o => o.Geometrie, f => f.PickRandomParam(new Point(new Coordinate(f.Random.Int(2592400, 2644800), f.Random.Int(1213500, 1261500)))).OrNull(f, .05f)) // Geometries in bounding box of Kanton Solothurn
                .RuleFor(o => o.StandortId, f => f.PickRandom(standorteRange))
                .RuleFor(o => o.Bohrprofile, _ => default!);
 

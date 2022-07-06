@@ -173,15 +173,17 @@ export default function MainMap(props) {
       let parsedFeatures;
       let bohrungen = standorte?.flatMap((s) => s.bohrungen);
       if (bohrungen.length) {
-        parsedFeatures = bohrungen.map(
-          (f) =>
-            new Feature({
-              geometry: new Point([f.geometrie.coordinates[0], f.geometrie.coordinates[1]]),
-              Id: f.id,
-              Bezeichnung: f.bezeichnung,
-              "Standort Id": f.standortId,
-            })
-        );
+        parsedFeatures = bohrungen
+          .filter((f) => f.geometrie)
+          .map(
+            (f) =>
+              new Feature({
+                geometry: new Point([f.geometrie.coordinates[0], f.geometrie.coordinates[1]]),
+                Id: f.id,
+                Bezeichnung: f.bezeichnung,
+                "Standort Id": f.standortId,
+              })
+          );
       } else {
         parsedFeatures = [];
       }
