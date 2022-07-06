@@ -45,7 +45,7 @@ RUN \
   DEBIAN_FRONTEND=noninteractive && \
   mkdir -p /usr/share/man/man1 /usr/share/man/man2 && \
   apt-get update && \
-  apt-get upgrade && \
+  apt-get upgrade -y && \
   apt-get install -y curl && \
   rm -rf /var/lib/apt/lists/*
 
