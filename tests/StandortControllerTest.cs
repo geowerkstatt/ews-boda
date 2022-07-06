@@ -12,14 +12,13 @@ namespace EWS;
 [TestClass]
 public class StandortControllerTest
 {
-    private const string testStandortBezeichnung = "Blue Jeans Pelati";
+    private const string TestStandortBezeichnung = "Blue Jeans Pelati";
     private EwsContext context;
     private StandortController controller;
 
     [TestInitialize]
     public void TestInitialize()
     {
-
         context = ContextFactory.CreateContext();
         controller = new StandortController(context);
     }
@@ -206,7 +205,7 @@ public class StandortControllerTest
     {
         var newStandort = new Standort
         {
-            Bezeichnung = testStandortBezeichnung,
+            Bezeichnung = TestStandortBezeichnung,
             UserErstellung = "Marky Mark Tribute Band Member",
         };
         var response = controller.Create(newStandort);
@@ -223,7 +222,7 @@ public class StandortControllerTest
             Bemerkung = "Mamady Doumbo",
             Gemeinde = 4321,
             GrundbuchNr = "hiKbSwsDBTXDyRf",
-            Bezeichnung = testStandortBezeichnung,
+            Bezeichnung = TestStandortBezeichnung,
         };
         var response = controller.Create(newStandort);
         Assert.IsInstanceOfType(response, typeof(CreatedAtActionResult));
@@ -238,12 +237,12 @@ public class StandortControllerTest
             Bemerkung = "Ismaila Kida",
             Gemeinde = 1234,
             GrundbuchNr = "cKt6QheQdD7WDjJ",
-            Bezeichnung = testStandortBezeichnung,
+            Bezeichnung = TestStandortBezeichnung,
         });
         context.SaveChanges();
         Assert.AreEqual(6001, context.Standorte.Count());
 
-        var standortToDelete = context.Standorte.Single(s => s.Bezeichnung == testStandortBezeichnung);
+        var standortToDelete = context.Standorte.Single(s => s.Bezeichnung == TestStandortBezeichnung);
         var response = controller.Delete(standortToDelete.Id);
 
         Assert.IsInstanceOfType(response, typeof(OkResult));
@@ -276,7 +275,9 @@ public class StandortControllerTest
     public void SubmitInvalidEditThrowsException()
     {
         var standortToEdit = context.Standorte.Single(s => s.Id == 31099);
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
         standortToEdit.Bezeichnung = null;
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
         Assert.ThrowsException<DbUpdateException>(() => controller.Edit(standortToEdit));
     }
 
