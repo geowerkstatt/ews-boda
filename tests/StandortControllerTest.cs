@@ -275,9 +275,7 @@ public class StandortControllerTest
     public void SubmitInvalidEditThrowsException()
     {
         var standortToEdit = context.Standorte.Single(s => s.Id == 31099);
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
         standortToEdit.Bezeichnung = null;
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
         Assert.ThrowsException<DbUpdateException>(() => controller.Edit(standortToEdit));
     }
 
