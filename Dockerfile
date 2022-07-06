@@ -40,12 +40,11 @@ ENV TZ=Europe/Zurich
 ENV ASPNETCORE_ENVIRONMENT=Production
 WORKDIR ${HOME}
 
-# Update and install required packages
+# Install required packages
 RUN \
   DEBIAN_FRONTEND=noninteractive && \
   mkdir -p /usr/share/man/man1 /usr/share/man/man2 && \
   apt-get update && \
-  apt-get upgrade -y && \
   apt-get install -y curl && \
   rm -rf /var/lib/apt/lists/*
 
