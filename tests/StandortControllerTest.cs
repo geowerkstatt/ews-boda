@@ -89,7 +89,7 @@ public class StandortControllerTest
         Assert.AreEqual(false, standortToTest.FreigabeAfu);
         Assert.AreEqual(2568, standortToTest.Gemeinde);
         Assert.AreEqual("vkflnsvlswy1nfbg4kucmk1bwzaqt7c72mba55vu", standortToTest.GrundbuchNr);
-        Assert.AreEqual(3, standortToTest.Bohrungen.Count);
+        Assert.AreEqual(2, standortToTest.Bohrungen.Count);
         Assert.AreEqual("Elijah_Schmeler31", standortToTest.UserErstellung);
         Assert.AreEqual("Josefa_Effertz", standortToTest.UserMutation);
         Assert.AreEqual(new DateTime(2021, 2, 12).Date, standortToTest.AfuDatum!.Value.Date);
@@ -111,7 +111,7 @@ public class StandortControllerTest
         Assert.AreEqual(false, standortToTest.FreigabeAfu);
         Assert.AreEqual(2568, standortToTest.Gemeinde);
         Assert.AreEqual("vkflnsvlswy1nfbg4kucmk1bwzaqt7c72mba55vu", standortToTest.GrundbuchNr);
-        Assert.AreEqual(3, standortToTest.Bohrungen.Count);
+        Assert.AreEqual(2, standortToTest.Bohrungen.Count);
         Assert.AreEqual("Elijah_Schmeler31", standortToTest.UserErstellung);
         Assert.AreEqual("Josefa_Effertz", standortToTest.UserMutation);
         Assert.AreEqual(new DateTime(2021, 2, 12).Date, standortToTest.AfuDatum!.Value.Date);
