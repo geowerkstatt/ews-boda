@@ -249,6 +249,7 @@ export default function InputForm(props) {
       <DialogActions>
         <Button onClick={handleClose}>Abbrechen</Button>
         <Button type="submit">Speichern</Button>
+        <Button disabled>Standort freigeben</Button>
       </DialogActions>
     </Box>
   );
