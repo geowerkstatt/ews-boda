@@ -77,13 +77,13 @@ export function Layout(props) {
           </Toolbar>
           <Divider />
           <List component="nav">
-            <ListItemButton>
+            <ListItemButton component="a" href="/">
               <ListItemIcon>
                 <HomeIcon />
               </ListItemIcon>
               <ListItemText primary="Einstiegsseite" />
             </ListItemButton>
-            <ListItemButton>
+            <ListItemButton component="a" href="/benutzerverwaltung">
               <ListItemIcon>
                 <GroupIcon />
               </ListItemIcon>
