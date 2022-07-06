@@ -14,7 +14,7 @@ import Title from "./Title";
 import Tooltip from "@mui/material/Tooltip";
 
 export default function SearchResults(props) {
-  const { standorte, openEditForm, openAddForm, onDelete } = props;
+  const { standorte, openEditForm, onDelete } = props;
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 

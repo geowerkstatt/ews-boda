@@ -205,12 +205,7 @@ export function Home() {
           <Grid item xs={12}>
             {hasFilters && standorte.length > 0 && (
               <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                <SearchResults
-                  standorte={standorte}
-                  openEditForm={openEditForm}
-                  openAddForm={openAddForm}
-                  onDelete={onDelete}
-                />
+                <SearchResults standorte={standorte} openEditForm={openEditForm} onDelete={onDelete} />
               </Paper>
             )}
             {hasFilters && standorte.length === 0 && (
