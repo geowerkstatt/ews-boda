@@ -76,6 +76,71 @@ public class StandortControllerTest
     }
 
     [TestMethod]
+    public async Task GetByStandortGrundbuchnummerSubstring()
+    {
+        var standorte = await controller.GetAsync(null, "kucmk1bwzaqt7c72").ConfigureAwait(false);
+
+        Assert.AreEqual(1, standorte.Count());
+        var standortToTest = standorte.Single();
+
+        Assert.AreEqual("Elijah Schmeler", standortToTest.AfuUser);
+        Assert.AreEqual("Ghana", standortToTest.Bemerkung);
+        Assert.AreEqual("Incredible Frozen Fish", standortToTest.Bezeichnung);
+        Assert.AreEqual(false, standortToTest.FreigabeAfu);
+        Assert.AreEqual(2568, standortToTest.Gemeinde);
+        Assert.AreEqual("vkflnsvlswy1nfbg4kucmk1bwzaqt7c72mba55vu", standortToTest.GrundbuchNr);
+        Assert.AreEqual(2, standortToTest.Bohrungen.Count);
+        Assert.AreEqual("Elijah_Schmeler31", standortToTest.UserErstellung);
+        Assert.AreEqual("Josefa_Effertz", standortToTest.UserMutation);
+        Assert.AreEqual(new DateTime(2021, 2, 12).Date, standortToTest.AfuDatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 10, 1).Date, standortToTest.Erstellungsdatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 12, 9).Date, standortToTest.Mutationsdatum!.Value.Date);
+    }
+
+    [TestMethod]
+    public async Task GetByStandortBezeichnungSubstring()
+    {
+        var standorte = await controller.GetAsync(null, null, "Incredible").ConfigureAwait(false);
+
+        Assert.AreEqual(351, standorte.Count());
+        var standortToTest = standorte.Where(s => s.GrundbuchNr == "vkflnsvlswy1nfbg4kucmk1bwzaqt7c72mba55vu").Single();
+
+        Assert.AreEqual("Elijah Schmeler", standortToTest.AfuUser);
+        Assert.AreEqual("Ghana", standortToTest.Bemerkung);
+        Assert.AreEqual("Incredible Frozen Fish", standortToTest.Bezeichnung);
+        Assert.AreEqual(false, standortToTest.FreigabeAfu);
+        Assert.AreEqual(2568, standortToTest.Gemeinde);
+        Assert.AreEqual("vkflnsvlswy1nfbg4kucmk1bwzaqt7c72mba55vu", standortToTest.GrundbuchNr);
+        Assert.AreEqual(2, standortToTest.Bohrungen.Count);
+        Assert.AreEqual("Elijah_Schmeler31", standortToTest.UserErstellung);
+        Assert.AreEqual("Josefa_Effertz", standortToTest.UserMutation);
+        Assert.AreEqual(new DateTime(2021, 2, 12).Date, standortToTest.AfuDatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 10, 1).Date, standortToTest.Erstellungsdatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 12, 9).Date, standortToTest.Mutationsdatum!.Value.Date);
+    }
+
+    [TestMethod]
+    public async Task GetByStandortBezeichnungSubstringIgnoringCase()
+    {
+        var standorte = await controller.GetAsync(null, null, "fiSH").ConfigureAwait(false);
+
+        Assert.AreEqual(248, standorte.Count());
+        var standortToTest = standorte.Where(s => s.GrundbuchNr == "vkflnsvlswy1nfbg4kucmk1bwzaqt7c72mba55vu").Single();
+
+        Assert.AreEqual("Elijah Schmeler", standortToTest.AfuUser);
+        Assert.AreEqual("Ghana", standortToTest.Bemerkung);
+        Assert.AreEqual("Incredible Frozen Fish", standortToTest.Bezeichnung);
+        Assert.AreEqual(false, standortToTest.FreigabeAfu);
+        Assert.AreEqual(2568, standortToTest.Gemeinde);
+        Assert.AreEqual(2, standortToTest.Bohrungen.Count);
+        Assert.AreEqual("Elijah_Schmeler31", standortToTest.UserErstellung);
+        Assert.AreEqual("Josefa_Effertz", standortToTest.UserMutation);
+        Assert.AreEqual(new DateTime(2021, 2, 12).Date, standortToTest.AfuDatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 10, 1).Date, standortToTest.Erstellungsdatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 12, 9).Date, standortToTest.Mutationsdatum!.Value.Date);
+    }
+
+    [TestMethod]
     public async Task GetByStandortBezeichnung()
     {
         var standorte = await controller.GetAsync(null, null, "Unbranded Fresh Fish").ConfigureAwait(false);

@@ -23,15 +23,17 @@ public class StandortController : ControllerBase
         {
             standorte = standorte.Where(s => s.Gemeinde == gemeindenummer);
         }
+#pragma warning disable CA1304 // Specify CultureInfo
 
         if (!string.IsNullOrEmpty(gbnummer))
         {
-            standorte = standorte.Where(s => s.GrundbuchNr == gbnummer);
+            standorte = standorte.Where(s => s.GrundbuchNr.ToLower().Contains(gbnummer.ToLower()));
         }
 
         if (!string.IsNullOrEmpty(bezeichnung))
         {
-            standorte = standorte.Where(s => s.Bezeichnung == bezeichnung);
+            standorte = standorte.Where(s => s.Bezeichnung.ToLower().Contains(bezeichnung.ToLower()));
+#pragma warning restore CA1304 // Specify CultureInfo
         }
 
         // Use universal time zone to convert time.
