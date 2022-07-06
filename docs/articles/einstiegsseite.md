@@ -33,7 +33,7 @@ Unter dem Menüpunkt _Daten exportieren_ ![Daten exportieren](../images/file-dow
 
 ## Standorte hinzufügen
 
-Durch Klicken auf den Button 'Neuen Standort hinzufügen' wird ein Dialog geöffnet, in dem ein neuer Standort angelegt werden kann. Hier können die folgenden Felder befüllt werden.
+Durch Klicken auf den Button _Neuen Standort hinzufügen_ wird ein Dialog geöffnet, in dem ein neuer Standort angelegt werden kann. Hier können die folgenden Felder befüllt werden.
 
 - Bezeichnung (obligatorisch)
 - Bemerkung
@@ -43,7 +43,7 @@ Die folgenden Attribute werden automatisch gesetzt und sind nicht im Dialog sich
 
 - Gemeinde (sobald eine Bohrung mit Geometrie vorhanden ist)
 - Erstellungsdatum
-- User bei der Erstellung
+- Benutzername bei Erstellung
 
 ## Standorte editieren
 
@@ -58,12 +58,10 @@ Die folgenden Felder können editiert werden.
 Die folgenden Attribute werden zusätzlich angezeigt, können aber nicht editiert werden.
 
 - Gemeinde
-- Erstellungsdatum
-- Erstellender User
-- Mutationsdatum
-- User bei der Mutation
+- Erstellungs- und Mutationsdatum
+- Benutzername bei Erstellung und Mutation
 - Datum der Freigabe durch das AfU
-- User bei der Freigabe durch das AfU
+- Benutzername bei Freigabe durch das AfU
 
 Ausserdem werden die dem Standort zugeordneten Bohrungen auf einer Karte dargestellt und in einer Tabelle angezeigt.
 
