@@ -90,27 +90,6 @@ export default function DetailMap(props) {
 
   // BohrungenLayer
   useEffect(() => {
-    const parser = new WMTSCapabilities();
-    const url = "https://geo.so.ch/api/wmts/1.0.0/WMTSCapabilities.xml";
-    fetch(url)
-      .then(function (response) {
-        return response.text();
-      })
-      .then(function (text) {
-        const result = parser.read(text);
-        const options = optionsFromCapabilities(result, {
-          layer: "ch.so.agi.hintergrundkarte_sw",
-        });
-        const landeskarte = new TileLayer({
-          source: new WMTS(options),
-          zIndex: 0,
-        });
-        map && map.addLayer(landeskarte);
-      });
-  }, [map]);
-
-  // BohrungenLayer
-  useEffect(() => {
     if (standorte && bohrungenLayer) {
       let parsedFeatures;
       let bohrungen = standorte?.flatMap((s) => s.bohrungen);

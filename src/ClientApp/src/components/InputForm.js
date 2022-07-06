@@ -104,11 +104,8 @@ export default function InputForm(props) {
             <Controller
               name="userErstellung"
               control={control}
-              rules={{
-                required: true,
-              }}
               defaultValue={standort?.userErstellung}
-              render={({ field, fieldState: { error } }) => (
+              render={({ field }) => (
                 <TextField
                   {...field}
                   sx={{ marginRight: "6%", width: "47%" }}
@@ -119,8 +116,6 @@ export default function InputForm(props) {
                   label="Erstellt durch"
                   type="text"
                   variant="standard"
-                  error={error !== undefined}
-                  helperText={error ? "Geben Sie einen Benutzer ein" : ""}
                 />
               )}
             />
