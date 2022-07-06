@@ -6,7 +6,7 @@ namespace EWS
 {
     public static class ChangeTrackerExtensions
     {
-        internal static void UpdateUsersAndDatesOnDateUserSettable(this ChangeTracker changeTracker)
+        internal static void UpdateChangeInformation(this ChangeTracker changeTracker)
         {
             var entities = changeTracker.Entries<IDateUserSettable>();
 

@@ -30,16 +30,26 @@ namespace EWS
             base.OnModelCreating(modelBuilder);
         }
 
+        /// <inheritdoc />
         public override int SaveChanges()
         {
-            ChangeTracker.UpdateUsersAndDatesOnDateUserSettable();
+            ChangeTracker.UpdateChangeInformation();
             return base.SaveChanges();
         }
 
+        /// <inheritdoc />
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            ChangeTracker.UpdateUsersAndDatesOnDateUserSettable();
+            ChangeTracker.UpdateChangeInformation();
             return await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Allows to call <see cref="SaveChanges" /> without override.
+        /// </summary>
+        internal int SaveChangesWithoutUpdates()
+        {
+            return base.SaveChanges();
         }
     }
 }
