@@ -45,9 +45,9 @@ namespace EWS
         }
 
         /// <summary>
-        /// Allows to call <see cref="SaveChanges" /> without override.
+        /// Allows to call <see cref="SaveChanges" /> without updating the change information like dates and user names.
         /// </summary>
-        internal int SaveChangesWithoutUpdates()
+        internal int SaveChangesWithoutUpdatingChangeInformation()
         {
             return base.SaveChanges();
         }
