@@ -213,6 +213,22 @@ namespace EWS
             context.Vorkommnisse.AddRange(vorkommnisseRange.Select(SeededVorkommnisse));
             context.SaveChangesWithoutUpdatingChangeInformation();
 
+            // Seed Users
+            var user_ids = 80001;
+            var usersRange = Enumerable.Range(user_ids, 100);
+            var fakeUsers = new Faker<User>("de_CH")
+               .StrictMode(true)
+               .RuleFor(o => o.Id, f => user_ids++)
+               .RuleFor(o => o.Name, f => f.Person.UserName)
+               .RuleFor(o => o.Role, f => f.PickRandom<UserRole>())
+               .RuleFor(o => o.Erstellungsdatum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
+               .RuleFor(o => o.Mutationsdatum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
+               .RuleFor(o => o.UserErstellung, f => f.Person.UserName)
+               .RuleFor(o => o.UserMutation, f => f.Person.FullName);
+            User SeededUsers(int seed) => fakeUsers.UseSeed(seed).Generate();
+            context.Users.AddRange(usersRange.Select(SeededUsers));
+            context.SaveChangesWithoutUpdatingChangeInformation();
+
             // Sync all database sequences
             context.Database.ExecuteSqlRaw($"SELECT setval(pg_get_serial_sequence('bohrung.codetyp', 'codetyp_id'), {codetyp_ids - 1})");
             context.Database.ExecuteSqlRaw($"SELECT setval(pg_get_serial_sequence('bohrung.code', 'code_id'), {code_ids - 1})");
@@ -222,6 +238,7 @@ namespace EWS
             context.Database.ExecuteSqlRaw($"SELECT setval(pg_get_serial_sequence('bohrung.bohrprofil', 'bohrprofil_id'),{bohrprofil_ids - 1})");
             context.Database.ExecuteSqlRaw($"SELECT setval(pg_get_serial_sequence('bohrung.schicht', 'schicht_id'),{schicht_ids - 1})");
             context.Database.ExecuteSqlRaw($"SELECT setval(pg_get_serial_sequence('bohrung.vorkommnis', 'vorkommnis_id'),{vorkommnis_ids - 1})");
+            context.Database.ExecuteSqlRaw($"SELECT setval(pg_get_serial_sequence('bohrung.user', 'user_id'),{user_ids - 1})");
 
             transaction.Commit();
         }

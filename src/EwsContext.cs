@@ -16,6 +16,7 @@ namespace EWS
         public DbSet<Schicht> Schichten { get; set; }
         public DbSet<Standort> Standorte { get; set; }
         public DbSet<Vorkommnis> Vorkommnisse { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public EwsContext(DbContextOptions options)
             : base(options)
