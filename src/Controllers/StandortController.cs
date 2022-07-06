@@ -26,12 +26,12 @@ public class StandortController : ControllerBase
 
         if (!string.IsNullOrEmpty(gbnummer))
         {
-            standorte = standorte.Where(s => s.GrundbuchNr == gbnummer);
+            standorte = standorte.Where(s => s.GrundbuchNr.Contains(gbnummer));
         }
 
         if (!string.IsNullOrEmpty(bezeichnung))
         {
-            standorte = standorte.Where(s => s.Bezeichnung == bezeichnung);
+            standorte = standorte.Where(s => s.Bezeichnung.Contains(bezeichnung));
         }
 
         // Use universal time zone to convert time.
