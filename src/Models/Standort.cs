@@ -7,7 +7,7 @@ namespace EWS.Models
     /// Repräsentiert einen Standort in der Datenbank.
     /// </summary>
     [Table("standort")]
-    public class Standort
+    public class Standort : IDateUserSettable
     {
         /// <summary>
         /// Die Id des Standorts.
@@ -41,13 +41,13 @@ namespace EWS.Models
         public string? GrundbuchNr { get; set; }
 
         /// <summary>
-        /// Freigabe durch das Afu.
+        /// Freigabe durch das AfU.
         /// </summary>
         [Column("freigabe_afu")]
         public bool FreigabeAfu { get; set; }
 
         /// <summary>
-        /// Kürzel des Afu-Benutzers bei der Freigabe des Objekts.
+        /// Kürzel des AfU-Benutzers bei der Freigabe des Objekts.
         /// </summary>
         [Column("afu_usr")]
         public string? AfuUser { get; set; }
@@ -62,7 +62,7 @@ namespace EWS.Models
         /// Datum des Imports des Objektes.
         /// </summary>
         [Column("new_date")]
-        public DateTime Erstellungsdatum { get; set; }
+        public DateTime? Erstellungsdatum { get; set; }
 
         /// <summary>
         /// Timestamp der letzten Änderung.
@@ -74,7 +74,7 @@ namespace EWS.Models
         /// Kürzel des Benutzers beim Anlegen des Objekts.
         /// </summary>
         [Column("new_usr")]
-        public string UserErstellung { get; set; }
+        public string? UserErstellung { get; set; }
 
         /// <summary>
         /// Kürzel des Benutzers bei letzter Änderung.

@@ -107,7 +107,7 @@ export default function MainMap(props) {
       layers: [bohrungenLayer],
       view: new View({
         projection: projection,
-        maxZoom: 14,
+        maxZoom: 12,
         zoom: 2,
       }),
     });

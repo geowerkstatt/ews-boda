@@ -18,7 +18,7 @@ public class StandortController : ControllerBase
     public async Task<IEnumerable<Standort>> GetAsync(
          int? gemeindenummer = null, string? gbnummer = null, string? bezeichnung = null, DateTime? erstellungsdatum = null, DateTime? mutationsdatum = null)
     {
-        var standorte = context.Standorte.Include(s => s.Bohrungen).AsQueryable();
+        var standorte = context.Standorte.Include(s => s.Bohrungen).ThenInclude(p => p.Bohrprofile).AsQueryable();
         if (gemeindenummer != null)
         {
             standorte = standorte.Where(s => s.Gemeinde == gemeindenummer);
@@ -39,7 +39,7 @@ public class StandortController : ControllerBase
 
         if (erstellungsdatum != null)
         {
-            standorte = standorte.Where(s => s.Erstellungsdatum.Date == TimeZoneInfo.ConvertTimeToUtc(erstellungsdatum.Value, ut).Date);
+            standorte = standorte.Where(s => s.Erstellungsdatum != null && s.Erstellungsdatum!.Value.Date == TimeZoneInfo.ConvertTimeToUtc(erstellungsdatum.Value, ut).Date);
         }
 
         if (mutationsdatum != null)
@@ -48,5 +48,45 @@ public class StandortController : ControllerBase
         }
 
         return await standorte.AsNoTracking().ToListAsync().ConfigureAwait(false);
+    }
+
+    [HttpPost]
+    public IActionResult Create(Standort standort)
+    {
+        context.Standorte.Add(standort);
+        context.SaveChanges();
+        return CreatedAtAction(nameof(Standort), standort);
+    }
+
+    [HttpPut]
+    public IActionResult Edit(Standort standort)
+    {
+        var standortToEdit = context.Standorte.SingleOrDefault(x => x.Id == standort.Id);
+        if (standortToEdit == null)
+        {
+            return NotFound();
+        }
+        else
+        {
+            context.Entry(standortToEdit).CurrentValues.SetValues(standort);
+            context.SaveChanges();
+            return Ok();
+        }
+    }
+
+    [HttpDelete]
+    public IActionResult Delete(int id)
+    {
+        var standortToDelete = context.Standorte.SingleOrDefault(x => x.Id == id);
+        if (standortToDelete == null)
+        {
+            return NotFound();
+        }
+        else
+        {
+            context.Remove(standortToDelete);
+            context.SaveChanges();
+            return Ok();
+        }
     }
 }

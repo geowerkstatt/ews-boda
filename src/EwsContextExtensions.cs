@@ -36,7 +36,7 @@ namespace EWS
                .RuleFor(o => o.UserMutation, f => f.Internet.UserName().OrNull(f, .8f));
             CodeTyp SeededCodetypen(int seed) => fakeCodeTypen.UseSeed(seed).Generate();
             context.CodeTypen.AddRange(codetypenRange.Select(SeededCodetypen));
-            context.SaveChanges();
+            context.SaveChangesWithoutUpdatingChangeInformation();
 
             // Seed Codes
             var code_ids = 1;
@@ -56,7 +56,7 @@ namespace EWS
 
             Code SeededCodes(int seed) => fakeCodes.UseSeed(seed).Generate();
             context.Codes.AddRange(codesRange.Select(SeededCodes));
-            context.SaveChanges();
+            context.SaveChangesWithoutUpdatingChangeInformation();
 
             // store generated codes in variable for later use
             var codesToAdd = context.Codes.ToList();
@@ -76,7 +76,7 @@ namespace EWS
                .RuleFor(o => o.UserMutation, f => f.Internet.UserName());
             CodeSchicht SeededCodeschichten(int seed) => fakeCodeschichten.UseSeed(seed).Generate();
             context.CodeSchichten.AddRange(codeschichtenRange.Select(SeededCodeschichten));
-            context.SaveChanges();
+            context.SaveChangesWithoutUpdatingChangeInformation();
 
             // Seed Standorte
             var standort_ids = 30001;
@@ -98,7 +98,7 @@ namespace EWS
                .RuleFor(o => o.Bohrungen, _ => default!);
             Standort SeededStandorte(int seed) => fakeStandorte.UseSeed(seed).Generate();
             context.Standorte.AddRange(standorteRange.Select(SeededStandorte));
-            context.SaveChanges();
+            context.SaveChangesWithoutUpdatingChangeInformation();
 
             // Seed Bohrungen
             var bohrung_ids = 40001;
@@ -128,7 +128,7 @@ namespace EWS
 
             Bohrung SeededBohrungen(int seed) => fakeBohrungen.UseSeed(seed).Generate();
             context.Bohrungen.AddRange(bohrungenRange.Select(SeededBohrungen));
-            context.SaveChanges();
+            context.SaveChangesWithoutUpdatingChangeInformation();
 
             // Seed Bohrprofile
             var bohrprofil_ids = 50001;
@@ -163,7 +163,7 @@ namespace EWS
                .RuleFor(o => o.Vorkomnisse, _ => default!);
             Bohrprofil SeededBohrprofile(int seed) => fakeBohrprofile.UseSeed(seed).Generate();
             context.Bohrprofile.AddRange(bohrprofileRange.Select(SeededBohrprofile));
-            context.SaveChanges();
+            context.SaveChangesWithoutUpdatingChangeInformation();
 
             // Seed Schichten
             var schicht_ids = 70001;
@@ -187,7 +187,7 @@ namespace EWS
                .RuleFor(o => o.CodeSchicht, _ => default!);
             Schicht SeededSchichten(int seed) => fakeSchichten.UseSeed(seed).Generate();
             context.Schichten.AddRange(schichtenRange.Select(SeededSchichten));
-            context.SaveChanges();
+            context.SaveChangesWithoutUpdatingChangeInformation();
 
             // Seed Vorkommnisse
             var vorkommnis_ids = 90001;
@@ -211,7 +211,7 @@ namespace EWS
                .RuleFor(o => o.HTyp, _ => default!);
             Vorkommnis SeededVorkommnisse(int seed) => fakeVorkommnisse.UseSeed(seed).Generate();
             context.Vorkommnisse.AddRange(vorkommnisseRange.Select(SeededVorkommnisse));
-            context.SaveChanges();
+            context.SaveChangesWithoutUpdatingChangeInformation();
 
             // Sync all database sequences
             context.Database.ExecuteSqlRaw($"SELECT setval(pg_get_serial_sequence('bohrung.codetyp', 'codetyp_id'), {codetyp_ids - 1})");
