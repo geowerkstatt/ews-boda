@@ -89,17 +89,17 @@ export function Layout(props) {
               </ListItemIcon>
               <ListItemText primary="Benutzerverwaltung" />
             </ListItemButton>
-            <ListItemButton component="a" target="_blank" href="/help/index.html">
-              <ListItemIcon>
-                <InfoIcon />
-              </ListItemIcon>
-              <ListItemText primary="Hilfe" />
-            </ListItemButton>
             <ListItemButton component="a" target="_blank" href="/export">
               <ListItemIcon>
                 <FileDownloadIcon />
               </ListItemIcon>
               <ListItemText primary="Daten exportieren" />
+            </ListItemButton>
+            <ListItemButton component="a" target="_blank" href="/help/index.html">
+              <ListItemIcon>
+                <InfoIcon />
+              </ListItemIcon>
+              <ListItemText primary="Hilfe" />
             </ListItemButton>
           </List>
         </Drawer>
