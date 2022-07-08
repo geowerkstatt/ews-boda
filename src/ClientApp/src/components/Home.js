@@ -4,7 +4,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import InputForm from "./InputForm";
+import StandortInputForm from "./StandortInputForm";
 import SearchResults from "./SearchResults";
 import Search from "./Search";
 import MainMap from "./MainMap";
@@ -216,12 +216,12 @@ export function Home() {
           </Grid>
         </Grid>
         <Dialog open={openForm} onClose={() => setOpenForm(false)} fullWidth={true} maxWidth="md">
-          <InputForm
+          <StandortInputForm
             handleClose={() => setOpenForm(false)}
             editStandort={editStandort}
             addStandort={addStandort}
             standort={currentStandort}
-          ></InputForm>
+          ></StandortInputForm>
         </Dialog>
         <ConfirmationDialog open={openConfirmation} confirm={confirm} entityName="Standort"></ConfirmationDialog>
       </Container>
