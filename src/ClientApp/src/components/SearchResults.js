@@ -29,7 +29,7 @@ export default function SearchResults(props) {
   return (
     <React.Fragment>
       <Title>Standorte</Title>
-      <Table name="seach-results-table" size="small">
+      <Table name="search-results-table" size="small">
         <TableHead>
           <TableRow>
             <TableCell>Gemeinde</TableCell>

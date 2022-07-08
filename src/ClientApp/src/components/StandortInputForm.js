@@ -213,7 +213,7 @@ export default function StandortInputForm(props) {
               )}
             </Accordion>
             {standort?.bohrungen?.length > 0 && (
-              <Table name="seach-results-table" size="small">
+              <Table name="search-results-table" size="small">
                 <TableHead>
                   <TableRow>
                     <TableCell>Bezeichnung</TableCell>
