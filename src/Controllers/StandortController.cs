@@ -6,12 +6,11 @@ namespace EWS;
 
 [ApiController]
 [Route("[controller]")]
-public class StandortController : ControllerBase
+public class StandortController : EwsControllerBase<Standort>
 {
-    private readonly EwsContext context;
     public StandortController(EwsContext context)
+        : base(context)
     {
-        this.context = context;
     }
 
     [HttpGet]
@@ -50,45 +49,5 @@ public class StandortController : ControllerBase
         }
 
         return await standorte.AsNoTracking().ToListAsync().ConfigureAwait(false);
-    }
-
-    [HttpPost]
-    public IActionResult Create(Standort standort)
-    {
-        context.Standorte.Add(standort);
-        context.SaveChanges();
-        return CreatedAtAction(nameof(Standort), standort);
-    }
-
-    [HttpPut]
-    public IActionResult Edit(Standort standort)
-    {
-        var standortToEdit = context.Standorte.SingleOrDefault(x => x.Id == standort.Id);
-        if (standortToEdit == null)
-        {
-            return NotFound();
-        }
-        else
-        {
-            context.Entry(standortToEdit).CurrentValues.SetValues(standort);
-            context.SaveChanges();
-            return Ok();
-        }
-    }
-
-    [HttpDelete]
-    public IActionResult Delete(int id)
-    {
-        var standortToDelete = context.Standorte.SingleOrDefault(x => x.Id == id);
-        if (standortToDelete == null)
-        {
-            return NotFound();
-        }
-        else
-        {
-            context.Remove(standortToDelete);
-            context.SaveChanges();
-            return Ok();
-        }
     }
 }

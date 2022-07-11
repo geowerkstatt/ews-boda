@@ -7,14 +7,14 @@ namespace EWS.Models
     /// Repräsentiert eine Codeschicht in der Datenbank.
     /// </summary>
     [Table("codeschicht")]
-    public class CodeSchicht
+    public class CodeSchicht : EwsModelBase
     {
         /// <summary>
         /// Die Id der Codeschicht.
         /// </summary>
         [Key]
         [Column("codeschicht_id")]
-        public int Id { get; set; }
+        public override int Id { get; set; }
 
         /// <summary>
         /// Kurzbezeichnung der Codeschicht.
@@ -33,29 +33,5 @@ namespace EWS.Models
         /// </summary>
         [Column("sort")]
         public int? Sortierung { get; set; }
-
-        /// <summary>
-        /// Datum des Imports des Objektes.
-        /// </summary>
-        [Column("new_date")]
-        public DateTime Erstellungsdatum { get; set; }
-
-        /// <summary>
-        /// Timestamp der letzten Änderung.
-        /// </summary>
-        [Column("mut_date")]
-        public DateTime? Mutationsdatum { get; set; }
-
-        /// <summary>
-        /// Kürzel des Benutzers beim Anlegen des Objekts.
-        /// </summary>
-        [Column("new_usr")]
-        public string UserErstellung { get; set; }
-
-        /// <summary>
-        /// Kürzel des Benutzers bei letzter Änderung.
-        /// </summary>
-        [Column("mut_usr")]
-        public string? UserMutation { get; set; }
     }
 }

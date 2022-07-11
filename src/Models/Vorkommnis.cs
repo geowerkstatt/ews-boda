@@ -7,14 +7,14 @@ namespace EWS.Models
     /// Repräsentiert ein Vorkommnis in der Datenbank.
     /// </summary>
     [Table("vorkommnis")]
-    public class Vorkommnis
+    public class Vorkommnis : EwsModelBase
     {
         /// <summary>
         /// Die Id des Vorkomnisses.
         /// </summary>
         [Key]
         [Column("vorkommnis_id")]
-        public int Id { get; set; }
+        public override int Id { get; set; }
 
         /// <summary>
         /// Foreign Key: ID der Tabelle Bohrprofil.
@@ -73,29 +73,5 @@ namespace EWS.Models
         /// Codetyp für Feld typ.
         /// </summary>
         public CodeTyp HTyp { get; set; }
-
-        /// <summary>
-        /// Datum des Imports des Objektes.
-        /// </summary>
-        [Column("new_date")]
-        public DateTime Erstellungsdatum { get; set; }
-
-        /// <summary>
-        /// Timestamp der letzten Änderung.
-        /// </summary>
-        [Column("mut_date")]
-        public DateTime? Mutationsdatum { get; set; }
-
-        /// <summary>
-        /// Kürzel des Benutzers beim Anlegen des Objekts.
-        /// </summary>
-        [Column("new_usr")]
-        public string UserErstellung { get; set; }
-
-        /// <summary>
-        /// Kürzel des Benutzers bei letzter Änderung.
-        /// </summary>
-        [Column("mut_usr")]
-        public string? UserMutation { get; set; }
     }
 }
