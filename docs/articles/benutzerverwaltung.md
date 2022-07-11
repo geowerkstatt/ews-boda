@@ -1,6 +1,6 @@
 # Benutzerverwaltung
 
-Administratoren können in der Benutzerverwaltung Benutzer einer beliebigen Rolle zuordnen. Neue Benutzer werden im Kontext des ersten Zugriffs auf die Webapplikation automatisch erfasst und mit der Rolle _Extern_ berechtigt sofern diesen den Zugriff auf die Applikation erlaubt ist.
+Administratoren können in der Benutzerverwaltung Benutzer einer beliebigen Rolle zuordnen. Neue Benutzer werden im Kontext des ersten Zugriffs auf die Webapplikation automatisch erfasst und mit der Rolle _Extern_ berechtigt sofern diesen der Zugriff auf die Applikation erlaubt ist.
 
 ## Rollen
 
