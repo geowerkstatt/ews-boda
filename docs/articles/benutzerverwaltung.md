@@ -10,7 +10,7 @@ Benutzer mit der Rolle **_Extern_** dürfen Standorte erstellen, editieren und l
 
 ### Sachbearbeiter AfU
 
-Zusätzlich zur Rolle  **_Extern_** dürfen Benutzer mit der Rolle **_Sachbearbeiter AfU_** Standorte freigeben und löschen.
+Zusätzlich zur Rolle  **_Extern_** dürfen Benutzer mit der Rolle **_Sachbearbeiter AfU_** Standorte freigeben und freigegebene Standorte löschen.
 
 ### Administrator
 
