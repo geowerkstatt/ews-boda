@@ -23,7 +23,7 @@ namespace EWS.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// Bezeichnung der Benutzer-Rolle
+        /// Bezeichnung der Benutzer-Rolle.
         /// </summary>
         /// <seealso cref="UserRole"/>
         [Column("user_role")]
