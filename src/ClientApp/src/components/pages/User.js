@@ -33,10 +33,7 @@ export function User() {
 
   // Edit user with the specified id.
   async function editUser(data) {
-    const updatedUser = currentUser;
-    Object.entries(data).forEach(([key, value]) => {
-      updatedUser[key] = value;
-    });
+    currentUser.role = data.role;
     const response = await fetch("/user", {
       method: "PUT",
       cache: "no-cache",
@@ -44,7 +41,7 @@ export function User() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(updatedUser, (key, value) => {
+      body: JSON.stringify(currentUser, (key, value) => {
         if (key === "role") {
           return parseInt(value);
         }
@@ -52,7 +49,7 @@ export function User() {
       }),
     });
     if (response.ok) {
-      const updatedUsers = users.map((s) => (s.id === updatedUser.id ? updatedUser : s));
+      const updatedUsers = users.map((s) => (s.id === currentUser.id ? currentUser : s));
       setUsers(updatedUsers);
     }
   }
