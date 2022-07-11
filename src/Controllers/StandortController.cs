@@ -18,7 +18,7 @@ public class StandortController : ControllerBase
     public async Task<IEnumerable<Standort>> GetAsync(
          int? gemeindenummer = null, string? gbnummer = null, string? bezeichnung = null, DateTime? erstellungsdatum = null, DateTime? mutationsdatum = null)
     {
-        var standorte = context.Standorte.Include(s => s.Bohrungen).ThenInclude(p => p.Bohrprofile).AsQueryable();
+        var standorte = Context.Standorte.Include(s => s.Bohrungen).ThenInclude(p => p.Bohrprofile).AsQueryable();
         if (gemeindenummer != null)
         {
             standorte = standorte.Where(s => s.Gemeinde == gemeindenummer);
@@ -41,7 +41,7 @@ public class StandortController : ControllerBase
 
         if (erstellungsdatum != null)
         {
-            standorte = standorte.Where(s => s.Erstellungsdatum != null && s.Erstellungsdatum!.Value.Date == TimeZoneInfo.ConvertTimeToUtc(erstellungsdatum.Value, ut).Date);
+            standorte = standorte.Where(s => s.Erstellungsdatum!.Date == TimeZoneInfo.ConvertTimeToUtc(erstellungsdatum.Value, ut).Date);
         }
 
         if (mutationsdatum != null)
