@@ -14,8 +14,8 @@
 
         /// <summary>
         /// Standard Benutzer-Rolle.
-        /// Benutzer mit der Rolle <see cref="Extern"/> dürfen Standorte
-        /// erstellen und mutieren solange diese noch nicht freigegeben sind.
+        /// Benutzer mit der Rolle <see cref="Extern"/> dürfen Standorte erstellen,
+        /// editieren und löschen solange diese noch nicht freigegeben sind.
         /// </summary>
         /// <seealso cref="Standort"/>
         Extern = 1000,
@@ -23,7 +23,7 @@
         /// <summary>
         /// Sachberarbeiter AfU.
         /// Zusätzlich zur Rolle <see cref="Extern"/> dürfen Benutzer mit der Rolle
-        /// <see cref="SachbearbeiterAfU"/> Standorte freigeben und löschen.
+        /// <see cref="SachbearbeiterAfU"/> Standorte freigeben und freigegebene Standorte löschen.
         /// </summary>
         /// <seealso cref="Standort"/>
         SachbearbeiterAfU = 1001,
