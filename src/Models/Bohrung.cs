@@ -8,14 +8,14 @@ namespace EWS.Models
     /// Repräsentiert eine Bohrung in der Datenbank.
     /// </summary>
     [Table("bohrung")]
-    public class Bohrung
+    public class Bohrung : EwsModelBase
     {
         /// <summary>
         /// Die Id der Bohrung.
         /// </summary>
         [Key]
         [Column("bohrung_id")]
-        public int Id { get; set; }
+        public override int Id { get; set; }
 
         /// <summary>
         /// Foreign Key: ID der Tabelle Standort.
@@ -75,30 +75,6 @@ namespace EWS.Models
         /// </summary>
         [Column("quelleref")]
         public string? QuelleRef { get; set; }
-
-        /// <summary>
-        /// Datum des Imports des Objektes.
-        /// </summary>
-        [Column("new_date")]
-        public DateTime Erstellungsdatum { get; set; }
-
-        /// <summary>
-        /// Timestamp der letzten Änderung.
-        /// </summary>
-        [Column("mut_date")]
-        public DateTime? Mutationsdatum { get; set; }
-
-        /// <summary>
-        /// Kürzel des Benutzers beim Anlegen des Objekts.
-        /// </summary>
-        [Column("new_usr")]
-        public string UserErstellung { get; set; }
-
-        /// <summary>
-        /// Kürzel des Benutzers bei letzter Änderung.
-        /// </summary>
-        [Column("mut_usr")]
-        public string? UserMutation { get; set; }
 
         /// <summary>
         /// Foreign Key: ID des Codetyps für Feld quali.

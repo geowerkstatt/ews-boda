@@ -110,4 +110,12 @@ public class UserControllerTest
         var response = await controller.EditAsync(inexistentUser).ConfigureAwait(false);
         Assert.IsInstanceOfType(response, typeof(NotFoundResult));
     }
+
+    [TestMethod]
+    public async Task AddUserForNotAllowed()
+    {
+        var response = await controller.CreateAsync(new User { Id = 1234567 }).ConfigureAwait(false);
+        Assert.IsInstanceOfType(response, typeof(BadRequestObjectResult));
+        Assert.AreEqual("Creating new users is not supported.", ((BadRequestObjectResult)response).Value);
+    }
 }

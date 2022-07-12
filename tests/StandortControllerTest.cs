@@ -1,4 +1,5 @@
 ﻿using EWS.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -49,7 +50,7 @@ public class StandortControllerTest
         Assert.AreEqual("Carolyn_Lehner5", standortToTest.UserErstellung);
         Assert.AreEqual("Kennith.Pollich", standortToTest.UserMutation);
         Assert.AreEqual(new DateTime(2021, 3, 6).Date, standortToTest.AfuDatum!.Value.Date);
-        Assert.AreEqual(new DateTime(2021, 8, 6).Date, standortToTest.Erstellungsdatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 8, 6).Date, standortToTest.Erstellungsdatum.Date);
         Assert.AreEqual(new DateTime(2021, 12, 9).Date, standortToTest.Mutationsdatum!.Value.Date);
     }
 
@@ -71,7 +72,7 @@ public class StandortControllerTest
         Assert.AreEqual("Elijah_Schmeler31", standortToTest.UserErstellung);
         Assert.AreEqual("Josefa_Effertz", standortToTest.UserMutation);
         Assert.AreEqual(new DateTime(2021, 2, 12).Date, standortToTest.AfuDatum!.Value.Date);
-        Assert.AreEqual(new DateTime(2021, 10, 1).Date, standortToTest.Erstellungsdatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 10, 1).Date, standortToTest.Erstellungsdatum.Date);
         Assert.AreEqual(new DateTime(2021, 12, 9).Date, standortToTest.Mutationsdatum!.Value.Date);
     }
 
@@ -93,7 +94,7 @@ public class StandortControllerTest
         Assert.AreEqual("Elijah_Schmeler31", standortToTest.UserErstellung);
         Assert.AreEqual("Josefa_Effertz", standortToTest.UserMutation);
         Assert.AreEqual(new DateTime(2021, 2, 12).Date, standortToTest.AfuDatum!.Value.Date);
-        Assert.AreEqual(new DateTime(2021, 10, 1).Date, standortToTest.Erstellungsdatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 10, 1).Date, standortToTest.Erstellungsdatum.Date);
         Assert.AreEqual(new DateTime(2021, 12, 9).Date, standortToTest.Mutationsdatum!.Value.Date);
     }
 
@@ -115,7 +116,7 @@ public class StandortControllerTest
         Assert.AreEqual("Elijah_Schmeler31", standortToTest.UserErstellung);
         Assert.AreEqual("Josefa_Effertz", standortToTest.UserMutation);
         Assert.AreEqual(new DateTime(2021, 2, 12).Date, standortToTest.AfuDatum!.Value.Date);
-        Assert.AreEqual(new DateTime(2021, 10, 1).Date, standortToTest.Erstellungsdatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 10, 1).Date, standortToTest.Erstellungsdatum.Date);
         Assert.AreEqual(new DateTime(2021, 12, 9).Date, standortToTest.Mutationsdatum!.Value.Date);
     }
 
@@ -136,7 +137,7 @@ public class StandortControllerTest
         Assert.AreEqual("Elijah_Schmeler31", standortToTest.UserErstellung);
         Assert.AreEqual("Josefa_Effertz", standortToTest.UserMutation);
         Assert.AreEqual(new DateTime(2021, 2, 12).Date, standortToTest.AfuDatum!.Value.Date);
-        Assert.AreEqual(new DateTime(2021, 10, 1).Date, standortToTest.Erstellungsdatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 10, 1).Date, standortToTest.Erstellungsdatum.Date);
         Assert.AreEqual(new DateTime(2021, 12, 9).Date, standortToTest.Mutationsdatum!.Value.Date);
     }
 
@@ -159,7 +160,7 @@ public class StandortControllerTest
         Assert.AreEqual("Beverly.Zulauf", standortToTest.UserErstellung);
         Assert.AreEqual("Dusty51", standortToTest.UserMutation);
         Assert.AreEqual(new DateTime(2021, 11, 5).Date, standortToTest.AfuDatum!.Value.Date);
-        Assert.AreEqual(new DateTime(2021, 3, 16).Date, standortToTest.Erstellungsdatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 3, 16).Date, standortToTest.Erstellungsdatum.Date);
         Assert.AreEqual(new DateTime(2021, 4, 18).Date, standortToTest.Mutationsdatum!.Value.Date);
     }
 
@@ -182,7 +183,7 @@ public class StandortControllerTest
         Assert.AreEqual("Mamie_Gutmann", standortToTest.UserErstellung);
         Assert.AreEqual("Ernestine21", standortToTest.UserMutation);
         Assert.AreEqual(new DateTime(2021, 3, 29, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.AfuDatum!.Value.Date);
-        Assert.AreEqual(new DateTime(2021, 11, 15, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.Erstellungsdatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 11, 15, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.Erstellungsdatum.Date);
         Assert.AreEqual(new DateTime(2021, 12, 7, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.Mutationsdatum!.Value.Date);
     }
 
@@ -205,7 +206,7 @@ public class StandortControllerTest
         Assert.AreEqual("Penny_Lindgren79", standortToTest.UserErstellung);
         Assert.AreEqual("Marjorie40", standortToTest.UserMutation);
         Assert.AreEqual(new DateTime(2021, 6, 14, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.AfuDatum!.Value.Date);
-        Assert.AreEqual(new DateTime(2021, 11, 3, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.Erstellungsdatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 11, 3, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.Erstellungsdatum.Date);
         Assert.AreEqual(new DateTime(2021, 12, 5, 0, 0, 0, DateTimeKind.Utc).Date, standortToTest.Mutationsdatum!.Value.Date);
     }
 
@@ -227,7 +228,7 @@ public class StandortControllerTest
         Assert.AreEqual("Warren54", standortToTest.UserErstellung);
         Assert.AreEqual("Abdullah61", standortToTest.UserMutation);
         Assert.AreEqual(new DateTime(2021, 8, 31).Date, standortToTest.AfuDatum!.Value.Date);
-        Assert.AreEqual(new DateTime(2021, 8, 1).Date, standortToTest.Erstellungsdatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 8, 1).Date, standortToTest.Erstellungsdatum.Date);
         Assert.AreEqual(new DateTime(2021, 1, 12).Date, standortToTest.Mutationsdatum!.Value.Date);
     }
 
@@ -251,35 +252,36 @@ public class StandortControllerTest
         Assert.AreEqual("Carolyn_Lehner5", standortToTest.UserErstellung);
         Assert.AreEqual("Kennith.Pollich", standortToTest.UserMutation);
         Assert.AreEqual(new DateTime(2021, 3, 6).Date, standortToTest.AfuDatum!.Value.Date);
-        Assert.AreEqual(new DateTime(2021, 8, 6).Date, standortToTest.Erstellungsdatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 8, 6).Date, standortToTest.Erstellungsdatum.Date);
         Assert.AreEqual(new DateTime(2021, 12, 9).Date, standortToTest.Mutationsdatum!.Value.Date);
     }
 
     [TestMethod]
-    public void AddInvalidStandortThrowsException()
+    public async Task AddInvalidStandortReturnsBadRequest()
     {
-        var newStandort = new Standort
-        {
-            Bemerkung = "Various green toads blocking the road.",
-        };
-        Assert.ThrowsException<DbUpdateException>(() => controller.Create(newStandort));
+        var newStandort = new Standort { Bemerkung = "Various green toads blocking the road." };
+        var response = await controller.CreateAsync(newStandort).ConfigureAwait(false) as ObjectResult;
+
+        Assert.IsInstanceOfType(response, typeof(ObjectResult));
+        Assert.AreEqual(StatusCodes.Status400BadRequest, response.StatusCode);
+        Assert.AreEqual("An error occurred while saving the entity changes.", ((ProblemDetails)response.Value!).Detail);
     }
 
     [TestMethod]
-    public void AddMinimalStandortReturnsCreatedResult()
+    public async Task AddMinimalStandortReturnsCreatedResult()
     {
         var newStandort = new Standort
         {
             Bezeichnung = TestStandortBezeichnung,
             UserErstellung = "Marky Mark Tribute Band Member",
         };
-        var response = controller.Create(newStandort);
+        var response = await controller.CreateAsync(newStandort).ConfigureAwait(false);
         Assert.IsInstanceOfType(response, typeof(CreatedAtActionResult));
-        controller.Delete(newStandort.Id);
+        await controller.DeleteAsync(newStandort.Id).ConfigureAwait(false);
     }
 
     [TestMethod]
-    public void AddFullStandortReturnsCreatedResult()
+    public async Task AddFullStandortReturnsCreatedResult()
     {
         var newStandort = new Standort
         {
@@ -289,13 +291,13 @@ public class StandortControllerTest
             GrundbuchNr = "hiKbSwsDBTXDyRf",
             Bezeichnung = TestStandortBezeichnung,
         };
-        var response = controller.Create(newStandort);
+        var response = await controller.CreateAsync(newStandort).ConfigureAwait(false);
         Assert.IsInstanceOfType(response, typeof(CreatedAtActionResult));
-        controller.Delete(newStandort.Id);
+        await controller.DeleteAsync(newStandort.Id).ConfigureAwait(false);
     }
 
     [TestMethod]
-    public void DeleteStandortReturnsOk()
+    public async Task DeleteStandortReturnsOk()
     {
         context.Standorte.Add(new Standort
         {
@@ -308,50 +310,55 @@ public class StandortControllerTest
         Assert.AreEqual(6001, context.Standorte.Count());
 
         var standortToDelete = context.Standorte.Single(s => s.Bezeichnung == TestStandortBezeichnung);
-        var response = controller.Delete(standortToDelete.Id);
+        var response = await controller.DeleteAsync(standortToDelete.Id).ConfigureAwait(false);
 
         Assert.IsInstanceOfType(response, typeof(OkResult));
         Assert.AreEqual(6000, context.Standorte.Count());
     }
 
     [TestMethod]
-    public void TryDeleteInexistentStandortReturnsNotFound()
+    public async Task TryDeleteInexistentStandortReturnsNotFound()
     {
         var controller = new StandortController(context);
-        var response = controller.Delete(1600433);
+        var response = await controller.DeleteAsync(1600433).ConfigureAwait(false);
 
         Assert.IsInstanceOfType(response, typeof(NotFoundResult));
         Assert.AreEqual(6000, context.Standorte.Count());
     }
 
     [TestMethod]
-    public void EditStandortReturnsOk()
+    public async Task EditStandortReturnsOk()
     {
         var standortToEdit = context.Standorte.Single(s => s.Id == 31098);
         var editedBezeichnung = "We love Pasta more than Pesto";
         standortToEdit.Bezeichnung = editedBezeichnung;
-        var response = controller.Edit(standortToEdit);
+        var response = await controller.EditAsync(standortToEdit).ConfigureAwait(false);
         Assert.AreEqual(context.Standorte.Single(s => s.Id == 31098).Bezeichnung, "We love Pasta more than Pesto");
         Assert.IsInstanceOfType(response, typeof(OkResult));
         Assert.AreEqual(6000, context.Standorte.Count());
     }
 
     [TestMethod]
-    public void SubmitInvalidEditThrowsException()
+    public async Task SubmitInvalidEditReturnsBadRequest()
     {
         var standortToEdit = context.Standorte.Single(s => s.Id == 31099);
         standortToEdit.Bezeichnung = null;
-        Assert.ThrowsException<DbUpdateException>(() => controller.Edit(standortToEdit));
+
+        var response = await controller.EditAsync(standortToEdit).ConfigureAwait(false) as ObjectResult;
+
+        Assert.IsInstanceOfType(response, typeof(ObjectResult));
+        Assert.AreEqual(StatusCodes.Status400BadRequest, response.StatusCode);
+        Assert.AreEqual("An error occurred while saving the entity changes.", ((ProblemDetails)response.Value!).Detail);
     }
 
     [TestMethod]
-    public void TryEditInexistentStandortReturnsNotFound()
+    public async Task TryEditInexistentStandortReturnsNotFound()
     {
         var inexistentStandort = new Standort
         {
             Id = 447375,
         };
-        var response = controller.Edit(inexistentStandort);
+        var response = await controller.EditAsync(inexistentStandort).ConfigureAwait(false);
         Assert.IsInstanceOfType(response, typeof(NotFoundResult));
     }
 }
