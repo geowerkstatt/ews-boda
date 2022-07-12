@@ -1,0 +1,38 @@
+[
+  {
+     "id":80001,
+     "name":"Luca51",
+     "role":1000,
+     "erstellungsdatum":"2021-01-18T21:01:07.235196",
+     "mutationsdatum":"2021-04-18T03:58:20.653318",
+     "userErstellung":"Luca51",
+     "userMutation":"Luca Lanz"
+  },
+  {
+     "id":80002,
+     "name":"Simon_Felber",
+     "role":1001,
+     "erstellungsdatum":"2021-05-06T09:24:25.161933",
+     "mutationsdatum":"2021-04-29T09:27:10.059208",
+     "userErstellung":"Simon_Felber",
+     "userMutation":"Simon Felber"
+  },
+  {
+     "id":80003,
+     "name":"Cornelia.Walter",
+     "role":1001,
+     "erstellungsdatum":"2021-09-18T03:45:12.56763",
+     "mutationsdatum":"2021-11-06T01:49:42.448186",
+     "userErstellung":"Cornelia.Walter",
+     "userMutation":"Cornelia Walter"
+  },
+  {
+     "id":80004,
+     "name":"Jakob_Moser87",
+     "role":0,
+     "erstellungsdatum":"2021-12-04T07:19:03.084887",
+     "mutationsdatum":"2021-08-03T17:53:25.049889",
+     "userErstellung":"Jakob_Moser87",
+     "userMutation":"Jakob Moser"
+  }
+]

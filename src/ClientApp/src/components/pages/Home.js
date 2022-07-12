@@ -4,17 +4,17 @@ import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import InputForm from "./InputForm";
-import SearchResults from "./SearchResults";
-import Search from "./Search";
-import MainMap from "./MainMap";
+import StandortInputForm from "../StandortInputForm";
+import SearchResults from "../SearchResults";
+import Search from "../Search";
+import MainMap from "../MainMap";
 import Dialog from "@mui/material/Dialog";
 import Alert from "@mui/material/Alert";
 import Tooltip from "@mui/material/Tooltip";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 
-import ConfirmationDialog from "./ConfirmationDialog";
+import ConfirmationDialog from "../ConfirmationDialog";
 
 export function Home() {
   const [standorte, setStandorte] = useState([]);
@@ -137,8 +137,6 @@ export function Home() {
     <Box
       component="main"
       sx={{
-        backgroundColor: (theme) =>
-          theme.palette.mode === "light" ? theme.palette.grey[100] : theme.palette.grey[900],
         flexGrow: 1,
         height: "100vh",
         overflow: "auto",
@@ -216,12 +214,12 @@ export function Home() {
           </Grid>
         </Grid>
         <Dialog open={openForm} onClose={() => setOpenForm(false)} fullWidth={true} maxWidth="md">
-          <InputForm
+          <StandortInputForm
             handleClose={() => setOpenForm(false)}
             editStandort={editStandort}
             addStandort={addStandort}
             standort={currentStandort}
-          ></InputForm>
+          ></StandortInputForm>
         </Dialog>
         <ConfirmationDialog open={openConfirmation} confirm={confirm} entityName="Standort"></ConfirmationDialog>
       </Container>

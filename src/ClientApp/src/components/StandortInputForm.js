@@ -23,7 +23,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Button from "@mui/material/Button";
 import DetailMap from "./DetailMap";
 
-export default function InputForm(props) {
+export default function StandortInputForm(props) {
   const { control, handleSubmit } = useForm({ reValidateMode: "onBlur" });
   const { handleClose, standort, editStandort, addStandort } = props;
 
@@ -213,7 +213,7 @@ export default function InputForm(props) {
               )}
             </Accordion>
             {standort?.bohrungen?.length > 0 && (
-              <Table name="seach-results-table" size="small">
+              <Table name="search-results-table" size="small">
                 <TableHead>
                   <TableRow>
                     <TableCell>Bezeichnung</TableCell>

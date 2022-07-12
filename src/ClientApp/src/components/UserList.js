@@ -1,5 +1,4 @@
 import React from "react";
-import { GemeindenMap } from "../GemeindenMap";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -11,10 +10,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import Title from "./Title";
+import { UserRolesMap } from "../UserRolesMap";
 import Tooltip from "@mui/material/Tooltip";
 
-export default function SearchResults(props) {
-  const { standorte, openEditForm, onDelete } = props;
+export default function UserList(props) {
+  const { users, openEditForm, onDelete } = props;
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -28,33 +28,29 @@ export default function SearchResults(props) {
   };
   return (
     <React.Fragment>
-      <Title>Standorte</Title>
-      <Table name="search-results-table" size="small">
+      <Title>Benutzerverwaltung</Title>
+      <Table name="user-list-table" size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Gemeinde</TableCell>
-            <TableCell>Grundbuchnummer</TableCell>
-            <TableCell>Bezeichnung</TableCell>
-            <TableCell>Anzahl Bohrungen</TableCell>
+            <TableCell>Name</TableCell>
+            <TableCell>Rolle</TableCell>
             <TableCell></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {standorte &&
-            standorte.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((standort) => (
-              <TableRow key={standort.id}>
-                <TableCell>{GemeindenMap[standort.gemeinde]}</TableCell>
-                <TableCell>{standort.grundbuchNr}</TableCell>
-                <TableCell>{standort.bezeichnung}</TableCell>
-                <TableCell>{standort.bohrungen.length}</TableCell>
-                <TableCell>
-                  <Tooltip title="Standort editieren">
-                    <IconButton onClick={() => openEditForm(standort)} color="primary" aria-label="edit standort">
+          {users &&
+            users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user) => (
+              <TableRow key={user.id}>
+                <TableCell>{user.name}</TableCell>
+                <TableCell>{UserRolesMap[user.role]}</TableCell>
+                <TableCell align="right">
+                  <Tooltip title="Benutzer editieren">
+                    <IconButton onClick={() => openEditForm(user)} color="primary" aria-label="edit user">
                       <EditIcon />
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title="Standort löschen">
-                    <IconButton onClick={() => onDelete(standort)} color="primary" aria-label="delete standort">
+                  <Tooltip title="Benutzer löschen">
+                    <IconButton onClick={() => onDelete(user)} color="primary" aria-label="delete user">
                       <DeleteIcon />
                     </IconButton>
                   </Tooltip>
@@ -67,11 +63,11 @@ export default function SearchResults(props) {
             <TablePagination
               rowsPerPageOptions={[5, 10, 15, 20, 50]}
               page={page}
-              count={standorte.length}
+              count={users.length}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
               rowsPerPage={rowsPerPage}
-              labelRowsPerPage="Standorte pro Seite"
+              labelRowsPerPage="Benutzer pro Seite"
             />
           </TableRow>
         </TableFooter>
