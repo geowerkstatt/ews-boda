@@ -107,8 +107,8 @@ export default function BohrungForm(props) {
           render={({ field, fieldState: { error } }) => (
             <TextField
               {...field}
-              value={field.value}
               autoFocus
+              value={field.value}
               margin="normal"
               label="Bezeichnung der Bohrung"
               type="text"
@@ -179,10 +179,9 @@ export default function BohrungForm(props) {
         <Controller
           name="ablenkungId"
           control={control}
-          defaultValue={bohrung?.ablenkungId}
+          defaultValue={bohrung?.ablenkungId || null}
           render={({ field }) => (
             <Autocomplete
-              {...props}
               {...field}
               options={ablenkungCodes.map((c) => c.id)}
               value={field.value}
@@ -204,10 +203,9 @@ export default function BohrungForm(props) {
         <Controller
           name="qualitaetId"
           control={control}
-          defaultValue={bohrung?.qualitaetId}
+          defaultValue={bohrung?.qualitaetId || null}
           render={({ field }) => (
             <Autocomplete
-              {...props}
               {...field}
               options={qualitaetCodes.map((c) => c.id)}
               value={field.value}

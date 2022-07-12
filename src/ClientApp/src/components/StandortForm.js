@@ -105,12 +105,13 @@ export default function StandortForm(props) {
           rules={{
             required: true,
           }}
-          defaultValue={currentStandort?.bezeichnung}
+          defaultValue={currentStandort?.bezeichnung || ""}
           render={({ field, fieldState: { error } }) => (
             <TextField
               {...field}
               autoFocus
               margin="normal"
+              value={field.value}
               label="Bezeichnung des Standorts"
               type="text"
               fullWidth
@@ -243,11 +244,18 @@ export default function StandortForm(props) {
         )}
         <Typography sx={{ marginTop: "15px" }} variant="h6" gutterBottom>
           Bohrungen ({currentStandort?.bohrungen ? currentStandort.bohrungen.length : 0})
-          <Tooltip title="Bohrung hinzufügen">
-            <IconButton color="primary" disabled={currentStandort?.id == null} onClick={addBohrung}>
+          {currentStandort?.id != null && (
+            <Tooltip title="Bohrung hinzufügen">
+              <IconButton color="primary" disabled={currentStandort?.id == null} onClick={addBohrung}>
+                <AddCircleIcon />
+              </IconButton>
+            </Tooltip>
+          )}
+          {currentStandort?.id == null && (
+            <IconButton color="primary" disabled>
               <AddCircleIcon />
             </IconButton>
-          </Tooltip>
+          )}
         </Typography>
         {currentStandort?.id == null && (
           <Typography>Bitte speichern Sie den Standort bevor Sie Bohrungen hinzufügen.</Typography>

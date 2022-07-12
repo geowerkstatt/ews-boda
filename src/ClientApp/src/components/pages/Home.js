@@ -111,6 +111,8 @@ export function Home() {
       updatedStandort[key] = value;
     });
     updatedStandort.gemeinde = GemeindenMap[data?.gemeinde];
+    // ignore bohrungen on update
+    updatedStandort.bohrungen = null;
     const response = await fetch("/standort", {
       method: "PUT",
       cache: "no-cache",
