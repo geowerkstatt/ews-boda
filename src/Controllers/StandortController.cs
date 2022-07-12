@@ -69,7 +69,7 @@ public class StandortController : EwsControllerBase<Standort>
     /// <param name="id">The standort id.</param>
     [HttpGet]
     [Route("{id}")]
-    public async Task<IActionResult> GetAsync(int id)
+    public async Task<IActionResult> GetByIdAsync(int id)
     {
         var standort = await Context.Standorte
             .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.HTektonik)
