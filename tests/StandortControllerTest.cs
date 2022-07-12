@@ -1,4 +1,5 @@
 ﻿using EWS.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -256,12 +257,14 @@ public class StandortControllerTest
     }
 
     [TestMethod]
-    public async Task AddInvalidStandortThrowsException()
+    public async Task AddInvalidStandortReturnsBadRequest()
     {
         var newStandort = new Standort { Bemerkung = "Various green toads blocking the road." };
-        await Assert.ThrowsExceptionAsync<DbUpdateException>(
-            async () => await controller.CreateAsync(newStandort).ConfigureAwait(false))
-            .ConfigureAwait(false);
+        var response = await controller.CreateAsync(newStandort).ConfigureAwait(false) as ObjectResult;
+
+        Assert.IsInstanceOfType(response, typeof(ObjectResult));
+        Assert.AreEqual(StatusCodes.Status400BadRequest, response.StatusCode);
+        Assert.AreEqual("An error occurred while saving the entity changes.", ((ProblemDetails)response.Value!).Detail);
     }
 
     [TestMethod]
@@ -336,13 +339,16 @@ public class StandortControllerTest
     }
 
     [TestMethod]
-    public async Task SubmitInvalidEditThrowsException()
+    public async Task SubmitInvalidEditReturnsBadRequest()
     {
         var standortToEdit = context.Standorte.Single(s => s.Id == 31099);
         standortToEdit.Bezeichnung = null;
-        await Assert.ThrowsExceptionAsync<DbUpdateException>(
-            async () => await controller.EditAsync(standortToEdit).ConfigureAwait(false))
-            .ConfigureAwait(false);
+
+        var response = await controller.EditAsync(standortToEdit).ConfigureAwait(false) as ObjectResult;
+
+        Assert.IsInstanceOfType(response, typeof(ObjectResult));
+        Assert.AreEqual(StatusCodes.Status400BadRequest, response.StatusCode);
+        Assert.AreEqual("An error occurred while saving the entity changes.", ((ProblemDetails)response.Value!).Detail);
     }
 
     [TestMethod]

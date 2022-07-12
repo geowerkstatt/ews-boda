@@ -29,8 +29,7 @@ public class EwsControllerBase<TModel> : ControllerBase
     public virtual async Task<IActionResult> CreateAsync(TModel item)
     {
         await Context.AddAsync(item).ConfigureAwait(false);
-        await Context.SaveChangesAsync().ConfigureAwait(false);
-        return CreatedAtAction(nameof(TModel), item);
+        return await SaveChangesAsync(() => CreatedAtAction(nameof(TModel), item)).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -48,8 +47,7 @@ public class EwsControllerBase<TModel> : ControllerBase
         else
         {
             Context.Entry(itemToEdit).CurrentValues.SetValues(item);
-            await Context.SaveChangesAsync().ConfigureAwait(false);
-            return Ok();
+            return await SaveChangesAsync(() => Ok()).ConfigureAwait(false);
         }
     }
 
@@ -68,8 +66,22 @@ public class EwsControllerBase<TModel> : ControllerBase
         else
         {
             Context.Remove(itemToDelete);
+            return await SaveChangesAsync(() => Ok()).ConfigureAwait(false);
+        }
+    }
+
+    private async Task<IActionResult> SaveChangesAsync(Func<IActionResult> successResult)
+    {
+        try
+        {
             await Context.SaveChangesAsync().ConfigureAwait(false);
-            return Ok();
+            return successResult();
+        }
+        catch (Exception)
+        {
+            return Problem(
+                "An error occurred while saving the entity changes.",
+                statusCode: StatusCodes.Status400BadRequest);
         }
     }
 }
