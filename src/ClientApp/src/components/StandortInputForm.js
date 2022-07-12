@@ -76,7 +76,7 @@ export default function StandortInputForm(props) {
           <Controller
             control={control}
             name="gemeinde"
-            defaultValue={GemeindenMap[standort?.gemeinde]}
+            defaultValue={GemeindenMap[standort.gemeinde]}
             render={({ field }) => (
               <TextField
                 {...field}
@@ -104,7 +104,7 @@ export default function StandortInputForm(props) {
             <Controller
               name="userErstellung"
               control={control}
-              defaultValue={standort?.userErstellung}
+              defaultValue={standort.userErstellung}
               render={({ field }) => (
                 <TextField
                   {...field}
@@ -120,7 +120,7 @@ export default function StandortInputForm(props) {
               )}
             />
             <TextField
-              defaultValue={new Date(standort?.erstellungsdatum).toLocaleDateString()}
+              defaultValue={new Date(standort.erstellungsdatum).toLocaleDateString()}
               InputProps={{
                 readOnly: true,
               }}
@@ -133,7 +133,7 @@ export default function StandortInputForm(props) {
             <Controller
               name="userMutation"
               control={control}
-              defaultValue={standort?.userMutation}
+              defaultValue={standort.userMutation}
               render={({ field }) => (
                 <TextField
                   {...field}
@@ -150,7 +150,7 @@ export default function StandortInputForm(props) {
             />
             <TextField
               name="mutationsdatum"
-              defaultValue={standort?.mutationsdatum ? new Date(standort?.mutationsdatum).toLocaleDateString() : null}
+              defaultValue={standort.mutationsdatum ? new Date(standort.mutationsdatum).toLocaleDateString() : null}
               InputProps={{
                 readOnly: true,
               }}
