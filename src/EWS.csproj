@@ -12,6 +12,7 @@
     <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
     <RootNamespace>EWS</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
+    <NoWarn>$(NoWarn),CS8620</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
