@@ -6,7 +6,7 @@
     <IsPackable>false</IsPackable>
     <RootNamespace>EWS</RootNamespace>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <NoWarn>$(NoWarn),CA1014,CS8625</NoWarn>
+    <NoWarn>$(NoWarn),CA1014,CS8620,CS8625</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
