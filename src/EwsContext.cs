@@ -35,13 +35,15 @@ namespace EWS
         public override int SaveChanges()
         {
             ChangeTracker.UpdateChangeInformation();
+            ChangeTracker.UpdateFreigabeAfuFields();
             return base.SaveChanges();
         }
 
         /// <inheritdoc />
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             ChangeTracker.UpdateChangeInformation();
+            ChangeTracker.UpdateFreigabeAfuFields();
             return await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
