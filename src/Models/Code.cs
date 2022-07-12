@@ -7,14 +7,14 @@ namespace EWS.Models
     /// Repräsentiert einen Code in der Datenbank.
     /// </summary>
     [Table("code")]
-    public class Code
+    public class Code : EwsModelBase
     {
         /// <summary>
         /// Die Id des Codes.
         /// </summary>
         [Key]
         [Column("code_id")]
-        public int Id { get; set; }
+        public override int Id { get; set; }
 
         /// <summary>
         /// Foreign Key: ID der Tabelle Codetyp.
@@ -25,7 +25,7 @@ namespace EWS.Models
         /// <summary>
         /// Codetyp des Codes.
         /// </summary>
-        [Column("codetyp_id")]
+        [ForeignKey("CodetypId")]
         public CodeTyp Codetyp { get; set; }
 
         /// <summary>
@@ -45,29 +45,5 @@ namespace EWS.Models
         /// </summary>
         [Column("sort")]
         public int? Sortierung { get; set; }
-
-        /// <summary>
-        /// Datum des Imports des Objektes.
-        /// </summary>
-        [Column("new_date")]
-        public DateTime Erstellungsdatum { get; set; }
-
-        /// <summary>
-        /// Timestamp der letzten Änderung.
-        /// </summary>
-        [Column("mut_date")]
-        public DateTime? Mutationsdatum { get; set; }
-
-        /// <summary>
-        /// Kürzel des Benutzers beim Anlegen des Objekts.
-        /// </summary>
-        [Column("new_usr")]
-        public string UserErstellung { get; set; }
-
-        /// <summary>
-        /// Kürzel des Benutzers bei letzter Änderung.
-        /// </summary>
-        [Column("mut_usr")]
-        public string? UserMutation { get; set; }
     }
 }

@@ -14,7 +14,7 @@ import { Style, Circle, Fill, Stroke } from "ol/style";
 import "ol/ol.css";
 
 export default function DetailMap(props) {
-  const { standorte } = props;
+  const { bohrungen } = props;
   const [map, setMap] = useState();
   const [bohrungenLayer, setBohrungenLayer] = useState();
 
@@ -90,14 +90,13 @@ export default function DetailMap(props) {
 
   // BohrungenLayer
   useEffect(() => {
-    if (standorte && bohrungenLayer) {
+    if (bohrungen && bohrungenLayer) {
       let parsedFeatures;
-      let bohrungen = standorte?.flatMap((s) => s.bohrungen);
-      if (bohrungen.length) {
+      if (bohrungen.length && bohrungen.some((bohrung) => bohrung?.geometrie)) {
         parsedFeatures = bohrungen.map(
           (f) =>
             new Feature({
-              geometry: new Point([f.geometrie.coordinates[0], f.geometrie.coordinates[1]]),
+              geometry: new Point([f.geometrie?.coordinates[0], f.geometrie?.coordinates[1]]),
               Id: f.id,
               Bezeichnung: f.bezeichnung,
               "Standort Id": f.standortId,
@@ -111,14 +110,17 @@ export default function DetailMap(props) {
           features: parsedFeatures,
         })
       );
-      if (bohrungen.length) {
-        const currentExtent = bohrungenLayer.getSource().getExtent();
-        map.getView().fit(currentExtent, {
-          padding: [30, 30, 30, 30],
-        });
+      let currentExtent;
+      if (bohrungen.length && bohrungen.some((bohrung) => bohrung?.geometrie)) {
+        currentExtent = bohrungenLayer.getSource().getExtent();
+      } else {
+        currentExtent = map.getView().getProjection().getExtent();
       }
+      map.getView().fit(currentExtent, {
+        padding: [30, 30, 30, 30],
+      });
     }
-  }, [standorte, bohrungenLayer, map]);
+  }, [bohrungen, bohrungenLayer, map]);
 
   return (
     <div>

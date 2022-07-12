@@ -110,7 +110,8 @@ namespace EWS
                .RuleFor(o => o.DurchmesserBohrloch, f => f.Random.Int(0, 30000))
                .RuleFor(o => o.AblenkungId, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 9).Select(s => s.Id).ToList()))
                .RuleFor(o => o.Ablenkung, _ => default!)
-               .RuleFor(o => o.Qualitaet, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 3).Select(s => s.Id).ToList()))
+               .RuleFor(o => o.QualitaetId, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 3).Select(s => s.Id).ToList()))
+               .RuleFor(o => o.Qualitaet, _ => default!)
                .RuleFor(o => o.QuelleRef, f => f.Company.CompanyName())
                .RuleFor(o => o.QualitaetBemerkung, f => f.Rant.Review())
                .RuleFor(o => o.Bezeichnung, f => f.Commerce.ProductName())
@@ -119,8 +120,7 @@ namespace EWS
                .RuleFor(o => o.UserErstellung, f => f.Person.UserName)
                .RuleFor(o => o.UserMutation, f => f.Internet.UserName())
                .RuleFor(o => o.Bemerkung, f => f.Company.CatchPhrase().OrNull(f, .2f))
-               .RuleFor(o => o.HQualitaetId, f => 3)
-               .RuleFor(o => o.HQualitaet, _ => default!)
+               .RuleFor(o => o.HQualitaet, f => 3)
                .RuleFor(o => o.HAblenkung, f => 9)
                .RuleFor(o => o.Geometrie, f => f.PickRandomParam(new Point(new Coordinate(f.Random.Int(2592400, 2644800), f.Random.Int(1213500, 1261500)))).OrNull(f, .05f)) // Geometries in bounding box of Kanton Solothurn
                .RuleFor(o => o.StandortId, f => f.PickRandom(standorteRange))
@@ -213,6 +213,22 @@ namespace EWS
             context.Vorkommnisse.AddRange(vorkommnisseRange.Select(SeededVorkommnisse));
             context.SaveChangesWithoutUpdatingChangeInformation();
 
+            // Seed Users
+            var user_ids = 80001;
+            var usersRange = Enumerable.Range(user_ids, 100);
+            var fakeUsers = new Faker<User>("de_CH")
+               .StrictMode(true)
+               .RuleFor(o => o.Id, f => user_ids++)
+               .RuleFor(o => o.Name, f => f.Person.UserName)
+               .RuleFor(o => o.Role, f => f.PickRandom<UserRole>())
+               .RuleFor(o => o.Erstellungsdatum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
+               .RuleFor(o => o.Mutationsdatum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
+               .RuleFor(o => o.UserErstellung, f => f.Person.UserName)
+               .RuleFor(o => o.UserMutation, f => f.Person.FullName);
+            User SeededUsers(int seed) => fakeUsers.UseSeed(seed).Generate();
+            context.Users.AddRange(usersRange.Select(SeededUsers));
+            context.SaveChangesWithoutUpdatingChangeInformation();
+
             // Sync all database sequences
             context.Database.ExecuteSqlRaw($"SELECT setval(pg_get_serial_sequence('bohrung.codetyp', 'codetyp_id'), {codetyp_ids - 1})");
             context.Database.ExecuteSqlRaw($"SELECT setval(pg_get_serial_sequence('bohrung.code', 'code_id'), {code_ids - 1})");
@@ -222,6 +238,7 @@ namespace EWS
             context.Database.ExecuteSqlRaw($"SELECT setval(pg_get_serial_sequence('bohrung.bohrprofil', 'bohrprofil_id'),{bohrprofil_ids - 1})");
             context.Database.ExecuteSqlRaw($"SELECT setval(pg_get_serial_sequence('bohrung.schicht', 'schicht_id'),{schicht_ids - 1})");
             context.Database.ExecuteSqlRaw($"SELECT setval(pg_get_serial_sequence('bohrung.vorkommnis', 'vorkommnis_id'),{vorkommnis_ids - 1})");
+            context.Database.ExecuteSqlRaw($"SELECT setval(pg_get_serial_sequence('bohrung.user', 'user_id'),{user_ids - 1})");
 
             transaction.Commit();
         }

@@ -77,29 +77,29 @@ export function Layout(props) {
           </Toolbar>
           <Divider />
           <List component="nav">
-            <ListItemButton>
+            <ListItemButton component="a" href="/">
               <ListItemIcon>
                 <HomeIcon />
               </ListItemIcon>
               <ListItemText primary="Einstiegsseite" />
             </ListItemButton>
-            <ListItemButton>
+            <ListItemButton component="a" href="/benutzerverwaltung">
               <ListItemIcon>
                 <GroupIcon />
               </ListItemIcon>
               <ListItemText primary="Benutzerverwaltung" />
-            </ListItemButton>
-            <ListItemButton component="a" target="_blank" href="/help/index.html">
-              <ListItemIcon>
-                <InfoIcon />
-              </ListItemIcon>
-              <ListItemText primary="Hilfe" />
             </ListItemButton>
             <ListItemButton component="a" target="_blank" href="/export">
               <ListItemIcon>
                 <FileDownloadIcon />
               </ListItemIcon>
               <ListItemText primary="Daten exportieren" />
+            </ListItemButton>
+            <ListItemButton component="a" target="_blank" href="/help/index.html">
+              <ListItemIcon>
+                <InfoIcon />
+              </ListItemIcon>
+              <ListItemText primary="Hilfe" />
             </ListItemButton>
           </List>
         </Drawer>

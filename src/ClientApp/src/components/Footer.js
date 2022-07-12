@@ -18,8 +18,6 @@ export function Footer() {
         color="text.secondary"
         align="center"
         sx={{
-          backgroundColor: (theme) =>
-            theme.palette.mode === "light" ? theme.palette.grey[100] : theme.palette.grey[900],
           position: "fixed",
           left: "0",
           bottom: "0",
