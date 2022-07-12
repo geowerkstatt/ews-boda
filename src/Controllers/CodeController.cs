@@ -6,17 +6,16 @@ namespace EWS;
 
 [ApiController]
 [Route("[controller]")]
-public class CodeController : ControllerBase
+public class CodeController : EwsControllerBase<Code>
 {
-    private readonly EwsContext context;
     public CodeController(EwsContext context)
+    : base(context)
     {
-        this.context = context;
     }
 
     [HttpGet]
     public async Task<IEnumerable<Code>> GetByCodeTypAsync(int codeTypId)
     {
-        return await context.Codes.Where(c => c.CodetypId == codeTypId).Include(c => c.Codetyp).AsNoTracking().ToListAsync().ConfigureAwait(false);
+        return await Context.Codes.Where(c => c.CodetypId == codeTypId).Include(c => c.Codetyp).AsNoTracking().ToListAsync().ConfigureAwait(false);
     }
 }

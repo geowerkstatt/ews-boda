@@ -54,6 +54,27 @@ public class StandortControllerTest
     }
 
     [TestMethod]
+    public async Task GetByIdAsync()
+    {
+        var standortId = 30206;
+        var actionResult = await controller.GetByIdAsync(standortId).ConfigureAwait(false);
+        var okResult = actionResult as OkObjectResult;
+        var standortToTest = okResult.Value as Standort;
+        Assert.AreEqual("Carolyn Lehner", standortToTest.AfuUser);
+        Assert.AreEqual("Slovenia", standortToTest.Bemerkung);
+        Assert.AreEqual("Ergonomic Fresh Shirt", standortToTest.Bezeichnung);
+        Assert.AreEqual(true, standortToTest.FreigabeAfu);
+        Assert.AreEqual(2575, standortToTest.Gemeinde);
+        Assert.AreEqual("iwbyrzqsabb8pd8ahyd2izkurkxu9xt5q60jndil", standortToTest.GrundbuchNr);
+        Assert.AreEqual(1, standortToTest.Bohrungen.Count);
+        Assert.AreEqual("Carolyn_Lehner5", standortToTest.UserErstellung);
+        Assert.AreEqual("Kennith.Pollich", standortToTest.UserMutation);
+        Assert.AreEqual(new DateTime(2021, 3, 6).Date, standortToTest.AfuDatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 8, 6).Date, standortToTest.Erstellungsdatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 12, 9).Date, standortToTest.Mutationsdatum!.Value.Date);
+    }
+
+    [TestMethod]
     public async Task GetByStandortGrundbuchnummer()
     {
         var standorte = await controller.GetAsync(null, "vkflnsvlswy1nfbg4kucmk1bwzaqt7c72mba55vu").ConfigureAwait(false);
