@@ -1,13 +1,5 @@
-﻿using EWS.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.IO;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace EWS;
@@ -42,7 +34,7 @@ public class UserControllerTest
         Assert.AreEqual(UserRole.Administrator, userToTest.Role);
         Assert.AreEqual("Christoph_Schaefer71", userToTest.UserErstellung);
         Assert.AreEqual("Christoph Schäfer", userToTest.UserMutation);
-        Assert.AreEqual(new DateTime(2021, 1, 9).Date, userToTest.Erstellungsdatum.Date);
+        Assert.AreEqual(new DateTime(2021, 1, 9).Date, userToTest.Erstellungsdatum!.Value.Date);
         Assert.AreEqual(new DateTime(2021, 10, 12).Date, userToTest.Mutationsdatum!.Value.Date);
     }
 

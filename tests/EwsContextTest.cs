@@ -1,13 +1,5 @@
-﻿using EWS.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.IO;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace EWS;
@@ -33,7 +25,7 @@ public class EwsContextTest
         {
             Bezeichnung = "BLUEWAFFLE",
             StandortId = newStandort.Id,
-            HQualitaetId = 3,
+            HQualitaet = 3,
             HAblenkung = 9,
         };
         await new BohrungController(ContextFactory.CreateContext()).CreateAsync(newBohrung).ConfigureAwait(false);

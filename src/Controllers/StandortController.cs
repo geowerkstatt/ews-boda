@@ -1,8 +1,4 @@
-﻿using EWS.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
-namespace EWS;
+﻿namespace EWS;
 
 [ApiController]
 [Route("[controller]")]
@@ -14,10 +10,22 @@ public class StandortController : EwsControllerBase<Standort>
     }
 
     [HttpGet]
-    public async Task<IEnumerable<Standort>> GetAsync(
-         int? gemeindenummer = null, string? gbnummer = null, string? bezeichnung = null, DateTime? erstellungsdatum = null, DateTime? mutationsdatum = null)
+    public async Task<IEnumerable<Standort>> GetAsync(int? gemeindenummer = null, string? gbnummer = null, string? bezeichnung = null, DateTime? erstellungsdatum = null, DateTime? mutationsdatum = null)
     {
-        var standorte = Context.Standorte.Include(s => s.Bohrungen).ThenInclude(p => p.Bohrprofile).AsQueryable();
+        var standorte = Context.Standorte
+            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.HTektonik)
+            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.HQualitaet).ThenInclude(b => b.Codetyp)
+            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.HFormationFels)
+            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.HFormationEndtiefe)
+            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Schichten).ThenInclude(s => s.Qualitaet)
+            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Schichten).ThenInclude(s => s.CodeSchicht)
+            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Schichten).ThenInclude(s => s.HQualitaet)
+            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Vorkomnisse).ThenInclude(v => v.HTyp)
+            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Vorkomnisse).ThenInclude(v => v.HQualitaet).ThenInclude(h => h.Codetyp)
+            .Include(s => s.Bohrungen).ThenInclude(b => b.Ablenkung).ThenInclude(a => a.Codetyp)
+            .Include(s => s.Bohrungen).ThenInclude(b => b.Qualitaet).ThenInclude(q => q.Codetyp)
+            .AsQueryable();
+
         if (gemeindenummer != null)
         {
             standorte = standorte.Where(s => s.Gemeinde == gemeindenummer);
@@ -49,5 +57,45 @@ public class StandortController : EwsControllerBase<Standort>
         }
 
         return await standorte.AsNoTracking().ToListAsync().ConfigureAwait(false);
+    }
+
+    [HttpPost]
+    public IActionResult Create(Standort standort)
+    {
+        context.Standorte.Add(standort);
+        context.SaveChanges();
+        return CreatedAtAction(nameof(Standort), standort);
+    }
+
+    [HttpPut]
+    public IActionResult Edit(Standort standort)
+    {
+        var standortToEdit = context.Standorte.SingleOrDefault(x => x.Id == standort.Id);
+        if (standortToEdit == null)
+        {
+            return NotFound();
+        }
+        else
+        {
+            context.Entry(standortToEdit).CurrentValues.SetValues(standort);
+            context.SaveChanges();
+            return Ok();
+        }
+    }
+
+    [HttpDelete]
+    public IActionResult Delete(int id)
+    {
+        var standortToDelete = context.Standorte.SingleOrDefault(x => x.Id == id);
+        if (standortToDelete == null)
+        {
+            return NotFound();
+        }
+        else
+        {
+            context.Remove(standortToDelete);
+            context.SaveChanges();
+            return Ok();
+        }
     }
 }

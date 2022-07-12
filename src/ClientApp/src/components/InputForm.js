@@ -1,38 +1,86 @@
-import React from "react";
-import { Controller, useForm } from "react-hook-form";
-import { GemeindenMap } from "../GemeindenMap";
-import TextField from "@mui/material/TextField";
-import Table from "@mui/material/Table";
-import IconButton from "@mui/material/IconButton";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import EditIcon from "@mui/icons-material/Edit";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import Typography from "@mui/material/Typography";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import Tooltip from "@mui/material/Tooltip";
-import Box from "@mui/material/Box";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import React, { useState } from "react";
+import MobileStepper from "@mui/material/MobileStepper";
 import Button from "@mui/material/Button";
-import DetailMap from "./DetailMap";
+import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
+import StandortForm from "./StandortForm";
+import BohrungForm from "./BohrungForm";
+import BohrprofilForm from "./BohrprofilForm";
 
+<<<<<<< HEAD:src/ClientApp/src/components/StandortInputForm.js
 export default function StandortInputForm(props) {
   const { control, handleSubmit } = useForm({ reValidateMode: "onBlur" });
   const { handleClose, standort, editStandort, addStandort } = props;
+=======
+export default function InputForm(props) {
+  const {
+    handleClose,
+    currentStandort,
+    setCurrentStandort,
+    editStandort,
+    addStandort,
+    showSuccessAlert,
+    setShowSuccessAlert,
+    setAlertMessage,
+    refreshStandort,
+    setConfirm,
+    setOpenConfirmation,
+  } = props;
+>>>>>>> eece0ff (Add bohrung form):src/ClientApp/src/components/InputForm.js
 
-  const onSubmit = (formData) => {
-    handleClose();
-    standort ? editStandort(formData) : addStandort(formData);
+  const [bohrung, setBohrung] = useState(null);
+
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+  const steps = [
+    {
+      label: "zum Standort",
+      form: (
+        <StandortForm
+          handleNext={handleNext}
+          currentStandort={currentStandort}
+          setCurrentStandort={setCurrentStandort}
+          setBohrung={setBohrung}
+          handleClose={handleClose}
+          editStandort={editStandort}
+          addStandort={addStandort}
+          setShowSuccessAlert={setShowSuccessAlert}
+          setAlertMessage={setAlertMessage}
+          refreshStandort={refreshStandort}
+          setConfirm={setConfirm}
+          setOpenConfirmation={setOpenConfirmation}
+        ></StandortForm>
+      ),
+    },
+    {
+      label: "zur Bohrung",
+      form: (
+        <BohrungForm
+          handleNext={handleNext}
+          handleBack={handleBack}
+          bohrung={bohrung}
+          showSuccessAlert={showSuccessAlert}
+          setShowSuccessAlert={setShowSuccessAlert}
+          setAlertMessage={setAlertMessage}
+          refreshStandort={refreshStandort}
+        ></BohrungForm>
+      ),
+    },
+    {
+      label: "zum Bohrprofil",
+      form: <BohrprofilForm handleBack={handleBack}></BohrprofilForm>,
+    },
+  ];
+
+  const [activeStep, setActiveStep] = React.useState(0);
+  const maxSteps = steps.length;
+
   return (
+<<<<<<< HEAD:src/ClientApp/src/components/StandortInputForm.js
     <Box component="form" onSubmit={handleSubmit(onSubmit)}>
       <DialogTitle>{standort ? "Standort bearbeiten" : "Standort erstellen"}</DialogTitle>
       <DialogContent>
@@ -247,5 +295,31 @@ export default function StandortInputForm(props) {
         <Button disabled>Standort freigeben</Button>
       </DialogActions>
     </Box>
+=======
+    <React.Fragment>
+      <MobileStepper
+        variant="dots"
+        steps={maxSteps}
+        position="static"
+        activeStep={activeStep}
+        backButton={
+          <Button
+            size="small"
+            onClick={handleBack}
+            disabled={activeStep === 0}
+            sx={{
+              "&.Mui-disabled": {
+                color: "transparent",
+              },
+            }}
+          >
+            <KeyboardArrowLeft />
+            Zurück {activeStep !== 0 && steps[activeStep - 1].label}
+          </Button>
+        }
+      />
+      <div>{steps[activeStep].form}</div>
+    </React.Fragment>
+>>>>>>> eece0ff (Add bohrung form):src/ClientApp/src/components/InputForm.js
   );
 }

@@ -50,7 +50,8 @@ namespace EWS.Models
         /// <summary>
         /// Codetyp Klassierung der Ablenkung.
         /// </summary>
-        public CodeTyp? Ablenkung { get; set; }
+        [ForeignKey("AblenkungId")]
+        public Code? Ablenkung { get; set; }
 
         /// <summary>
         /// Durchmesser der Bohrlöcher [mm].
@@ -62,7 +63,13 @@ namespace EWS.Models
         /// Qualität der Angaben zur Bohrung.
         /// </summary>
         [Column("quali")]
-        public int? Qualitaet { get; set; }
+        public int? QualitaetId { get; set; }
+
+        /// <summary>
+        /// Codetyp Klassierung der Ablenkung.
+        /// </summary>
+        [ForeignKey("QualitaetId")]
+        public Code? Qualitaet { get; set; }
 
         /// <summary>
         /// Bemerkung zur Qualitätsangabe.
@@ -80,12 +87,7 @@ namespace EWS.Models
         /// Foreign Key: ID des Codetyps für Feld quali.
         /// </summary>
         [Column("h_quali")]
-        public int HQualitaetId { get; set; }
-
-        /// <summary>
-        /// QCodetyps für Feld quali.
-        /// </summary>
-        public CodeTyp? HQualitaet { get; set; }
+        public int HQualitaet { get; set; }
 
         /// <summary>
         /// Foreign Key: ID des Codetyps für Feld ablenkung.

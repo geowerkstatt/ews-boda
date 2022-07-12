@@ -25,7 +25,7 @@ namespace EWS.Models
         /// <summary>
         /// Codetyp des Codes.
         /// </summary>
-        [Column("codetyp_id")]
+        [ForeignKey("CodetypId")]
         public CodeTyp Codetyp { get; set; }
 
         /// <summary>

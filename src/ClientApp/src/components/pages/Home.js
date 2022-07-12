@@ -4,16 +4,16 @@ import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import StandortInputForm from "../StandortInputForm";
+import InputForm from "../InputForm";
 import SearchResults from "../SearchResults";
 import Search from "../Search";
 import MainMap from "../MainMap";
 import Dialog from "@mui/material/Dialog";
-import Alert from "@mui/material/Alert";
 import Tooltip from "@mui/material/Tooltip";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
-
+import { GemeindenMap } from "../../GemeindenMap";
+import SnackbarMessage from "../SnackbarMessage";
 import ConfirmationDialog from "../ConfirmationDialog";
 
 export function Home() {
@@ -24,10 +24,11 @@ export function Home() {
   const [erstellungsDatum, setErstellungsDatum] = useState(null);
   const [mutationsDatum, setMutationsDatum] = useState(null);
   const [hasFilters, setHasFilters] = useState(false);
-  const [openForm, setOpenForm] = useState(false);
+  const [openStandortForm, setOpenStandortForm] = useState(false);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [currentStandort, setCurrentStandort] = useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState(false);
 
   const resetSearch = () => {
     setGbnummer("");
@@ -38,11 +39,6 @@ export function Home() {
     setHasFilters(false);
   };
 
-  const onDelete = (standort) => {
-    setOpenConfirmation(true);
-    setCurrentStandort(standort);
-  };
-
   const confirm = (confirmation) => {
     if (confirmation) {
       deleteStandort(currentStandort);
@@ -50,13 +46,22 @@ export function Home() {
     setOpenConfirmation(false);
   };
 
+  const onDelete = (standort) => {
+    setOpenConfirmation(true);
+    setCurrentStandort(standort);
+  };
+
   const openEditForm = (standort) => {
     setCurrentStandort(standort);
-    setOpenForm(true);
+    setOpenStandortForm(true);
   };
   const openAddForm = () => {
     setCurrentStandort(null);
-    setOpenForm(true);
+    setOpenStandortForm(true);
+  };
+
+  const handleClose = () => {
+    setOpenStandortForm(false);
   };
 
   async function getStandorte() {
@@ -74,6 +79,12 @@ export function Home() {
     setStandorte(features);
   }
 
+  async function refreshStandort(id) {
+    const response = await fetch("/standort/" + id);
+    const standort = await response.json();
+    setCurrentStandort(standort);
+  }
+
   async function addStandort(data) {
     data.bohrungen = [];
     const response = await fetch("/standort", {
@@ -86,10 +97,11 @@ export function Home() {
       body: JSON.stringify(data),
     });
     if (response.ok) {
-      console.log(response);
+      const addedStandort = await response.json();
       setShowSuccessAlert(true);
+      setAlertMessage("Standort wurde hinzugefügt");
       resetSearch();
-      setTimeout(() => setShowSuccessAlert(false), 3000);
+      return addedStandort;
     }
   }
 
@@ -98,6 +110,7 @@ export function Home() {
     Object.entries(data).forEach(([key, value]) => {
       updatedStandort[key] = value;
     });
+    updatedStandort.gemeinde = GemeindenMap[data?.gemeinde];
     const response = await fetch("/standort", {
       method: "PUT",
       cache: "no-cache",
@@ -110,6 +123,8 @@ export function Home() {
     if (response.ok) {
       const updatedStandorte = standorte.map((s) => (s.id === updatedStandort.id ? updatedStandort : s));
       setStandorte(updatedStandorte);
+      setShowSuccessAlert(true);
+      setAlertMessage("Standort wurde editiert.");
     }
   }
 
@@ -194,11 +209,6 @@ export function Home() {
             >
               <MainMap standorte={standorte} />
             </Paper>
-            {showSuccessAlert && (
-              <Alert sx={{ marginTop: 2 }} severity="success">
-                Neuer Standort wurde hinzugefügt.
-              </Alert>
-            )}
           </Grid>
           <Grid item xs={12}>
             {hasFilters && standorte.length > 0 && (
@@ -213,15 +223,26 @@ export function Home() {
             )}
           </Grid>
         </Grid>
-        <Dialog open={openForm} onClose={() => setOpenForm(false)} fullWidth={true} maxWidth="md">
-          <StandortInputForm
-            handleClose={() => setOpenForm(false)}
+        <Dialog open={openStandortForm} fullWidth={true} maxWidth="md">
+          <InputForm
+            handleClose={handleClose}
             editStandort={editStandort}
             addStandort={addStandort}
-            standort={currentStandort}
-          ></StandortInputForm>
+            currentStandort={currentStandort}
+            setCurrentStandort={setCurrentStandort}
+            showSuccessAlert={showSuccessAlert}
+            setShowSuccessAlert={setShowSuccessAlert}
+            setAlertMessage={setAlertMessage}
+            refreshStandort={refreshStandort}
+          ></InputForm>
         </Dialog>
         <ConfirmationDialog open={openConfirmation} confirm={confirm} entityName="Standort"></ConfirmationDialog>
+        <SnackbarMessage
+          showSuccessAlert={showSuccessAlert}
+          setShowSuccessAlert={setShowSuccessAlert}
+          message={alertMessage}
+          variant="success"
+        ></SnackbarMessage>
       </Container>
     </Box>
   );
