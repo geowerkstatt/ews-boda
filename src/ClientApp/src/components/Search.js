@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { Controller, useForm } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import { Autocomplete, Box, Button, Typography } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -6,37 +7,34 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 export default function Search(props) {
-  const {
-    getStandorte,
-    setGemeinde,
-    setGbnummer,
-    setBezeichnung,
-    erstellungsDatum,
-    setErstellungsDatum,
-    mutationsDatum,
-    setMutationsDatum,
-    hasFilters,
-    resetSearch,
-    gemeinden,
-  } = props;
-  const [inputValue, setInputValue] = useState("");
-  const [value, setValue] = useState(null);
+  const { getStandorte, gemeinden } = props;
 
-  const search = (event) => {
-    event.preventDefault();
-    getStandorte();
+  const { control, handleSubmit, formState, reset } = useForm({ reValidateMode: "onChange" });
+  const { isDirty } = formState;
+
+  const onSearch = (formData) => {
+    let query = `?gemeinde=${formData.gemeinde}`;
+    query += `&gbnummer=${formData.gbnummer}&bezeichnung=${formData.bezeichnung}`;
+    query += `&erstellungsdatum=${formData.erstellungsDatum ? new Date(formData.erstellungsDatum).toUTCString() : ""}`;
+    query += `&mutationsdatum=${formData.mutationsDatum ? new Date(formData.mutationsDatum).toUTCString() : ""}`;
+    getStandorte(query);
   };
 
-  const reset = () => {
-    setInputValue("");
-    setValue(null);
-    resetSearch();
+  const resetSearch = () => {
+    reset({
+      gemeinde: null,
+      gbnummer: "",
+      bezeichnung: "",
+      erstellungsDatum: null,
+      mutationsDatum: null,
+    });
+    getStandorte("");
   };
 
   return (
     <Box
       component="form"
-      onSubmit={search}
+      onSubmit={handleSubmit(onSearch)}
       sx={{
         "& .MuiTextField-root": { m: 1, width: "100%", pr: "15px" },
         minHeight: "500px",
@@ -48,62 +46,81 @@ export default function Search(props) {
       <Typography component="h1" variant="h6" color="inherit" noWrap>
         Nach Standort suchen
       </Typography>
-      <Autocomplete
+      <Controller
         name="gemeinde"
-        value={value}
-        onChange={(event, newGemeinde) => {
-          setValue(newGemeinde);
-          setGemeinde(newGemeinde);
-        }}
-        inputValue={inputValue}
-        onInputChange={(event, newInputValue) => {
-          setInputValue(newInputValue);
-        }}
-        options={gemeinden}
-        renderInput={(params) => <TextField variant="standard" type="string" {...params} label="Gemeinde" />}
-      ></Autocomplete>
-      <TextField
-        onChange={(event) => {
-          setGbnummer(event.target.value);
-        }}
-        type="string"
-        name="gbnummer"
-        variant="standard"
-        label="Grundbuchnummer"
-        sx={{ minWidth: 100 }}
+        control={control}
+        defaultValue={null}
+        render={({ field }) => (
+          <Autocomplete
+            {...field}
+            options={gemeinden}
+            value={field.value}
+            onChange={(_, data) => field.onChange(data)}
+            renderInput={(params) => <TextField {...params} label="Gemeinde" type="text" variant="standard" />}
+          />
+        )}
       />
-      <TextField
-        onChange={(event) => {
-          setBezeichnung(event.target.value);
-        }}
-        type="text"
+      <Controller
+        name="gbnummer"
+        control={control}
+        defaultValue={""}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            margin="normal"
+            sx={{ minWidth: 100 }}
+            label="Grundbuchnummer"
+            type="text"
+            fullWidth
+            variant="standard"
+          />
+        )}
+      />
+      <Controller
         name="bezeichnung"
-        variant="standard"
-        label="Bezeichnung"
+        control={control}
+        defaultValue={""}
+        render={({ field }) => (
+          <TextField {...field} margin="normal" label="Bezeichnung" type="text" fullWidth variant="standard" />
+        )}
       />
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <DatePicker
-          label="Erstellungsdatum"
-          value={erstellungsDatum}
-          onChange={(newErstellungsDatum) => {
-            setErstellungsDatum(newErstellungsDatum);
-          }}
-          renderInput={(params) => <TextField variant="standard" {...params} />}
+        <Controller
+          name="erstellungsDatum"
+          control={control}
+          defaultValue={null}
+          render={({ field }) => (
+            <DatePicker
+              label="Erstellungsdatum"
+              disableFuture
+              inputFormat="dd.MM.yyyy"
+              value={field.value}
+              onChange={(value) => field.onChange(value)}
+              renderInput={(params) => <TextField {...field} margin="normal" variant="standard" {...params} />}
+            />
+          )}
         />
       </LocalizationProvider>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <DatePicker
-          label="Mutationsdatum"
-          value={mutationsDatum}
-          onChange={(newMutationsDatum) => {
-            setMutationsDatum(newMutationsDatum);
-          }}
-          renderInput={(params) => <TextField variant="standard" {...params} />}
+        <Controller
+          name="mutationsDatum"
+          control={control}
+          defaultValue={null}
+          render={({ field }) => (
+            <DatePicker
+              label="Mutationsdatum"
+              disableFuture
+              inputFormat="dd.MM.yyyy"
+              value={field.value}
+              onChange={(value) => field.onChange(value)}
+              renderInput={(params) => <TextField {...field} margin="normal" variant="standard" {...params} />}
+            />
+          )}
         />
       </LocalizationProvider>
       <Box sx={{ flexGrow: 1 }}></Box>
-      {hasFilters && (
-        <Button sx={{ marginBottom: 1 }} variant="outlined" onClick={reset}>
+      {isDirty && (
+        <Button sx={{ marginBottom: 1 }} variant="outlined" onClick={resetSearch}>
           Suche zurücksetzen
         </Button>
       )}

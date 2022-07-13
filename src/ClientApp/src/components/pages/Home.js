@@ -17,26 +17,14 @@ import ConfirmationDialog from "../ConfirmationDialog";
 
 export function Home() {
   const [standorte, setStandorte] = useState([]);
-  const [gemeinde, setGemeinde] = useState(null);
-  const [gbnummer, setGbnummer] = useState("");
-  const [bezeichnung, setBezeichnung] = useState("");
-  const [erstellungsDatum, setErstellungsDatum] = useState(null);
-  const [mutationsDatum, setMutationsDatum] = useState(null);
-  const [hasFilters, setHasFilters] = useState(false);
+  const [showSearchResults, setShowSearchResults] = useState(false);
   const [openStandortForm, setOpenStandortForm] = useState(false);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [currentStandort, setCurrentStandort] = useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState(false);
-
-  const resetSearch = () => {
-    setGbnummer("");
-    setBezeichnung("");
-    setGemeinde("");
-    setErstellungsDatum(null);
-    setMutationsDatum(null);
-    setHasFilters(false);
-  };
+  // Cache standorte on client for better performance
+  const [unfilteredStandorte, setUnfilteredStandorte] = useState([]);
 
   const handleClose = () => {
     setOpenStandortForm(false);
@@ -65,18 +53,19 @@ export function Home() {
   };
 
   // Get all standorte
-  async function getStandorte() {
-    let query = `?gemeinde=${gemeinde}&gbnummer=${gbnummer}&bezeichnung=${bezeichnung}`;
-    query += `&erstellungsdatum=${erstellungsDatum ? new Date(erstellungsDatum).toUTCString() : ""}`;
-    query += `&mutationsdatum=${mutationsDatum ? new Date(mutationsDatum).toUTCString() : ""}`;
-    const response = await fetch("/standort" + query);
-    if (response.ok) {
-      const features = await response.json();
-      setHasFilters(
-        // at least one filter paramter is set
-        gemeinde || gbnummer || bezeichnung || erstellungsDatum || mutationsDatum
-      );
-      setStandorte(features);
+  async function getStandorte(query) {
+    if (!query) {
+      //Get cached standorte if no query is present
+      setShowSearchResults(false);
+      setStandorte(unfilteredStandorte);
+    } else {
+      const response = await fetch("/standort" + query);
+      if (response.ok) {
+        const features = await response.json();
+        setStandorte(features);
+        //Show search results only once response has returned.
+        setShowSearchResults(true);
+      }
     }
   }
 
@@ -87,6 +76,7 @@ export function Home() {
       const standort = await response.json();
       setCurrentStandort(standort);
       setStandorte(standorte.map((s) => (s.id === standort.id ? standort : s)));
+      setUnfilteredStandorte(unfilteredStandorte.map((s) => (s.id === standort.id ? standort : s)));
     }
   }
 
@@ -106,8 +96,8 @@ export function Home() {
       const addedStandort = await response.json();
       setShowSuccessAlert(true);
       setAlertMessage("Standort wurde hinzugefügt");
-      resetSearch();
       setCurrentStandort(addedStandort);
+      setUnfilteredStandorte([...unfilteredStandorte, addedStandort]);
     }
   }
 
@@ -141,8 +131,8 @@ export function Home() {
       method: "DELETE",
     });
     if (response.ok) {
-      const updatedStandorte = standorte.filter((s) => s.id !== currentStandort.id);
-      setStandorte(updatedStandorte);
+      setStandorte(standorte.filter((s) => s.id !== currentStandort.id));
+      setUnfilteredStandorte(unfilteredStandorte.filter((s) => s.id !== currentStandort.id));
     }
   }
 
@@ -153,6 +143,7 @@ export function Home() {
       .then((response) => response.json())
       .then((fetchedFeatures) => {
         setStandorte(fetchedFeatures);
+        setUnfilteredStandorte(fetchedFeatures);
       });
   }, []);
 
@@ -193,15 +184,7 @@ export function Home() {
             >
               <Search
                 getStandorte={getStandorte}
-                setGbnummer={setGbnummer}
-                setGemeindenummer={setGemeindenummer}
-                setBezeichnung={setBezeichnung}
-                setErstellungsDatum={setErstellungsDatum}
-                setMutationsDatum={setMutationsDatum}
-                erstellungsDatum={erstellungsDatum}
-                mutationsDatum={mutationsDatum}
-                hasFilters={hasFilters}
-                resetSearch={resetSearch}
+                gemeinden={[...new Set(standorte.map((s) => s.gemeinde).sort())]}
               ></Search>
             </Paper>
           </Grid>
@@ -219,7 +202,7 @@ export function Home() {
             </Paper>
           </Grid>
           <Grid item xs={12}>
-            {hasFilters && standorte.length > 0 && (
+            {showSearchResults && standorte.length > 0 && (
               <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
                 <SearchResults
                   standorte={standorte}
@@ -228,7 +211,7 @@ export function Home() {
                 />
               </Paper>
             )}
-            {hasFilters && standorte.length === 0 && (
+            {showSearchResults && standorte.length === 0 && (
               <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
                 <div>Keine passenden Standorte gefunden.</div>
               </Paper>
