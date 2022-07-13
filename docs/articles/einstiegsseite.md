@@ -38,7 +38,7 @@ Durch Klicken auf den Button _Neuen Standort hinzufügen_ wird ein Dialog geöff
 - Bemerkung
 - Grundbuchnummer
 
-Die folgenden Attribute werden automatisch gesetzt und sind nicht im Dialog sichtbar.
+Die folgenden Attribute werden automatisch gesetzt und sind im Dialog nicht sichtbar.
 
 - Gemeinde (sobald eine Bohrung mit Geometrie vorhanden ist)
 - Erstellungsdatum
@@ -82,7 +82,7 @@ Durch Klicken auf das Hinzufügen-Icon ![Hinzufügen-Icon](../images/add-icon.pn
 - Bemerkung zur Qualitätsangabe
 - Autor der geologischen Aufnahme
 
-Die folgenden Attribute werden automatisch gesetzt und sind nicht im Dialog sichtbar.
+Die folgenden Attribute werden automatisch gesetzt und sind im Dialog nicht sichtbar.
 
 - Erstellungsdatum
 - Benutzername bei Erstellung
@@ -103,7 +103,7 @@ Die folgenden Felder können editiert werden.
 - Bemerkung zur Qualitätsangabe
 - Autor der geologischen Aufnahme
 
-Die folgenden Attribute werden automatisch gesetzt und sind nicht im Dialog sichtbar.
+Die folgenden Attribute werden automatisch gesetzt und sind im Dialog nicht sichtbar.
 
 - Erstellungs- und Mutationsdatum
 - Benutzername bei Erstellung und Mutation
