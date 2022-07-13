@@ -46,15 +46,25 @@ export default function SearchResults(props) {
                 <TableCell>{GemeindenMap[standort.gemeinde]}</TableCell>
                 <TableCell>{standort.grundbuchNr}</TableCell>
                 <TableCell>{standort.bezeichnung}</TableCell>
-                <TableCell>{standort.bohrungen.length}</TableCell>
+                <TableCell>{standort.bohrungen?.length}</TableCell>
                 <TableCell>
                   <Tooltip title="Standort editieren">
-                    <IconButton onClick={() => openEditForm(standort)} color="primary" aria-label="edit standort">
+                    <IconButton
+                      name="edit-button"
+                      onClick={() => openEditForm(standort)}
+                      color="primary"
+                      aria-label="edit standort"
+                    >
                       <EditIcon />
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Standort löschen">
-                    <IconButton onClick={() => onDelete(standort)} color="primary" aria-label="delete standort">
+                    <IconButton
+                      name="delete-button"
+                      onClick={() => onDelete(standort)}
+                      color="primary"
+                      aria-label="delete standort"
+                    >
                       <DeleteIcon />
                     </IconButton>
                   </Tooltip>

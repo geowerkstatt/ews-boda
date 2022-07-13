@@ -96,7 +96,7 @@ export default function StandortForm(props) {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+    <Box component="form" name="standort-form" onSubmit={handleSubmit(onSubmit)}>
       <DialogTitle>{currentStandort ? "Standort bearbeiten" : "Standort erstellen"}</DialogTitle>
       <DialogContent>
         <Controller
@@ -246,7 +246,7 @@ export default function StandortForm(props) {
           Bohrungen ({currentStandort?.bohrungen ? currentStandort.bohrungen.length : 0})
           {currentStandort?.id != null && (
             <Tooltip title="Bohrung hinzufügen">
-              <IconButton color="primary" disabled={currentStandort?.id == null} onClick={addBohrung}>
+              <IconButton color="primary" name="add-button" disabled={currentStandort?.id == null} onClick={addBohrung}>
                 <AddCircleIcon />
               </IconButton>
             </Tooltip>
@@ -289,14 +289,19 @@ export default function StandortForm(props) {
                       <TableCell>{(bohrung.datum && new Date(bohrung.datum).toLocaleDateString()) || null}</TableCell>
                       <TableCell>
                         <Tooltip title="Bohrung editieren">
-                          <IconButton onClick={() => editBohrung(bohrung)} color="primary">
+                          <IconButton onClick={() => editBohrung(bohrung)} name="edit-button" color="primary">
                             <EditIcon />
                           </IconButton>
                         </Tooltip>
                       </TableCell>
                       <TableCell>
                         <Tooltip title="Bohrung löschen">
-                          <IconButton onClick={() => onDelete(bohrung)} color="primary" aria-label="delete bohrung">
+                          <IconButton
+                            onClick={() => onDelete(bohrung)}
+                            name="delete-button"
+                            color="primary"
+                            aria-label="delete bohrung"
+                          >
                             <DeleteIcon />
                           </IconButton>
                         </Tooltip>
