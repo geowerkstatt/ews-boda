@@ -153,7 +153,17 @@ export default function StandortForm(props) {
           control={control}
           defaultValue={currentStandort?.grundbuchNr}
           render={({ field }) => (
-            <TextField {...field} margin="normal" label="Grundbuchnummer" type="text" fullWidth variant="standard" />
+            <TextField
+              {...field}
+              inputProps={{
+                maxLength: 40,
+              }}
+              margin="normal"
+              label="Grundbuchnummer"
+              type="text"
+              fullWidth
+              variant="standard"
+            />
           )}
         />
         {currentStandort && (
