@@ -26,12 +26,15 @@ import DetailMap from "./DetailMap";
 
 export default function BohrungForm(props) {
   const { bohrung, handleNext, handleBack, setShowSuccessAlert, setAlertMessage, refreshStandort } = props;
-  const { control, handleSubmit } = useForm({ reValidateMode: "onBlur" });
+  const { control, handleSubmit, formState, reset } = useForm({ reValidateMode: "onBlur" });
+  const { isDirty } = formState;
   const [ablenkungCodes, setAblenkungCodes] = useState([]);
   const [qualitaetCodes, setQualitaetCodes] = useState([]);
 
   const onSubmit = (formData) => {
-    bohrung.bezeichnung ? submitEditBohrung(formData) : submitAddBohrung(formData);
+    bohrung.bezeichnung
+      ? submitEditBohrung(formData).finally(() => reset(formData))
+      : submitAddBohrung(formData).finally(() => reset(formData));
   };
 
   // Get codes for dropdowns
@@ -94,7 +97,7 @@ export default function BohrungForm(props) {
   }
 
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+    <Box component="form" name="bohrung-form" onSubmit={handleSubmit(onSubmit)}>
       <DialogTitle>{bohrung && bohrung.id ? "Bohrung bearbeiten" : "Bohrung erstellen"}</DialogTitle>
       <DialogContent>
         <Controller
@@ -361,8 +364,8 @@ export default function BohrungForm(props) {
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleBack}>Abbrechen</Button>
-        <Button type="submit">Bohrung Speichern</Button>
+        <Button onClick={handleBack}>{isDirty ? "Abbrechen" : "Schliessen"}</Button>
+        {isDirty && <Button type="submit">Bohrung Speichern</Button>}
       </DialogActions>
     </Box>
   );
