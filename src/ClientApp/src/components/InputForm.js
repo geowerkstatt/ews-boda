@@ -7,16 +7,8 @@ import BohrungForm from "./BohrungForm";
 import BohrprofilForm from "./BohrprofilForm";
 
 export default function InputForm(props) {
-  const {
-    handleClose,
-    currentStandort,
-    setCurrentStandort,
-    editStandort,
-    addStandort,
-    setShowSuccessAlert,
-    setAlertMessage,
-    getStandort,
-  } = props;
+  const { handleClose, currentStandort, editStandort, addStandort, setShowSuccessAlert, setAlertMessage, getStandort } =
+    props;
 
   const [currentBohrung, setCurrentBohrung] = useState(null);
 
@@ -96,7 +88,6 @@ export default function InputForm(props) {
         <StandortForm
           handleNext={handleNext}
           currentStandort={currentStandort}
-          setCurrentStandort={setCurrentStandort}
           setCurrentBohrung={setCurrentBohrung}
           deleteBohrung={deleteBohrung}
           currentBohrung={currentBohrung}

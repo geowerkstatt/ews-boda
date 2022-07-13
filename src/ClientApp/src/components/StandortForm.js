@@ -28,7 +28,6 @@ import ConfirmationDialog from "./ConfirmationDialog";
 export default function StandortForm(props) {
   const {
     currentStandort,
-    setCurrentStandort,
     currentBohrung,
     setCurrentBohrung,
     handleNext,
