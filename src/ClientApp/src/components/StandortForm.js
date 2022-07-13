@@ -38,7 +38,7 @@ export default function StandortForm(props) {
     setShowSuccessAlert,
     setAlertMessage,
   } = props;
-  const { control, handleSubmit, formState, reset } = useForm({ reValidateMode: "onBlur" });
+  const { control, handleSubmit, formState, reset } = useForm({ reValidateMode: "onChange" });
   const { isDirty } = formState;
 
   const [openConfirmation, setOpenConfirmation] = useState(false);
@@ -315,8 +315,10 @@ export default function StandortForm(props) {
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>{isDirty ? "Abbrechen" : "Schliessen"}</Button>
-        {isDirty && <Button type="submit">Standort Speichern</Button>}
+        <Button onClick={handleClose}> {!isDirty ? "Schliessen" : "Abbrechen"}</Button>
+        <Button type="submit" disabled={!isDirty}>
+          Standort Speichern
+        </Button>
         <Button disabled>Standort freigeben</Button>
       </DialogActions>
       <ConfirmationDialog open={openConfirmation} confirm={confirm} entityName="Bohrung"></ConfirmationDialog>

@@ -26,7 +26,7 @@ import DetailMap from "./DetailMap";
 
 export default function BohrungForm(props) {
   const { bohrung, handleNext, handleBack, setShowSuccessAlert, setAlertMessage, refreshStandort } = props;
-  const { control, handleSubmit, formState, reset } = useForm({ reValidateMode: "onBlur" });
+  const { control, handleSubmit, formState, reset } = useForm({ reValidateMode: "onChange" });
   const { isDirty } = formState;
   const [ablenkungCodes, setAblenkungCodes] = useState([]);
   const [qualitaetCodes, setQualitaetCodes] = useState([]);
@@ -74,8 +74,9 @@ export default function BohrungForm(props) {
   }
 
   async function submitEditBohrung(data) {
-    console.log(data);
     const updatedBohrung = bohrung;
+    // ignore bohrprofile on update
+    updatedBohrung.bohrprofile = null;
     Object.entries(data).forEach(([key, value]) => {
       updatedBohrung[key] = value;
     });
@@ -106,7 +107,7 @@ export default function BohrungForm(props) {
           rules={{
             required: true,
           }}
-          defaultValue={bohrung?.bezeichnung}
+          defaultValue={bohrung?.bezeichnung || ""}
           render={({ field, fieldState: { error } }) => (
             <TextField
               {...field}
@@ -125,7 +126,7 @@ export default function BohrungForm(props) {
         <Controller
           name="bemerkung"
           control={control}
-          defaultValue={bohrung?.bemerkung}
+          defaultValue={bohrung?.bemerkung || ""}
           render={({ field }) => (
             <TextField
               {...field}
@@ -166,7 +167,7 @@ export default function BohrungForm(props) {
         <Controller
           name="durchmeser"
           control={control}
-          defaultValue={bohrung?.durchmesserBohrloch}
+          defaultValue={bohrung?.durchmesserBohrloch || ""}
           render={({ field }) => (
             <TextField
               {...field}
@@ -230,7 +231,7 @@ export default function BohrungForm(props) {
         <Controller
           name="bemerkung-qualitaet"
           control={control}
-          defaultValue={bohrung?.qualitaetBemerkung}
+          defaultValue={bohrung?.qualitaetBemerkung || ""}
           render={({ field }) => (
             <TextField
               {...field}
@@ -246,7 +247,7 @@ export default function BohrungForm(props) {
         <Controller
           name="quelleRef"
           control={control}
-          defaultValue={bohrung?.quelleRef}
+          defaultValue={bohrung?.quelleRef || ""}
           render={({ field }) => (
             <TextField
               {...field}
@@ -364,8 +365,10 @@ export default function BohrungForm(props) {
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleBack}>{isDirty ? "Abbrechen" : "Schliessen"}</Button>
-        {isDirty && <Button type="submit">Bohrung Speichern</Button>}
+        <Button onClick={handleBack}>Abbrechen</Button>
+        <Button type="submit" disabled={!isDirty}>
+          Bohrung Speichern
+        </Button>
       </DialogActions>
     </Box>
   );

@@ -104,6 +104,6 @@ namespace EWS.Models
         /// <summary>
         /// Bohrprofile die der Bohrung zugeordnet sind.
         /// </summary>
-        public List<Bohrprofil> Bohrprofile { get; set; }
+        public List<Bohrprofil>? Bohrprofile { get; set; }
     }
 }
