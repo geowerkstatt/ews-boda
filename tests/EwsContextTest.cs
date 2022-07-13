@@ -53,7 +53,7 @@ public class EwsContextTest
             .Single();
         Assert.AreEqual("VIOLETSOURCE", standort.Bezeichnung);
         Assert.AreEqual("BLUEWAFFLE", standort.Bohrungen!.Single().Bezeichnung);
-        Assert.AreEqual("Morbi ut lectus ligula.", standort.Bohrungen!.Single().Bohrprofile.Single().Bemerkung);
+        Assert.AreEqual("Morbi ut lectus ligula.", standort.Bohrungen!.Single().Bohrprofile!.Single().Bemerkung);
 
         // Update Standort with empty Bohrungen collection should not delete Bohrungen from the specified Standort
         var updatedNewStandort = ContextFactory.CreateContext().Standorte.AsNoTracking().Where(x => x.Id == newStandort.Id).First();
@@ -74,7 +74,7 @@ public class EwsContextTest
             .Single();
         Assert.AreEqual("VIOLETYARD REV4", updatedStandort.Bezeichnung);
         Assert.AreEqual("BLUEWAFFLE", updatedStandort.Bohrungen!.Single().Bezeichnung);
-        Assert.AreEqual("Morbi ut lectus ligula.", updatedStandort.Bohrungen!.Single().Bohrprofile.Single().Bemerkung);
+        Assert.AreEqual("Morbi ut lectus ligula.", updatedStandort.Bohrungen!.Single().Bohrprofile!.Single().Bemerkung);
 
         // Delete entire tree (Standort -> Bohrungen -> Bohrprofile)
         await new StandortController(ContextFactory.CreateContext()).DeleteAsync(newStandort.Id).ConfigureAwait(false);
