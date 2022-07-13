@@ -83,6 +83,7 @@ export function Home() {
     const response = await fetch("/standort/" + id);
     const standort = await response.json();
     setCurrentStandort(standort);
+    setStandorte(standorte.map((s) => (s.id === standort.id ? standort : s)));
   }
 
   async function addStandort(data) {
@@ -123,8 +124,7 @@ export function Home() {
       body: JSON.stringify(updatedStandort),
     });
     if (response.ok) {
-      const updatedStandorte = standorte.map((s) => (s.id === updatedStandort.id ? updatedStandort : s));
-      setStandorte(updatedStandorte);
+      refreshStandort(updatedStandort.id);
       setShowSuccessAlert(true);
       setAlertMessage("Standort wurde editiert.");
     }
