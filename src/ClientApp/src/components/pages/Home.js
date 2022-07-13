@@ -240,7 +240,6 @@ export function Home() {
             editStandort={editStandort}
             addStandort={addStandort}
             currentStandort={currentStandort}
-            setCurrentStandort={setCurrentStandort}
             showSuccessAlert={showSuccessAlert}
             setShowSuccessAlert={setShowSuccessAlert}
             setAlertMessage={setAlertMessage}
