@@ -113,7 +113,7 @@ export default function InputForm(props) {
           handleNext={handleNext}
           handleBack={handleBack}
           addBohrung={addBohrung}
-          ediotBohrung={editBohrung}
+          editBohrung={editBohrung}
         ></BohrungForm>
       ),
     },
