@@ -47,7 +47,7 @@ export default function SearchResults(props) {
                 <TableCell>{standort.grundbuchNr}</TableCell>
                 <TableCell>{standort.bezeichnung}</TableCell>
                 <TableCell>{standort.bohrungen?.length}</TableCell>
-                <TableCell>
+                <TableCell align="right">
                   <Tooltip title="Standort editieren">
                     <IconButton
                       name="edit-button"
