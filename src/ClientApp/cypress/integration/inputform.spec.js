@@ -24,7 +24,7 @@ describe("Input form tests", () => {
   it("Open Bohrung Add Form", function () {
     cy.get("button[name=add-button]").scrollIntoView().click();
 
-    cy.get("button[type=submit]").should("not.be.visible");
+    cy.get("button[type=submit]").should("be.disabled");
     cy.get("form[name=bohrung-form]").should("contain", "Bohrung erstellen");
     cy.get("form[name=bohrung-form]")
       .find("input[name=bezeichnung]")
@@ -32,7 +32,7 @@ describe("Input form tests", () => {
       .click({ force: true })
       .type(" And More");
 
-    cy.contains("button", "Bohrung Speichern").scrollIntoView().should("be.visible").scrollIntoView().click();
+    cy.contains("button", "Bohrung Speichern").scrollIntoView().should("not.be.disabled").scrollIntoView().click();
   });
 
   it("Open Bohrung Edit Form", function () {
