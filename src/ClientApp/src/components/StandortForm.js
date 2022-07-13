@@ -29,39 +29,20 @@ export default function StandortForm(props) {
   const {
     currentStandort,
     setCurrentStandort,
-    setBohrung,
+    currentBohrung,
+    setCurrentBohrung,
     handleNext,
     handleClose,
     editStandort,
     addStandort,
-    refreshStandort,
-    setShowSuccessAlert,
-    setAlertMessage,
+    deleteBohrung,
   } = props;
   const { control, handleSubmit, formState, reset } = useForm({ reValidateMode: "onChange" });
   const { isDirty } = formState;
 
   const [openConfirmation, setOpenConfirmation] = useState(false);
-  const [currentBohrung, setCurrentBohrung] = useState(false);
 
-  const editBohrung = (bohrung) => {
-    setBohrung(bohrung);
-    handleNext();
-  };
-
-  const confirm = (confirmation) => {
-    if (confirmation) {
-      deleteBohrung(currentBohrung);
-    }
-    setOpenConfirmation(false);
-  };
-
-  const onDelete = (bohrung) => {
-    setOpenConfirmation(true);
-    setCurrentBohrung(bohrung);
-  };
-
-  const addBohrung = () => {
+  const onAddBohrung = () => {
     let bohrung = {
       standortId: currentStandort.id,
       bohrprofile: [],
@@ -70,29 +51,31 @@ export default function StandortForm(props) {
       // defaultvalues inkl. geometry
       geometrie: { coordinates: [2626955, 1238676], type: "Point" },
     };
-    setBohrung(bohrung);
+    setCurrentBohrung(bohrung);
     handleNext();
   };
 
-  async function deleteBohrung(bohrung) {
-    const response = await fetch("/bohrung?id=" + bohrung.id, {
-      method: "DELETE",
-    });
-    if (response.ok) {
-      refreshStandort(bohrung.standortId);
-      setShowSuccessAlert(true);
-      setAlertMessage("Bohrung wurde gelöscht.");
+  const onEditBohrung = (bohrung) => {
+    setCurrentBohrung(bohrung);
+    handleNext();
+  };
+
+  const onDeleteBohrung = (bohrung) => {
+    setCurrentBohrung(bohrung);
+    setOpenConfirmation(true);
+  };
+
+  const confirmDeleteBohrung = (confirmation) => {
+    if (confirmation) {
+      deleteBohrung(currentBohrung);
     }
-  }
+    setOpenConfirmation(false);
+  };
 
   const onSubmit = (formData) => {
     currentStandort
       ? editStandort(formData).finally(() => reset(formData))
-      : addStandort(formData)
-          .then((s) => {
-            setCurrentStandort(s);
-          })
-          .finally(() => reset(formData));
+      : addStandort(formData).finally(() => reset(formData));
   };
 
   return (
@@ -256,7 +239,12 @@ export default function StandortForm(props) {
           Bohrungen ({currentStandort?.bohrungen ? currentStandort.bohrungen.length : 0})
           {currentStandort?.id != null && (
             <Tooltip title="Bohrung hinzufügen">
-              <IconButton color="primary" name="add-button" disabled={currentStandort?.id == null} onClick={addBohrung}>
+              <IconButton
+                color="primary"
+                name="add-button"
+                disabled={currentStandort?.id == null}
+                onClick={onAddBohrung}
+              >
                 <AddCircleIcon />
               </IconButton>
             </Tooltip>
@@ -298,13 +286,13 @@ export default function StandortForm(props) {
                       <TableCell>{(bohrung.datum && new Date(bohrung.datum).toLocaleDateString()) || null}</TableCell>
                       <TableCell align="right">
                         <Tooltip title="Bohrung editieren">
-                          <IconButton onClick={() => editBohrung(bohrung)} name="edit-button" color="primary">
+                          <IconButton onClick={() => onEditBohrung(bohrung)} name="edit-button" color="primary">
                             <EditIcon />
                           </IconButton>
                         </Tooltip>
                         <Tooltip title="Bohrung löschen">
                           <IconButton
-                            onClick={() => onDelete(bohrung)}
+                            onClick={() => onDeleteBohrung(bohrung)}
                             name="delete-button"
                             color="primary"
                             aria-label="delete bohrung"
@@ -328,7 +316,11 @@ export default function StandortForm(props) {
         </Button>
         <Button disabled>Standort freigeben</Button>
       </DialogActions>
-      <ConfirmationDialog open={openConfirmation} confirm={confirm} entityName="Bohrung"></ConfirmationDialog>
+      <ConfirmationDialog
+        open={openConfirmation}
+        confirm={confirmDeleteBohrung}
+        entityName="Bohrung"
+      ></ConfirmationDialog>
     </Box>
   );
 }

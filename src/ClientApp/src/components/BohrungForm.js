@@ -25,17 +25,11 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import DetailMap from "./DetailMap";
 
 export default function BohrungForm(props) {
-  const { bohrung, handleNext, handleBack, setShowSuccessAlert, setAlertMessage, refreshStandort } = props;
+  const { currentBohrung, handleNext, handleBack, addBohrung, editBohrung } = props;
   const { control, handleSubmit, formState, reset } = useForm({ reValidateMode: "onChange" });
   const { isDirty } = formState;
   const [ablenkungCodes, setAblenkungCodes] = useState([]);
   const [qualitaetCodes, setQualitaetCodes] = useState([]);
-
-  const onSubmit = (formData) => {
-    bohrung.bezeichnung
-      ? submitEditBohrung(formData).finally(() => reset(formData))
-      : submitAddBohrung(formData).finally(() => reset(formData));
-  };
 
   // Get codes for dropdowns
   useEffect(() => {
@@ -50,56 +44,15 @@ export default function BohrungForm(props) {
     getCodes();
   }, []);
 
-  async function submitAddBohrung(data) {
-    const bohrungToAdd = bohrung;
-    Object.entries(data).forEach(([key, value]) => {
-      bohrungToAdd[key] = value;
-    });
-    const response = await fetch("/bohrung", {
-      method: "POST",
-      cache: "no-cache",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(bohrungToAdd),
-    });
-    if (response.ok) {
-      const addedBohrung = await response.json();
-      setShowSuccessAlert(true);
-      setAlertMessage("Bohrung wurde hinzugefügt.");
-      refreshStandort(addedBohrung.standortId);
-      handleBack();
-    }
-  }
-
-  async function submitEditBohrung(data) {
-    const updatedBohrung = bohrung;
-    // ignore bohrprofile on update
-    updatedBohrung.bohrprofile = null;
-    Object.entries(data).forEach(([key, value]) => {
-      updatedBohrung[key] = value;
-    });
-    const response = await fetch("/bohrung", {
-      method: "PUT",
-      cache: "no-cache",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedBohrung),
-    });
-    if (response.ok) {
-      setShowSuccessAlert(true);
-      setAlertMessage("Bohrung wurde editiert.");
-      refreshStandort(updatedBohrung.standortId);
-      handleBack();
-    }
-  }
+  const onSubmit = (formData) => {
+    currentBohrung.bezeichnung
+      ? editBohrung(formData).finally(() => reset(formData))
+      : addBohrung(formData).finally(() => reset(formData));
+  };
 
   return (
     <Box component="form" name="bohrung-form" onSubmit={handleSubmit(onSubmit)}>
-      <DialogTitle>{bohrung && bohrung.id ? "Bohrung bearbeiten" : "Bohrung erstellen"}</DialogTitle>
+      <DialogTitle>{currentBohrung && currentBohrung.id ? "Bohrung bearbeiten" : "Bohrung erstellen"}</DialogTitle>
       <DialogContent>
         <Controller
           name="bezeichnung"
@@ -107,7 +60,7 @@ export default function BohrungForm(props) {
           rules={{
             required: true,
           }}
-          defaultValue={bohrung?.bezeichnung || ""}
+          defaultValue={currentBohrung?.bezeichnung || ""}
           render={({ field, fieldState: { error } }) => (
             <TextField
               {...field}
@@ -126,7 +79,7 @@ export default function BohrungForm(props) {
         <Controller
           name="bemerkung"
           control={control}
-          defaultValue={bohrung?.bemerkung || ""}
+          defaultValue={currentBohrung?.bemerkung || ""}
           render={({ field }) => (
             <TextField
               {...field}
@@ -143,7 +96,7 @@ export default function BohrungForm(props) {
           <Controller
             name="datum"
             control={control}
-            defaultValue={bohrung?.datum != null ? bohrung.datum : null}
+            defaultValue={currentBohrung?.datum != null ? currentBohrung.datum : null}
             render={({ field }) => (
               <DatePicker
                 label="Datum des Bohrbeginns"
@@ -167,7 +120,7 @@ export default function BohrungForm(props) {
         <Controller
           name="durchmeser"
           control={control}
-          defaultValue={bohrung?.durchmesserBohrloch || ""}
+          defaultValue={currentBohrung?.durchmesserBohrloch || ""}
           render={({ field }) => (
             <TextField
               {...field}
@@ -175,7 +128,7 @@ export default function BohrungForm(props) {
               sx={{ width: "47%" }}
               margin="normal"
               label="Durchmesser Bohrloch"
-              type="text"
+              type="number"
               variant="standard"
             />
           )}
@@ -183,7 +136,7 @@ export default function BohrungForm(props) {
         <Controller
           name="ablenkungId"
           control={control}
-          defaultValue={bohrung?.ablenkungId || null}
+          defaultValue={currentBohrung?.ablenkungId || null}
           render={({ field }) => (
             <Autocomplete
               {...field}
@@ -207,7 +160,7 @@ export default function BohrungForm(props) {
         <Controller
           name="qualitaetId"
           control={control}
-          defaultValue={bohrung?.qualitaetId || null}
+          defaultValue={currentBohrung?.qualitaetId || null}
           render={({ field }) => (
             <Autocomplete
               {...field}
@@ -231,7 +184,7 @@ export default function BohrungForm(props) {
         <Controller
           name="bemerkung-qualitaet"
           control={control}
-          defaultValue={bohrung?.qualitaetBemerkung || ""}
+          defaultValue={currentBohrung?.qualitaetBemerkung || ""}
           render={({ field }) => (
             <TextField
               {...field}
@@ -247,7 +200,7 @@ export default function BohrungForm(props) {
         <Controller
           name="quelleRef"
           control={control}
-          defaultValue={bohrung?.quelleRef || ""}
+          defaultValue={currentBohrung?.quelleRef || ""}
           render={({ field }) => (
             <TextField
               {...field}
@@ -260,10 +213,10 @@ export default function BohrungForm(props) {
             />
           )}
         />
-        {bohrung.id && (
+        {currentBohrung.id && (
           <React.Fragment>
             <TextField
-              defaultValue={bohrung?.userErstellung}
+              defaultValue={currentBohrung?.userErstellung}
               sx={{ marginRight: "6%", width: "47%" }}
               InputProps={{
                 readOnly: true,
@@ -274,7 +227,7 @@ export default function BohrungForm(props) {
               variant="standard"
             />
             <TextField
-              defaultValue={new Date(bohrung?.erstellungsdatum).toLocaleDateString()}
+              defaultValue={new Date(currentBohrung?.erstellungsdatum).toLocaleDateString()}
               InputProps={{
                 readOnly: true,
               }}
@@ -285,7 +238,7 @@ export default function BohrungForm(props) {
               variant="standard"
             />
             <TextField
-              defaultValue={bohrung?.userMutation}
+              defaultValue={currentBohrung?.userMutation}
               sx={{ marginRight: "6%", width: "47%" }}
               InputProps={{
                 readOnly: true,
@@ -297,7 +250,9 @@ export default function BohrungForm(props) {
             />
             <TextField
               name="mutationsdatum"
-              defaultValue={bohrung?.mutationsdatum ? new Date(bohrung?.mutationsdatum).toLocaleDateString() : null}
+              defaultValue={
+                currentBohrung?.mutationsdatum ? new Date(currentBohrung?.mutationsdatum).toLocaleDateString() : null
+              }
               InputProps={{
                 readOnly: true,
               }}
@@ -312,22 +267,22 @@ export default function BohrungForm(props) {
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>Lokalität der Bohrung</AccordionSummary>
               </Tooltip>
               <AccordionDetails>
-                <DetailMap bohrungen={[bohrung]}></DetailMap>
+                <DetailMap bohrungen={[currentBohrung]}></DetailMap>
               </AccordionDetails>
             </Accordion>
           </React.Fragment>
         )}
         <Typography sx={{ marginTop: "15px" }} variant="h6" gutterBottom>
-          Bohrprofile ({bohrung?.bohrprofile ? bohrung.bohrprofile.length : 0})
+          Bohrprofile ({currentBohrung?.bohrprofile ? currentBohrung.bohrprofile.length : 0})
           <Tooltip title="Bohrprofil hinzufügen">
             <IconButton color="primary">
               <AddCircleIcon />
             </IconButton>
           </Tooltip>
         </Typography>
-        {bohrung?.bohrprofile?.length > 0 && (
+        {currentBohrung?.bohrprofile?.length > 0 && (
           <React.Fragment>
-            {bohrung?.bohrprofile?.length > 0 && (
+            {currentBohrung?.bohrprofile?.length > 0 && (
               <Table name="seach-results-table" size="small">
                 <TableHead>
                   <TableRow>
@@ -338,7 +293,7 @@ export default function BohrungForm(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {bohrung.bohrprofile.map((bohrprofil) => (
+                  {currentBohrung.bohrprofile.map((bohrprofil) => (
                     <TableRow key={bohrprofil.id}>
                       <TableCell>{new Date(bohrprofil.datum).toLocaleDateString()}</TableCell>
                       <TableCell>{bohrprofil.endteufe}</TableCell>
