@@ -14,7 +14,7 @@ import Title from "./Title";
 import Tooltip from "@mui/material/Tooltip";
 
 export default function SearchResults(props) {
-  const { standorte, openEditForm, onDelete } = props;
+  const { standorte, openEditForm, onDeleteStandort } = props;
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -61,7 +61,7 @@ export default function SearchResults(props) {
                   <Tooltip title="Standort löschen">
                     <IconButton
                       name="delete-button"
-                      onClick={() => onDelete(standort)}
+                      onClick={() => onDeleteStandort(standort)}
                       color="primary"
                       aria-label="delete standort"
                     >

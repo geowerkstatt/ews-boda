@@ -18,16 +18,13 @@ export default function InputForm(props) {
     setCurrentStandort,
     editStandort,
     addStandort,
-    showSuccessAlert,
     setShowSuccessAlert,
     setAlertMessage,
-    refreshStandort,
-    setConfirm,
-    setOpenConfirmation,
+    getStandort,
   } = props;
 >>>>>>> eece0ff (Add bohrung form):src/ClientApp/src/components/InputForm.js
 
-  const [bohrung, setBohrung] = useState(null);
+  const [currentBohrung, setCurrentBohrung] = useState(null);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -36,6 +33,68 @@ export default function InputForm(props) {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
+
+  // Add Bohrung
+  async function addBohrung(data) {
+    const bohrungToAdd = currentBohrung;
+    Object.entries(data).forEach(([key, value]) => {
+      bohrungToAdd[key] = value;
+    });
+    const response = await fetch("/bohrung", {
+      method: "POST",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(bohrungToAdd),
+    });
+    if (response.ok) {
+      const addedBohrung = await response.json();
+      setShowSuccessAlert(true);
+      setAlertMessage("Bohrung wurde hinzugefügt.");
+      getStandort(addedBohrung.standortId);
+      handleBack();
+    }
+  }
+
+  // Edit Bohrung
+  async function editBohrung(data) {
+    const updatedBohrung = currentBohrung;
+    // ignore bohrprofile on update
+    updatedBohrung.bohrprofile = null;
+    Object.entries(data).forEach(([key, value]) => {
+      updatedBohrung[key] = value;
+    });
+    const response = await fetch("/bohrung", {
+      method: "PUT",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedBohrung),
+    });
+    if (response.ok) {
+      setShowSuccessAlert(true);
+      setAlertMessage("Bohrung wurde editiert.");
+      getStandort(updatedBohrung.standortId);
+      handleBack();
+    }
+  }
+
+  // Delete Bohrung
+  async function deleteBohrung(bohrung) {
+    const response = await fetch("/bohrung?id=" + bohrung.id, {
+      method: "DELETE",
+    });
+    if (response.ok) {
+      getStandort(bohrung.standortId);
+      setShowSuccessAlert(true);
+      setAlertMessage("Bohrung wurde gelöscht.");
+    }
+  }
+
   const steps = [
     {
       label: "zum Standort",
@@ -44,15 +103,12 @@ export default function InputForm(props) {
           handleNext={handleNext}
           currentStandort={currentStandort}
           setCurrentStandort={setCurrentStandort}
-          setBohrung={setBohrung}
+          setCurrentBohrung={setCurrentBohrung}
+          deleteBohrung={deleteBohrung}
+          currentBohrung={currentBohrung}
           handleClose={handleClose}
           editStandort={editStandort}
           addStandort={addStandort}
-          setShowSuccessAlert={setShowSuccessAlert}
-          setAlertMessage={setAlertMessage}
-          refreshStandort={refreshStandort}
-          setConfirm={setConfirm}
-          setOpenConfirmation={setOpenConfirmation}
         ></StandortForm>
       ),
     },
@@ -60,13 +116,11 @@ export default function InputForm(props) {
       label: "zur Bohrung",
       form: (
         <BohrungForm
+          currentBohrung={currentBohrung}
           handleNext={handleNext}
           handleBack={handleBack}
-          bohrung={bohrung}
-          showSuccessAlert={showSuccessAlert}
-          setShowSuccessAlert={setShowSuccessAlert}
-          setAlertMessage={setAlertMessage}
-          refreshStandort={refreshStandort}
+          addBohrung={addBohrung}
+          ediotBohrung={editBohrung}
         ></BohrungForm>
       ),
     },

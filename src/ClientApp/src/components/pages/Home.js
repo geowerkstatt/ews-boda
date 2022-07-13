@@ -39,53 +39,60 @@ export function Home() {
     setHasFilters(false);
   };
 
-  const confirm = (confirmation) => {
+  const handleClose = () => {
+    setOpenStandortForm(false);
+  };
+
+  const onAddStandort = () => {
+    setCurrentStandort(null);
+    setOpenStandortForm(true);
+  };
+
+  const onEditStandort = (standort) => {
+    setCurrentStandort(standort);
+    setOpenStandortForm(true);
+  };
+
+  const onDeletStandort = (standort) => {
+    setOpenConfirmation(true);
+    setCurrentStandort(standort);
+  };
+
+  const confirmDeleteStandort = (confirmation) => {
     if (confirmation) {
       deleteStandort(currentStandort);
     }
     setOpenConfirmation(false);
   };
 
-  const onDelete = (standort) => {
-    setOpenConfirmation(true);
-    setCurrentStandort(standort);
-  };
-
-  const openEditForm = (standort) => {
-    setCurrentStandort(standort);
-    setOpenStandortForm(true);
-  };
-  const openAddForm = () => {
-    setCurrentStandort(null);
-    setOpenStandortForm(true);
-  };
-
-  const handleClose = () => {
-    setOpenStandortForm(false);
-  };
-
+  // Get all standorte
   async function getStandorte() {
     let query = `?gemeindenummer=${gemeindenummer ?? ""}`;
     query += `&gbnummer=${gbnummer}&bezeichnung=${bezeichnung}`;
     query += `&erstellungsdatum=${erstellungsDatum ? new Date(erstellungsDatum).toUTCString() : ""}`;
     query += `&mutationsdatum=${mutationsDatum ? new Date(mutationsDatum).toUTCString() : ""}`;
-
     const response = await fetch("/standort" + query);
-    const features = await response.json();
-    setHasFilters(
-      // at least one filter paramter is set
-      gemeindenummer || gbnummer || bezeichnung || erstellungsDatum || mutationsDatum
-    );
-    setStandorte(features);
+    if (response.ok) {
+      const features = await response.json();
+      setHasFilters(
+        // at least one filter paramter is set
+        gemeindenummer || gbnummer || bezeichnung || erstellungsDatum || mutationsDatum
+      );
+      setStandorte(features);
+    }
   }
 
-  async function refreshStandort(id) {
+  // Get standort by Id
+  async function getStandort(id) {
     const response = await fetch("/standort/" + id);
-    const standort = await response.json();
-    setCurrentStandort(standort);
-    setStandorte(standorte.map((s) => (s.id === standort.id ? standort : s)));
+    if (response.ok) {
+      const standort = await response.json();
+      setCurrentStandort(standort);
+      setStandorte(standorte.map((s) => (s.id === standort.id ? standort : s)));
+    }
   }
 
+  // Add standort
   async function addStandort(data) {
     data.bohrungen = [];
     const response = await fetch("/standort", {
@@ -102,10 +109,11 @@ export function Home() {
       setShowSuccessAlert(true);
       setAlertMessage("Standort wurde hinzugefügt");
       resetSearch();
-      return addedStandort;
+      setCurrentStandort(addedStandort);
     }
   }
 
+  // Edit standort
   async function editStandort(data) {
     const updatedStandort = currentStandort;
     Object.entries(data).forEach(([key, value]) => {
@@ -124,12 +132,13 @@ export function Home() {
       body: JSON.stringify(updatedStandort),
     });
     if (response.ok) {
-      refreshStandort(updatedStandort.id);
+      getStandort(updatedStandort.id);
       setShowSuccessAlert(true);
       setAlertMessage("Standort wurde editiert.");
     }
   }
 
+  // Delete standort
   async function deleteStandort(standort) {
     const response = await fetch("/standort?id=" + standort.id, {
       method: "DELETE",
@@ -170,7 +179,7 @@ export function Home() {
                   mt: 3,
                 }}
                 variant="contained"
-                onClick={openAddForm}
+                onClick={onAddStandort}
               >
                 Neuen Standort erstellen
                 <AddIcon
@@ -215,7 +224,7 @@ export function Home() {
           <Grid item xs={12}>
             {hasFilters && standorte.length > 0 && (
               <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                <SearchResults standorte={standorte} openEditForm={openEditForm} onDelete={onDelete} />
+                <SearchResults standorte={standorte} openEditForm={onEditStandort} onDeleteStandort={onDeletStandort} />
               </Paper>
             )}
             {hasFilters && standorte.length === 0 && (
@@ -235,10 +244,14 @@ export function Home() {
             showSuccessAlert={showSuccessAlert}
             setShowSuccessAlert={setShowSuccessAlert}
             setAlertMessage={setAlertMessage}
-            refreshStandort={refreshStandort}
+            getStandort={getStandort}
           ></InputForm>
         </Dialog>
-        <ConfirmationDialog open={openConfirmation} confirm={confirm} entityName="Standort"></ConfirmationDialog>
+        <ConfirmationDialog
+          open={openConfirmation}
+          confirm={confirmDeleteStandort}
+          entityName="Standort"
+        ></ConfirmationDialog>
         <SnackbarMessage
           showSuccessAlert={showSuccessAlert}
           setShowSuccessAlert={setShowSuccessAlert}
