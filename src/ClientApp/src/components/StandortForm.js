@@ -279,7 +279,6 @@ export default function StandortForm(props) {
                     <TableCell>Bezeichnung</TableCell>
                     <TableCell>Datum</TableCell>
                     <TableCell></TableCell>
-                    <TableCell></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -287,14 +286,12 @@ export default function StandortForm(props) {
                     <TableRow key={bohrung.id}>
                       <TableCell>{bohrung.bezeichnung}</TableCell>
                       <TableCell>{(bohrung.datum && new Date(bohrung.datum).toLocaleDateString()) || null}</TableCell>
-                      <TableCell>
+                      <TableCell align="right">
                         <Tooltip title="Bohrung editieren">
                           <IconButton onClick={() => editBohrung(bohrung)} name="edit-button" color="primary">
                             <EditIcon />
                           </IconButton>
                         </Tooltip>
-                      </TableCell>
-                      <TableCell>
                         <Tooltip title="Bohrung löschen">
                           <IconButton
                             onClick={() => onDelete(bohrung)}
