@@ -11,6 +11,8 @@ internal static class ContextFactory
     public static EwsContext CreateContext()
     {
         return new EwsContext(new DbContextOptionsBuilder<EwsContext>()
-            .UseNpgsql("Host=localhost; Username=postgres;Password=VINTAGEMAGIC;Database=ews", option => option.UseNetTopologySuite()).Options);
+            .UseNpgsql(
+            "Host=localhost; Username=postgres;Password=VINTAGEMAGIC;Database=ews",
+            option => option.UseNetTopologySuite().UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)).Options);
     }
 }
