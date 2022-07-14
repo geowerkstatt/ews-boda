@@ -46,14 +46,20 @@ export default function BohrungForm(props) {
   }, []);
 
   const onSubmit = (formData) => {
-    currentBohrung.bezeichnung
+    currentBohrung.id
       ? editBohrung(formData).finally(() => reset(formData))
       : addBohrung(formData).finally(() => reset(formData));
   };
 
   return (
     <Box component="form" name="bohrung-form" onSubmit={handleSubmit(onSubmit)}>
-      <DialogTitle>{currentBohrung && currentBohrung.id ? "Bohrung bearbeiten" : "Bohrung erstellen"}</DialogTitle>
+      <DialogTitle>
+        {currentBohrung?.id
+          ? "Bohrung bearbeiten"
+          : currentBohrung?.bezeichnung
+          ? "Bohrung kopieren"
+          : "Bohrung erstellen"}
+      </DialogTitle>
       <DialogContent>
         <Controller
           name="bezeichnung"
@@ -227,12 +233,22 @@ export default function BohrungForm(props) {
         )}
         <Typography sx={{ marginTop: "15px" }} variant="h6" gutterBottom>
           Bohrprofile ({currentBohrung?.bohrprofile ? currentBohrung.bohrprofile.length : 0})
-          <Tooltip title="Bohrprofil hinzufügen">
-            <IconButton color="primary">
+          {currentBohrung?.id != null && (
+            <Tooltip title="Bohrprofil hinzufügen">
+              <IconButton color="primary">
+                <AddCircleIcon />
+              </IconButton>
+            </Tooltip>
+          )}
+          {currentBohrung?.id == null && (
+            <IconButton color="primary" disabled>
               <AddCircleIcon />
             </IconButton>
-          </Tooltip>
+          )}
         </Typography>
+        {currentBohrung?.id == null && (
+          <Typography>Bitte speichern Sie die Bohrung bevor Sie Bohrprofile hinzufügen.</Typography>
+        )}
         {currentBohrung?.bohrprofile?.length > 0 && (
           <React.Fragment>
             {currentBohrung?.bohrprofile?.length > 0 && (

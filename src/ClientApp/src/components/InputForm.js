@@ -26,6 +26,7 @@ export default function InputForm(props) {
     Object.entries(data).forEach(([key, value]) => {
       bohrungToAdd[key] = value;
     });
+    bohrungToAdd.datum = new Date(Date.parse(bohrungToAdd.datum));
     const response = await fetch("/bohrung", {
       method: "POST",
       cache: "no-cache",
