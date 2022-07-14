@@ -24,7 +24,7 @@ public class EwsContextTest
         {
             Bezeichnung = "VIOLETSOURCE",
             Bemerkung = "Lorem ipsum dolor sit amet.",
-            Gemeinde = 4321,
+            Gemeinde = "QUADRANT",
             GrundbuchNr = "c99abf9d-71fb-4310-9c84-412786744a52",
         };
         await new StandortController(ContextFactory.CreateContext()).CreateAsync(newStandort).ConfigureAwait(false);
