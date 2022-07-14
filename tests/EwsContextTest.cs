@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 namespace EWS;
 
 [TestClass]
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Code readability")]
 public class EwsContextTest
 {
     [TestMethod]
