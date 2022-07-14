@@ -1,11 +1,14 @@
 import standorteGemeinde from "../fixtures/standorteGemeinde.json";
 import standorteGbnummer from "../fixtures/standorteGbnummer.json";
 import standorteBezeichnung from "../fixtures/standorteBezeichnung.json";
+import standorte from "../fixtures/standorte.json";
 
 describe("Home page tests", () => {
   it("Show search result box if search for gemeinde", function () {
+    cy.intercept("/standort", standorte);
+
     cy.intercept(
-      "/standort?gemeindenummer=2521&gbnummer=&bezeichnung=&erstellungsdatum=&mutationsdatum=",
+      "/standort?gemeinde=Heinrichswil-Winistorf&gbnummer=&bezeichnung=&erstellungsdatum=&mutationsdatum=",
       standorteGemeinde
     );
 
@@ -22,7 +25,7 @@ describe("Home page tests", () => {
   it("Show search result box if search for grundbuchnummer", function () {
     const gbnummer = "h5r0wdwsz6ef39zb2d31a0zfou7i4tdguvddcklb";
     cy.intercept(
-      `/standort?gemeindenummer=&gbnummer=${gbnummer}&bezeichnung=&erstellungsdatum=&mutationsdatum=`,
+      `/standort?gemeinde=null&gbnummer=${gbnummer}&bezeichnung=&erstellungsdatum=&mutationsdatum=`,
       standorteGbnummer
     );
     cy.visit("/");
@@ -35,7 +38,7 @@ describe("Home page tests", () => {
 
   it("Show search result box if search for bezeichnung", function () {
     cy.intercept(
-      `/standort?gemeindenummer=&gbnummer=&bezeichnung=Rustic%20Wooden%20Keyboard&erstellungsdatum=&mutationsdatum=`,
+      `/standort?gemeinde=null&gbnummer=&bezeichnung=Rustic%20Wooden%20Keyboard&erstellungsdatum=&mutationsdatum=`,
       standorteBezeichnung
     );
     cy.visit("/");
