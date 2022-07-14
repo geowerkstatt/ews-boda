@@ -1,4 +1,7 @@
-﻿namespace EWS.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace EWS.Models
 {
     /// <summary>
     /// Basisklasse für EWS Bohrdaten Datenbank-Objekte.

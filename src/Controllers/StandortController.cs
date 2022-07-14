@@ -1,4 +1,8 @@
-﻿namespace EWS;
+﻿using EWS.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace EWS;
 
 [ApiController]
 [Route("[controller]")]
