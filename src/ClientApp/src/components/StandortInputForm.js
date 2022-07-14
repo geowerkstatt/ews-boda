@@ -172,7 +172,7 @@ export default function StandortInputForm(props) {
                     defaultValue={standort.freigabeAfu}
                     value={standort.freigabeAfu}
                     render={({ field: { value, ref, ...field } }) => (
-                      <Checkbox {...field} inputRef={ref} checked={!!value} />
+                      <Checkbox {...field} inputRef={ref} checked={value} />
                     )}
                     onClick={(e) => {
                       standort.freigabeAfu = e.target.checked;
