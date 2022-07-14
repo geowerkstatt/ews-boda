@@ -447,8 +447,8 @@ namespace EWS.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("freigabe_afu");
 
-                    b.Property<int?>("Gemeinde")
-                        .HasColumnType("integer")
+                    b.Property<string>("Gemeinde")
+                        .HasColumnType("text")
                         .HasColumnName("gemeinde");
 
                     b.Property<string>("GrundbuchNr")
