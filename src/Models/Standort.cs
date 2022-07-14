@@ -32,7 +32,7 @@ namespace EWS.Models
         /// Gemeindenummer.
         /// </summary>
         [Column("gemeinde")]
-        public int? Gemeinde { get; set; }
+        public string? Gemeinde { get; set; }
 
         /// <summary>
         /// Grundbuchnummer.

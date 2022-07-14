@@ -1,5 +1,4 @@
 import React from "react";
-import { GemeindenMap } from "../GemeindenMap";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -43,7 +42,7 @@ export default function SearchResults(props) {
           {standorte &&
             standorte.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((standort) => (
               <TableRow key={standort.id}>
-                <TableCell>{GemeindenMap[standort.gemeinde]}</TableCell>
+                <TableCell>{standort.gemeinde}</TableCell>
                 <TableCell>{standort.grundbuchNr}</TableCell>
                 <TableCell>{standort.bezeichnung}</TableCell>
                 <TableCell>{standort.bohrungen.length}</TableCell>

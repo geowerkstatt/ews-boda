@@ -18,7 +18,7 @@ import ConfirmationDialog from "../ConfirmationDialog";
 
 export function Home() {
   const [standorte, setStandorte] = useState([]);
-  const [gemeindenummer, setGemeindenummer] = useState(null);
+  const [gemeinde, setGemeinde] = useState(null);
   const [gbnummer, setGbnummer] = useState("");
   const [bezeichnung, setBezeichnung] = useState("");
   const [erstellungsDatum, setErstellungsDatum] = useState(null);
@@ -32,7 +32,7 @@ export function Home() {
   const resetSearch = () => {
     setGbnummer("");
     setBezeichnung("");
-    setGemeindenummer(null);
+    setGemeinde("");
     setErstellungsDatum(null);
     setMutationsDatum(null);
     setHasFilters(false);
@@ -60,8 +60,7 @@ export function Home() {
   };
 
   async function getStandorte() {
-    let query = `?gemeindenummer=${gemeindenummer ?? ""}`;
-    query += `&gbnummer=${gbnummer}&bezeichnung=${bezeichnung}`;
+    let query = `?gemeinde=${gemeinde}&gbnummer=${gbnummer}&bezeichnung=${bezeichnung}`;
     query += `&erstellungsdatum=${erstellungsDatum ? new Date(erstellungsDatum).toUTCString() : ""}`;
     query += `&mutationsdatum=${mutationsDatum ? new Date(mutationsDatum).toUTCString() : ""}`;
 
@@ -69,7 +68,7 @@ export function Home() {
     const features = await response.json();
     setHasFilters(
       // at least one filter paramter is set
-      gemeindenummer || gbnummer || bezeichnung || erstellungsDatum || mutationsDatum
+      gemeinde || gbnummer || bezeichnung || erstellungsDatum || mutationsDatum
     );
     setStandorte(features);
   }
@@ -171,7 +170,7 @@ export function Home() {
               <Search
                 getStandorte={getStandorte}
                 setGbnummer={setGbnummer}
-                setGemeindenummer={setGemeindenummer}
+                setGemeinde={setGemeinde}
                 setBezeichnung={setBezeichnung}
                 setErstellungsDatum={setErstellungsDatum}
                 setMutationsDatum={setMutationsDatum}
@@ -179,6 +178,7 @@ export function Home() {
                 mutationsDatum={mutationsDatum}
                 hasFilters={hasFilters}
                 resetSearch={resetSearch}
+                gemeinden={[...new Set(standorte.map((s) => s.gemeinde).sort())]}
               ></Search>
             </Paper>
           </Grid>

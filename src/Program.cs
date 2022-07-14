@@ -14,6 +14,10 @@ builder.Services.AddDbContext<EwsContext>(x => x.UseNpgsql(connectionString, opt
 
 var app = builder.Build();
 
+var ewsContextOptBuilder = new DbContextOptionsBuilder<EwsContext>().UseNpgsql(connectionString, option => option.UseNetTopologySuite());
+using var context = new EwsContext(ewsContextOptBuilder.Options);
+context.Database.Migrate();
+
 if (!app.Environment.IsDevelopment())
 {
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
@@ -21,9 +25,6 @@ if (!app.Environment.IsDevelopment())
 }
 else
 {
-    var ewsContextOptBuilder = new DbContextOptionsBuilder<EwsContext>().UseNpgsql(connectionString, option => option.UseNetTopologySuite());
-    using var context = new EwsContext(ewsContextOptBuilder.Options);
-
     // Only seed if database is empty
     if (!context.Standorte.Any()) context.SeedData();
 
