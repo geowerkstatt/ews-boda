@@ -98,7 +98,7 @@ public class EwsContextTest
         {
             Bezeichnung = "ENTOURAGEWHISPER",
             Bemerkung = "Lorem ipsum dolor sit amet.",
-            Gemeinde = 4321,
+            Gemeinde = "Herbetswil",
             GrundbuchNr = "9fd82ef7-e8ff-4e95-80fb-24f9c3eaef91",
         };
         await standortController.CreateAsync(standort).ConfigureAwait(false);
