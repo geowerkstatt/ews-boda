@@ -36,7 +36,7 @@ public class DataServiceController : ControllerBase
             List<string?> gemeinden = new(), grundbuchNummern = new();
             foreach (var point in points)
             {
-                var boundingBox = $"{point.EnvelopeInternal.MaxX},{point.EnvelopeInternal.MaxY},{point.EnvelopeInternal.MaxX},{point.EnvelopeInternal.MaxY}";
+                var boundingBox = $"{point.X},{point.Y},{point.X},{point.Y}";
 
                 var gemeinde = await GetDataServiceApiResponse($"{GemeindeLayer}/?bbox={boundingBox}", "gemeindename").ConfigureAwait(false);
                 if (!gemeinden.Contains(gemeinde))
