@@ -7,6 +7,8 @@ builder.Services
     .AddControllersWithViews()
     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new GeoJsonConverterFactory()));
 
+builder.Services.AddHttpClient();
+
 var connectionString = builder.Configuration.GetConnectionString("BohrungContext");
 builder.Services.AddDbContext<EwsContext>(x => x.UseNpgsql(connectionString, option => option.UseNetTopologySuite()));
 
