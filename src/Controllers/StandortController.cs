@@ -15,14 +15,15 @@ public class StandortController : EwsControllerBase<Standort>
 
     [HttpGet]
     public async Task<IEnumerable<Standort>> GetAsync(
-         int? gemeindenummer = null, string? gbnummer = null, string? bezeichnung = null, DateTime? erstellungsdatum = null, DateTime? mutationsdatum = null)
+         string? gemeinde = null, string? gbnummer = null, string? bezeichnung = null, DateTime? erstellungsdatum = null, DateTime? mutationsdatum = null)
     {
         var standorte = Context.Standorte.Include(s => s.Bohrungen).ThenInclude(p => p.Bohrprofile).AsQueryable();
-        if (gemeindenummer != null)
-        {
-            standorte = standorte.Where(s => s.Gemeinde == gemeindenummer);
-        }
+
 #pragma warning disable CA1304 // Specify CultureInfo
+        if (gemeinde != null)
+        {
+            standorte = standorte.Where(s => s.Gemeinde.ToLower().Contains(gemeinde.ToLower()));
+        }
 
         if (!string.IsNullOrEmpty(gbnummer))
         {

@@ -1,6 +1,5 @@
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { GemeindenMap } from "../GemeindenMap";
 import TextField from "@mui/material/TextField";
 import Table from "@mui/material/Table";
 import IconButton from "@mui/material/IconButton";
@@ -79,7 +78,7 @@ export default function StandortInputForm(props) {
           <Controller
             control={control}
             name="gemeinde"
-            defaultValue={GemeindenMap[standort.gemeinde]}
+            defaultValue={standort?.gemeinde}
             render={({ field }) => (
               <TextField
                 {...field}

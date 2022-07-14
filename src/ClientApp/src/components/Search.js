@@ -4,12 +4,11 @@ import { Autocomplete, Box, Button, Typography } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { GemeindenMap } from "../GemeindenMap";
 
 export default function Search(props) {
   const {
     getStandorte,
-    setGemeindenummer,
+    setGemeinde,
     setGbnummer,
     setBezeichnung,
     erstellungsDatum,
@@ -18,6 +17,7 @@ export default function Search(props) {
     setMutationsDatum,
     hasFilters,
     resetSearch,
+    gemeinden,
   } = props;
   const [inputValue, setInputValue] = useState("");
   const [value, setValue] = useState(null);
@@ -53,13 +53,13 @@ export default function Search(props) {
         value={value}
         onChange={(event, newGemeinde) => {
           setValue(newGemeinde);
-          setGemeindenummer(Object.keys(GemeindenMap).find((key) => GemeindenMap[key] === newGemeinde));
+          setGemeinde(newGemeinde);
         }}
         inputValue={inputValue}
         onInputChange={(event, newInputValue) => {
           setInputValue(newInputValue);
         }}
-        options={Object.values(GemeindenMap)}
+        options={gemeinden}
         renderInput={(params) => <TextField variant="standard" type="string" {...params} label="Gemeinde" />}
       ></Autocomplete>
       <TextField

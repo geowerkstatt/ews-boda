@@ -8,6 +8,8 @@ namespace EWS
 {
     public static class EwsContextExtensions
     {
+        private static readonly string[] gemeinden = new[] { "Egerkingen", "Härkingen", "Kestenholz", "Neuendorf", "Niederbuchsiten", "Oberbuchsiten", "Oensingen", "Wolfwil", "Aedermannsdorf", "Balsthal", "Gänsbrunnen", "Herbetswil", "Holderbank (SO)", "Laupersdorf", "Matzendorf", "Mümliswil-Ramiswil", "Welschenrohr", "Aetigkofen", "Aetingen", "Balm bei Messen", "Bibern (SO)", "Biezwil", "Brügglen", "Brunnenthal", "Gossliwil", "Hessigkofen", "Küttigkofen", "Kyburg-Buchegg", "Lüsslingen", "Lüterkofen-Ichertswil", "Lüterswil-Gächliwil", "Messen", "Mühledorf (SO)", "Nennigkofen", "Oberramsern", "Schnottwil", "Tscheppach", "Unterramsern", "Bättwil", "Büren (SO)", "Dornach", "Gempen", "Hochwald", "Hofstetten-Flüh", "Metzerlen-Mariastein", "Nuglar-St. Pantaleon", "Rodersdorf", "Seewen", "Witterswil", "Hauenstein-Ifenthal", "Kienberg", "Lostorf", "Niedererlinsbach", "Niedergösgen", "Obererlinsbach", "Obergösgen", "Rohr (SO)", "Stüsslingen", "Trimbach", "Winznau", "Wisen (SO)", "Aeschi (SO)", "Biberist", "Bolken", "Deitingen", "Derendingen", "Etziken", "Gerlafingen", "Halten", "Heinrichswil-Winistorf", "Hersiwil", "Horriwil", "Hüniken", "Kriegstetten", "Lohn-Ammannsegg", "Luterbach", "Obergerlafingen", "Oekingen", "Recherswil", "Steinhof", "Subingen", "Zuchwil", "Balm bei Günsberg", "Bellach", "Bettlach", "Feldbrunnen-St. Niklaus", "Flumenthal", "Grenchen", "Günsberg", "Hubersdorf", "Kammersrohr", "Langendorf", "Lommiswil", "Niederwil (SO)", "Oberdorf (SO)", "Riedholz", "Rüttenen", "Selzach", "Boningen", "Däniken", "Dulliken", "Eppenberg-Wöschnau", "Fulenbach", "Gretzenbach", "Gunzgen", "Hägendorf", "Kappel (SO)", "Olten", "Rickenbach (SO)", "Schönenwerd", "Starrkirch-Wil", "Walterswil (SO)", "Wangen bei Olten", "Solothurn", "Bärschwil", "Beinwil (SO)", "Breitenbach", "Büsserach", "Erschwil", "Fehren", "Grindel", "Himmelried", "Kleinlützel", "Meltingen", "Nunningen", "Zullwil" };
+
         /// <summary>
         /// Seed data for <see cref="CodeTyp"/>, <see cref="Code"/>,
         /// <see cref="CodeSchicht"/>, <see cref="Schicht"/>, <see cref="Standort"/>,
@@ -86,7 +88,7 @@ namespace EWS
                .RuleFor(o => o.Id, f => standort_ids++)
                .RuleFor(o => o.Bezeichnung, f => f.Commerce.ProductName())
                .RuleFor(o => o.Bemerkung, f => f.Address.Country())
-               .RuleFor(o => o.Gemeinde, f => f.Random.Int(2401, 2622))
+               .RuleFor(o => o.Gemeinde, f => f.PickRandom(gemeinden))
                .RuleFor(o => o.GrundbuchNr, f => f.Random.AlphaNumeric(40))
                .RuleFor(o => o.Erstellungsdatum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
                .RuleFor(o => o.Mutationsdatum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
