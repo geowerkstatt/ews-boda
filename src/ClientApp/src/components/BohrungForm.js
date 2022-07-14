@@ -22,15 +22,20 @@ import { Autocomplete, Box, Button, Typography } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import DetailMap from "./DetailMap";
 import DateUserInputs from "./DateUserInputs";
 
 export default function BohrungForm(props) {
-  const { currentBohrung, handleNext, handleBack, addBohrung, editBohrung } = props;
+  const { currentStandort, currentBohrung, setCurrentBohrung, handleNext, handleBack, addBohrung, editBohrung } = props;
   const { control, handleSubmit, formState, reset } = useForm({ reValidateMode: "onChange" });
   const { isDirty } = formState;
   const [ablenkungCodes, setAblenkungCodes] = useState([]);
   const [qualitaetCodes, setQualitaetCodes] = useState([]);
+
+  const currentBohrungIndex = currentStandort.bohrungen.indexOf(currentBohrung);
+  const numberOfBohrungen = currentStandort.bohrungen.length;
 
   // Get codes for dropdowns
   useEffect(() => {
@@ -51,6 +56,14 @@ export default function BohrungForm(props) {
       : addBohrung(formData).finally(() => reset(formData));
   };
 
+  const onNavigateNext = () => {
+    setCurrentBohrung(currentStandort.bohrungen[currentBohrungIndex + 1]);
+  };
+
+  const onNavigatePrevious = () => {
+    setCurrentBohrung(currentStandort.bohrungen[currentBohrungIndex - 1]);
+  };
+
   return (
     <Box component="form" name="bohrung-form" onSubmit={handleSubmit(onSubmit)}>
       <DialogTitle>
@@ -59,6 +72,20 @@ export default function BohrungForm(props) {
           : currentBohrung?.bezeichnung
           ? "Bohrung kopieren"
           : "Bohrung erstellen"}
+        {currentBohrung?.id && currentBohrungIndex !== 0 && (
+          <Tooltip title="Zur vorherigen Bohrung">
+            <IconButton onClick={onNavigatePrevious} color="primary">
+              <ArrowLeftIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+        {currentBohrung?.id && currentBohrungIndex !== numberOfBohrungen - 1 && (
+          <Tooltip title="zur nächsten Bohrung">
+            <IconButton onClick={onNavigateNext} color="primary">
+              <ArrowRightIcon />
+            </IconButton>
+          </Tooltip>
+        )}
       </DialogTitle>
       <DialogContent>
         <Controller

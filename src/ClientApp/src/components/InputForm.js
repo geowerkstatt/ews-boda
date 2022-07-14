@@ -100,6 +100,8 @@ export default function InputForm(props) {
       label: "zur Bohrung",
       form: (
         <BohrungForm
+          currentStandort={currentStandort}
+          setCurrentBohrung={setCurrentBohrung}
           currentBohrung={currentBohrung}
           handleNext={handleNext}
           handleBack={handleBack}
