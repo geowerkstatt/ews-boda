@@ -67,3 +67,9 @@ Ausserdem werden die dem Standort zugeordneten Bohrungen auf einer Karte dargest
 ## Standorte löschen
 
 In der Tabelle mit gefundenen Standorten unterhalb der Suchmaske können einzelne Standorte durch Klicken auf das Löschen-Icon ![Löschen-Icon](../images/delete-icon.png) gelöscht werden.
+
+## Standorte freigeben / Freigabe aufheben
+
+![Freigabe AfU](../images/freigabe-afu-icon.png)
+
+Beim Bearbeiten von Standorten können Benutzer mit der Rolle **_Sachbearbeiter AfU_** und **_Administrator_** Standorte freigeben und diese auch wieder aufheben. Die Felder _AfU Freigabe erfolgt durch_ und _AfU Freigabe erfolgt am_ werden automatisch ausgefüllt und nur angezeigt wenn die Freigabe erfolgt ist.
