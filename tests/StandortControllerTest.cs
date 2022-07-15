@@ -75,6 +75,14 @@ public class StandortControllerTest
     }
 
     [TestMethod]
+    public async Task GetByIdWithInexistentStandort()
+    {
+        var inexistentStandortId = 996310875;
+        var actionResult = await controller.GetByIdAsync(inexistentStandortId).ConfigureAwait(false);
+        Assert.AreEqual(typeof(NotFoundResult), actionResult.GetType());
+    }
+
+    [TestMethod]
     public async Task GetByStandortGrundbuchnummer()
     {
         var standorte = await controller.GetAsync(null, "vkflnsvlswy1nfbg4kucmk1bwzaqt7c72mba55vu").ConfigureAwait(false);
