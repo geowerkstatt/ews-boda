@@ -16,19 +16,7 @@ public class StandortController : EwsControllerBase<Standort>
     [HttpGet]
     public async Task<IEnumerable<Standort>> GetAsync(int? gemeindenummer = null, string? gbnummer = null, string? bezeichnung = null, DateTime? erstellungsdatum = null, DateTime? mutationsdatum = null)
     {
-        var standorte = Context.Standorte
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.HTektonik)
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.HQualitaet).ThenInclude(b => b.Codetyp)
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.HFormationFels)
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.HFormationEndtiefe)
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Schichten).ThenInclude(s => s.Qualitaet)
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Schichten).ThenInclude(s => s.CodeSchicht)
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Schichten).ThenInclude(s => s.HQualitaet)
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Vorkomnisse).ThenInclude(v => v.HTyp)
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Vorkomnisse).ThenInclude(v => v.HQualitaet).ThenInclude(h => h.Codetyp)
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Ablenkung).ThenInclude(a => a.Codetyp)
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Qualitaet).ThenInclude(q => q.Codetyp)
-            .AsQueryable();
+        var standorte = GetAll();
 
         if (gemeindenummer != null)
         {
@@ -71,7 +59,20 @@ public class StandortController : EwsControllerBase<Standort>
     [Route("{id}")]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
-        var standort = await Context.Standorte
+        var standort = await GetAll().SingleOrDefaultAsync(s => s.Id == id).ConfigureAwait(false);
+        if (standort == null)
+        {
+            return NotFound();
+        }
+        else
+        {
+            return Ok(standort);
+        }
+    }
+
+    private IQueryable<Standort> GetAll()
+    {
+        return Context.Standorte
             .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.HTektonik)
             .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.HQualitaet).ThenInclude(b => b.Codetyp)
             .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.HFormationFels)
@@ -82,14 +83,6 @@ public class StandortController : EwsControllerBase<Standort>
             .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Vorkomnisse).ThenInclude(v => v.HTyp)
             .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Vorkomnisse).ThenInclude(v => v.HQualitaet).ThenInclude(h => h.Codetyp)
             .Include(s => s.Bohrungen).ThenInclude(b => b.Ablenkung).ThenInclude(a => a.Codetyp)
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Qualitaet).ThenInclude(q => q.Codetyp).SingleOrDefaultAsync(s => s.Id == id).ConfigureAwait(false);
-        if (standort == null)
-        {
-            return NotFound();
-        }
-        else
-        {
-            return Ok(standort);
-        }
+            .Include(s => s.Bohrungen).ThenInclude(b => b.Qualitaet).ThenInclude(q => q.Codetyp).AsQueryable();
     }
 }
