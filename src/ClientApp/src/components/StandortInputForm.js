@@ -20,6 +20,9 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import DetailMap from "./DetailMap";
 
 export default function StandortInputForm(props) {
@@ -103,7 +106,7 @@ export default function StandortInputForm(props) {
             <Controller
               name="userErstellung"
               control={control}
-              defaultValue={standort?.userErstellung}
+              defaultValue={standort.userErstellung}
               render={({ field }) => (
                 <TextField
                   {...field}
@@ -119,7 +122,7 @@ export default function StandortInputForm(props) {
               )}
             />
             <TextField
-              defaultValue={new Date(standort?.erstellungsdatum).toLocaleDateString()}
+              defaultValue={new Date(standort.erstellungsdatum).toLocaleDateString()}
               InputProps={{
                 readOnly: true,
               }}
@@ -132,7 +135,7 @@ export default function StandortInputForm(props) {
             <Controller
               name="userMutation"
               control={control}
-              defaultValue={standort?.userMutation}
+              defaultValue={standort.userMutation}
               render={({ field }) => (
                 <TextField
                   {...field}
@@ -149,7 +152,7 @@ export default function StandortInputForm(props) {
             />
             <TextField
               name="mutationsdatum"
-              defaultValue={standort?.mutationsdatum ? new Date(standort?.mutationsdatum).toLocaleDateString() : null}
+              defaultValue={standort.mutationsdatum ? new Date(standort.mutationsdatum).toLocaleDateString() : null}
               InputProps={{
                 readOnly: true,
               }}
@@ -159,36 +162,59 @@ export default function StandortInputForm(props) {
               type="text"
               variant="standard"
             />
-            <Controller
-              name="afuUser"
-              control={control}
-              defaultValue={standort?.afuUser}
-              render={({ field }) => (
+            <FormGroup sx={{ marginTop: "3%" }}>
+              <FormControlLabel
+                label="Freigabe AfU"
+                control={
+                  <Controller
+                    name="freigabeAfu"
+                    control={control}
+                    defaultValue={standort.freigabeAfu}
+                    value={standort.freigabeAfu}
+                    render={({ field: { value, ref, ...field } }) => (
+                      <Checkbox {...field} inputRef={ref} checked={value} />
+                    )}
+                    onClick={(e) => {
+                      standort.freigabeAfu = e.target.checked;
+                    }}
+                  />
+                }
+              />
+            </FormGroup>
+            {standort.freigabeAfu && (
+              <React.Fragment>
+                <Controller
+                  name="afuUser"
+                  control={control}
+                  defaultValue={standort.afuUser}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      sx={{ marginRight: "6%", width: "47%" }}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      margin="normal"
+                      label="AfU Freigabe erfolgt durch"
+                      type="text"
+                      variant="standard"
+                    />
+                  )}
+                />
                 <TextField
-                  {...field}
-                  sx={{ marginRight: "6%", width: "47%" }}
+                  name="afuDatum"
+                  defaultValue={standort.afuDatum ? new Date(standort.afuDatum).toLocaleDateString() : null}
                   InputProps={{
                     readOnly: true,
                   }}
+                  sx={{ width: "47%" }}
                   margin="normal"
-                  label="AfU Freigabe erfolgt durch"
+                  label="AfU Freigabe erfolgt am"
                   type="text"
                   variant="standard"
                 />
-              )}
-            />
-            <TextField
-              name="afuDatum"
-              defaultValue={standort?.afuDatum ? new Date(standort?.afuDatum).toLocaleDateString() : null}
-              InputProps={{
-                readOnly: true,
-              }}
-              sx={{ width: "47%" }}
-              margin="normal"
-              label="AfU Freigabe erfolgt am"
-              type="text"
-              variant="standard"
-            />
+              </React.Fragment>
+            )}
           </React.Fragment>
         )}
         <Typography sx={{ marginTop: "15px" }} variant="h6" gutterBottom>
@@ -243,7 +269,6 @@ export default function StandortInputForm(props) {
       <DialogActions>
         <Button onClick={handleClose}>Abbrechen</Button>
         <Button type="submit">Speichern</Button>
-        <Button disabled>Standort freigeben</Button>
       </DialogActions>
     </Box>
   );

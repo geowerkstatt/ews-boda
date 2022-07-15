@@ -16,7 +16,6 @@ namespace EWS;
 public class EwsContextTest
 {
     [TestMethod]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "Code readability")]
     public async Task CascadeDelete()
     {
         // Create new tree (Standort -> Bohrungen -> Bohrprofile) by adding one by one.
@@ -89,5 +88,58 @@ public class EwsContextTest
         Assert.IsNull(await ContextFactory.CreateContext().Standorte.FindAsync(newStandort.Id).ConfigureAwait(false));
         Assert.IsNull(await ContextFactory.CreateContext().Bohrungen.FindAsync(newBohrung.Id).ConfigureAwait(false));
         Assert.IsNull(await ContextFactory.CreateContext().Bohrprofile.FindAsync(newBohrprofil.Id).ConfigureAwait(false));
+    }
+
+    [TestMethod]
+    public async Task UpdateFreigabeAfuFieldsOnFreigabe()
+    {
+        var standortController = new StandortController(ContextFactory.CreateContext());
+        var standort = new Standort
+        {
+            Bezeichnung = "ENTOURAGEWHISPER",
+            Bemerkung = "Lorem ipsum dolor sit amet.",
+            Gemeinde = "Herbetswil",
+            GrundbuchNr = "9fd82ef7-e8ff-4e95-80fb-24f9c3eaef91",
+        };
+        await standortController.CreateAsync(standort).ConfigureAwait(false);
+
+        // Assert Standort (not yet released)
+        Assert.AreEqual("ENTOURAGEWHISPER", standort.Bezeichnung);
+        Assert.AreEqual(false, standort.FreigabeAfu);
+        Assert.IsNull(standort.AfuUser);
+        Assert.IsNull(standort.AfuDatum);
+
+        standort.FreigabeAfu = true;
+        await standortController.EditAsync(standort).ConfigureAwait(false);
+
+        // Assert Standort (released)
+        Assert.AreEqual("ENTOURAGEWHISPER", standort.Bezeichnung);
+        Assert.AreEqual(true, standort.FreigabeAfu);
+        Assert.IsNotNull(standort.AfuUser);
+        Assert.IsNotNull(standort.AfuDatum);
+
+        // Update Standort again and assert original Freigabe fields don't change.
+        var originalAfuUser = standort.AfuUser;
+        var origianlAfuDatum = standort.AfuDatum.Value.Ticks;
+
+        standort.Bezeichnung = "VIOLENTFELONY";
+        await standortController.EditAsync(standort).ConfigureAwait(false);
+
+        Assert.AreEqual("VIOLENTFELONY", standort.Bezeichnung);
+        Assert.AreEqual(true, standort.FreigabeAfu);
+        Assert.AreEqual(originalAfuUser, standort.AfuUser);
+        Assert.AreEqual(origianlAfuDatum, standort.AfuDatum.Value.Ticks);
+
+        // Remove Freigabe and assert fields get restored to their default values.
+        standort.FreigabeAfu = false;
+        await standortController.EditAsync(standort).ConfigureAwait(false);
+
+        Assert.AreEqual("VIOLENTFELONY", standort.Bezeichnung);
+        Assert.AreEqual(false, standort.FreigabeAfu);
+        Assert.IsNull(standort.AfuUser);
+        Assert.IsNull(standort.AfuDatum);
+
+        // Cleanup
+        await standortController.DeleteAsync(standort.Id).ConfigureAwait(false);
     }
 }

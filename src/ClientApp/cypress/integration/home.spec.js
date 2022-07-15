@@ -53,4 +53,33 @@ describe("Home page tests", () => {
     cy.visit("/");
     cy.get("div[class=map-container]").should("be.visible");
   });
+
+  it("Check and uncheck AfU Freigabe", function () {
+    cy.intercept("/standort*", standorteGemeinde);
+    cy.intercept("PUT", "/standort").as("editStandortFreigabe");
+
+    cy.visit("/");
+    cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
+    cy.get("button[name=submit-button]").should("be.visible").click();
+
+    // check Freigabe AfU
+    cy.contains("td", "Generic Steel Pants").siblings().find("[aria-label='edit standort']").click();
+    cy.get('[type="checkbox"]').should("not.be.checked").check().should("be.checked");
+    cy.get('button:contains("Speichern")').click();
+    cy.wait("@editStandortFreigabe")
+      .its("request")
+      .then((request) => {
+        expect(JSON.stringify(request.body)).to.include('"freigabeAfu":true');
+      });
+
+    // Uncheck Freigabe AfU
+    cy.contains("td", "Generic Steel Pants").siblings().find("[aria-label='edit standort']").click();
+    cy.get('[type="checkbox"]').should("be.checked").uncheck().should("not.be.checked");
+    cy.get('button:contains("Speichern")').click();
+    cy.wait("@editStandortFreigabe")
+      .its("request")
+      .then((request) => {
+        expect(JSON.stringify(request.body)).to.include('"freigabeAfu":false');
+      });
+  });
 });
