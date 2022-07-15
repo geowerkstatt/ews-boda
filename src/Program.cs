@@ -10,12 +10,13 @@ builder.Services
 builder.Services.AddHttpClient();
 
 var connectionString = builder.Configuration.GetConnectionString("BohrungContext");
-builder.Services.AddDbContext<EwsContext>(x => x.UseNpgsql(connectionString, option => option.UseNetTopologySuite()));
+builder.Services.AddDbContext<EwsContext>(x => x.UseNpgsql(connectionString, option => option.UseNetTopologySuite().UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 
 var app = builder.Build();
 
-var ewsContextOptBuilder = new DbContextOptionsBuilder<EwsContext>().UseNpgsql(connectionString, option => option.UseNetTopologySuite());
-using var context = new EwsContext(ewsContextOptBuilder.Options);
+// Migrate db changes on startup
+using var scope = app.Services.CreateScope();
+using var context = scope.ServiceProvider.GetRequiredService<EwsContext>();
 context.Database.Migrate();
 
 if (!app.Environment.IsDevelopment())
