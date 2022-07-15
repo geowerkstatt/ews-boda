@@ -41,7 +41,7 @@ public class StandortController : EwsControllerBase<Standort>
 
         if (erstellungsdatum != null)
         {
-            standorte = standorte.Where(s => s.Erstellungsdatum!.Date == TimeZoneInfo.ConvertTimeToUtc(erstellungsdatum.Value, ut).Date);
+            standorte = standorte.Where(s => s.Erstellungsdatum != null && s.Erstellungsdatum!.Value.Date == TimeZoneInfo.ConvertTimeToUtc(erstellungsdatum.Value, ut).Date);
         }
 
         if (mutationsdatum != null)
