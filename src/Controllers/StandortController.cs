@@ -73,16 +73,7 @@ public class StandortController : EwsControllerBase<Standort>
     private IQueryable<Standort> GetAll()
     {
         return Context.Standorte
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.HTektonik)
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.HQualitaet).ThenInclude(b => b.Codetyp)
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.HFormationFels)
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.HFormationEndtiefe)
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Schichten).ThenInclude(s => s.Qualitaet)
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Schichten).ThenInclude(s => s.CodeSchicht)
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Schichten).ThenInclude(s => s.HQualitaet)
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Vorkomnisse).ThenInclude(v => v.HTyp)
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Vorkomnisse).ThenInclude(v => v.HQualitaet).ThenInclude(h => h.Codetyp)
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Ablenkung).ThenInclude(a => a.Codetyp)
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Qualitaet).ThenInclude(q => q.Codetyp).AsQueryable();
+            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Schichten)
+            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Vorkomnisse).AsQueryable();
     }
 }
