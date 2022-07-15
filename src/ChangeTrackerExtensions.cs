@@ -1,4 +1,5 @@
-﻿using EWS.Models;
+﻿using EWS.Authentication;
+using EWS.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -6,23 +7,20 @@ namespace EWS
 {
     public static class ChangeTrackerExtensions
     {
-        internal static void UpdateChangeInformation(this ChangeTracker changeTracker)
+        internal static void UpdateChangeInformation(this ChangeTracker changeTracker, UserContext userContext)
         {
             var entities = changeTracker.Entries<IDateUserSettable>();
-
-            // Replace as soon as authentication is available.
-            string currentUser = "Temporary Test User";
             foreach (var entity in entities)
             {
                 if (entity.State == EntityState.Added)
                 {
                     entity.Entity.Erstellungsdatum = DateTime.Now.ToUniversalTime();
-                    entity.Entity.UserErstellung = currentUser;
+                    entity.Entity.UserErstellung = userContext.CurrentUser.Name;
                 }
                 else
                 {
                     entity.Entity.Mutationsdatum = DateTime.Now.ToUniversalTime();
-                    entity.Entity.UserMutation = currentUser;
+                    entity.Entity.UserMutation = userContext.CurrentUser.Name;
                 }
             }
         }
@@ -33,16 +31,15 @@ namespace EWS
         /// </summary>
         /// <param name="changeTracker"><see cref="ChangeTracker"/> which provides access to
         /// change tracking information.</param>
-        internal static void UpdateFreigabeAfuFields(this ChangeTracker changeTracker)
+        /// <param name="userContext">The context for the current user.</param>
+        internal static void UpdateFreigabeAfuFields(this ChangeTracker changeTracker, UserContext userContext)
         {
-            // Replace as soon as authentication is available.
-            string currentUser = "Temporary Test User";
             foreach (var entry in changeTracker.Entries<Standort>())
             {
                 if (entry.Entity.FreigabeAfu)
                 {
                     entry.Entity.AfuDatum ??= DateTime.Now.ToUniversalTime();
-                    entry.Entity.AfuUser ??= currentUser;
+                    entry.Entity.AfuUser ??= userContext.CurrentUser.Name;
                 }
                 else
                 {

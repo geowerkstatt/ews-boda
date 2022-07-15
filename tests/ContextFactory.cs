@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EWS.Authentication;
+using EWS.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace EWS;
 
@@ -13,6 +15,7 @@ internal static class ContextFactory
         return new EwsContext(
             new DbContextOptionsBuilder<EwsContext>().UseNpgsql(
                 "Host=localhost; Username=postgres;Password=VINTAGEMAGIC;Database=ews",
-                option => option.UseNetTopologySuite().UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)).Options);
+                option => option.UseNetTopologySuite().UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)).Options,
+            new UserContext { CurrentUser = new User { Name = "PEEVEDSPORK" } });
     }
 }
