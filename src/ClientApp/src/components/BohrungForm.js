@@ -118,7 +118,7 @@ export default function BohrungForm(props) {
           />
         </LocalizationProvider>
         <Controller
-          name="durchmeser"
+          name="durchmesser"
           control={control}
           defaultValue={currentBohrung?.durchmesserBohrloch || ""}
           render={({ field }) => (
