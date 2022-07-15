@@ -23,6 +23,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import DetailMap from "./DetailMap";
+import DateUserInputs from "./DateUserInputs";
 
 export default function BohrungForm(props) {
   const { currentBohrung, handleNext, handleBack, addBohrung, editBohrung } = props;
@@ -213,64 +214,16 @@ export default function BohrungForm(props) {
             />
           )}
         />
+        {currentBohrung?.id && <DateUserInputs formObject={currentBohrung}></DateUserInputs>}
         {currentBohrung.id && (
-          <React.Fragment>
-            <TextField
-              defaultValue={currentBohrung?.userErstellung}
-              sx={{ marginRight: "6%", width: "47%" }}
-              InputProps={{
-                readOnly: true,
-              }}
-              margin="normal"
-              label="Erstellt durch"
-              type="text"
-              variant="standard"
-            />
-            <TextField
-              defaultValue={new Date(currentBohrung?.erstellungsdatum).toLocaleDateString()}
-              InputProps={{
-                readOnly: true,
-              }}
-              sx={{ width: "47%" }}
-              margin="normal"
-              label="Erstellt am"
-              type="text"
-              variant="standard"
-            />
-            <TextField
-              defaultValue={currentBohrung?.userMutation}
-              sx={{ marginRight: "6%", width: "47%" }}
-              InputProps={{
-                readOnly: true,
-              }}
-              margin="normal"
-              label="Zuletzt geändert durch"
-              type="text"
-              variant="standard"
-            />
-            <TextField
-              name="mutationsdatum"
-              defaultValue={
-                currentBohrung?.mutationsdatum ? new Date(currentBohrung?.mutationsdatum).toLocaleDateString() : null
-              }
-              InputProps={{
-                readOnly: true,
-              }}
-              sx={{ width: "47%" }}
-              margin="normal"
-              label="Zuletzt geändert am"
-              type="text"
-              variant="standard"
-            />
-            <Accordion sx={{ boxShadow: "none" }} defaultExpanded={true}>
-              <Tooltip title="Übersichtskarte anzeigen">
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>Lokalität der Bohrung</AccordionSummary>
-              </Tooltip>
-              <AccordionDetails>
-                <DetailMap bohrungen={[currentBohrung]}></DetailMap>
-              </AccordionDetails>
-            </Accordion>
-          </React.Fragment>
+          <Accordion sx={{ boxShadow: "none" }} defaultExpanded={true}>
+            <Tooltip title="Übersichtskarte anzeigen">
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>Lokalität der Bohrung</AccordionSummary>
+            </Tooltip>
+            <AccordionDetails>
+              <DetailMap bohrungen={[currentBohrung]}></DetailMap>
+            </AccordionDetails>
+          </Accordion>
         )}
         <Typography sx={{ marginTop: "15px" }} variant="h6" gutterBottom>
           Bohrprofile ({currentBohrung?.bohrprofile ? currentBohrung.bohrprofile.length : 0})

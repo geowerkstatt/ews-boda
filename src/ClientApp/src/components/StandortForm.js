@@ -24,6 +24,7 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import DetailMap from "./DetailMap";
 import ConfirmationDialog from "./ConfirmationDialog";
+import DateUserInputs from "./DateUserInputs";
 
 export default function StandortForm(props) {
   const {
@@ -150,59 +151,7 @@ export default function StandortForm(props) {
         />
         {currentStandort && (
           <React.Fragment>
-            <TextField
-              defaultValue={currentStandort?.userErstellung}
-              InputProps={{
-                readOnly: true,
-              }}
-              sx={{ marginRight: "6%", width: "47%" }}
-              margin="normal"
-              label="Erstellt durch"
-              type="text"
-              variant="standard"
-            />
-            <TextField
-              defaultValue={new Date(currentStandort?.erstellungsdatum).toLocaleDateString()}
-              InputProps={{
-                readOnly: true,
-              }}
-              sx={{ width: "47%" }}
-              margin="normal"
-              label="Erstellt am"
-              type="text"
-              variant="standard"
-            />
-            {currentStandort?.userMutation != null && (
-              <React.Fragment>
-                <TextField
-                  defaultValue={currentStandort?.userMutation}
-                  sx={{ marginRight: "6%", width: "47%" }}
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                  margin="normal"
-                  label="Zuletzt geändert durch"
-                  type="text"
-                  variant="standard"
-                />
-                <TextField
-                  name="mutationsdatum"
-                  defaultValue={
-                    currentStandort?.mutationsdatum
-                      ? new Date(currentStandort?.mutationsdatum).toLocaleDateString()
-                      : null
-                  }
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                  sx={{ width: "47%" }}
-                  margin="normal"
-                  label="Zuletzt geändert am"
-                  type="text"
-                  variant="standard"
-                />
-              </React.Fragment>
-            )}
+            {currentStandort?.id && <DateUserInputs formObject={currentStandort}></DateUserInputs>}
             {currentStandort?.afuUser != null && (
               <React.Fragment>
                 <TextField
