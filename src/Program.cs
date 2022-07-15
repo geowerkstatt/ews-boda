@@ -2,7 +2,10 @@
 using EWS.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Primitives;
+using Microsoft.IdentityModel.Tokens;
 using NetTopologySuite.IO.Converters;
+using System.Net.Http.Headers;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -59,6 +62,23 @@ else
 
 app.UseStaticFiles();
 app.UseRouting();
+
+// Inject custom predefined JSON web token in development mode.
+// Check appsettings.Development.json for more predefined JWT.
+if (app.Environment.IsDevelopment())
+{
+    app.Use(async (context, next) =>
+    {
+        if (StringValues.IsNullOrEmpty(context.Request.Headers.Authorization))
+        {
+            context.Request.Headers.Authorization =
+                new AuthenticationHeaderValue("Bearer", builder.Configuration["Auth:Token:Extern"]).ToString();
+        }
+
+        // Call the next delegate/middleware in the pipeline.
+        await next(context).ConfigureAwait(false);
+    });
+}
 
 app.UseAuthentication();
 app.UseAuthorization();
