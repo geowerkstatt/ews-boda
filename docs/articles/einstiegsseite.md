@@ -103,7 +103,7 @@ Die folgenden Felder können editiert werden.
 * Bemerkung zur Qualitätsangabe
 * Autor der geologischen Aufnahme
 
-Die folgenden Attribute werden automatisch gesetzt und sind im Dialog nicht sichtbar.
+Die folgenden Attribute werden automatisch gesetzt und sind im Dialog zwar sichtbar, können jedoch nicht editiert werden.
 
 * Erstellungs- und Mutationsdatum
 * Benutzername bei Erstellung und Mutation
