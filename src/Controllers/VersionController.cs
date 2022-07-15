@@ -11,6 +11,7 @@ public class VersionController : ControllerBase
     public string Get()
     {
         var assembly = typeof(Program).Assembly;
-        return assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? assembly.GetName().Version.ToString();
+        return assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ??
+            assembly.GetName().Version.ToString();
     }
 }

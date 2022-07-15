@@ -15,6 +15,10 @@ public class EwsControllerBase<TModel> : ControllerBase
 {
     public EwsContext Context { get; }
 
+    /// <summary>
+    /// Initializes a new instance of the <typeparamref name="TModel"/> class.
+    /// </summary>
+    /// <param name="context">The EF database context containing data for the EWS-Boda application.</param>
     public EwsControllerBase(EwsContext context)
     {
         Context = context;
