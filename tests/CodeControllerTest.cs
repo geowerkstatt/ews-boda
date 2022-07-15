@@ -30,7 +30,7 @@ public class CodeControllerTest
         var codeId = 303;
 
         // get codes with codetype 1
-        var codes = await controller.GetByCodeTypAsync(1).ConfigureAwait(false);
+        var codes = await controller.GetByCodetypAsync(1).ConfigureAwait(false);
         Assert.AreEqual(20, codes.Count());
 
         var codeToTest = codes.Single(b => b.Id == codeId);
@@ -48,7 +48,7 @@ public class CodeControllerTest
     [TestMethod]
     public async Task GetByInexistentCodeTypAsync()
     {
-        var codes = await controller.GetByCodeTypAsync(672941).ConfigureAwait(false);
+        var codes = await controller.GetByCodetypAsync(672941).ConfigureAwait(false);
         Assert.AreEqual(0, codes.Count());
     }
 }

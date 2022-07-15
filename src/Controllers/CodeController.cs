@@ -14,8 +14,8 @@ public class CodeController : EwsControllerBase<Code>
     }
 
     [HttpGet]
-    public async Task<IEnumerable<Code>> GetByCodeTypAsync(int codeTypId)
+    public async Task<IEnumerable<Code>> GetByCodetypAsync(int codetypId)
     {
-        return await Context.Codes.Where(c => c.CodetypId == codeTypId).Include(c => c.Codetyp).AsNoTracking().ToListAsync().ConfigureAwait(false);
+        return await Context.Codes.Where(c => c.CodetypId == codetypId).Include(c => c.Codetyp).AsNoTracking().ToListAsync().ConfigureAwait(false);
     }
 }
