@@ -93,12 +93,6 @@ public class DataServiceControllerTest
         AssertErrorResult(result);
     }
 
-    [TestMethod]
-    public async Task MigrateGemeinden()
-    {
-        await controller.MigrateGemeinden();
-    }
-
     private static void AssertErrorResult(ActionResult<DataServiceResponse> result)
     {
         var objectResult = (ObjectResult)result.Result!;
