@@ -6,6 +6,16 @@
     public static class AppBuilderExtensions
     {
         /// <summary>
+        /// Adds the <see cref="AutoUserRegistrationMiddleware"/> to the specified
+        /// <see cref="IApplicationBuilder"/>, which automatically registers authenticated
+        /// and authorized ews-boda users.
+        /// </summary>
+        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
+        /// <returns>A reference to app after the operation has completed.</returns>
+        public static IApplicationBuilder UseAutoUserRegistration(this IApplicationBuilder app) =>
+            app.UseMiddleware<AutoUserRegistrationMiddleware>();
+
+        /// <summary>
         /// Adds the <see cref="CheckAuthorizedMiddleware"/> to the specified
         /// <see cref="IApplicationBuilder"/>, which checks whether the user is authorized
         /// to use the ews-boda application.

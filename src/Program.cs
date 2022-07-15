@@ -1,4 +1,5 @@
 ﻿using EWS;
+using EWS.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.IO.Converters;
@@ -27,6 +28,9 @@ builder.Services.AddAuthentication(options =>
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Auth:IssuerSigningKey"])),
         };
     });
+
+// The user context containing the current logged-in user.
+builder.Services.AddScoped<UserContext>();
 
 var connectionString = builder.Configuration.GetConnectionString("BohrungContext");
 builder.Services.AddDbContext<EwsContext>(x => x.UseNpgsql(connectionString, option => option.UseNetTopologySuite().UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
@@ -59,6 +63,8 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCheckAuthorizedMiddleware();
+app.UseAutoUserRegistration();
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");

@@ -28,8 +28,5 @@ namespace EWS.Authentication
             await httpResponse.WriteAsync(result, Encoding.UTF8, cancellationToken).ConfigureAwait(false);
             await httpResponse.Body.FlushAsync(cancellationToken).ConfigureAwait(false);
         }
-
-        public static string? GetUserName(this IEnumerable<Claim> claims) =>
-            claims.FirstOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
     }
 }
