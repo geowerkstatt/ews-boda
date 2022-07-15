@@ -1,6 +1,8 @@
 ﻿using EWS;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.IO.Converters;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services
@@ -8,6 +10,23 @@ builder.Services
     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new GeoJsonConverterFactory()));
 
 builder.Services.AddHttpClient();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = "USPSLS",
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Auth:IssuerSigningKey"])),
+        };
+    });
 
 var connectionString = builder.Configuration.GetConnectionString("BohrungContext");
 builder.Services.AddDbContext<EwsContext>(x => x.UseNpgsql(connectionString, option => option.UseNetTopologySuite().UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
@@ -37,6 +56,8 @@ else
 app.UseStaticFiles();
 app.UseRouting();
 
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");

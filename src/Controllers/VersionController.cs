@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 
 namespace EWS;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class VersionController : ControllerBase
