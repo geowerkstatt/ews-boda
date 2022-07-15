@@ -25,6 +25,7 @@ import Box from "@mui/material/Box";
 import DetailMap from "./DetailMap";
 import ConfirmationDialog from "./ConfirmationDialog";
 import DateUserInputs from "./DateUserInputs";
+import { CodeTypes } from "./Codetypes";
 
 export default function StandortForm(props) {
   const {
@@ -46,8 +47,8 @@ export default function StandortForm(props) {
     let bohrung = {
       standortId: currentStandort.id,
       bohrprofile: [],
-      hQualitaet: 3,
-      hAblenkung: 9,
+      hQualitaet: CodeTypes.Bohrung_hquali,
+      hAblenkung: CodeTypes.Bohrung_hablenkung,
       // defaultvalues inkl. geometry
       geometrie: { coordinates: [2626955, 1238676], type: "Point" },
     };
