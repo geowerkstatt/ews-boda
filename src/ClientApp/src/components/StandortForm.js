@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { GemeindenMap } from "../GemeindenMap";
 import TextField from "@mui/material/TextField";
 import Table from "@mui/material/Table";
 import IconButton from "@mui/material/IconButton";
@@ -122,7 +121,7 @@ export default function StandortForm(props) {
         />
         {currentStandort && currentStandort.bohrungen?.length > 0 && (
           <TextField
-            defaultValue={GemeindenMap[currentStandort?.gemeinde]}
+            defaultValue={currentStandort?.gemeinde}
             fullWidth
             type="string"
             InputProps={{

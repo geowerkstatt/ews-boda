@@ -43,7 +43,7 @@ public class StandortControllerTest
         Assert.AreEqual("Slovenia", standortToTest.Bemerkung);
         Assert.AreEqual("Ergonomic Fresh Shirt", standortToTest.Bezeichnung);
         Assert.AreEqual(true, standortToTest.FreigabeAfu);
-        Assert.AreEqual(2575, standortToTest.Gemeinde);
+        Assert.AreEqual("Boningen", standortToTest.Gemeinde);
         Assert.AreEqual("iwbyrzqsabb8pd8ahyd2izkurkxu9xt5q60jndil", standortToTest.GrundbuchNr);
         Assert.AreEqual(1, standortToTest.Bohrungen.Count);
         Assert.AreEqual("Carolyn_Lehner5", standortToTest.UserErstellung);
@@ -94,7 +94,7 @@ public class StandortControllerTest
         Assert.AreEqual("Ghana", standortToTest.Bemerkung);
         Assert.AreEqual("Incredible Frozen Fish", standortToTest.Bezeichnung);
         Assert.AreEqual(false, standortToTest.FreigabeAfu);
-        Assert.AreEqual(2568, standortToTest.Gemeinde);
+        Assert.AreEqual("Oberdorf (SO)", standortToTest.Gemeinde);
         Assert.AreEqual("vkflnsvlswy1nfbg4kucmk1bwzaqt7c72mba55vu", standortToTest.GrundbuchNr);
         Assert.AreEqual(2, standortToTest.Bohrungen.Count);
         Assert.AreEqual("Elijah_Schmeler31", standortToTest.UserErstellung);
@@ -116,7 +116,7 @@ public class StandortControllerTest
         Assert.AreEqual("Ghana", standortToTest.Bemerkung);
         Assert.AreEqual("Incredible Frozen Fish", standortToTest.Bezeichnung);
         Assert.AreEqual(false, standortToTest.FreigabeAfu);
-        Assert.AreEqual(2568, standortToTest.Gemeinde);
+        Assert.AreEqual("Oberdorf (SO)", standortToTest.Gemeinde);
         Assert.AreEqual("vkflnsvlswy1nfbg4kucmk1bwzaqt7c72mba55vu", standortToTest.GrundbuchNr);
         Assert.AreEqual(2, standortToTest.Bohrungen.Count);
         Assert.AreEqual("Elijah_Schmeler31", standortToTest.UserErstellung);
@@ -138,7 +138,7 @@ public class StandortControllerTest
         Assert.AreEqual("Ghana", standortToTest.Bemerkung);
         Assert.AreEqual("Incredible Frozen Fish", standortToTest.Bezeichnung);
         Assert.AreEqual(false, standortToTest.FreigabeAfu);
-        Assert.AreEqual(2568, standortToTest.Gemeinde);
+        Assert.AreEqual("Oberdorf (SO)", standortToTest.Gemeinde);
         Assert.AreEqual("vkflnsvlswy1nfbg4kucmk1bwzaqt7c72mba55vu", standortToTest.GrundbuchNr);
         Assert.AreEqual(2, standortToTest.Bohrungen.Count);
         Assert.AreEqual("Elijah_Schmeler31", standortToTest.UserErstellung);
@@ -160,7 +160,7 @@ public class StandortControllerTest
         Assert.AreEqual("Ghana", standortToTest.Bemerkung);
         Assert.AreEqual("Incredible Frozen Fish", standortToTest.Bezeichnung);
         Assert.AreEqual(false, standortToTest.FreigabeAfu);
-        Assert.AreEqual(2568, standortToTest.Gemeinde);
+        Assert.AreEqual("Oberdorf (SO)", standortToTest.Gemeinde);
         Assert.AreEqual(2, standortToTest.Bohrungen.Count);
         Assert.AreEqual("Elijah_Schmeler31", standortToTest.UserErstellung);
         Assert.AreEqual("Josefa_Effertz", standortToTest.UserMutation);
@@ -182,7 +182,7 @@ public class StandortControllerTest
         Assert.AreEqual("Denmark", standortToTest.Bemerkung);
         Assert.AreEqual("Unbranded Fresh Fish", standortToTest.Bezeichnung);
         Assert.AreEqual(false, standortToTest.FreigabeAfu);
-        Assert.AreEqual(2538, standortToTest.Gemeinde);
+        Assert.AreEqual("Recherswil", standortToTest.Gemeinde);
         Assert.AreEqual("2ir0g1jdx6vfw8gpt27vr9keunmrxty6xwea94ce", standortToTest.GrundbuchNr);
         Assert.AreEqual(2, standortToTest.Bohrungen.Count);
         Assert.AreEqual("Beverly.Zulauf", standortToTest.UserErstellung);
@@ -205,7 +205,7 @@ public class StandortControllerTest
         Assert.AreEqual("Namibia", standortToTest.Bemerkung);
         Assert.AreEqual("Sleek Frozen Fish", standortToTest.Bezeichnung);
         Assert.AreEqual(false, standortToTest.FreigabeAfu);
-        Assert.AreEqual(2551, standortToTest.Gemeinde);
+        Assert.AreEqual("Feldbrunnen-St. Niklaus", standortToTest.Gemeinde);
         Assert.AreEqual("rcf2cbp8t8b4amsm2ght9xqh8o3kag52kt5959ag", standortToTest.GrundbuchNr);
         Assert.AreEqual(2, standortToTest.Bohrungen.Count);
         Assert.AreEqual("Mamie_Gutmann", standortToTest.UserErstellung);
@@ -228,7 +228,7 @@ public class StandortControllerTest
         Assert.AreEqual("Honduras", standortToTest.Bemerkung);
         Assert.AreEqual("Sleek Soft Shirt", standortToTest.Bezeichnung);
         Assert.AreEqual(false, standortToTest.FreigabeAfu);
-        Assert.AreEqual(2541, standortToTest.Gemeinde);
+        Assert.AreEqual("Steinhof", standortToTest.Gemeinde);
         Assert.AreEqual("ahbv40f1ez1eys4ndpozrpz6eyij7ffurlohnncs", standortToTest.GrundbuchNr);
         Assert.AreEqual(1, standortToTest.Bohrungen.Count);
         Assert.AreEqual("Penny_Lindgren79", standortToTest.UserErstellung);
@@ -241,7 +241,7 @@ public class StandortControllerTest
     [TestMethod]
     public async Task GetBySeveralParameters()
     {
-        var standorte = await controller.GetAsync(2475, "wj7qafzqpk7xh0zkt6px3ujisxqqwxbloxeiljz3", "Refined Concrete Tuna").ConfigureAwait(false);
+        var standorte = await controller.GetAsync("Hochwald", "wj7qafzqpk7xh0zkt6px3ujisxqqwxbloxeiljz3", "Refined Concrete Tuna").ConfigureAwait(false);
 
         Assert.AreEqual(1, standorte.Count());
         var standortToTest = standorte.Single();
@@ -250,7 +250,7 @@ public class StandortControllerTest
         Assert.AreEqual("Saint Lucia", standortToTest.Bemerkung);
         Assert.AreEqual("Refined Concrete Tuna", standortToTest.Bezeichnung);
         Assert.AreEqual(false, standortToTest.FreigabeAfu);
-        Assert.AreEqual(2475, standortToTest.Gemeinde);
+        Assert.AreEqual("Hochwald", standortToTest.Gemeinde);
         Assert.AreEqual("wj7qafzqpk7xh0zkt6px3ujisxqqwxbloxeiljz3", standortToTest.GrundbuchNr);
         Assert.AreEqual(0, standortToTest.Bohrungen.Count);
         Assert.AreEqual("Warren54", standortToTest.UserErstellung);
@@ -274,7 +274,7 @@ public class StandortControllerTest
         Assert.AreEqual("Slovenia", standortToTest.Bemerkung);
         Assert.AreEqual("Ergonomic Fresh Shirt", standortToTest.Bezeichnung);
         Assert.AreEqual(true, standortToTest.FreigabeAfu);
-        Assert.AreEqual(2575, standortToTest.Gemeinde);
+        Assert.AreEqual("Boningen", standortToTest.Gemeinde);
         Assert.AreEqual("iwbyrzqsabb8pd8ahyd2izkurkxu9xt5q60jndil", standortToTest.GrundbuchNr);
         Assert.AreEqual(1, standortToTest.Bohrungen.Count);
         Assert.AreEqual("Carolyn_Lehner5", standortToTest.UserErstellung);
@@ -282,6 +282,29 @@ public class StandortControllerTest
         Assert.AreEqual(new DateTime(2021, 3, 6).Date, standortToTest.AfuDatum!.Value.Date);
         Assert.AreEqual(new DateTime(2021, 8, 6).Date, standortToTest.Erstellungsdatum!.Value.Date);
         Assert.AreEqual(new DateTime(2021, 12, 9).Date, standortToTest.Mutationsdatum!.Value.Date);
+    }
+
+    [TestMethod]
+    public async Task GetByGemeinde()
+    {
+        var standorte = await controller.GetAsync("Niederbuchsiten").ConfigureAwait(false);
+
+        Assert.AreEqual(47, standorte.Count());
+        var standortId = 30242;
+        var standortToTest = standorte.Single(b => b.Id == standortId);
+
+        Assert.AreEqual("Wade Grant", standortToTest.AfuUser);
+        Assert.AreEqual("Liberia", standortToTest.Bemerkung);
+        Assert.AreEqual("Unbranded Cotton Towels", standortToTest.Bezeichnung);
+        Assert.AreEqual(true, standortToTest.FreigabeAfu);
+        Assert.AreEqual("Niederbuchsiten", standortToTest.Gemeinde);
+        Assert.AreEqual("z1df1hui1jsd0c53b1yloyvsrueb6iey9cg5nzkk", standortToTest.GrundbuchNr);
+        Assert.AreEqual(0, standortToTest.Bohrungen.Count);
+        Assert.AreEqual("Wade_Grant22", standortToTest.UserErstellung);
+        Assert.AreEqual("Lavina87", standortToTest.UserMutation);
+        Assert.AreEqual(new DateTime(2021, 12, 26).Date, standortToTest.AfuDatum!.Value.Date);
+        Assert.AreEqual(new DateTime(2021, 11, 22).Date, standortToTest.Erstellungsdatum.Date);
+        Assert.AreEqual(new DateTime(2021, 9, 9).Date, standortToTest.Mutationsdatum!.Value.Date);
     }
 
     [TestMethod]
@@ -315,7 +338,7 @@ public class StandortControllerTest
         {
             Bohrungen = new List<Bohrung>(),
             Bemerkung = "Mamady Doumbo",
-            Gemeinde = 4321,
+            Gemeinde = "WINDSHIP",
             GrundbuchNr = "hiKbSwsDBTXDyRf",
             Bezeichnung = TestStandortBezeichnung,
         };
@@ -330,7 +353,7 @@ public class StandortControllerTest
         context.Standorte.Add(new Standort
         {
             Bemerkung = "Ismaila Kida",
-            Gemeinde = 1234,
+            Gemeinde = "JOLLYACID",
             GrundbuchNr = "cKt6QheQdD7WDjJ",
             Bezeichnung = TestStandortBezeichnung,
         });

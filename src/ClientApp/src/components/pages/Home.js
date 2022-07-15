@@ -12,13 +12,12 @@ import Dialog from "@mui/material/Dialog";
 import Tooltip from "@mui/material/Tooltip";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
-import { GemeindenMap } from "../../GemeindenMap";
 import SnackbarMessage from "../SnackbarMessage";
 import ConfirmationDialog from "../ConfirmationDialog";
 
 export function Home() {
   const [standorte, setStandorte] = useState([]);
-  const [gemeindenummer, setGemeindenummer] = useState(null);
+  const [gemeinde, setGemeinde] = useState(null);
   const [gbnummer, setGbnummer] = useState("");
   const [bezeichnung, setBezeichnung] = useState("");
   const [erstellungsDatum, setErstellungsDatum] = useState(null);
@@ -33,7 +32,7 @@ export function Home() {
   const resetSearch = () => {
     setGbnummer("");
     setBezeichnung("");
-    setGemeindenummer(null);
+    setGemeinde("");
     setErstellungsDatum(null);
     setMutationsDatum(null);
     setHasFilters(false);
@@ -67,8 +66,7 @@ export function Home() {
 
   // Get all standorte
   async function getStandorte() {
-    let query = `?gemeindenummer=${gemeindenummer ?? ""}`;
-    query += `&gbnummer=${gbnummer}&bezeichnung=${bezeichnung}`;
+    let query = `?gemeinde=${gemeinde}&gbnummer=${gbnummer}&bezeichnung=${bezeichnung}`;
     query += `&erstellungsdatum=${erstellungsDatum ? new Date(erstellungsDatum).toUTCString() : ""}`;
     query += `&mutationsdatum=${mutationsDatum ? new Date(mutationsDatum).toUTCString() : ""}`;
     const response = await fetch("/standort" + query);
@@ -76,7 +74,7 @@ export function Home() {
       const features = await response.json();
       setHasFilters(
         // at least one filter paramter is set
-        gemeindenummer || gbnummer || bezeichnung || erstellungsDatum || mutationsDatum
+        gemeinde || gbnummer || bezeichnung || erstellungsDatum || mutationsDatum
       );
       setStandorte(features);
     }
@@ -119,7 +117,6 @@ export function Home() {
     Object.entries(data).forEach(([key, value]) => {
       updatedStandort[key] = value;
     });
-    updatedStandort.gemeinde = GemeindenMap[data?.gemeinde];
     // ignore bohrungen on update
     updatedStandort.bohrungen = null;
     const response = await fetch("/standort", {
