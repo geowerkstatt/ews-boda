@@ -1,4 +1,5 @@
-﻿using EWS.Models;
+﻿using EWS.Authentication;
+using EWS.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,10 +11,20 @@ namespace EWS;
 [Route("[controller]")]
 public class UserController : EwsControllerBase<User>
 {
-    public UserController(EwsContext context)
+    private readonly UserContext userContext;
+
+    public UserController(EwsContext context, UserContext userContext)
         : base(context)
     {
+        this.userContext = userContext;
     }
+
+    /// <summary>
+    /// Gets the current authenticated and authorized ews-boda user.
+    /// </summary>
+    [HttpGet("self")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1024:Use properties where appropriate", Justification = "HTTP method attributes cannot be used on properties.")]
+    public User? GetUserInformation() => userContext.CurrentUser;
 
     /// <summary>
     /// Asynchronously gets all the users available.
