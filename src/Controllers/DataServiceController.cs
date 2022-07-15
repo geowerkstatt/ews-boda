@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
 using System.Text.Json;
 
@@ -14,11 +15,13 @@ public class DataServiceController : ControllerBase
 
     private readonly HttpClient client;
     private readonly ILogger<DataServiceController> logger;
+    private readonly EwsContext context;
 
-    public DataServiceController(HttpClient client, ILogger<DataServiceController> logger)
+    public DataServiceController(HttpClient client, ILogger<DataServiceController> logger, EwsContext context)
     {
         this.client = client;
         this.logger = logger;
+        this.context = context;
 
         client.BaseAddress = new Uri("https://geo.so.ch/api/data/v1/");
     }
@@ -48,7 +51,7 @@ public class DataServiceController : ControllerBase
             }
 
             if (gemeinden.Count > 1)
-                return Problem($"Found multiple gemeinden for input points <{points.Select(x => x.AsText())}>.");
+                return Problem($"Found multiple gemeinden for input points <{string.Join(", ", points.Select(x => x.AsText()))}>.");
 
             return new DataServiceResponse(gemeinden.SingleOrDefault(string.Empty), string.Join(",", grundbuchNummern));
         }
@@ -56,6 +59,50 @@ public class DataServiceController : ControllerBase
         {
             return Problem("Error retrieving information from Data Service API.");
         }
+    }
+
+    [HttpGet("/migrategemeinden")]
+    public async Task<IActionResult> MigrateGemeinden([FromQuery] bool dryRun = true)
+    {
+        int found = 0;
+        Dictionary<string, string?> notFound = new(), errors = new();
+
+        // Only consider Standorte with Bohrungen
+        var standorteToMigrate = context.Standorte.Include(x => x.Bohrungen).Where(x => x.Bohrungen.Any()).ToList();
+
+        await Parallel.ForEachAsync(standorteToMigrate, async (standort, _) =>
+        {
+            var standortId = $"{standort.Id}: {standort.Bezeichnung}";
+
+            // Query data service for Gemeinde data with Bohrungen points
+            var geometries = standort.Bohrungen.Where(x => x.Geometrie != null).Select(x => x.Geometrie).ToList();
+            var dataServiceResponse = await GetAsync(geometries!).ConfigureAwait(false);
+            if (dataServiceResponse.Value != null)
+            {
+                var gemeinde = dataServiceResponse.Value.Gemeinde;
+                if (string.IsNullOrEmpty(gemeinde))
+                {
+                    notFound.Add(standortId, string.Join(", ", geometries.Select(x => x.AsText())));
+                }
+                else
+                {
+                    found++;
+                    standort.Gemeinde = gemeinde;
+                }
+            }
+            else
+            {
+                var error = (ObjectResult)dataServiceResponse.Result!;
+                errors.Add(standortId, ((ProblemDetails)error.Value!).Detail);
+            }
+        }).ConfigureAwait(false);
+
+        if (!dryRun)
+        {
+            context.SaveChangesWithoutUpdatingChangeInformation();
+        }
+
+        return new JsonResult(new { Total = standorteToMigrate.Count, Success = found, NotFoundCount = notFound.Count, NotFound = notFound, ErrorCount = errors.Count, Errors = errors });
     }
 
     private async Task<string?> GetDataServiceApiResponse(string requestUrl, string propertyName)
