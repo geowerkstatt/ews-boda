@@ -9,7 +9,7 @@ namespace EWS
     /// </summary>
     public class EwsContext : DbContext
     {
-        private readonly UserContext userContext;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
         public DbSet<Bohrprofil> Bohrprofile { get; set; }
         public DbSet<Bohrung> Bohrungen { get; set; }
@@ -21,10 +21,10 @@ namespace EWS
         public DbSet<Vorkommnis> Vorkommnisse { get; set; }
         public DbSet<User> Users { get; set; }
 
-        public EwsContext(DbContextOptions options, UserContext userContext)
+        public EwsContext(DbContextOptions options, IHttpContextAccessor httpContextAccessor)
             : base(options)
         {
-            this.userContext = userContext;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         /// <inheritdoc />
@@ -38,16 +38,16 @@ namespace EWS
         /// <inheritdoc />
         public override int SaveChanges()
         {
-            ChangeTracker.UpdateChangeInformation(userContext);
-            ChangeTracker.UpdateFreigabeAfuFields(userContext);
+            ChangeTracker.UpdateChangeInformation(httpContextAccessor.HttpContext);
+            ChangeTracker.UpdateFreigabeAfuFields(httpContextAccessor.HttpContext);
             return base.SaveChanges();
         }
 
         /// <inheritdoc />
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            ChangeTracker.UpdateChangeInformation(userContext);
-            ChangeTracker.UpdateFreigabeAfuFields(userContext);
+            ChangeTracker.UpdateChangeInformation(httpContextAccessor.HttpContext);
+            ChangeTracker.UpdateFreigabeAfuFields(httpContextAccessor.HttpContext);
             return await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 

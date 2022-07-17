@@ -3,34 +3,36 @@ using EWS.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace EWS;
 
-[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class UserController : EwsControllerBase<User>
 {
-    private readonly UserContext userContext;
-
-    public UserController(EwsContext context, UserContext userContext)
+    public UserController(EwsContext context)
         : base(context)
     {
-        this.userContext = userContext;
     }
 
     /// <summary>
     /// Gets the current authenticated and authorized ews-boda user.
     /// </summary>
+    [Authorize(Policy = Policies.IsExtern)]
     [HttpGet("self")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1024:Use properties where appropriate", Justification = "HTTP method attributes cannot be used on properties.")]
-    public ActionResult<User?> GetUserInformation() => userContext.CurrentUser;
+    public ActionResult<User?> GetUserInformation()
+    {
+        var userName = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        return Context.Users.SingleOrDefault(x => x.Name == userName);
+    }
 
     /// <summary>
     /// Asynchronously gets all the users available.
     /// </summary>
     [HttpGet]
-    public async Task<IEnumerable<User>> GetAsync() =>
+    public async Task<ActionResult<IEnumerable<User>>> GetAsync() =>
         await Context.Users.AsNoTracking().ToListAsync().ConfigureAwait(false);
 
     /// <inheritdoc/>
