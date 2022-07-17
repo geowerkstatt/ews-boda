@@ -13,7 +13,15 @@ namespace EWS;
 public class EwsControllerBase<TEntity> : ControllerBase
     where TEntity : EwsModelBase, new()
 {
+    private readonly ILogger<TEntity>? logger;
+
     public EwsContext Context { get; }
+
+    /// <summary>
+    /// Initializes a new instance of the <typeparamref name="TEntity"/> class.
+    /// </summary>
+    /// <param name="logger">The logger for this instance.</param>
+    protected EwsControllerBase(ILogger<TEntity> logger) => this.logger = logger;
 
     /// <summary>
     /// Initializes a new instance of the <typeparamref name="TEntity"/> class.
@@ -81,11 +89,11 @@ public class EwsControllerBase<TEntity> : ControllerBase
             await Context.SaveChangesAsync().ConfigureAwait(false);
             return successResult();
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            return Problem(
-                "An error occurred while saving the entity changes.",
-                statusCode: StatusCodes.Status400BadRequest);
+            var errorMessage = "An error occurred while saving the entity changes.";
+            logger?.LogError(ex, errorMessage);
+            return Problem(errorMessage, statusCode: StatusCodes.Status400BadRequest);
         }
     }
 }
