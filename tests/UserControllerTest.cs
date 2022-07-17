@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using static EWS.Helpers;
 
 namespace EWS;
 
@@ -27,9 +28,9 @@ public class UserControllerTest
     [TestMethod]
     public void GetUserInformation()
     {
-        var user = controller.GetUserInformation();
+        var user = controller.GetUserInformation().Value;
         Assert.AreEqual("PEEVEDSOUFFLE", user.Name);
-        Assert.AreEqual(UserRole.Extern, user.Role);
+        Assert.AreEqual(UserRole.Administrator, user.Role);
     }
 
     [TestMethod]
@@ -122,14 +123,4 @@ public class UserControllerTest
         Assert.IsInstanceOfType(response, typeof(BadRequestObjectResult));
         Assert.AreEqual("Creating new users is not supported.", ((BadRequestObjectResult)response).Value);
     }
-
-    private static UserContext GetUserContext() =>
-        new()
-        {
-            CurrentUser = new User
-            {
-                Name = "PEEVEDSOUFFLE",
-                Role = UserRole.Extern,
-            },
-        };
 }
