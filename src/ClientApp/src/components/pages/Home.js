@@ -15,7 +15,8 @@ import AddIcon from "@mui/icons-material/Add";
 import SnackbarMessage from "../SnackbarMessage";
 import ConfirmationDialog from "../ConfirmationDialog";
 
-export function Home() {
+export function Home(props) {
+  const { currentUser } = props;
   const [standorte, setStandorte] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [openStandortForm, setOpenStandortForm] = useState(false);
@@ -213,6 +214,7 @@ export function Home() {
                   standorte={standorte}
                   openEditForm={onEditStandort}
                   onDeleteStandort={onDeleteStandort}
+                  currentUser={currentUser}
                 />
               </Paper>
             )}
@@ -233,6 +235,7 @@ export function Home() {
             setShowSuccessAlert={setShowSuccessAlert}
             setAlertMessage={setAlertMessage}
             getStandort={getStandort}
+            currentUser={currentUser}
           ></InputForm>
         </Dialog>
         <ConfirmationDialog

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using EWS.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
@@ -6,7 +7,7 @@ using System.Text;
 
 namespace EWS;
 
-[Authorize]
+[Authorize(Policy = Policies.IsExtern)]
 [ApiController]
 [Route("[controller]")]
 public class ExportController : ControllerBase

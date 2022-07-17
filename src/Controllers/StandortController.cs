@@ -1,11 +1,12 @@
-﻿using EWS.Models;
+﻿using EWS.Authentication;
+using EWS.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace EWS;
 
-[Authorize]
+[Authorize(Policy = Policies.IsExtern)]
 [ApiController]
 [Route("[controller]")]
 public class StandortController : EwsControllerBase<Standort>
@@ -71,17 +72,43 @@ public class StandortController : EwsControllerBase<Standort>
     }
 
     /// <inheritdoc/>
-    public override Task<IActionResult> CreateAsync(Standort item)
+    public override async Task<IActionResult> CreateAsync(Standort entity)
     {
-        item.Bohrungen = null;
-        return base.CreateAsync(item);
+        entity.Bohrungen = null;
+        return await base.CreateAsync(entity).ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
-    public override Task<IActionResult> EditAsync(Standort item)
+    public override async Task<IActionResult> EditAsync(Standort entity)
     {
-        item.Bohrungen = null;
-        return base.EditAsync(item);
+        var entityToEdit = await Context.FindAsync<Standort>(entity.Id).ConfigureAwait(false);
+        var isExtern = HttpContext.User.IsInRole(UserRole.Extern.ToString());
+        if ((entity.FreigabeAfu || entityToEdit?.FreigabeAfu == true) && isExtern)
+        {
+            return Problem(
+                title: "Authorization Exception",
+                detail: "User with role <Extern> are not allowed to set <Freigabe AfU> or edit Standort with <Freigabe AfU>.",
+                statusCode: StatusCodes.Status403Forbidden);
+        }
+
+        entity.Bohrungen = null;
+        return await base.EditAsync(entity).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc/>
+    public override async Task<IActionResult> DeleteAsync(int id)
+    {
+        var entityToDelete = await Context.FindAsync<Standort>(id).ConfigureAwait(false);
+        var isExtern = HttpContext.User.IsInRole(UserRole.Extern.ToString());
+        if (entityToDelete?.FreigabeAfu == true && isExtern)
+        {
+            return Problem(
+                title: "Authorization Exception",
+                detail: "User with role <Extern> are not allowed to delete Standort with <Freigabe AfU>.",
+                statusCode: StatusCodes.Status403Forbidden);
+        }
+
+        return await base.DeleteAsync(id).ConfigureAwait(false);
     }
 
     private IQueryable<Standort> GetAll()
