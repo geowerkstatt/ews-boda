@@ -115,7 +115,7 @@ public class EwsContextTest
 
         // Update Standort again and assert original Freigabe fields don't change.
         var originalAfuUser = standort.AfuUser;
-        var origianlAfuDatum = standort.AfuDatum.Value.Ticks;
+        var originalAfuDatum = standort.AfuDatum.Value.Ticks;
 
         standort.Bezeichnung = "VIOLENTFELONY";
         await standortController.EditAsync(standort).ConfigureAwait(false);
@@ -123,7 +123,7 @@ public class EwsContextTest
         Assert.AreEqual("VIOLENTFELONY", standort.Bezeichnung);
         Assert.AreEqual(true, standort.FreigabeAfu);
         Assert.AreEqual(originalAfuUser, standort.AfuUser);
-        Assert.AreEqual(origianlAfuDatum, standort.AfuDatum.Value.Ticks);
+        Assert.AreEqual(originalAfuDatum, standort.AfuDatum.Value.Ticks);
 
         // Remove Freigabe and assert fields get restored to their default values.
         standort.FreigabeAfu = false;

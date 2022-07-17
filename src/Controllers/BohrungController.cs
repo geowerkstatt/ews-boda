@@ -15,16 +15,16 @@ public class BohrungController : EwsControllerBase<Bohrung>
     }
 
     /// <inheritdoc/>
-    public override Task<IActionResult> CreateAsync(Bohrung item)
+    public override Task<IActionResult> CreateAsync(Bohrung entity)
     {
-        item.Bohrprofile = null;
-        return base.CreateAsync(item);
+        entity.Bohrprofile = null;
+        return base.CreateAsync(entity);
     }
 
     /// <inheritdoc/>
-    public override Task<IActionResult> EditAsync(Bohrung item)
+    public override Task<IActionResult> EditAsync(Bohrung entity)
     {
-        item.Bohrprofile = null;
-        return base.EditAsync(item);
+        entity.Bohrprofile = null;
+        return base.EditAsync(entity);
     }
 }

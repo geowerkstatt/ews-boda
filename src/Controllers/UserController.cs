@@ -24,7 +24,7 @@ public class UserController : EwsControllerBase<User>
     /// </summary>
     [HttpGet("self")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1024:Use properties where appropriate", Justification = "HTTP method attributes cannot be used on properties.")]
-    public User? GetUserInformation() => userContext.CurrentUser;
+    public ActionResult<User?> GetUserInformation() => userContext.CurrentUser;
 
     /// <summary>
     /// Asynchronously gets all the users available.
@@ -34,6 +34,6 @@ public class UserController : EwsControllerBase<User>
         await Context.Users.AsNoTracking().ToListAsync().ConfigureAwait(false);
 
     /// <inheritdoc/>
-    public override Task<IActionResult> CreateAsync(User item) =>
+    public override Task<IActionResult> CreateAsync(User entity) =>
         Task.FromResult((IActionResult)BadRequest("Creating new users is not supported."));
 }
