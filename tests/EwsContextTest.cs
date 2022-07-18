@@ -60,7 +60,7 @@ public class EwsContextTest
         // Update Standort with empty Bohrungen collection should not delete Bohrungen from the specified Standort
         var updatedNewStandort = ContextFactory.CreateContext().Standorte.AsNoTracking().Where(x => x.Id == newStandort.Id).First();
         updatedNewStandort.Bezeichnung = "VIOLETYARD REV4";
-        updatedNewStandort.Erstellungsdatum = DateTime.Now.ToUniversalTime();
+        updatedNewStandort.Erstellungsdatum = DateTime.Now;
         Assert.IsNull(updatedNewStandort.Bohrungen);
         await new StandortController(ContextFactory.CreateContext()).EditAsync(updatedNewStandort).ConfigureAwait(false);
 

@@ -52,21 +52,18 @@ export function Home() {
     setOpenConfirmation(false);
   };
 
-  // Get all standorte
-  async function getStandorte(query) {
-    if (!query) {
-      //Get cached standorte if no query is present
-      setShowSearchResults(false);
-      setStandorte(unfilteredStandorte);
-    } else {
-      const response = await fetch("/standort" + query);
-      if (response.ok) {
-        const features = await response.json();
-        setStandorte(features);
-        //Show search results only once response has returned.
-        setShowSearchResults(true);
-      }
-    }
+  async function getStandorte() {
+    let query = `?gemeinde=${gemeinde}&gbnummer=${gbnummer}&bezeichnung=${bezeichnung}`;
+    query += `&erstellungsdatum=${erstellungsDatum ? new Date(erstellungsDatum).toUTCString() : ""}`;
+    query += `&mutationsdatum=${mutationsDatum ? new Date(mutationsDatum).toUTCString() : ""}`;
+
+    const response = await fetch("/standort" + query);
+    const features = await response.json();
+    setHasFilters(
+      // at least one filter paramter is set
+      gemeinde || gbnummer || bezeichnung || erstellungsDatum || mutationsDatum
+    );
+    setStandorte(features);
   }
 
   // Get standort by Id

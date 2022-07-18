@@ -22,8 +22,6 @@ namespace EWS
             // Set Bogus Data System Clock
             Bogus.DataSets.Date.SystemClock = () => DateTime.Parse("01.01.2022 00:00:00", new CultureInfo("de_CH", false));
 
-            TimeZoneInfo ut = TimeZoneInfo.Utc;
-
             // Seed CodeTypen
             var codetyp_ids = 1;
             var codetypenRange = Enumerable.Range(codetyp_ids, 20);
@@ -32,8 +30,8 @@ namespace EWS
                .RuleFor(o => o.Id, f => codetyp_ids++)
                .RuleFor(o => o.Text, f => f.Random.Words())
                .RuleFor(o => o.Kurztext, f => f.Address.StreetName())
-               .RuleFor(o => o.Erstellungsdatum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
-               .RuleFor(o => o.Mutationsdatum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
+               .RuleFor(o => o.Erstellungsdatum, f => f.Date.Past())
+               .RuleFor(o => o.Mutationsdatum, f => f.Date.Past())
                .RuleFor(o => o.UserErstellung, f => f.Person.UserName)
                .RuleFor(o => o.UserMutation, f => f.Internet.UserName().OrNull(f, .8f));
             CodeTyp SeededCodetypen(int seed) => fakeCodeTypen.UseSeed(seed).Generate();
@@ -50,8 +48,8 @@ namespace EWS
                .RuleFor(o => o.Text, f => f.Commerce.ProductName())
                .RuleFor(o => o.Kurztext, f => f.Address.City())
                .RuleFor(o => o.Sortierung, f => f.Random.Int(0, 30000))
-               .RuleFor(o => o.Erstellungsdatum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
-               .RuleFor(o => o.Mutationsdatum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
+               .RuleFor(o => o.Erstellungsdatum, f => f.Date.Past())
+               .RuleFor(o => o.Mutationsdatum, f => f.Date.Past())
                .RuleFor(o => o.UserErstellung, f => f.Person.UserName)
                .RuleFor(o => o.UserMutation, f => f.Internet.UserName().OrNull(f, .6f))
                .RuleFor(o => o.Codetyp, _ => default!);
@@ -72,8 +70,8 @@ namespace EWS
                .RuleFor(o => o.Text, f => f.Internet.UrlWithPath())
                .RuleFor(o => o.Kurztext, f => f.Random.Words())
                .RuleFor(o => o.Sortierung, f => f.Random.Int(0, 30000))
-               .RuleFor(o => o.Erstellungsdatum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
-               .RuleFor(o => o.Mutationsdatum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
+               .RuleFor(o => o.Erstellungsdatum, f => f.Date.Past())
+               .RuleFor(o => o.Mutationsdatum, f => f.Date.Past())
                .RuleFor(o => o.UserErstellung, f => f.Person.UserName)
                .RuleFor(o => o.UserMutation, f => f.Internet.UserName());
             CodeSchicht SeededCodeschichten(int seed) => fakeCodeschichten.UseSeed(seed).Generate();
@@ -90,13 +88,13 @@ namespace EWS
                .RuleFor(o => o.Bemerkung, f => f.Address.Country())
                .RuleFor(o => o.Gemeinde, f => f.PickRandom(gemeinden))
                .RuleFor(o => o.GrundbuchNr, f => f.Random.AlphaNumeric(40))
-               .RuleFor(o => o.Erstellungsdatum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
-               .RuleFor(o => o.Mutationsdatum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
+               .RuleFor(o => o.Erstellungsdatum, f => f.Date.Past())
+               .RuleFor(o => o.Mutationsdatum, f => f.Date.Past())
                .RuleFor(o => o.UserErstellung, f => f.Person.UserName)
                .RuleFor(o => o.UserMutation, f => f.Internet.UserName().OrNull(f, .1f))
                .RuleFor(o => o.FreigabeAfu, f => f.Random.Bool())
                .RuleFor(o => o.AfuUser, f => f.Person.FullName)
-               .RuleFor(o => o.AfuDatum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
+               .RuleFor(o => o.AfuDatum, f => f.Date.Past())
                .RuleFor(o => o.Bohrungen, _ => default!);
             Standort SeededStandorte(int seed) => fakeStandorte.UseSeed(seed).Generate();
             context.Standorte.AddRange(standorteRange.Select(SeededStandorte));
@@ -108,7 +106,7 @@ namespace EWS
             var fakeBohrungen = new Faker<Bohrung>()
                .StrictMode(true)
                .RuleFor(o => o.Id, f => bohrung_ids++)
-               .RuleFor(o => o.Datum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
+               .RuleFor(o => o.Datum, f => f.Date.Past())
                .RuleFor(o => o.DurchmesserBohrloch, f => f.Random.Int(0, 30000))
                .RuleFor(o => o.AblenkungId, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 9).Select(s => s.Id).ToList()))
                .RuleFor(o => o.Ablenkung, _ => default!)
@@ -117,8 +115,8 @@ namespace EWS
                .RuleFor(o => o.QuelleRef, f => f.Company.CompanyName())
                .RuleFor(o => o.QualitaetBemerkung, f => f.Rant.Review())
                .RuleFor(o => o.Bezeichnung, f => f.Commerce.ProductName())
-               .RuleFor(o => o.Erstellungsdatum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
-               .RuleFor(o => o.Mutationsdatum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
+               .RuleFor(o => o.Erstellungsdatum, f => f.Date.Past())
+               .RuleFor(o => o.Mutationsdatum, f => f.Date.Past())
                .RuleFor(o => o.UserErstellung, f => f.Person.UserName)
                .RuleFor(o => o.UserMutation, f => f.Internet.UserName())
                .RuleFor(o => o.Bemerkung, f => f.Company.CatchPhrase().OrNull(f, .2f))
@@ -148,11 +146,11 @@ namespace EWS
                .RuleFor(o => o.QualitaetBemerkung, f => f.Rant.Review().OrNull(f, .8f))
                .RuleFor(o => o.FormationFels, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 5).Select(s => s.Id).ToList()))
                .RuleFor(o => o.FormationEndtiefe, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 5).Select(s => s.Id).ToList()))
-               .RuleFor(o => o.Erstellungsdatum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
-               .RuleFor(o => o.Mutationsdatum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
+               .RuleFor(o => o.Erstellungsdatum, f => f.Date.Past())
+               .RuleFor(o => o.Mutationsdatum, f => f.Date.Past())
                .RuleFor(o => o.UserErstellung, f => f.Person.UserName)
                .RuleFor(o => o.UserMutation, f => f.Internet.UserName().OrNull(f, .2f))
-               .RuleFor(o => o.Datum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
+               .RuleFor(o => o.Datum, f => f.Date.Past())
                .RuleFor(o => o.HTektonikId, f => 10)
                .RuleFor(o => o.HTektonik, _ => default!)
                .RuleFor(o => o.HQualitaetId, f => 12)
@@ -177,8 +175,8 @@ namespace EWS
                .RuleFor(o => o.QualitaetId, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 11).Select(s => s.Id).ToList()))
                .RuleFor(o => o.Qualitaet, _ => default!)
                .RuleFor(o => o.QualitaetBemerkung, f => f.Rant.Review().OrNull(f, .9f))
-               .RuleFor(o => o.Erstellungsdatum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
-               .RuleFor(o => o.Mutationsdatum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
+               .RuleFor(o => o.Erstellungsdatum, f => f.Date.Past())
+               .RuleFor(o => o.Mutationsdatum, f => f.Date.Past())
                .RuleFor(o => o.UserErstellung, f => f.Person.UserName)
                .RuleFor(o => o.UserMutation, f => f.Internet.UserName())
                .RuleFor(o => o.Bemerkung, f => f.Company.CatchPhrase())
@@ -200,8 +198,8 @@ namespace EWS
                .RuleFor(o => o.Tiefe, f => f.Random.Float())
                .RuleFor(o => o.Qualitaet, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 3).Select(s => s.Id).ToList()))
                .RuleFor(o => o.QualitaetBemerkung, f => f.Rant.Review().OrNull(f, .8f))
-               .RuleFor(o => o.Erstellungsdatum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
-               .RuleFor(o => o.Mutationsdatum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
+               .RuleFor(o => o.Erstellungsdatum, f => f.Date.Past())
+               .RuleFor(o => o.Mutationsdatum, f => f.Date.Past())
                .RuleFor(o => o.UserErstellung, f => f.Person.UserName)
                .RuleFor(o => o.UserMutation, f => f.Internet.UserName())
                .RuleFor(o => o.Bemerkung, f => f.Random.Word())
@@ -223,8 +221,8 @@ namespace EWS
                .RuleFor(o => o.Id, f => user_ids++)
                .RuleFor(o => o.Name, f => f.Person.UserName)
                .RuleFor(o => o.Role, f => f.PickRandom<UserRole>())
-               .RuleFor(o => o.Erstellungsdatum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
-               .RuleFor(o => o.Mutationsdatum, f => TimeZoneInfo.ConvertTimeToUtc(f.Date.Past(), ut))
+               .RuleFor(o => o.Erstellungsdatum, f => f.Date.Past())
+               .RuleFor(o => o.Mutationsdatum, f => f.Date.Past())
                .RuleFor(o => o.UserErstellung, f => f.Person.UserName)
                .RuleFor(o => o.UserMutation, f => f.Person.FullName);
             User SeededUsers(int seed) => fakeUsers.UseSeed(seed).Generate();
