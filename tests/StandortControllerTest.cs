@@ -303,7 +303,7 @@ public class StandortControllerTest
         Assert.AreEqual("Wade_Grant22", standortToTest.UserErstellung);
         Assert.AreEqual("Lavina87", standortToTest.UserMutation);
         Assert.AreEqual(new DateTime(2021, 12, 26).Date, standortToTest.AfuDatum!.Value.Date);
-        Assert.AreEqual(new DateTime(2021, 11, 22).Date, standortToTest.Erstellungsdatum.Date);
+        Assert.AreEqual(new DateTime(2021, 11, 22).Date, standortToTest.Erstellungsdatum!.Value.Date);
         Assert.AreEqual(new DateTime(2021, 9, 9).Date, standortToTest.Mutationsdatum!.Value.Date);
     }
 
