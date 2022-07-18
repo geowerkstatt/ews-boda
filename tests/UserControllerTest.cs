@@ -1,6 +1,5 @@
-using EWS.Authentication;
+﻿using EWS.Authentication;
 using EWS.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
