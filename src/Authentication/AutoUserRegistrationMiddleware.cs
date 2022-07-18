@@ -38,7 +38,7 @@ namespace EWS.Authentication
                 return;
             }
 
-            userContext.CurrentUser = dbContext.Users.Where(x => x.Name.Equals(userName)).SingleOrDefault();
+            userContext.CurrentUser = dbContext.Users.SingleOrDefault(x => x.Name.Equals(userName));
             if (userContext.CurrentUser == null)
             {
                 userContext.CurrentUser = dbContext.Users.Add(new User { Name = userName, Role = UserRole.Extern }).Entity;

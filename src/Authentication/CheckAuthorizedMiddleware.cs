@@ -1,6 +1,4 @@
-﻿using EWS.Models;
-
-namespace EWS.Authentication
+﻿namespace EWS.Authentication
 {
     /// <summary>
     /// Checks whether the user is authorized to use the ews-boda application.

@@ -82,8 +82,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseCheckAuthorizedMiddleware();
-app.UseAutoUserRegistration();
+app.UseMiddleware<CheckAuthorizedMiddleware>();
+app.UseMiddleware<AutoUserRegistrationMiddleware>();
 
 app.MapControllerRoute(
     name: "default",
