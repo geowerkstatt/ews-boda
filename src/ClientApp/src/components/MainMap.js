@@ -179,9 +179,10 @@ export default function MainMap(props) {
             (f) =>
               new Feature({
                 geometry: new Point([f.geometrie.coordinates[0], f.geometrie.coordinates[1]]),
-                Id: f.id,
-                Bezeichnung: f.bezeichnung,
-                "Standort Id": f.standortId,
+                bezeichnung: f.bezeichnung,
+                gemeinde: standorte.find((s) => s.id === f.standortId).gemeinde,
+                grundbuchNr: standorte.find((s) => s.id === f.standortId).grundbuchNr,
+                datum: f.datum,
               })
           );
       } else {
@@ -193,11 +194,9 @@ export default function MainMap(props) {
         })
       );
       if (bohrungen.length) {
-        const currentExtent = bohrungenLayer.getSource().getExtent();
+        const currentExtent = map.getView().getProjection().getExtent();
         setLatestExtent(currentExtent);
-        map.getView().fit(currentExtent, {
-          padding: [30, 30, 30, 30],
-        });
+        map.getView().fit(currentExtent);
       }
     }
   }, [standorte, bohrungenLayer, map]);
