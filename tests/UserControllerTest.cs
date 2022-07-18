@@ -63,7 +63,7 @@ public class UserControllerTest
             Name = "STRANGEBOUNCE",
             Role = UserRole.Administrator,
             UserErstellung = "WAFFLEAUTO",
-            Erstellungsdatum = TimeZoneInfo.ConvertTimeToUtc(DateTime.Now),
+            Erstellungsdatum = DateTime.Now,
         }).Entity;
         context.SaveChanges();
 
@@ -95,7 +95,7 @@ public class UserControllerTest
             Name = "STRANGEBOUNCE",
             Role = UserRole.Administrator,
             UserErstellung = "WAFFLEAUTO",
-            Erstellungsdatum = TimeZoneInfo.ConvertTimeToUtc(DateTime.Now),
+            Erstellungsdatum = DateTime.Now,
         }).Entity;
         context.SaveChanges();
 

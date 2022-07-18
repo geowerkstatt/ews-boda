@@ -14,12 +14,12 @@ namespace EWS
             {
                 if (entity.State == EntityState.Added)
                 {
-                    entity.Entity.Erstellungsdatum = DateTime.Now.ToUniversalTime();
+                    entity.Entity.Erstellungsdatum = DateTime.Now;;
                     entity.Entity.UserErstellung = userContext.CurrentUser.Name;
                 }
                 else
                 {
-                    entity.Entity.Mutationsdatum = DateTime.Now.ToUniversalTime();
+                    entity.Entity.Mutationsdatum = DateTime.Now;;
                     entity.Entity.UserMutation = userContext.CurrentUser.Name;
                 }
             }
@@ -38,7 +38,7 @@ namespace EWS
             {
                 if (entry.Entity.FreigabeAfu)
                 {
-                    entry.Entity.AfuDatum ??= DateTime.Now.ToUniversalTime();
+                    entry.Entity.AfuDatum ??= DateTime.Now;;
                     entry.Entity.AfuUser ??= userContext.CurrentUser.Name;
                 }
                 else
