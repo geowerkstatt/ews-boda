@@ -289,7 +289,7 @@ export default function StandortForm(props) {
       <DialogActions>
         <Button onClick={handleClose}> {!isDirty ? "Schliessen" : "Abbrechen"}</Button>
         <Button type="submit" disabled={!isDirty}>
-          Standort Speichern
+          Standort speichern
         </Button>
         <Button disabled>Standort freigeben</Button>
       </DialogActions>
