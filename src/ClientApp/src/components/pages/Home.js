@@ -61,8 +61,8 @@ export function Home() {
 
   async function getStandorte() {
     let query = `?gemeinde=${gemeinde}&gbnummer=${gbnummer}&bezeichnung=${bezeichnung}`;
-    query += `&erstellungsdatum=${erstellungsDatum ? new Date(erstellungsDatum).toUTCString() : ""}`;
-    query += `&mutationsdatum=${mutationsDatum ? new Date(mutationsDatum).toUTCString() : ""}`;
+    query += `&erstellungsdatum=${erstellungsDatum ? new Date(erstellungsDatum) : ""}`;
+    query += `&mutationsdatum=${mutationsDatum ? new Date(mutationsDatum) : ""}`;
 
     const response = await fetch("/standort" + query);
     const features = await response.json();

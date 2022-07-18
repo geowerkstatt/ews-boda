@@ -16,12 +16,12 @@ namespace EWS
             {
                 if (entity.State == EntityState.Added)
                 {
-                    entity.Entity.Erstellungsdatum = DateTime.Now.ToUniversalTime();
+                    entity.Entity.Erstellungsdatum = DateTime.Now;
                     entity.Entity.UserErstellung = currentUser;
                 }
                 else
                 {
-                    entity.Entity.Mutationsdatum = DateTime.Now.ToUniversalTime();
+                    entity.Entity.Mutationsdatum = DateTime.Now;
                     entity.Entity.UserMutation = currentUser;
                 }
             }
@@ -41,7 +41,7 @@ namespace EWS
             {
                 if (entry.Entity.FreigabeAfu)
                 {
-                    entry.Entity.AfuDatum ??= DateTime.Now.ToUniversalTime();
+                    entry.Entity.AfuDatum ??= DateTime.Now;
                     entry.Entity.AfuUser ??= currentUser;
                 }
                 else
