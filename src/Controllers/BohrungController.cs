@@ -25,5 +25,4 @@ public class BohrungController : EwsControllerBase<Bohrung>
         item.Bohrprofile = null;
         return base.EditAsync(item);
     }
-
 }
