@@ -8,30 +8,17 @@ import Typography from "@mui/material/Typography";
 function Popup(props) {
   const { popupElement, closePopup, selectedFeature, popupVisible } = props;
 
-  const relevantAttributes = ["Bezeichnung", "Standort Id"];
-  const filteredFeature =
-    selectedFeature?.values_ &&
-    Object.keys(selectedFeature?.values_)
-      .filter((key) => relevantAttributes.includes(key))
-      .reduce((obj, key) => {
-        return Object.assign(obj, {
-          [key]: selectedFeature?.values_[key],
-        });
-      }, {});
-
   return (
     <div ref={popupElement} id="popup">
       {popupVisible && selectedFeature && (
         <Card sx={{ minWidth: 275 }}>
           <CardContent>
-            <Typography variant="h6" gutterBottom>
-              Bohrung Id: {selectedFeature.values_.Id}
+            <Typography variant="h6">{selectedFeature.values_.bezeichnung}</Typography>
+            <Typography color="text.secondary">Gemeinde: {selectedFeature.values_.gemeinde}</Typography>
+            <Typography color="text.secondary">Grundbuchnummer: {selectedFeature.values_.grundbuchNr}</Typography>
+            <Typography color="text.secondary">
+              Datum der Bohrung: {new Date(selectedFeature.values_.datum).toLocaleDateString()}
             </Typography>
-            {Object.keys(filteredFeature).map((key, keyIndex) => (
-              <Typography color="text.secondary" key={keyIndex}>
-                {key}: {filteredFeature[key]?.toString()}
-              </Typography>
-            ))}
           </CardContent>
           <CardActions>
             <Button onClick={closePopup} size="small">
