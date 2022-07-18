@@ -184,7 +184,7 @@ export function Home() {
                 getStandorte={getStandorte}
                 gemeinden={[
                   ...new Set(
-                    standorte
+                    unfilteredStandorte
                       .map((s) => s.gemeinde)
                       .filter(Boolean)
                       .sort()
