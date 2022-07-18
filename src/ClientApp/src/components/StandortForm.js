@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField";
 import Table from "@mui/material/Table";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
@@ -60,6 +61,22 @@ export default function StandortForm(props) {
 
   const onEditBohrung = (bohrung) => {
     setCurrentBohrung(bohrung);
+    handleNext();
+  };
+
+  const onCopyBohrung = (bohrung) => {
+    let bohrungToCopy = structuredClone(bohrung);
+    delete bohrungToCopy.id;
+    delete bohrungToCopy.bohrprofile;
+    delete bohrungToCopy.erstellungsdatum;
+    delete bohrungToCopy.mutationsdatum;
+    // will be preserved via ablenkungId and qualitaetId
+    delete bohrungToCopy.ablenkung;
+    delete bohrungToCopy.qualitaet;
+
+    // delete geometry, as long as no selection from map is possible
+    delete bohrungToCopy.geometrie;
+    setCurrentBohrung(bohrungToCopy);
     handleNext();
   };
 
@@ -265,6 +282,11 @@ export default function StandortForm(props) {
                         <Tooltip title="Bohrung editieren">
                           <IconButton onClick={() => onEditBohrung(bohrung)} name="edit-button" color="primary">
                             <EditIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Bohrung duplizieren">
+                          <IconButton onClick={() => onCopyBohrung(bohrung)} name="copy-button" color="primary">
+                            <ContentCopyIcon />
                           </IconButton>
                         </Tooltip>
                         <Tooltip title="Bohrung löschen">
