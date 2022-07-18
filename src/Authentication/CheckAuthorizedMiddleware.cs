@@ -5,7 +5,6 @@
     /// </summary>
     public class CheckAuthorizedMiddleware
     {
-        private const string AuthorizedGroupName = "GA_Xen_EWS_Boda";
         private const string GroupClaimType = "groups";
         private readonly RequestDelegate next;
 
@@ -20,13 +19,15 @@
         /// </summary>
         /// <param name="httpContext">The <see cref="HttpContext"/> for the current request.</param>
         /// <param name="logger">The logger for this instance.</param>
+        /// <param name="configuration">The configuration.</param>
         /// <returns>A <see cref="Task"/> that represents the execution of this middleware.</returns>
-        public async Task InvokeAsync(HttpContext httpContext, ILogger<CheckAuthorizedMiddleware> logger)
+        public async Task InvokeAsync(HttpContext httpContext, ILogger<CheckAuthorizedMiddleware> logger, IConfiguration configuration)
         {
-            var authorized = httpContext.User.Claims.FirstOrDefault(x => x.Type == GroupClaimType && x.Value == AuthorizedGroupName);
+            var authorizedGroupName = configuration.GetValue<string>("Auth:AuthorizedGroupName");
+            var authorized = httpContext.User.Claims.FirstOrDefault(x => x.Type == GroupClaimType && x.Value == authorizedGroupName);
             if (authorized == null)
             {
-                var errorMessage = $"The user is not authorized to use this application. Group name <{AuthorizedGroupName}> not found in claim <{GroupClaimType}>.";
+                var errorMessage = $"The user is not authorized to use this application. Group name <{authorizedGroupName}> not found in claim <{GroupClaimType}>.";
                 logger.LogError(errorMessage);
                 await httpContext.Response.WriteProblemDetailsAsync(
                     "Authorization Exception", errorMessage, StatusCodes.Status403Forbidden).ConfigureAwait(false);

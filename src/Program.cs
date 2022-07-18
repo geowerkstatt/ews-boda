@@ -24,7 +24,7 @@ builder.Services.AddAuthentication(options =>
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
-            ValidIssuer = "USPSLS",
+            ValidIssuer = builder.Configuration["Auth:Issuer"],
             ValidateAudience = false,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
