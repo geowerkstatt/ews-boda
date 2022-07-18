@@ -36,17 +36,14 @@ public class StandortController : EwsControllerBase<Standort>
 #pragma warning restore CA1304 // Specify CultureInfo
         }
 
-        // Use universal time zone to convert time.
-        TimeZoneInfo ut = TimeZoneInfo.Utc;
-
         if (erstellungsdatum != null)
         {
-            standorte = standorte.Where(s => s.Erstellungsdatum!.Date == TimeZoneInfo.ConvertTimeToUtc(erstellungsdatum.Value, ut).Date);
+            standorte = standorte.Where(s => s.Erstellungsdatum!.Date == erstellungsdatum.Value.Date);
         }
 
         if (mutationsdatum != null)
         {
-            standorte = standorte.Where(s => s.Mutationsdatum != null && s.Mutationsdatum!.Value.Date == TimeZoneInfo.ConvertTimeToUtc(mutationsdatum.Value, ut).Date);
+            standorte = standorte.Where(s => s.Mutationsdatum != null && s.Mutationsdatum!.Value.Date == mutationsdatum.Value.Date);
         }
 
         return await standorte.AsNoTracking().ToListAsync().ConfigureAwait(false);
