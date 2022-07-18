@@ -107,8 +107,6 @@ export function Home() {
     Object.entries(data).forEach(([key, value]) => {
       updatedStandort[key] = value;
     });
-    // ignore bohrungen on update
-    updatedStandort.bohrungen = null;
     const response = await fetch("/standort", {
       method: "PUT",
       cache: "no-cache",

@@ -47,8 +47,6 @@ export default function InputForm(props) {
   // Edit Bohrung
   async function editBohrung(data) {
     const updatedBohrung = currentBohrung;
-    // ignore bohrprofile on update
-    updatedBohrung.bohrprofile = null;
     Object.entries(data).forEach(([key, value]) => {
       updatedBohrung[key] = value;
     });
