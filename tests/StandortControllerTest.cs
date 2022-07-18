@@ -183,7 +183,7 @@ public class StandortControllerTest
         Assert.AreEqual("Mamie_Gutmann", standortToTest.UserErstellung);
         Assert.AreEqual("Ernestine21", standortToTest.UserMutation);
         Assert.AreEqual(new DateTime(2021, 3, 29).Date, standortToTest.AfuDatum!.Value.Date);
-        Assert.AreEqual(new DateTime(2021, 11, 15).Date, standortToTest.Erstellungsdatum.Date);
+        Assert.AreEqual(new DateTime(2021, 11, 15).Date, standortToTest.Erstellungsdatum!.Value.Date);
         Assert.AreEqual(new DateTime(2021, 12, 7).Date, standortToTest.Mutationsdatum!.Value.Date);
     }
 
@@ -206,7 +206,7 @@ public class StandortControllerTest
         Assert.AreEqual("Penny_Lindgren79", standortToTest.UserErstellung);
         Assert.AreEqual("Marjorie40", standortToTest.UserMutation);
         Assert.AreEqual(new DateTime(2021, 6, 14).Date, standortToTest.AfuDatum!.Value.Date);
-        Assert.AreEqual(new DateTime(2021, 11, 3).Date, standortToTest.Erstellungsdatum.Date);
+        Assert.AreEqual(new DateTime(2021, 11, 3).Date, standortToTest.Erstellungsdatum!.Value.Date);
         Assert.AreEqual(new DateTime(2021, 12, 5).Date, standortToTest.Mutationsdatum!.Value.Date);
     }
 

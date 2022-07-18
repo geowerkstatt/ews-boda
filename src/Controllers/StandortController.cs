@@ -40,7 +40,7 @@ public class StandortController : EwsControllerBase<Standort>
 
         if (erstellungsdatum != null)
         {
-            standorte = standorte.Where(s => s.Erstellungsdatum != null && s.Erstellungsdatum!.Date == erstellungsdatum.Value.Date);
+            standorte = standorte.Where(s => s.Erstellungsdatum != null && s.Erstellungsdatum!.Value.Date == erstellungsdatum.Value.Date);
         }
 
         if (mutationsdatum != null)
