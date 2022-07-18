@@ -401,3 +401,6 @@ FodyWeavers.xsd
 # Cypress test output
 src/ClientApp/cypress/screenshot
 src/ClientApp/cypress/downloads
+
+# Environment file containing sensitive data
+.env

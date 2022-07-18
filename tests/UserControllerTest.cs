@@ -1,4 +1,6 @@
-﻿using EWS.Models;
+using EWS.Authentication;
+using EWS.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -17,11 +19,19 @@ public class UserControllerTest
     public void TestInitialize()
     {
         context = ContextFactory.CreateContext();
-        controller = new UserController(context);
+        controller = new UserController(context, GetUserContext());
     }
 
     [TestCleanup]
     public void TestCleanup() => context.Dispose();
+
+    [TestMethod]
+    public void GetUserInformation()
+    {
+        var user = controller.GetUserInformation();
+        Assert.AreEqual("PEEVEDSOUFFLE", user.Name);
+        Assert.AreEqual(UserRole.Extern, user.Role);
+    }
 
     [TestMethod]
     public async Task GetUsers()
@@ -113,4 +123,14 @@ public class UserControllerTest
         Assert.IsInstanceOfType(response, typeof(BadRequestObjectResult));
         Assert.AreEqual("Creating new users is not supported.", ((BadRequestObjectResult)response).Value);
     }
+
+    private static UserContext GetUserContext() =>
+        new()
+        {
+            CurrentUser = new User
+            {
+                Name = "PEEVEDSOUFFLE",
+                Role = UserRole.Extern,
+            },
+        };
 }

@@ -57,7 +57,7 @@ export function Layout(props) {
             <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
               EWS-Boda
             </Typography>
-            <IconButton color="inherit">
+            <IconButton component="a" href="login/sls/auth?cmd=logout" color="inherit">
               <LogoutIcon />
             </IconButton>
           </Toolbar>
