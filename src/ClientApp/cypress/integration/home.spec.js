@@ -55,12 +55,16 @@ describe("Home page tests", () => {
   });
 
   it("Open Standort Edit Form", function () {
+    cy.intercept("/standort", standorte);
+
     cy.intercept(
       "/standort?gemeinde=Heinrichswil-Winistorf&gbnummer=&bezeichnung=&erstellungsdatum=&mutationsdatum=",
       standorteGemeinde
     );
+
     cy.visit("/");
     cy.get("div[name=home-container]").should("not.contain", "Standorte");
+
     // get search results
     cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
     cy.get("button[name=submit-button]").should("be.visible").click();
@@ -80,15 +84,19 @@ describe("Home page tests", () => {
   });
 
   it("Delete Standort", function () {
+    cy.intercept("/standort", standorte);
+
     cy.intercept(
-      "/standort?gemeinde=Heinrichswil-Winistorf&&gbnummer=&bezeichnung=&erstellungsdatum=&mutationsdatum=",
+      "/standort?gemeinde=Heinrichswil-Winistorf&gbnummer=&bezeichnung=&erstellungsdatum=&mutationsdatum=",
       standorteGemeinde
     );
-
-    cy.intercept("DELETE", "/standort?id=35979", { statusCode: 200 });
+    cy.intercept("DELETE", "/standort*", {
+      statusCode: 200,
+    });
 
     cy.visit("/");
     cy.get("div[name=home-container]").should("not.contain", "Standorte");
+
     // get search results
     cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
     cy.get("button[name=submit-button]").should("be.visible").click();

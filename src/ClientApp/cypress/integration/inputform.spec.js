@@ -1,7 +1,9 @@
 import standorteGemeinde from "../fixtures/standorteGemeinde.json";
+import standorte from "../fixtures/standorte.json";
 
 describe("Input form tests", () => {
   beforeEach(() => {
+    cy.intercept("/standort", standorte);
     cy.intercept(
       "/standort?gemeinde=Heinrichswil-Winistorf&gbnummer=&bezeichnung=&erstellungsdatum=&mutationsdatum=",
       standorteGemeinde
