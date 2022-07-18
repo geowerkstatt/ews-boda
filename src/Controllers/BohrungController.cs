@@ -23,7 +23,7 @@ public class BohrungController : EwsControllerBase<Bohrung>
     public override Task<IActionResult> EditAsync(Bohrung item)
     {
         item.Bohrprofile = null;
-        return base.CreateAsync(item);
+        return base.EditAsync(item);
     }
 
 }

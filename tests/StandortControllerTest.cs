@@ -410,7 +410,6 @@ public class StandortControllerTest
             Id = 447375,
         };
         var response = await controller.EditAsync(inexistentStandort).ConfigureAwait(false);
-        var objectResult = response as ObjectResult;
-        Assert.AreEqual(objectResult.StatusCode, StatusCodes.Status400BadRequest);
+        Assert.IsInstanceOfType(response, typeof(NotFoundResult));
     }
 }

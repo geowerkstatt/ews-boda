@@ -79,7 +79,7 @@ public class StandortController : EwsControllerBase<Standort>
     public override Task<IActionResult> EditAsync(Standort item)
     {
         item.Bohrungen = null;
-        return base.CreateAsync(item);
+        return base.EditAsync(item);
     }
 
     private IQueryable<Standort> GetAll()
