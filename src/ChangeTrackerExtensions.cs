@@ -26,5 +26,30 @@ namespace EWS
                 }
             }
         }
+
+        /// <summary>
+        /// Updates the <see cref="Standort.AfuUser"/> and <see cref="Standort.AfuDatum"/>
+        /// depending on whether the <see cref="Standort.FreigabeAfu"/> has been set or not.
+        /// </summary>
+        /// <param name="changeTracker"><see cref="ChangeTracker"/> which provides access to
+        /// change tracking information.</param>
+        internal static void UpdateFreigabeAfuFields(this ChangeTracker changeTracker)
+        {
+            // Replace as soon as authentication is available.
+            string currentUser = "Temporary Test User";
+            foreach (var entry in changeTracker.Entries<Standort>())
+            {
+                if (entry.Entity.FreigabeAfu)
+                {
+                    entry.Entity.AfuDatum ??= DateTime.Now.ToUniversalTime();
+                    entry.Entity.AfuUser ??= currentUser;
+                }
+                else
+                {
+                    entry.Entity.AfuDatum = null;
+                    entry.Entity.AfuUser = null;
+                }
+            }
+        }
     }
 }

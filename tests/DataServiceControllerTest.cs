@@ -15,16 +15,22 @@ public class DataServiceControllerTest
 {
     private HttpClient httpClient;
     private DataServiceController controller;
+    private EwsContext context;
 
     [TestInitialize]
     public void Initialize()
     {
         httpClient = new HttpClient();
-        controller = new DataServiceController(httpClient, new Mock<ILogger<DataServiceController>>().Object);
+        context = ContextFactory.CreateContext();
+        controller = new DataServiceController(httpClient, new Mock<ILogger<DataServiceController>>().Object, context);
     }
 
     [TestCleanup]
-    public void Cleanup() => httpClient.Dispose();
+    public void Cleanup()
+    {
+        httpClient.Dispose();
+        context.Dispose();
+    }
 
     [TestMethod]
     public async Task GetAsyncForSinglePoint()
@@ -80,7 +86,7 @@ public class DataServiceControllerTest
         mockHttp.When("https://geo.so.ch/api/*").Respond("application/json", "{'error' : 'Unit test: Invalid JSON format'}");
 
         using var mockHttpClient = new HttpClient(mockHttp);
-        controller = new DataServiceController(mockHttpClient, new Mock<ILogger<DataServiceController>>().Object);
+        controller = new DataServiceController(mockHttpClient, new Mock<ILogger<DataServiceController>>().Object, context);
 
         var points = new List<Point> { new(int.MaxValue, int.MinValue) };
         var result = await controller.GetAsync(points);

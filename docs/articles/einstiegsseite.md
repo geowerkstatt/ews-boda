@@ -113,3 +113,10 @@ Ausserdem werden die der Bohrung zugeordneten Bohrprofile in einer Tabelle angez
 ## Bohrung löschen
 
 Im Dialog der geöffnet ist, wenn Standorte erstellt oder editiert werden, können dem Standort zugeordnete Bohrungen durch Klicken auf das Löschen-Icon ![Löschen-Icon](../images/delete-icon.png) gelöscht werden.
+
+## Standorte freigeben / Freigabe aufheben
+
+![Freigabe AfU](../images/freigabe-afu-icon.png)
+
+Beim Bearbeiten von Standorten können Benutzer mit der Rolle **_Sachbearbeiter AfU_** und **_Administrator_** Standorte freigeben und diese auch wieder aufheben. Die Felder _AfU Freigabe erfolgt durch_ und _AfU Freigabe erfolgt am_ werden automatisch ausgefüllt und nur angezeigt wenn die Freigabe erfolgt ist.
+
