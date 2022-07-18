@@ -110,6 +110,22 @@ Die folgenden Attribute werden automatisch gesetzt und sind im Dialog zwar sicht
 
 Ausserdem werden die der Bohrung zugeordneten Bohrprofile in einer Tabelle angezeigt.
 
+## Bohrung kopieren
+
+Im Dialog der geöffnet ist, wenn Standorte erstellt oder editiert werden, können dem Standort zugeordnete Bohrungen durch Klicken auf das Kopieren-Icon ![Kopieren-Icon](../images/copy-icon.png) kopiert werden.
+Es öffnet sich ein Dialog in dem die folgenden Werte von der kopierten Bohrung übernommen wurden: 
+
+* Bezeichnung
+* Bemerkung
+* Datum des Bohrbeginns
+* Durchmesser des Bohrlochs
+* Ablenkung der Bohrung
+* Qualität der Angaben zur Bohrung
+* Bemerkung zur Qualitätsangabe
+* Autor der geologischen Aufnahme
+
+Vor dem Speichern der kopierten Bohrung können die Attribute geändert werden.
+
 ## Bohrung löschen
 
 Im Dialog der geöffnet ist, wenn Standorte erstellt oder editiert werden, können dem Standort zugeordnete Bohrungen durch Klicken auf das Löschen-Icon ![Löschen-Icon](../images/delete-icon.png) gelöscht werden.
