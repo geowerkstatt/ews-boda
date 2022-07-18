@@ -13,7 +13,7 @@ export default function Search(props) {
   const { isDirty } = formState;
 
   const onSearch = (formData) => {
-    let query = `?gemeinde=${formData.gemeinde}`;
+    let query = `?gemeinde=${formData.gemeinde ? formData.gemeinde : ""}`;
     query += `&gbnummer=${formData.gbnummer}&bezeichnung=${formData.bezeichnung}`;
     query += `&erstellungsdatum=${formData.erstellungsDatum ? new Date(formData.erstellungsDatum).toUTCString() : ""}`;
     query += `&mutationsdatum=${formData.mutationsDatum ? new Date(formData.mutationsDatum).toUTCString() : ""}`;
