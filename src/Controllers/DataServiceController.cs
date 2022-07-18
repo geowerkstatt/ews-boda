@@ -70,14 +70,14 @@ public class DataServiceController : ControllerBase
         Dictionary<string, string?> notFound = new(), errors = new();
 
         // Only consider Standorte with Bohrungen
-        var standorteToMigrate = context.Standorte.Include(x => x.Bohrungen).Where(x => x.Bohrungen.Any()).ToList();
+        var standorteToMigrate = context.Standorte.Include(x => x.Bohrungen).Where(x => x.Bohrungen != null && x.Bohrungen.Any()).ToList();
 
         await Parallel.ForEachAsync(standorteToMigrate, async (standort, _) =>
         {
             var standortId = $"{standort.Id}: {standort.Bezeichnung}";
 
             // Query data service for Gemeinde data with Bohrungen points
-            var geometries = standort.Bohrungen.Where(x => x.Geometrie != null).Select(x => x.Geometrie).ToList();
+            var geometries = standort.Bohrungen!.Where(x => x.Geometrie != null).Select(x => x.Geometrie).ToList();
             var dataServiceResponse = await GetAsync(geometries!).ConfigureAwait(false);
             if (dataServiceResponse.Value != null)
             {

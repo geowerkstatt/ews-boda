@@ -61,6 +61,6 @@ namespace EWS.Models
         /// <summary>
         /// Bohrungen die dem Standort zugeordnet sind.
         /// </summary>
-        public List<Bohrung> Bohrungen { get; set; }
+        public List<Bohrung>? Bohrungen { get; set; }
     }
 }

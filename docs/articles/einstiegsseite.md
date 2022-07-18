@@ -38,7 +38,7 @@ Durch Klicken auf den Button _Neuen Standort hinzufügen_ wird ein Dialog geöff
 * Bemerkung
 * Grundbuchnummer
 
-Die folgenden Attribute werden automatisch gesetzt und sind nicht im Dialog sichtbar.
+Die folgenden Attribute werden automatisch gesetzt und sind im Dialog nicht sichtbar.
 
 * Gemeinde (sobald eine Bohrung mit Geometrie vorhanden ist)
 * Erstellungsdatum
@@ -68,8 +68,55 @@ Ausserdem werden die dem Standort zugeordneten Bohrungen auf einer Karte dargest
 
 In der Tabelle mit gefundenen Standorten unterhalb der Suchmaske können einzelne Standorte durch Klicken auf das Löschen-Icon ![Löschen-Icon](../images/delete-icon.png) gelöscht werden.
 
+## Bohrungen hinzufügen
+
+Im Dialog der geöffnet ist, wenn Standorte erstellt oder editiert werden, können dem Standort zugeordnete Bohrungen erstellt werden. Bei einem neu erstellten Standort muss dieser abgespeichert werden bevor eine Bohrung hinzugefügt werden kann.
+Durch Klicken auf das Hinzufügen-Icon ![Hinzufügen-Icon](../images/add-icon.png) wird ein Dialog geöffnet, in dem eine neue Bohrung angelegt werden kann. Hier können die folgenden Felder befüllt werden.
+
+* Bezeichnung (obligatorisch)
+* Bemerkung
+* Datum des Bohrbeginns
+* Durchmesser des Bohrlochs
+* Ablenkung der Bohrung
+* Qualität der Angaben zur Bohrung
+* Bemerkung zur Qualitätsangabe
+* Autor der geologischen Aufnahme
+
+Die folgenden Attribute werden automatisch gesetzt und sind im Dialog nicht sichtbar.
+
+* Erstellungsdatum
+* Benutzername bei Erstellung
+
+## Bohrungen editieren
+
+Im Dialog der geöffnet ist, wenn Standorte erstellt oder editiert werden, können dem Standort zugeordnete Bohrungen editiert werden.
+Durch Klicken auf das Editieren-Icon ![Editieren-Icon](../images/edit-icon.png) wird ein Dialog geöffnet, in dem die Bohrung editiert werden kann.
+
+Die folgenden Felder können editiert werden.
+
+* Bezeichnung (obligatorisch)
+* Bemerkung
+* Datum des Bohrbeginns
+* Durchmesser des Bohrlochs
+* Ablenkung der Bohrung
+* Qualität der Angaben zur Bohrung
+* Bemerkung zur Qualitätsangabe
+* Autor der geologischen Aufnahme
+
+Die folgenden Attribute werden automatisch gesetzt und sind im Dialog zwar sichtbar, können jedoch nicht editiert werden.
+
+* Erstellungs- und Mutationsdatum
+* Benutzername bei Erstellung und Mutation
+
+Ausserdem werden die der Bohrung zugeordneten Bohrprofile in einer Tabelle angezeigt.
+
+## Bohrung löschen
+
+Im Dialog der geöffnet ist, wenn Standorte erstellt oder editiert werden, können dem Standort zugeordnete Bohrungen durch Klicken auf das Löschen-Icon ![Löschen-Icon](../images/delete-icon.png) gelöscht werden.
+
 ## Standorte freigeben / Freigabe aufheben
 
 ![Freigabe AfU](../images/freigabe-afu-icon.png)
 
 Beim Bearbeiten von Standorten können Benutzer mit der Rolle **_Sachbearbeiter AfU_** und **_Administrator_** Standorte freigeben und diese auch wieder aufheben. Die Felder _AfU Freigabe erfolgt durch_ und _AfU Freigabe erfolgt am_ werden automatisch ausgefüllt und nur angezeigt wenn die Freigabe erfolgt ist.
+

@@ -54,18 +54,73 @@ describe("Home page tests", () => {
     cy.get("div[class=map-container]").should("be.visible");
   });
 
+  it("Open Standort Edit Form", function () {
+    cy.intercept("/standort", standorte);
+
+    cy.intercept(
+      "/standort?gemeinde=Heinrichswil-Winistorf&gbnummer=&bezeichnung=&erstellungsdatum=&mutationsdatum=",
+      standorteGemeinde
+    );
+
+    cy.visit("/");
+    cy.get("div[name=home-container]").should("not.contain", "Standorte");
+
+    // get search results
+    cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
+    cy.get("button[name=submit-button]").should("be.visible").click();
+    cy.get("div[name=home-container]").should("contain", "Standorte");
+    cy.get("tbody").children().should("have.length", 4);
+
+    cy.contains("td", "Ergonomic Metal Tuna").parent("tr").children("td").find("button[name=edit-button]").click();
+    // submit button should only be visible if form is dirty
+    cy.get("button[type=submit]").should("not.be.visible");
+    cy.get("form[name=standort-form]")
+      .find("input[name=bezeichnung]")
+      .should("be.visible")
+      .click({ force: true })
+      .type(" And More");
+
+    cy.contains("button", "Standort speichern").scrollIntoView().should("be.visible").click();
+  });
+
+  it("Delete Standort", function () {
+    cy.intercept("/standort", standorte);
+
+    cy.intercept(
+      "/standort?gemeinde=Heinrichswil-Winistorf&gbnummer=&bezeichnung=&erstellungsdatum=&mutationsdatum=",
+      standorteGemeinde
+    );
+    cy.intercept("DELETE", "/standort*", {
+      statusCode: 200,
+    });
+
+    cy.visit("/");
+    cy.get("div[name=home-container]").should("not.contain", "Standorte");
+
+    // get search results
+    cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
+    cy.get("button[name=submit-button]").should("be.visible").click();
+    cy.get("div[name=home-container]").should("contain", "Standorte");
+    cy.get("tbody").children().should("have.length", 4);
+
+    cy.contains("td", "Ergonomic Metal Tuna").parent("tr").children("td").find("button[name=delete-button]").click();
+    cy.contains("button", "OK").click();
+
+    cy.get("tbody").children().should("have.length", 3);
+  });
+
   it("Check and uncheck AfU Freigabe", function () {
     cy.intercept("/standort*", standorteGemeinde);
     cy.intercept("PUT", "/standort").as("editStandortFreigabe");
 
     cy.visit("/");
     cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
-    cy.get("button[name=submit-button]").should("be.visible").click();
+    cy.get("button[name=submit-button]").should("be.visible").click({ force: true });
 
     // check Freigabe AfU
-    cy.contains("td", "Generic Steel Pants").siblings().find("[aria-label='edit standort']").click();
+    cy.contains("td", "Generic Steel Pants").siblings().find("[aria-label='edit standort']").click({ force: true });
     cy.get('[type="checkbox"]').should("not.be.checked").check().should("be.checked");
-    cy.get('button:contains("Speichern")').click();
+    cy.get('button:contains("speichern")').click({ force: true });
     cy.wait("@editStandortFreigabe")
       .its("request")
       .then((request) => {
@@ -73,9 +128,9 @@ describe("Home page tests", () => {
       });
 
     // Uncheck Freigabe AfU
-    cy.contains("td", "Generic Steel Pants").siblings().find("[aria-label='edit standort']").click();
+    cy.contains("td", "Generic Steel Pants").siblings().find("[aria-label='edit standort']").click({ force: true });
     cy.get('[type="checkbox"]').should("be.checked").uncheck().should("not.be.checked");
-    cy.get('button:contains("Speichern")').click();
+    cy.get('button:contains("speichern")').click({ force: true });
     cy.wait("@editStandortFreigabe")
       .its("request")
       .then((request) => {

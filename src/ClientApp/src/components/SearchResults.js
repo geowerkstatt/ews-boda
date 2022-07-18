@@ -13,7 +13,7 @@ import Title from "./Title";
 import Tooltip from "@mui/material/Tooltip";
 
 export default function SearchResults(props) {
-  const { standorte, openEditForm, onDelete } = props;
+  const { standorte, openEditForm, onDeleteStandort } = props;
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -45,15 +45,25 @@ export default function SearchResults(props) {
                 <TableCell>{standort.gemeinde}</TableCell>
                 <TableCell>{standort.grundbuchNr}</TableCell>
                 <TableCell>{standort.bezeichnung}</TableCell>
-                <TableCell>{standort.bohrungen.length}</TableCell>
-                <TableCell>
+                <TableCell>{standort.bohrungen?.length}</TableCell>
+                <TableCell align="right">
                   <Tooltip title="Standort editieren">
-                    <IconButton onClick={() => openEditForm(standort)} color="primary" aria-label="edit standort">
+                    <IconButton
+                      name="edit-button"
+                      onClick={() => openEditForm(standort)}
+                      color="primary"
+                      aria-label="edit standort"
+                    >
                       <EditIcon />
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Standort löschen">
-                    <IconButton onClick={() => onDelete(standort)} color="primary" aria-label="delete standort">
+                    <IconButton
+                      name="delete-button"
+                      onClick={() => onDeleteStandort(standort)}
+                      color="primary"
+                      aria-label="delete standort"
+                    >
                       <DeleteIcon />
                     </IconButton>
                   </Tooltip>

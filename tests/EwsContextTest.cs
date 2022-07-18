@@ -1,13 +1,8 @@
 ﻿using EWS.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace EWS;
@@ -32,7 +27,7 @@ public class EwsContextTest
         {
             Bezeichnung = "BLUEWAFFLE",
             StandortId = newStandort.Id,
-            HQualitaetId = 3,
+            HQualitaet = 3,
             HAblenkung = 9,
         };
         await new BohrungController(ContextFactory.CreateContext()).CreateAsync(newBohrung).ConfigureAwait(false);
@@ -59,8 +54,8 @@ public class EwsContextTest
             .Where(x => x.Id == newStandort.Id)
             .Single();
         Assert.AreEqual("VIOLETSOURCE", standort.Bezeichnung);
-        Assert.AreEqual("BLUEWAFFLE", standort.Bohrungen.Single().Bezeichnung);
-        Assert.AreEqual("Morbi ut lectus ligula.", standort.Bohrungen.Single().Bohrprofile.Single().Bemerkung);
+        Assert.AreEqual("BLUEWAFFLE", standort.Bohrungen!.Single().Bezeichnung);
+        Assert.AreEqual("Morbi ut lectus ligula.", standort.Bohrungen!.Single().Bohrprofile!.Single().Bemerkung);
 
         // Update Standort with empty Bohrungen collection should not delete Bohrungen from the specified Standort
         var updatedNewStandort = ContextFactory.CreateContext().Standorte.AsNoTracking().Where(x => x.Id == newStandort.Id).First();
@@ -80,8 +75,8 @@ public class EwsContextTest
             .Where(x => x.Id == newStandort.Id)
             .Single();
         Assert.AreEqual("VIOLETYARD REV4", updatedStandort.Bezeichnung);
-        Assert.AreEqual("BLUEWAFFLE", updatedStandort.Bohrungen.Single().Bezeichnung);
-        Assert.AreEqual("Morbi ut lectus ligula.", updatedStandort.Bohrungen.Single().Bohrprofile.Single().Bemerkung);
+        Assert.AreEqual("BLUEWAFFLE", updatedStandort.Bohrungen!.Single().Bezeichnung);
+        Assert.AreEqual("Morbi ut lectus ligula.", updatedStandort.Bohrungen!.Single().Bohrprofile!.Single().Bemerkung);
 
         // Delete entire tree (Standort -> Bohrungen -> Bohrprofile)
         await new StandortController(ContextFactory.CreateContext()).DeleteAsync(newStandort.Id).ConfigureAwait(false);

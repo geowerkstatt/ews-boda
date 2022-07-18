@@ -14,19 +14,19 @@ export function User() {
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [currentUser, setCurrentUser] = useState(false);
 
-  const onDelete = (user) => {
+  const onDeleteUser = (user) => {
     setOpenConfirmation(true);
     setCurrentUser(user);
   };
 
-  const confirm = (confirmation) => {
+  const confirmDeleteUser = (confirmation) => {
     if (confirmation) {
       deleteUser(currentUser);
     }
     setOpenConfirmation(false);
   };
 
-  const openEditForm = (user) => {
+  const onEditUser = (user) => {
     setCurrentUser(user);
     setOpenForm(true);
   };
@@ -87,13 +87,17 @@ export function User() {
       <Toolbar />
       <Container name="user-container" maxWidth="md" sx={{ mt: 4, mb: 4 }}>
         <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-          <UserList users={users} openEditForm={openEditForm} onDelete={onDelete} />
+          <UserList users={users} openEditForm={onEditUser} onDelete={onDeleteUser} />
         </Paper>
       </Container>
       <Dialog open={openForm} onClose={() => setOpenForm(false)} fullWidth={true} maxWidth="sm">
         <UserInputForm handleClose={() => setOpenForm(false)} editUser={editUser} user={currentUser} />
       </Dialog>
-      <ConfirmationDialog open={openConfirmation} confirm={confirm} entityName="Benutzer"></ConfirmationDialog>
+      <ConfirmationDialog
+        open={openConfirmation}
+        confirm={confirmDeleteUser}
+        entityName="Benutzer"
+      ></ConfirmationDialog>
     </Box>
   );
 }
