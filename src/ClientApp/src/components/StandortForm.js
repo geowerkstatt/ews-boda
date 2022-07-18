@@ -24,6 +24,9 @@ import Box from "@mui/material/Box";
 import DetailMap from "./DetailMap";
 import ConfirmationDialog from "./ConfirmationDialog";
 import DateUserInputs from "./DateUserInputs";
+import Checkbox from "@mui/material/Checkbox";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import { CodeTypes } from "./Codetypes";
 
 export default function StandortForm(props) {
@@ -151,24 +154,50 @@ export default function StandortForm(props) {
         />
         {currentStandort && (
           <React.Fragment>
-            {currentStandort?.id && <DateUserInputs formObject={currentStandort}></DateUserInputs>}
-            {currentStandort?.afuUser != null && (
+            {currentStandort.id && <DateUserInputs formObject={currentStandort}></DateUserInputs>}
+            <FormGroup sx={{ marginTop: "3%" }}>
+              <FormControlLabel
+                label="Freigabe AfU"
+                control={
+                  <Controller
+                    name="freigabeAfu"
+                    control={control}
+                    defaultValue={currentStandort.freigabeAfu}
+                    value={currentStandort.freigabeAfu}
+                    render={({ field: { value, ref, ...field } }) => (
+                      <Checkbox {...field} inputRef={ref} checked={value} />
+                    )}
+                    onClick={(e) => {
+                      currentStandort.freigabeAfu = e.target.checked;
+                    }}
+                  />
+                }
+              />
+            </FormGroup>
+            {currentStandort.freigabeAfu && (
               <React.Fragment>
-                <TextField
-                  defaultValue={currentStandort?.afuUser}
-                  sx={{ marginRight: "6%", width: "47%" }}
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                  margin="normal"
-                  label="AfU Freigabe erfolgt durch"
-                  type="text"
-                  variant="standard"
+                <Controller
+                  name="afuUser"
+                  control={control}
+                  defaultValue={currentStandort.afuUser}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      sx={{ marginRight: "6%", width: "47%" }}
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      margin="normal"
+                      label="AfU Freigabe erfolgt durch"
+                      type="text"
+                      variant="standard"
+                    />
+                  )}
                 />
                 <TextField
                   name="afuDatum"
                   defaultValue={
-                    currentStandort?.afuDatum ? new Date(currentStandort?.afuDatum).toLocaleDateString() : null
+                    currentStandort.afuDatum ? new Date(currentStandort.afuDatum).toLocaleDateString() : null
                   }
                   InputProps={{
                     readOnly: true,

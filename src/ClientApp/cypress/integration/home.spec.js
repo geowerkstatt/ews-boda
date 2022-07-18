@@ -115,12 +115,12 @@ describe("Home page tests", () => {
 
     cy.visit("/");
     cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
-    cy.get("button[name=submit-button]").should("be.visible").click();
+    cy.get("button[name=submit-button]").should("be.visible").click({ force: true });
 
     // check Freigabe AfU
-    cy.contains("td", "Generic Steel Pants").siblings().find("[aria-label='edit standort']").click();
+    cy.contains("td", "Generic Steel Pants").siblings().find("[aria-label='edit standort']").click({ force: true });
     cy.get('[type="checkbox"]').should("not.be.checked").check().should("be.checked");
-    cy.get('button:contains("Speichern")').click();
+    cy.get('button:contains("Speichern")').click({ force: true });
     cy.wait("@editStandortFreigabe")
       .its("request")
       .then((request) => {
@@ -128,9 +128,9 @@ describe("Home page tests", () => {
       });
 
     // Uncheck Freigabe AfU
-    cy.contains("td", "Generic Steel Pants").siblings().find("[aria-label='edit standort']").click();
+    cy.contains("td", "Generic Steel Pants").siblings().find("[aria-label='edit standort']").click({ force: true });
     cy.get('[type="checkbox"]').should("be.checked").uncheck().should("not.be.checked");
-    cy.get('button:contains("Speichern")').click();
+    cy.get('button:contains("Speichern")').click({ force: true });
     cy.wait("@editStandortFreigabe")
       .its("request")
       .then((request) => {
