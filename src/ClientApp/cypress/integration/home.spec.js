@@ -120,7 +120,7 @@ describe("Home page tests", () => {
     // check Freigabe AfU
     cy.contains("td", "Generic Steel Pants").siblings().find("[aria-label='edit standort']").click({ force: true });
     cy.get('[type="checkbox"]').should("not.be.checked").check().should("be.checked");
-    cy.get('button:contains("Speichern")').click({ force: true });
+    cy.get('button:contains("speichern")').click({ force: true });
     cy.wait("@editStandortFreigabe")
       .its("request")
       .then((request) => {
@@ -130,7 +130,7 @@ describe("Home page tests", () => {
     // Uncheck Freigabe AfU
     cy.contains("td", "Generic Steel Pants").siblings().find("[aria-label='edit standort']").click({ force: true });
     cy.get('[type="checkbox"]').should("be.checked").uncheck().should("not.be.checked");
-    cy.get('button:contains("Speichern")').click({ force: true });
+    cy.get('button:contains("speichern")').click({ force: true });
     cy.wait("@editStandortFreigabe")
       .its("request")
       .then((request) => {
