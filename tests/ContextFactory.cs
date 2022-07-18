@@ -6,6 +6,8 @@ namespace EWS;
 
 internal static class ContextFactory
 {
+    public static string ConnectionString { get; } = "Host=localhost; Username=postgres;Password=VINTAGEMAGIC;Database=ews";
+
     /// <summary>
     /// Creates an instance of <see cref="EwsContext"/> with a database. The database is seeded with data.
     /// </summary>
@@ -14,7 +16,7 @@ internal static class ContextFactory
     {
         return new EwsContext(
             new DbContextOptionsBuilder<EwsContext>().UseNpgsql(
-                "Host=localhost; Username=postgres;Password=VINTAGEMAGIC;Database=ews",
+                ConnectionString,
                 option => option.UseNetTopologySuite().UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)).Options,
             new UserContext { CurrentUser = new User { Name = "PEEVEDSPORK" } });
     }

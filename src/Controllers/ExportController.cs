@@ -12,10 +12,17 @@ namespace EWS;
 public class ExportController : ControllerBase
 {
     private readonly EwsContext context;
+    private readonly IConfiguration configuration;
 
-    public ExportController(EwsContext context)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ExportController"/> class.
+    /// </summary>
+    /// <param name="context">The EF database context containing data for the EWS-Boda application.</param>
+    /// <param name="configuration">The configuration.</param>
+    public ExportController(EwsContext context, IConfiguration configuration)
     {
         this.context = context;
+        this.configuration = configuration;
     }
 
     /// <summary>
@@ -26,7 +33,7 @@ public class ExportController : ControllerBase
     [HttpGet]
     public async Task<ContentResult> GetAsync(CancellationToken cancellationToken)
     {
-        using var connection = new NpgsqlConnection(context.Database.GetDbConnection().ConnectionString);
+        using var connection = new NpgsqlConnection(configuration.GetConnectionString("BohrungContext"));
         await connection.OpenAsync(cancellationToken).ConfigureAwait(false);
         using var reader = await connection.BeginTextExportAsync(
             "COPY (SELECT * FROM bohrung.data_export) TO STDOUT WITH DELIMITER ',' CSV HEADER;",
