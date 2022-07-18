@@ -52,7 +52,7 @@ export function Home() {
     setOpenStandortForm(true);
   };
 
-  const onDeletStandort = (standort) => {
+  const onDeleteStandort = (standort) => {
     setOpenConfirmation(true);
     setCurrentStandort(standort);
   };
@@ -221,7 +221,11 @@ export function Home() {
           <Grid item xs={12}>
             {hasFilters && standorte.length > 0 && (
               <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                <SearchResults standorte={standorte} openEditForm={onEditStandort} onDeleteStandort={onDeletStandort} />
+                <SearchResults
+                  standorte={standorte}
+                  openEditForm={onEditStandort}
+                  onDeleteStandort={onDeleteStandort}
+                />
               </Paper>
             )}
             {hasFilters && standorte.length === 0 && (
