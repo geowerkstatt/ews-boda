@@ -64,7 +64,7 @@ public class StandortControllerTest
         Assert.AreEqual("Slovenia", standortToTest.Bemerkung);
         Assert.AreEqual("Ergonomic Fresh Shirt", standortToTest.Bezeichnung);
         Assert.AreEqual(true, standortToTest.FreigabeAfu);
-        Assert.AreEqual(2575, standortToTest.Gemeinde);
+        Assert.AreEqual("Boningen", standortToTest.Gemeinde);
         Assert.AreEqual("iwbyrzqsabb8pd8ahyd2izkurkxu9xt5q60jndil", standortToTest.GrundbuchNr);
         Assert.AreEqual(1, standortToTest.Bohrungen.Count);
         Assert.AreEqual("Carolyn_Lehner5", standortToTest.UserErstellung);
