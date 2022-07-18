@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -25,7 +27,7 @@ public class ExportControllerTest
     public async Task GetAsync()
     {
         var httpContext = new DefaultHttpContext();
-        var controller = new ExportController(context);
+        var controller = new ExportController(context, CreateConfiguration());
         controller.ControllerContext.HttpContext = httpContext;
         var response = await controller.GetAsync(CancellationToken.None).ConfigureAwait(false);
 
@@ -38,4 +40,10 @@ public class ExportControllerTest
         Assert.AreEqual(expectedHeader, response.Content.Split('\n')[0]);
         Assert.AreEqual(31191, response.Content.Split('\n').Length);
     }
+
+    private IConfiguration CreateConfiguration() =>
+        new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string>
+        {
+            { "ConnectionStrings:BohrungContext", ContextFactory.ConnectionString },
+        }).Build();
 }
