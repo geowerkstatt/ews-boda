@@ -1,4 +1,5 @@
-﻿using EWS.Models;
+﻿using EWS.Authentication;
+using EWS.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,11 +23,19 @@ public class UserControllerTest
     public void TestInitialize()
     {
         context = ContextFactory.CreateContext();
-        controller = new UserController(context);
+        controller = new UserController(context, GetUserContext());
     }
 
     [TestCleanup]
     public void TestCleanup() => context.Dispose();
+
+    [TestMethod]
+    public void GetUserInformation()
+    {
+        var user = controller.GetUserInformation();
+        Assert.AreEqual("PEEVEDSOUFFLE", user.Name);
+        Assert.AreEqual(UserRole.Extern, user.Role);
+    }
 
     [TestMethod]
     public async Task GetUsers()
@@ -42,7 +51,7 @@ public class UserControllerTest
         Assert.AreEqual(UserRole.Administrator, userToTest.Role);
         Assert.AreEqual("Christoph_Schaefer71", userToTest.UserErstellung);
         Assert.AreEqual("Christoph Schäfer", userToTest.UserMutation);
-        Assert.AreEqual(new DateTime(2021, 1, 9).Date, userToTest.Erstellungsdatum.Date);
+        Assert.AreEqual(new DateTime(2021, 1, 9).Date, userToTest.Erstellungsdatum!.Value.Date);
         Assert.AreEqual(new DateTime(2021, 10, 12).Date, userToTest.Mutationsdatum!.Value.Date);
     }
 
@@ -118,4 +127,14 @@ public class UserControllerTest
         Assert.IsInstanceOfType(response, typeof(BadRequestObjectResult));
         Assert.AreEqual("Creating new users is not supported.", ((BadRequestObjectResult)response).Value);
     }
+
+    private static UserContext GetUserContext() =>
+        new()
+        {
+            CurrentUser = new User
+            {
+                Name = "PEEVEDSOUFFLE",
+                Role = UserRole.Extern,
+            },
+        };
 }

@@ -1,9 +1,11 @@
 ﻿using EWS.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace EWS;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class StandortController : EwsControllerBase<Standort>
@@ -38,7 +40,7 @@ public class StandortController : EwsControllerBase<Standort>
 
         if (erstellungsdatum != null)
         {
-            standorte = standorte.Where(s => s.Erstellungsdatum!.Date == erstellungsdatum.Value.Date);
+            standorte = standorte.Where(s => s.Erstellungsdatum != null && s.Erstellungsdatum!.Value.Date == erstellungsdatum.Value.Date);
         }
 
         if (mutationsdatum != null)

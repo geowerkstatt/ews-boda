@@ -1,4 +1,5 @@
-﻿using EWS.Models;
+﻿using EWS.Authentication;
+using EWS.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace EWS
@@ -8,6 +9,8 @@ namespace EWS
     /// </summary>
     public class EwsContext : DbContext
     {
+        private readonly UserContext userContext;
+
         public DbSet<Bohrprofil> Bohrprofile { get; set; }
         public DbSet<Bohrung> Bohrungen { get; set; }
         public DbSet<Code> Codes { get; set; }
@@ -18,9 +21,10 @@ namespace EWS
         public DbSet<Vorkommnis> Vorkommnisse { get; set; }
         public DbSet<User> Users { get; set; }
 
-        public EwsContext(DbContextOptions options)
+        public EwsContext(DbContextOptions options, UserContext userContext)
             : base(options)
         {
+            this.userContext = userContext;
         }
 
         /// <inheritdoc />
@@ -34,16 +38,16 @@ namespace EWS
         /// <inheritdoc />
         public override int SaveChanges()
         {
-            ChangeTracker.UpdateChangeInformation();
-            ChangeTracker.UpdateFreigabeAfuFields();
+            ChangeTracker.UpdateChangeInformation(userContext);
+            ChangeTracker.UpdateFreigabeAfuFields(userContext);
             return base.SaveChanges();
         }
 
         /// <inheritdoc />
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            ChangeTracker.UpdateChangeInformation();
-            ChangeTracker.UpdateFreigabeAfuFields();
+            ChangeTracker.UpdateChangeInformation(userContext);
+            ChangeTracker.UpdateFreigabeAfuFields(userContext);
             return await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
