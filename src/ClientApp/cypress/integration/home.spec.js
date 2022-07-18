@@ -80,7 +80,7 @@ describe("Home page tests", () => {
       .click({ force: true })
       .type(" And More");
 
-    cy.contains("button", "Standort Speichern").scrollIntoView().should("be.visible").click();
+    cy.contains("button", "Standort speichern").scrollIntoView().should("be.visible").click();
   });
 
   it("Delete Standort", function () {
