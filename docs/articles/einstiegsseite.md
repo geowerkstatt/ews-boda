@@ -136,3 +136,7 @@ Im Dialog der geöffnet ist, wenn Standorte erstellt oder editiert werden, könn
 
 Beim Bearbeiten von Standorten können Benutzer mit der Rolle **_Sachbearbeiter AfU_** und **_Administrator_** Standorte freigeben und diese auch wieder aufheben. Die Felder _AfU Freigabe erfolgt durch_ und _AfU Freigabe erfolgt am_ werden automatisch ausgefüllt und nur angezeigt wenn die Freigabe erfolgt ist.
 
+## Zwischen Bohrungen navigieren
+
+Wenn einem Standort mehrere Bohrungen zugeordnet sind, kann in dem geöffneten Bohrungsdialog mit den Pfeilen (vor ![Zur-nächsten-Bohrung-Icon](../images/go-to-next-icon.png) und zurück ![Zur-vorherigen-Bohrung-Icon](../images/go-to-previous-icon.png) zwischen den Bohrungen navigiert werden.
+
