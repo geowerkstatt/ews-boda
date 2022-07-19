@@ -107,7 +107,7 @@ export default function BohrungForm(props) {
           const existingCoordinates = transform([b.geometrie.coordinates[0], b.geometrie.coordinates[1]], src, dest);
           return getDistance(newCoordinates, existingCoordinates);
         })
-        .every((v) => v < 200);
+        .every((distance) => distance <= 200);
     }
     return isValid;
   };
@@ -332,7 +332,7 @@ export default function BohrungForm(props) {
                   range: (v) => validateXCoordinate(v) || "Die X-Koordinate muss zwischen 2590000 und 2646000 liegen",
                   distance: (v) =>
                     validateDistance(v) ||
-                    "Die Distanz der neu erstellten Bohrung darf nicht mehr als 200 m zu den bereits vorhandenen Bohrungen betragen",
+                    "Die Distanz der neu erstellten Bohrung darf nicht mehr als 200m zu den bereits vorhandenen Bohrungen betragen",
                 },
               })}
               error={error !== undefined}
@@ -360,7 +360,7 @@ export default function BohrungForm(props) {
                   range: (v) => validateYCoordinate(v) || "Die Y-Koordinate muss zwischen 1212000 und 1264000 liegen",
                   distance: (v) =>
                     validateDistance(v) ||
-                    "Die Distanz der neu erstellten Bohrung darf nicht mehr als 200 m zu den bereits vorhandenen Bohrungen betragen",
+                    "Die Distanz der neu erstellten Bohrung darf nicht mehr als 200m zu den bereits vorhandenen Bohrungen betragen",
                 },
               })}
               error={error !== undefined}
