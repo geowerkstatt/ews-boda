@@ -20,10 +20,10 @@ builder.Services.AddHttpClient();
 builder.Services
     .AddAuthorization(options =>
     {
-        options.AddPolicy(Policies.IsAdministrator, options => options.RequireRole(UserRole.Administrator.ToString()));
-        options.AddPolicy(Policies.IsSachbearbeiterAfU, options => options.RequireRole(UserRole.Administrator.ToString(), UserRole.SachbearbeiterAfU.ToString()));
-        options.AddPolicy(Policies.IsExtern, options => options.RequireRole(UserRole.Administrator.ToString(), UserRole.SachbearbeiterAfU.ToString(), UserRole.Extern.ToString()));
-        options.DefaultPolicy = options.GetPolicy(Policies.IsAdministrator)!;
+        options.AddPolicy(PolicyNames.Administrator, options => options.RequireRole(UserRole.Administrator.ToString()));
+        options.AddPolicy(PolicyNames.SachbearbeiterAfU, options => options.RequireRole(UserRole.Administrator.ToString(), UserRole.SachbearbeiterAfU.ToString()));
+        options.AddPolicy(PolicyNames.Extern, options => options.RequireRole(UserRole.Administrator.ToString(), UserRole.SachbearbeiterAfU.ToString(), UserRole.Extern.ToString()));
+        options.DefaultPolicy = options.GetPolicy(PolicyNames.Administrator)!;
         options.FallbackPolicy = options.DefaultPolicy;
     });
 

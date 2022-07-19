@@ -33,7 +33,7 @@ public class DataServiceController : ControllerBase
     /// </summary>
     /// <param name="points">A list of <see cref="Point"/> to get the information for.</param>
     /// <returns>A <see cref="DataServiceResponse"/> containing the Gemeinde and Grundbuchnummern information.</returns>
-    [Authorize(Policy = Policies.IsExtern)]
+    [Authorize(Policy = PolicyNames.Extern)]
     [HttpGet]
     public async Task<ActionResult<DataServiceResponse>> GetAsync([FromQuery] List<Point> points)
     {

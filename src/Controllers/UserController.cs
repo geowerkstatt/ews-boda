@@ -19,7 +19,7 @@ public class UserController : EwsControllerBase<User>
     /// <summary>
     /// Gets the current authenticated and authorized ews-boda user.
     /// </summary>
-    [Authorize(Policy = Policies.IsExtern)]
+    [Authorize(Policy = PolicyNames.Extern)]
     [HttpGet("self")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1024:Use properties where appropriate", Justification = "HTTP method attributes cannot be used on properties.")]
     public ActionResult<User?> GetUserInformation()
