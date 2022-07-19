@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EWS;
 
-[Authorize(Policy = Policies.IsExtern)]
+[Authorize(Policy = PolicyNames.Extern)]
 [ApiController]
 [Route("[controller]")]
 public class BohrungController : EwsControllerBase<Bohrung>

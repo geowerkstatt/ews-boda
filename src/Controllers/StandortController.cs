@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EWS;
 
-[Authorize(Policy = Policies.IsExtern)]
+[Authorize(Policy = PolicyNames.Extern)]
 [ApiController]
 [Route("[controller]")]
 public class StandortController : EwsControllerBase<Standort>

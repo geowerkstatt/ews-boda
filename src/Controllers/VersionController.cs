@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace EWS;
 
-[Authorize(Policy = Policies.IsExtern)]
+[Authorize(Policy = PolicyNames.Extern)]
 [ApiController]
 [Route("[controller]")]
 public class VersionController : ControllerBase
