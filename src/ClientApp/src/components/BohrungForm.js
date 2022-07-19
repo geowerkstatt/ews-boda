@@ -52,7 +52,7 @@ export default function BohrungForm(props) {
     getCodes();
   }, []);
 
-  // Set form values for coordinates coordinates are changed from DetailMap component
+  // Set form values for coordinates if coordinates are changed from DetailMap component
   useEffect(() => {
     if (currentBohrung?.geometrie?.coordinates) {
       const x = currentBohrung.geometrie.coordinates[0];
