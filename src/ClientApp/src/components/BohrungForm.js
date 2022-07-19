@@ -26,10 +26,16 @@ import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import DetailMap from "./DetailMap";
 import DateUserInputs from "./DateUserInputs";
+import { getDistance } from "ol/sphere";
+import { transform } from "ol/proj";
+import { register as registerProjection } from "ol/proj/proj4";
+import proj4 from "proj4";
 
 export default function BohrungForm(props) {
   const { currentStandort, currentBohrung, setCurrentBohrung, handleNext, handleBack, addBohrung, editBohrung } = props;
-  const { control, handleSubmit, formState, reset, register, setValue } = useForm({ reValidateMode: "onChange" });
+  const { control, handleSubmit, formState, reset, register, setValue } = useForm({
+    reValidateMode: "onChange",
+  });
   const { isDirty } = formState;
   const [ablenkungCodes, setAblenkungCodes] = useState([]);
   const [qualitaetCodes, setQualitaetCodes] = useState([]);
@@ -64,6 +70,15 @@ export default function BohrungForm(props) {
     }
   }, [currentBohrung, setValue]);
 
+  // Register projection for distance validation
+  useEffect(() => {
+    proj4.defs(
+      "EPSG:2056",
+      "+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=2600000 +y_0=1200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs"
+    );
+    registerProjection(proj4);
+  }, []);
+
   const currentInteraction = currentBohrung?.id ? "edit" : currentBohrung?.bezeichnung ? "copy" : "add";
 
   const onSubmit = (formData) => {
@@ -78,6 +93,24 @@ export default function BohrungForm(props) {
 
   const validateXCoordinate = (value) => value > 2590000 && value < 2646000;
   const validateYCoordinate = (value) => value > 1212000 && value < 1264000;
+
+  const validateDistance = () => {
+    let isValid = false;
+    if (currentStandort.bohrungen?.length === 0) {
+      isValid = true;
+    } else if (xCoordinate && yCoordinate) {
+      const src = "EPSG:2056";
+      const dest = "EPSG:4326";
+      const newCoordinates = transform([xCoordinate, yCoordinate], src, dest);
+      isValid = currentStandort.bohrungen
+        .map((b) => {
+          const existingCoordinates = transform([b.geometrie.coordinates[0], b.geometrie.coordinates[1]], src, dest);
+          return getDistance(newCoordinates, existingCoordinates);
+        })
+        .every((v) => v < 200);
+    }
+    return isValid;
+  };
 
   return (
     <Box component="form" name="bohrung-form" onSubmit={handleSubmit(onSubmit)}>
@@ -294,9 +327,16 @@ export default function BohrungForm(props) {
               label="X-Koordinate der Bohrung"
               type="number"
               variant="standard"
-              {...register("x_coordinate", { validate: validateXCoordinate })}
+              {...register("x_coordinate", {
+                validate: {
+                  range: (v) => validateXCoordinate(v) || "Die X-Koordinate muss zwischen 2590000 und 2646000 liegen",
+                  distance: (v) =>
+                    validateDistance(v) ||
+                    "Die Distanz der neu erstellten Bohrung darf nicht mehr als 200 m zu den bereits vorhandenen Bohrungen betragen",
+                },
+              })}
               error={error !== undefined}
-              helperText={error ? "Die X-Koordinate muss zwischen 2590000 und 2646000 liegen" : ""}
+              helperText={(error && error.message) || ""}
             />
           )}
         />
@@ -315,9 +355,16 @@ export default function BohrungForm(props) {
               label="Y-Koordinate der Bohrung"
               type="number"
               variant="standard"
-              {...register("y_coordinate", { validate: validateYCoordinate })}
+              {...register("y_coordinate", {
+                validate: {
+                  range: (v) => validateYCoordinate(v) || "Die Y-Koordinate muss zwischen 1212000 und 1264000 liegen",
+                  distance: (v) =>
+                    validateDistance(v) ||
+                    "Die Distanz der neu erstellten Bohrung darf nicht mehr als 200 m zu den bereits vorhandenen Bohrungen betragen",
+                },
+              })}
               error={error !== undefined}
-              helperText={error ? "Die Y-Koordinate muss zwischen 1212000 und 1264000 liegen" : ""}
+              helperText={(error && error.message) || ""}
             />
           )}
         />
