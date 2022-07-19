@@ -59,8 +59,8 @@ export default function BohrungForm(props) {
       const y = currentBohrung.geometrie.coordinates[1];
       setXCoordinate(x);
       setYCoordinate(y);
-      setValue("x_coordinate", x.toFixed(2), { shouldValidate: true, shouldTouch: true });
-      setValue("y_coordinate", y.toFixed(2), { shouldValidate: true, shouldTouch: true });
+      setValue("x_coordinate", x.toFixed(1), { shouldValidate: true, shouldTouch: true });
+      setValue("y_coordinate", y.toFixed(1), { shouldValidate: true, shouldTouch: true });
     }
   }, [currentBohrung, setValue]);
 
