@@ -21,7 +21,6 @@ public class UserController : EwsControllerBase<User>
     /// </summary>
     [Authorize(Policy = PolicyNames.Extern)]
     [HttpGet("self")]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1024:Use properties where appropriate", Justification = "HTTP method attributes cannot be used on properties.")]
     public ActionResult<User?> GetUserInformation()
     {
         var userName = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -29,7 +28,7 @@ public class UserController : EwsControllerBase<User>
     }
 
     /// <summary>
-    /// Asynchronously gets all the users available.
+    /// Asynchronously gets all users.
     /// </summary>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<User>>> GetAsync() =>
