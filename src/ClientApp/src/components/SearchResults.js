@@ -10,10 +10,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import Title from "./Title";
+import { UserRolesMap } from "../UserRolesMap";
 import Tooltip from "@mui/material/Tooltip";
 
 export default function SearchResults(props) {
-  const { standorte, openEditForm, onDeleteStandort } = props;
+  const { standorte, openEditForm, onDeleteStandort, currentUser } = props;
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -53,6 +54,8 @@ export default function SearchResults(props) {
                       onClick={() => openEditForm(standort)}
                       color="primary"
                       aria-label="edit standort"
+                      disabled={standort.freigabeAfu && currentUser?.role === UserRolesMap.Extern}
+                      data-cy={`edit-standort-${standort.id}-button`}
                     >
                       <EditIcon />
                     </IconButton>
@@ -63,6 +66,8 @@ export default function SearchResults(props) {
                       onClick={() => onDeleteStandort(standort)}
                       color="primary"
                       aria-label="delete standort"
+                      disabled={standort.freigabeAfu && currentUser?.role === UserRolesMap.Extern}
+                      data-cy={`delete-standort-${standort.id}-button`}
                     >
                       <DeleteIcon />
                     </IconButton>

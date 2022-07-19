@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using EWS.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
@@ -6,7 +7,6 @@ using System.Text.Json;
 
 namespace EWS;
 
-[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class DataServiceController : ControllerBase
@@ -33,6 +33,7 @@ public class DataServiceController : ControllerBase
     /// </summary>
     /// <param name="points">A list of <see cref="Point"/> to get the information for.</param>
     /// <returns>A <see cref="DataServiceResponse"/> containing the Gemeinde and Grundbuchnummern information.</returns>
+    [Authorize(Policy = PolicyNames.Extern)]
     [HttpGet]
     public async Task<ActionResult<DataServiceResponse>> GetAsync([FromQuery] List<Point> points)
     {

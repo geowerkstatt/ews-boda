@@ -1,8 +1,11 @@
 ﻿using EWS.Authentication;
 using EWS.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,25 +21,20 @@ public class UserControllerTest
     public void TestInitialize()
     {
         context = ContextFactory.CreateContext();
-        controller = new UserController(context, GetUserContext());
+        controller = new UserController(context);
     }
 
     [TestCleanup]
     public void TestCleanup() => context.Dispose();
 
     [TestMethod]
-    public void GetUserInformation()
-    {
-        var user = controller.GetUserInformation();
-        Assert.AreEqual("PEEVEDSOUFFLE", user.Name);
-        Assert.AreEqual(UserRole.Extern, user.Role);
-    }
-
-    [TestMethod]
     public async Task GetUsers()
     {
-        var users = await controller.GetAsync().ConfigureAwait(false);
+        var response = await controller.GetAsync().ConfigureAwait(false);
+        Assert.IsInstanceOfType(response, typeof(ActionResult<IEnumerable<User>>));
 
+        var users = response.Value;
+        Assert.IsNotNull(users);
         Assert.IsTrue(users.Count() > 50);
 
         var userId = 80037;
@@ -85,26 +83,19 @@ public class UserControllerTest
     [TestMethod]
     public async Task EditUser()
     {
-        var userToEdit = context.Users.Add(new User
+        await CreateAndAssertUser(UserRole.Administrator, async user =>
         {
-            Name = "STRANGEBOUNCE",
-            Role = UserRole.Administrator,
-            UserErstellung = "WAFFLEAUTO",
-            Erstellungsdatum = DateTime.Now,
-        }).Entity;
-        context.SaveChanges();
+            Assert.AreEqual("STRANGEBOUNCE", user.Name);
+            Assert.AreEqual(UserRole.Administrator, user.Role);
 
-        Assert.IsNotNull(userToEdit);
-        Assert.AreNotEqual(default, userToEdit.Id);
-        Assert.AreEqual("STRANGEBOUNCE", userToEdit.Name);
-        Assert.AreEqual(UserRole.Administrator, userToEdit.Role);
-
-        userToEdit.Role = UserRole.Extern;
-        var response = await controller.EditAsync(userToEdit).ConfigureAwait(false);
-
-        Assert.IsInstanceOfType(response, typeof(OkResult));
-        Assert.AreEqual("STRANGEBOUNCE", userToEdit.Name);
-        Assert.AreEqual(UserRole.Extern, userToEdit.Role);
+            user.Name = "LOUDCHIPMUNK";
+            user.Role = UserRole.Extern;
+            var response = await controller.EditAsync(user).ConfigureAwait(false);
+            Assert.AreEqual(StatusCodes.Status200OK, (response as OkResult)?.StatusCode);
+            var updatedUser = await context.FindAsync<User>(user.Id).ConfigureAwait(false);
+            Assert.AreEqual("LOUDCHIPMUNK", updatedUser.Name);
+            Assert.AreEqual(UserRole.Extern, updatedUser.Role);
+        });
     }
 
     [TestMethod]
@@ -123,13 +114,25 @@ public class UserControllerTest
         Assert.AreEqual("Creating new users is not supported.", ((BadRequestObjectResult)response).Value);
     }
 
-    private static UserContext GetUserContext() =>
-        new()
+    private async Task CreateAndAssertUser(UserRole role, Func<User, Task> assert)
+    {
+        var user = context.Users.Add(new User
         {
-            CurrentUser = new User
-            {
-                Name = "PEEVEDSOUFFLE",
-                Role = UserRole.Extern,
-            },
-        };
+            Name = "STRANGEBOUNCE",
+            Role = role,
+        }).Entity;
+
+        await context.SaveChangesAsync().ConfigureAwait(false);
+
+        var untrackedUser = context.Users.AsNoTracking().Where(x => x.Id == user.Id).First();
+        await assert(untrackedUser);
+
+        // Cleanup
+        var unserToDelete = await context.FindAsync<User>(untrackedUser.Id).ConfigureAwait(false);
+        if (unserToDelete != null)
+        {
+            context.Remove(unserToDelete);
+            await context.SaveChangesAsync().ConfigureAwait(false);
+        }
+    }
 }

@@ -18,15 +18,16 @@ import GroupIcon from "@mui/icons-material/Group";
 import InfoIcon from "@mui/icons-material/Info";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { Footer } from "./Footer";
-
 import { AppBar } from "./AppBar";
 import { Drawer } from "./Drawer";
+import { UserRolesMap } from "../UserRolesMap";
 
 export const drawerWidth = 240;
 
 const mdTheme = createTheme();
 
 export function Layout(props) {
+  const { currentUser } = props;
   const [open, setOpen] = useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -83,12 +84,14 @@ export function Layout(props) {
               </ListItemIcon>
               <ListItemText primary="Einstiegsseite" />
             </ListItemButton>
-            <ListItemButton component="a" href="/benutzerverwaltung">
-              <ListItemIcon>
-                <GroupIcon />
-              </ListItemIcon>
-              <ListItemText primary="Benutzerverwaltung" />
-            </ListItemButton>
+            {currentUser?.role === UserRolesMap.Administrator && (
+              <ListItemButton component="a" href="/benutzerverwaltung">
+                <ListItemIcon>
+                  <GroupIcon />
+                </ListItemIcon>
+                <ListItemText primary="Benutzerverwaltung" />
+              </ListItemButton>
+            )}
             <ListItemButton component="a" target="_blank" href="/export">
               <ListItemIcon>
                 <FileDownloadIcon />

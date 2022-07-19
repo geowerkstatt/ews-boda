@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using EWS.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
@@ -6,22 +7,19 @@ using System.Text;
 
 namespace EWS;
 
-[Authorize]
+[Authorize(Policy = PolicyNames.Extern)]
 [ApiController]
 [Route("[controller]")]
 public class ExportController : ControllerBase
 {
-    private readonly EwsContext context;
     private readonly IConfiguration configuration;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ExportController"/> class.
     /// </summary>
-    /// <param name="context">The EF database context containing data for the EWS-Boda application.</param>
     /// <param name="configuration">The configuration.</param>
-    public ExportController(EwsContext context, IConfiguration configuration)
+    public ExportController(IConfiguration configuration)
     {
-        this.context = context;
         this.configuration = configuration;
     }
 

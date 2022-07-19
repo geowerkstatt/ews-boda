@@ -29,6 +29,7 @@ import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { CodeTypes } from "./Codetypes";
+import { UserRolesMap } from "../UserRolesMap";
 
 export default function StandortForm(props) {
   const {
@@ -40,6 +41,7 @@ export default function StandortForm(props) {
     editStandort,
     addStandort,
     deleteBohrung,
+    currentUser,
   } = props;
   const { control, handleSubmit, formState, reset } = useForm({ reValidateMode: "onChange" });
   const { isDirty } = formState;
@@ -167,25 +169,27 @@ export default function StandortForm(props) {
         {currentStandort && (
           <React.Fragment>
             {currentStandort.id && <DateUserInputs formObject={currentStandort}></DateUserInputs>}
-            <FormGroup sx={{ marginTop: "3%" }}>
-              <FormControlLabel
-                label="Freigabe AfU"
-                control={
-                  <Controller
-                    name="freigabeAfu"
-                    control={control}
-                    defaultValue={currentStandort.freigabeAfu}
-                    value={currentStandort.freigabeAfu}
-                    render={({ field: { value, ref, ...field } }) => (
-                      <Checkbox {...field} inputRef={ref} checked={value} />
-                    )}
-                    onClick={(e) => {
-                      currentStandort.freigabeAfu = e.target.checked;
-                    }}
-                  />
-                }
-              />
-            </FormGroup>
+            {currentUser?.role !== UserRolesMap.Extern && (
+              <FormGroup sx={{ marginTop: "3%" }}>
+                <FormControlLabel
+                  label="Freigabe AfU"
+                  control={
+                    <Controller
+                      name="freigabeAfu"
+                      control={control}
+                      defaultValue={currentStandort.freigabeAfu}
+                      value={currentStandort.freigabeAfu}
+                      render={({ field: { value, ref, ...field } }) => (
+                        <Checkbox {...field} inputRef={ref} checked={value} />
+                      )}
+                      onClick={(e) => {
+                        currentStandort.freigabeAfu = e.target.checked;
+                      }}
+                    />
+                  }
+                />
+              </FormGroup>
+            )}
             {currentStandort.freigabeAfu && (
               <React.Fragment>
                 <Controller

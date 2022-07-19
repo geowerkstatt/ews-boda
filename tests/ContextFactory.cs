@@ -1,5 +1,6 @@
 ﻿using EWS.Authentication;
 using EWS.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace EWS;
@@ -18,6 +19,6 @@ internal static class ContextFactory
             new DbContextOptionsBuilder<EwsContext>().UseNpgsql(
                 ConnectionString,
                 option => option.UseNetTopologySuite().UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)).Options,
-            new UserContext { CurrentUser = new User { Name = "PEEVEDSPORK" } });
+            new HttpContextAccessor() { HttpContext = new DefaultHttpContext() });
     }
 }

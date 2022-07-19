@@ -1,10 +1,11 @@
-﻿using EWS.Models;
+﻿using EWS.Authentication;
+using EWS.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EWS;
 
-[Authorize]
+[Authorize(Policy = PolicyNames.Extern)]
 [ApiController]
 [Route("[controller]")]
 public class BohrungController : EwsControllerBase<Bohrung>
@@ -15,16 +16,16 @@ public class BohrungController : EwsControllerBase<Bohrung>
     }
 
     /// <inheritdoc/>
-    public override Task<IActionResult> CreateAsync(Bohrung item)
+    public override Task<IActionResult> CreateAsync(Bohrung entity)
     {
-        item.Bohrprofile = null;
-        return base.CreateAsync(item);
+        entity.Bohrprofile = null;
+        return base.CreateAsync(entity);
     }
 
     /// <inheritdoc/>
-    public override Task<IActionResult> EditAsync(Bohrung item)
+    public override Task<IActionResult> EditAsync(Bohrung entity)
     {
-        item.Bohrprofile = null;
-        return base.EditAsync(item);
+        entity.Bohrprofile = null;
+        return base.EditAsync(entity);
     }
 }
