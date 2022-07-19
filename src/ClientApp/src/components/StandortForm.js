@@ -52,8 +52,6 @@ export default function StandortForm(props) {
       bohrprofile: [],
       hQualitaet: CodeTypes.Bohrung_hquali,
       hAblenkung: CodeTypes.Bohrung_hablenkung,
-      // defaultvalues inkl. geometry
-      geometrie: { coordinates: [2626955, 1238676], type: "Point" },
     };
     setCurrentBohrung(bohrung);
     handleNext();
@@ -73,9 +71,6 @@ export default function StandortForm(props) {
     // will be preserved via ablenkungId and qualitaetId
     delete bohrungToCopy.ablenkung;
     delete bohrungToCopy.qualitaet;
-
-    // delete geometry, as long as no selection from map is possible
-    delete bohrungToCopy.geometrie;
     setCurrentBohrung(bohrungToCopy);
     handleNext();
   };
@@ -260,7 +255,7 @@ export default function StandortForm(props) {
               </Tooltip>
               {currentStandort?.bohrungen?.length > 0 && (
                 <AccordionDetails>
-                  <DetailMap bohrungen={currentStandort?.bohrungen}></DetailMap>
+                  <DetailMap bohrungen={currentStandort?.bohrungen} currentForm={"standort"}></DetailMap>
                 </AccordionDetails>
               )}
             </Accordion>

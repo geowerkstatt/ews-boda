@@ -29,10 +29,12 @@ import DateUserInputs from "./DateUserInputs";
 
 export default function BohrungForm(props) {
   const { currentStandort, currentBohrung, setCurrentBohrung, handleNext, handleBack, addBohrung, editBohrung } = props;
-  const { control, handleSubmit, formState, reset } = useForm({ reValidateMode: "onChange" });
+  const { control, handleSubmit, formState, reset, register, setValue } = useForm({ reValidateMode: "onChange" });
   const { isDirty } = formState;
   const [ablenkungCodes, setAblenkungCodes] = useState([]);
   const [qualitaetCodes, setQualitaetCodes] = useState([]);
+  const [xCoordinate, setXCoordinate] = useState();
+  const [yCoordinate, setYCoordinate] = useState();
 
   const currentBohrungIndex = currentStandort.bohrungen.indexOf(currentBohrung);
   const numberOfBohrungen = currentStandort.bohrungen.length;
@@ -50,26 +52,39 @@ export default function BohrungForm(props) {
     getCodes();
   }, []);
 
+  // Set form values for coordinates if coordinates are changed from DetailMap component
+  useEffect(() => {
+    if (currentBohrung?.geometrie?.coordinates) {
+      const x = currentBohrung.geometrie.coordinates[0];
+      const y = currentBohrung.geometrie.coordinates[1];
+      setXCoordinate(x);
+      setYCoordinate(y);
+      setValue("x_coordinate", x.toFixed(1), { shouldValidate: true, shouldTouch: true });
+      setValue("y_coordinate", y.toFixed(1), { shouldValidate: true, shouldTouch: true });
+    }
+  }, [currentBohrung, setValue]);
+
+  const currentInteraction = currentBohrung?.id ? "edit" : currentBohrung?.bezeichnung ? "copy" : "add";
+
   const onSubmit = (formData) => {
+    formData.geometrie = { coordinates: [Number(formData.x_coordinate), Number(formData.y_coordinate)], type: "Point" };
     currentBohrung.id
       ? editBohrung(formData).finally(() => reset(formData))
       : addBohrung(formData).finally(() => reset(formData));
   };
 
-  const onNavigateNext = () => {
-    setCurrentBohrung(currentStandort.bohrungen[currentBohrungIndex + 1]);
-  };
+  const onNavigateNext = () => setCurrentBohrung(currentStandort.bohrungen[currentBohrungIndex + 1]);
+  const onNavigatePrevious = () => setCurrentBohrung(currentStandort.bohrungen[currentBohrungIndex - 1]);
 
-  const onNavigatePrevious = () => {
-    setCurrentBohrung(currentStandort.bohrungen[currentBohrungIndex - 1]);
-  };
+  const validateXCoordinate = (value) => value > 2590000 && value < 2646000;
+  const validateYCoordinate = (value) => value > 1212000 && value < 1264000;
 
   return (
     <Box component="form" name="bohrung-form" onSubmit={handleSubmit(onSubmit)}>
       <DialogTitle>
-        {currentBohrung?.id
+        {currentInteraction === "edit"
           ? "Bohrung bearbeiten"
-          : currentBohrung?.bezeichnung
+          : currentInteraction === "copy"
           ? "Bohrung kopieren"
           : "Bohrung erstellen"}
         {currentBohrung?.id && currentBohrungIndex > 0 && (
@@ -248,16 +263,65 @@ export default function BohrungForm(props) {
           )}
         />
         {currentBohrung?.id && <DateUserInputs formObject={currentBohrung}></DateUserInputs>}
-        {currentBohrung.id && (
-          <Accordion sx={{ boxShadow: "none" }} defaultExpanded={true}>
-            <Tooltip title="Übersichtskarte anzeigen">
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>Lokalität der Bohrung</AccordionSummary>
-            </Tooltip>
-            <AccordionDetails>
-              <DetailMap bohrungen={[currentBohrung]}></DetailMap>
-            </AccordionDetails>
-          </Accordion>
-        )}
+
+        <Accordion sx={{ boxShadow: "none" }} defaultExpanded={true}>
+          <Tooltip title="Übersichtskarte anzeigen">
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              {currentInteraction === "add"
+                ? "Position der Bohrung durch Klicken in der Karte wählen"
+                : "Position der Bohrung durch Klicken in der Karte ändern"}
+            </AccordionSummary>
+          </Tooltip>
+          <AccordionDetails>
+            <DetailMap
+              bohrungen={[currentBohrung]}
+              currentForm={"bohrung"}
+              setCurrentBohrung={setCurrentBohrung}
+            ></DetailMap>
+          </AccordionDetails>
+        </Accordion>
+        <Controller
+          name="x_coordinate"
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <TextField
+              {...field}
+              sx={{ marginRight: "6%", width: "47%" }}
+              margin="normal"
+              InputLabelProps={{ shrink: xCoordinate != null || field.value != null }}
+              value={field.value}
+              onChange={(value) => field.onChange(value)}
+              label="X-Koordinate der Bohrung"
+              type="number"
+              variant="standard"
+              {...register("x_coordinate", { validate: validateXCoordinate })}
+              error={error !== undefined}
+              helperText={error ? "Die X-Koordinate muss zwischen 2590000 und 2646000 liegen" : ""}
+            />
+          )}
+        />
+
+        <Controller
+          name="y_coordinate"
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <TextField
+              {...field}
+              sx={{ width: "47%" }}
+              margin="normal"
+              InputLabelProps={{ shrink: yCoordinate != null || field.value != null }}
+              value={field.value}
+              onChange={(value) => field.onChange(value)}
+              label="Y-Koordinate der Bohrung"
+              type="number"
+              variant="standard"
+              {...register("y_coordinate", { validate: validateYCoordinate })}
+              error={error !== undefined}
+              helperText={error ? "Die Y-Koordinate muss zwischen 1212000 und 1264000 liegen" : ""}
+            />
+          )}
+        />
+
         <Typography sx={{ marginTop: "15px" }} variant="h6" gutterBottom>
           Bohrprofile ({currentBohrung?.bohrprofile ? currentBohrung.bohrprofile.length : 0})
           {currentBohrung?.id != null && (
