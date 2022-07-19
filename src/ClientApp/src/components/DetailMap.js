@@ -14,7 +14,7 @@ import { Style, Circle, Fill, Stroke } from "ol/style";
 import "ol/ol.css";
 
 export default function DetailMap(props) {
-  const { bohrungen } = props;
+  const { bohrungen, currentForm, setCurrentBohrung } = props;
   const [map, setMap] = useState();
   const [bohrungenLayer, setBohrungenLayer] = useState();
 
@@ -60,6 +60,18 @@ export default function DetailMap(props) {
       }),
     });
 
+    // Allow editing of geometry if map is displayed in bohrung form.
+    if (currentForm === "bohrung") {
+      initialMap.on("singleclick", function (evt) {
+        const updatedBohrung = {
+          ...bohrungen[0],
+          geometrie: { type: "Point", coordinates: evt.coordinate },
+          "Standort Id": bohrungen[0].standortId,
+        };
+        setCurrentBohrung(updatedBohrung);
+      });
+    }
+
     // Save map and vector layer references to state
     setMap(initialMap);
     setBohrungenLayer(bohrungenLayer);
@@ -97,9 +109,6 @@ export default function DetailMap(props) {
           (f) =>
             new Feature({
               geometry: new Point([f.geometrie?.coordinates[0], f.geometrie?.coordinates[1]]),
-              Id: f.id,
-              Bezeichnung: f.bezeichnung,
-              "Standort Id": f.standortId,
             })
         );
       } else {
