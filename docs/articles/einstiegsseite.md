@@ -81,7 +81,9 @@ Durch Klicken auf das Hinzufügen-Icon ![Hinzufügen-Icon](../images/add-icon.pn
 * Qualität der Angaben zur Bohrung
 * Bemerkung zur Qualitätsangabe
 * Autor der geologischen Aufnahme
+* X- und Y-Koordinate der Bohrung (EPSG 2056)
 
+Die Koordinaten der Bohrung können entweder durch Klicken in der Karte gesetzt, oder direkt in den entsprechenden Textfeldern eingetragen werden.
 Die folgenden Attribute werden automatisch gesetzt und sind im Dialog nicht sichtbar.
 
 * Erstellungsdatum
@@ -102,6 +104,9 @@ Die folgenden Felder können editiert werden.
 * Qualität der Angaben zur Bohrung
 * Bemerkung zur Qualitätsangabe
 * Autor der geologischen Aufnahme
+* X- und Y-Koordinate der Bohrung (EPSG 2056)
+
+Die Koordinaten der Bohrung können entweder durch Klicken in der Karte geändert werden, oder direkt in den entsprechenden Textfeldern eingetragen werden.
 
 Die folgenden Attribute werden automatisch gesetzt und sind im Dialog zwar sichtbar, können jedoch nicht editiert werden.
 
@@ -123,6 +128,7 @@ Es öffnet sich ein Dialog in dem die folgenden Werte von der kopierten Bohrung 
 * Qualität der Angaben zur Bohrung
 * Bemerkung zur Qualitätsangabe
 * Autor der geologischen Aufnahme
+* X- und Y-Koordinate der Bohrung (EPSG 2056)
 
 Vor dem Speichern der kopierten Bohrung können die Attribute geändert werden.
 
