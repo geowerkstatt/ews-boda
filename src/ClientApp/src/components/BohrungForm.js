@@ -81,6 +81,7 @@ export default function BohrungForm(props) {
         )}
         {currentBohrung?.id && currentBohrungIndex !== numberOfBohrungen - 1 && (
           <Tooltip title="zur nächsten Bohrung">
+          <Tooltip title="Zur nächsten Bohrung">
             <IconButton onClick={onNavigateNext} color="primary">
               <ArrowRightIcon />
             </IconButton>
