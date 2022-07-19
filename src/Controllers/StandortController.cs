@@ -22,7 +22,7 @@ public class StandortController : EwsControllerBase<Standort>
         var standorte = GetAll();
 #pragma warning disable CA1304 // Specify CultureInfo
 
-        if (gemeinde != null)
+        if (!string.IsNullOrEmpty(gemeinde))
         {
             standorte = standorte.Where(s => s.Gemeinde.ToLower().Contains(gemeinde.ToLower()));
         }

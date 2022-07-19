@@ -182,7 +182,14 @@ export function Home() {
             >
               <Search
                 getStandorte={getStandorte}
-                gemeinden={[...new Set(standorte.map((s) => s.gemeinde).sort())]}
+                gemeinden={[
+                  ...new Set(
+                    unfilteredStandorte
+                      .map((s) => s.gemeinde)
+                      .filter(Boolean)
+                      .sort()
+                  ),
+                ]}
               ></Search>
             </Paper>
           </Grid>
