@@ -54,7 +54,7 @@ export default function SearchResults(props) {
                       onClick={() => openEditForm(standort)}
                       color="primary"
                       aria-label="edit standort"
-                      disabled={standort.freigabeAfu && UserRolesMap[currentUser?.role] === "Extern"}
+                      disabled={standort.freigabeAfu && currentUser?.role === UserRolesMap.Extern}
                       data-cy={`edit-standort-${standort.id}-button`}
                     >
                       <EditIcon />
@@ -66,7 +66,7 @@ export default function SearchResults(props) {
                       onClick={() => onDeleteStandort(standort)}
                       color="primary"
                       aria-label="delete standort"
-                      disabled={standort.freigabeAfu && UserRolesMap[currentUser?.role] === "Extern"}
+                      disabled={standort.freigabeAfu && currentUser?.role === UserRolesMap.Extern}
                       data-cy={`delete-standort-${standort.id}-button`}
                     >
                       <DeleteIcon />

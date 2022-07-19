@@ -169,7 +169,7 @@ export default function StandortForm(props) {
         {currentStandort && (
           <React.Fragment>
             {currentStandort.id && <DateUserInputs formObject={currentStandort}></DateUserInputs>}
-            {UserRolesMap[currentUser?.role] !== "Extern" && (
+            {currentUser?.role !== UserRolesMap.Extern && (
               <FormGroup sx={{ marginTop: "3%" }}>
                 <FormControlLabel
                   label="Freigabe AfU"
