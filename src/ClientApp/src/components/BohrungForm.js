@@ -288,7 +288,7 @@ export default function BohrungForm(props) {
               {...field}
               sx={{ marginRight: "6%", width: "47%" }}
               margin="normal"
-              InputLabelProps={{ shrink: xCoordinate != null }}
+              InputLabelProps={{ shrink: yCoordinate != null || field.value != null }}
               value={field.value}
               onChange={(value) => field.onChange(value)}
               label="X-Koordinate der Bohrung"
@@ -309,7 +309,7 @@ export default function BohrungForm(props) {
               {...field}
               sx={{ width: "47%" }}
               margin="normal"
-              InputLabelProps={{ shrink: yCoordinate != null }}
+              InputLabelProps={{ shrink: yCoordinate != null || field.value != null }}
               value={field.value}
               onChange={(value) => field.onChange(value)}
               label="Y-Koordinate der Bohrung"
