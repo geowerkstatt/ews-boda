@@ -72,15 +72,14 @@ export default function BohrungForm(props) {
           : currentBohrung?.bezeichnung
           ? "Bohrung kopieren"
           : "Bohrung erstellen"}
-        {currentBohrung?.id && currentBohrungIndex !== 0 && (
+        {currentBohrung?.id && currentBohrungIndex > 0 && (
           <Tooltip title="Zur vorherigen Bohrung">
             <IconButton onClick={onNavigatePrevious} color="primary">
               <ArrowLeftIcon />
             </IconButton>
           </Tooltip>
         )}
-        {currentBohrung?.id && currentBohrungIndex !== numberOfBohrungen - 1 && (
-          <Tooltip title="zur nächsten Bohrung">
+        {currentBohrung?.id && currentBohrungIndex < numberOfBohrungen - 1 && (
           <Tooltip title="Zur nächsten Bohrung">
             <IconButton onClick={onNavigateNext} color="primary">
               <ArrowRightIcon />
