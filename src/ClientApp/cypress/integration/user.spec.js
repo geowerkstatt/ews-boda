@@ -13,7 +13,7 @@ describe("User page tests", () => {
 
     cy.contains("Administrator").should("exist");
     cy.contains("Extern").should("exist");
-    cy.contains("Sachbearbeiter AfU").should("exist");
+    cy.contains("Sachbearbeiter_AfU").should("exist");
   });
 
   it("Delete a specific user", function () {
@@ -38,7 +38,7 @@ describe("User page tests", () => {
 
     cy.visit("/benutzerverwaltung");
 
-    cy.contains("td", "Cornelia.Walter").parent().contains("td", "Sachbearbeiter AfU").should("exist");
+    cy.contains("td", "Cornelia.Walter").parent().contains("td", "Sachbearbeiter_AfU").should("exist");
     cy.contains("td", "Cornelia.Walter").siblings().find("[aria-label='edit user']").click();
 
     cy.get("[data-cy='select-user-role']").click();

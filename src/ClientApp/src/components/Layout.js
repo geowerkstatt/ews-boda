@@ -84,7 +84,7 @@ export function Layout(props) {
               </ListItemIcon>
               <ListItemText primary="Einstiegsseite" />
             </ListItemButton>
-            {UserRolesMap[currentUser?.role] === "Administrator" && (
+            {currentUser?.role === UserRolesMap.Administrator && (
               <ListItemButton component="a" href="/benutzerverwaltung">
                 <ListItemIcon>
                   <GroupIcon />
