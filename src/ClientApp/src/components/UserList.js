@@ -42,7 +42,7 @@ export default function UserList(props) {
             users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user) => (
               <TableRow key={user.id}>
                 <TableCell>{user.name}</TableCell>
-                <TableCell>{Object.keys(UserRolesMap).find(r => UserRolesMap[r] === user.role)}</TableCell>
+                <TableCell>{Object.keys(UserRolesMap).find((r) => UserRolesMap[r] === user.role)}</TableCell>
                 <TableCell align="right">
                   <Tooltip title="Benutzer editieren">
                     <IconButton onClick={() => openEditForm(user)} color="primary" aria-label="edit user">
