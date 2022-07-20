@@ -1,8 +1,11 @@
 ﻿using EWS.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace EWS;
@@ -10,6 +13,23 @@ namespace EWS;
 [TestClass]
 public class EwsContextTest
 {
+    private HttpClient httpClient;
+    private EwsContext context;
+
+    [TestInitialize]
+    public void Initialize()
+    {
+        httpClient = new HttpClient();
+        context = ContextFactory.CreateContext();
+    }
+
+    [TestCleanup]
+    public void Cleanup()
+    {
+        httpClient.Dispose();
+        context.Dispose();
+    }
+
     [TestMethod]
     public async Task CascadeDelete()
     {
@@ -30,7 +50,7 @@ public class EwsContextTest
             HQualitaet = 3,
             HAblenkung = 9,
         };
-        await new BohrungController(ContextFactory.CreateContext()).CreateAsync(newBohrung).ConfigureAwait(false);
+        await new BohrungController(httpClient, new Mock<ILogger<DataServiceController>>().Object, ContextFactory.CreateContext()).CreateAsync(newBohrung).ConfigureAwait(false);
 
         var newBohrprofil = new Bohrprofil
         {

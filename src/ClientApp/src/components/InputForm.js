@@ -7,8 +7,16 @@ import BohrungForm from "./BohrungForm";
 import BohrprofilForm from "./BohrprofilForm";
 
 export default function InputForm(props) {
-  const { handleClose, currentStandort, editStandort, addStandort, setShowSuccessAlert, setAlertMessage, getStandort } =
-    props;
+  const {
+    handleClose,
+    currentStandort,
+    editStandort,
+    addStandort,
+    setShowAlert,
+    setAlertMessage,
+    setAlertVariant,
+    getStandort,
+  } = props;
 
   const [currentBohrung, setCurrentBohrung] = useState(null);
 
@@ -38,9 +46,17 @@ export default function InputForm(props) {
     });
     if (response.ok) {
       const addedBohrung = await response.json();
-      setShowSuccessAlert(true);
+      setShowAlert(true);
       setAlertMessage("Bohrung wurde hinzugefügt.");
+      setAlertVariant("success");
       getStandort(addedBohrung.standortId);
+      handleBack();
+    } else {
+      setShowAlert(true);
+      setAlertMessage(
+        "Bohrung konnte nicht hinzugefügt werden. Überprüfen Sie, ob sich alle dem Standort zu geordneten Bohrungen in der gleichen Gemeinde im Kanton Solothurn befinden."
+      );
+      setAlertVariant("error");
       handleBack();
     }
   }
@@ -61,8 +77,9 @@ export default function InputForm(props) {
       body: JSON.stringify(updatedBohrung),
     });
     if (response.ok) {
-      setShowSuccessAlert(true);
+      setShowAlert(true);
       setAlertMessage("Bohrung wurde editiert.");
+      setAlertVariant("success");
       getStandort(updatedBohrung.standortId);
       handleBack();
     }
@@ -75,8 +92,9 @@ export default function InputForm(props) {
     });
     if (response.ok) {
       getStandort(bohrung.standortId);
-      setShowSuccessAlert(true);
+      setShowAlert(true);
       setAlertMessage("Bohrung wurde gelöscht.");
+      setAlertVariant("success");
     }
   }
 
