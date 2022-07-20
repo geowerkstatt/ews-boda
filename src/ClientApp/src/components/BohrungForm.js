@@ -42,8 +42,8 @@ export default function BohrungForm(props) {
   const [xCoordinate, setXCoordinate] = useState();
   const [yCoordinate, setYCoordinate] = useState();
 
-  const currentBohrungIndex = currentStandort.bohrungen.indexOf(currentBohrung);
-  const numberOfBohrungen = currentStandort.bohrungen.length;
+  const currentBohrungIndex = currentStandort.bohrungen?.indexOf(currentBohrung) || 0;
+  const numberOfBohrungen = currentStandort.bohrungen?.length || 0;
 
   // Get codes for dropdowns
   useEffect(() => {
@@ -96,7 +96,7 @@ export default function BohrungForm(props) {
 
   const validateDistance = () => {
     let isValid = false;
-    if (currentStandort.bohrungen?.length === 0) {
+    if (numberOfBohrungen === 0) {
       isValid = true;
     } else if (xCoordinate && yCoordinate) {
       const src = "EPSG:2056";
