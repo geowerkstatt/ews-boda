@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using EWS.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 
 namespace EWS;
 
-[Authorize]
+[Authorize(Policy = PolicyNames.Extern)]
 [ApiController]
 [Route("[controller]")]
 public class VersionController : ControllerBase

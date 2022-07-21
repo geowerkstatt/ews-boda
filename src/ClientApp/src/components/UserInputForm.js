@@ -54,8 +54,8 @@ export default function UserInputForm(props) {
               data-cy="select-user-role"
             >
               {Object.entries(UserRolesMap).map(([key, value], index) => (
-                <MenuItem key={index} value={key} data-cy={`role-id-${key}`}>
-                  {value}
+                <MenuItem key={index} value={value} data-cy={`role-id-${value}`}>
+                  {key}
                 </MenuItem>
               ))}
             </TextField>

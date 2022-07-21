@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using static EWS.Helpers;
 
 namespace EWS;
 
@@ -82,7 +83,8 @@ public class EwsContextTest
         updatedNewStandort.Bezeichnung = "VIOLETYARD REV4";
         updatedNewStandort.Erstellungsdatum = DateTime.Now;
         Assert.IsNull(updatedNewStandort.Bohrungen);
-        await new StandortController(ContextFactory.CreateContext()).EditAsync(updatedNewStandort).ConfigureAwait(false);
+        await new StandortController(ContextFactory.CreateContext()) { ControllerContext = GetControllerContext() }
+            .EditAsync(updatedNewStandort).ConfigureAwait(false);
 
         // Assert updated Standort Bezeichnung and Bohrungen
         Assert.IsNotNull(await ContextFactory.CreateContext().Standorte.FindAsync(newStandort.Id).ConfigureAwait(false));
@@ -99,7 +101,8 @@ public class EwsContextTest
         Assert.AreEqual("Morbi ut lectus ligula.", updatedStandort.Bohrungen!.Single().Bohrprofile!.Single().Bemerkung);
 
         // Delete entire tree (Standort -> Bohrungen -> Bohrprofile)
-        await new StandortController(ContextFactory.CreateContext()).DeleteAsync(newStandort.Id).ConfigureAwait(false);
+        await new StandortController(ContextFactory.CreateContext()) { ControllerContext = GetControllerContext() }
+            .DeleteAsync(newStandort.Id).ConfigureAwait(false);
         Assert.IsNull(await ContextFactory.CreateContext().Standorte.FindAsync(newStandort.Id).ConfigureAwait(false));
         Assert.IsNull(await ContextFactory.CreateContext().Bohrungen.FindAsync(newBohrung.Id).ConfigureAwait(false));
         Assert.IsNull(await ContextFactory.CreateContext().Bohrprofile.FindAsync(newBohrprofil.Id).ConfigureAwait(false));
@@ -108,7 +111,7 @@ public class EwsContextTest
     [TestMethod]
     public async Task UpdateFreigabeAfuFieldsOnFreigabe()
     {
-        var standortController = new StandortController(ContextFactory.CreateContext());
+        var standortController = new StandortController(ContextFactory.CreateContext()) { ControllerContext = GetControllerContext() };
         var standort = new Standort
         {
             Bezeichnung = "ENTOURAGEWHISPER",
@@ -135,7 +138,7 @@ public class EwsContextTest
 
         // Update Standort again and assert original Freigabe fields don't change.
         var originalAfuUser = standort.AfuUser;
-        var origianlAfuDatum = standort.AfuDatum.Value.Ticks;
+        var originalAfuDatum = standort.AfuDatum.Value.Ticks;
 
         standort.Bezeichnung = "VIOLENTFELONY";
         await standortController.EditAsync(standort).ConfigureAwait(false);
@@ -143,7 +146,7 @@ public class EwsContextTest
         Assert.AreEqual("VIOLENTFELONY", standort.Bezeichnung);
         Assert.AreEqual(true, standort.FreigabeAfu);
         Assert.AreEqual(originalAfuUser, standort.AfuUser);
-        Assert.AreEqual(origianlAfuDatum, standort.AfuDatum.Value.Ticks);
+        Assert.AreEqual(originalAfuDatum, standort.AfuDatum.Value.Ticks);
 
         // Remove Freigabe and assert fields get restored to their default values.
         standort.FreigabeAfu = false;

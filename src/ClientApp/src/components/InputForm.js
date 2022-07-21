@@ -16,6 +16,7 @@ export default function InputForm(props) {
     setAlertMessage,
     setAlertVariant,
     getStandort,
+    currentUser,
   } = props;
 
   const [currentBohrung, setCurrentBohrung] = useState(null);
@@ -111,6 +112,7 @@ export default function InputForm(props) {
           handleClose={handleClose}
           editStandort={editStandort}
           addStandort={addStandort}
+          currentUser={currentUser}
         ></StandortForm>
       ),
     },

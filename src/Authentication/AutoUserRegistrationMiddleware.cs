@@ -1,4 +1,5 @@
 ﻿using EWS.Models;
+using System.Security.Claims;
 
 namespace EWS.Authentication
 {
@@ -7,7 +8,6 @@ namespace EWS.Authentication
     /// </summary>
     public class AutoUserRegistrationMiddleware
     {
-        private const string UserNameClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
         private readonly RequestDelegate next;
 
         /// <summary>
@@ -21,13 +21,12 @@ namespace EWS.Authentication
         /// </summary>
         /// <param name="httpContext">The <see cref="HttpContext"/> for the current request.</param>
         /// <param name="dbContext">The EF database context containing data for the EWS-Boda application.</param>
-        /// <param name="userContext">The information for the current <see cref="User"/>.</param>
         /// <param name="logger">The logger for this instance.</param>
         /// <returns>A <see cref="Task"/> that represents the execution of this middleware.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1309:Use ordinal string comparison", Justification = "LINQ to SQL does not support StringComparison. The current configuration is case-sensitive by default.")]
-        public async Task InvokeAsync(HttpContext httpContext, EwsContext dbContext, UserContext userContext, ILogger<AutoUserRegistrationMiddleware> logger)
+        public async Task InvokeAsync(HttpContext httpContext, EwsContext dbContext, ILogger<AutoUserRegistrationMiddleware> logger)
         {
-            var userName = httpContext.User.Claims.FirstOrDefault(x => x.Type == UserNameClaimType)?.Value;
+            var userName = httpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrWhiteSpace(userName))
             {
                 var errorMessage = $"The given user name <{userName}> in claim <sub> is not valid";
@@ -38,10 +37,10 @@ namespace EWS.Authentication
                 return;
             }
 
-            userContext.CurrentUser = dbContext.Users.SingleOrDefault(x => x.Name.Equals(userName));
-            if (userContext.CurrentUser == null)
+            var user = dbContext.Users.SingleOrDefault(x => x.Name.Equals(userName));
+            if (user == null)
             {
-                userContext.CurrentUser = dbContext.Users.Add(new User { Name = userName, Role = UserRole.Extern }).Entity;
+                user = dbContext.Users.Add(new User { Name = userName, Role = UserRole.Extern }).Entity;
 
                 try
                 {
@@ -57,6 +56,8 @@ namespace EWS.Authentication
                     return;
                 }
             }
+
+            (httpContext.User.Identity as ClaimsIdentity).AddClaim(new Claim(ClaimTypes.Role, user.Role.ToString()));
 
             // Call the next delegate/middleware in the pipeline.
             await next(httpContext).ConfigureAwait(false);

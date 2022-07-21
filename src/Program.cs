@@ -1,6 +1,8 @@
 ﻿using EWS;
 using EWS.Authentication;
+using EWS.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
@@ -14,11 +16,23 @@ builder.Services
     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new GeoJsonConverterFactory()));
 
 builder.Services.AddHttpClient();
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
+
+builder.Services
+    .AddAuthorization(options =>
+    {
+        options.AddPolicy(PolicyNames.Administrator, options => options.RequireRole(UserRole.Administrator.ToString()));
+        options.AddPolicy(PolicyNames.SachbearbeiterAfU, options => options.RequireRole(UserRole.Administrator.ToString(), UserRole.SachbearbeiterAfU.ToString()));
+        options.AddPolicy(PolicyNames.Extern, options => options.RequireRole(UserRole.Administrator.ToString(), UserRole.SachbearbeiterAfU.ToString(), UserRole.Extern.ToString()));
+        options.DefaultPolicy = options.GetPolicy(PolicyNames.Administrator)!;
+        options.FallbackPolicy = options.GetPolicy(PolicyNames.Extern)!;
+    });
+
+builder.Services
+    .AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
@@ -32,8 +46,7 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-// The user context containing the current logged-in user.
-builder.Services.AddScoped<UserContext>();
+builder.Services.AddHttpContextAccessor();
 
 var connectionString = builder.Configuration.GetConnectionString("BohrungContext");
 builder.Services.AddDbContext<EwsContext>(x => x.UseNpgsql(connectionString, option => option.UseNetTopologySuite().UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
@@ -73,7 +86,7 @@ if (app.Environment.IsDevelopment())
         if (StringValues.IsNullOrEmpty(context.Request.Headers.Authorization))
         {
             context.Request.Headers.Authorization =
-                new AuthenticationHeaderValue("Bearer", builder.Configuration["Auth:Token:Extern"]).ToString();
+                new AuthenticationHeaderValue("Bearer", builder.Configuration["Auth:Token:Administrator"]).ToString();
         }
 
         // Call the next delegate/middleware in the pipeline.
@@ -82,9 +95,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthentication();
-app.UseAuthorization();
 app.UseMiddleware<CheckAuthorizedMiddleware>();
 app.UseMiddleware<AutoUserRegistrationMiddleware>();
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",

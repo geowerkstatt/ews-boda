@@ -27,7 +27,7 @@ public class ExportControllerTest
     public async Task GetAsync()
     {
         var httpContext = new DefaultHttpContext();
-        var controller = new ExportController(context, CreateConfiguration());
+        var controller = new ExportController(CreateConfiguration());
         controller.ControllerContext.HttpContext = httpContext;
         var response = await controller.GetAsync(CancellationToken.None).ConfigureAwait(false);
 

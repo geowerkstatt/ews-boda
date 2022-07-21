@@ -1,11 +1,12 @@
-﻿using EWS.Models;
+﻿using EWS.Authentication;
+using EWS.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace EWS;
 
-[Authorize]
+[Authorize(Policy = PolicyNames.Extern)]
 [ApiController]
 [Route("[controller]")]
 public class BohrungController : EwsControllerBase<Bohrung>

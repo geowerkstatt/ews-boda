@@ -2,6 +2,9 @@ import standorteGemeinde from "../fixtures/standorteGemeinde.json";
 import standorteGbnummer from "../fixtures/standorteGbnummer.json";
 import standorteBezeichnung from "../fixtures/standorteBezeichnung.json";
 import standorte from "../fixtures/standorte.json";
+import userInRoleExtern from "../fixtures/user_in_role_extern.json";
+import userInRoleSachbearbeiterAfu from "../fixtures/user_in_role_sachbearbeiter_afu.json";
+import userInRoleAdministrator from "../fixtures/user_in_role_administrator.json";
 
 describe("Home page tests", () => {
   it("Show search result box if search for gemeinde", function () {
@@ -111,6 +114,7 @@ describe("Home page tests", () => {
 
   it("Check and uncheck AfU Freigabe", function () {
     cy.intercept("/standort*", standorteGemeinde);
+    cy.intercept("/user/self", userInRoleSachbearbeiterAfu);
     cy.intercept("PUT", "/standort").as("editStandortFreigabe");
 
     cy.visit("/");
@@ -136,5 +140,65 @@ describe("Home page tests", () => {
       .then((request) => {
         expect(JSON.stringify(request.body)).to.include('"freigabeAfu":false');
       });
+  });
+
+  describe("AfU Freigabe checkbox", () => {
+    it("is not available for users in role 'Extern'", () => {
+      cy.intercept("/standort*", standorteGemeinde);
+      cy.intercept("/user/self", userInRoleExtern);
+      cy.visit("/");
+      cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
+      cy.get("button[name=submit-button]").should("be.visible").click();
+      cy.contains("td", "Generic Steel Pants").siblings().find("[aria-label='edit standort']").click();
+      cy.get('[type="checkbox"]').should("not.exist");
+    });
+    it("is available for users in role 'SachbearbeiterAfU'", () => {
+      cy.intercept("/standort*", standorteGemeinde);
+      cy.intercept("/user/self", userInRoleSachbearbeiterAfu);
+      cy.visit("/");
+      cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
+      cy.get("button[name=submit-button]").should("be.visible").click();
+      cy.contains("td", "Generic Steel Pants").siblings().find("[aria-label='edit standort']").click();
+      cy.get('[type="checkbox"]').should("exist");
+    });
+    it("is available for users in role 'Administrator'", () => {
+      cy.intercept("/standort*", standorteGemeinde);
+      cy.intercept("/user/self", userInRoleAdministrator);
+      cy.visit("/");
+      cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
+      cy.get("button[name=submit-button]").should("be.visible").click();
+      cy.contains("td", "Generic Steel Pants").siblings().find("[aria-label='edit standort']").click();
+      cy.get('[type="checkbox"]').should("exist");
+    });
+  });
+
+  describe("Edit and Delete Standort for Standort with Freigabe AfU", () => {
+    it("is not available for users in role 'Extern'", () => {
+      cy.intercept("/standort*", standorteGemeinde);
+      cy.intercept("/user/self", userInRoleExtern);
+      cy.visit("/");
+      cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
+      cy.get("button[name=submit-button]").should("be.visible").click();
+      cy.get("[data-cy='edit-standort-35978-button']").should("be.disabled");
+      cy.get("[data-cy='delete-standort-35978-button']").should("be.disabled");
+    });
+    it("is available for users in role 'SachbearbeiterAfU'", () => {
+      cy.intercept("/standort*", standorteGemeinde);
+      cy.intercept("/user/self", userInRoleSachbearbeiterAfu);
+      cy.visit("/");
+      cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
+      cy.get("button[name=submit-button]").should("be.visible").click();
+      cy.get("[data-cy='edit-standort-35978-button']").should("not.be.disabled");
+      cy.get("[data-cy='delete-standort-35978-button']").should("not.be.disabled");
+    });
+    it("is available for users in role 'Administrator'", () => {
+      cy.intercept("/standort*", standorteGemeinde);
+      cy.intercept("/user/self", userInRoleAdministrator);
+      cy.visit("/");
+      cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
+      cy.get("button[name=submit-button]").should("be.visible").click();
+      cy.get("[data-cy='edit-standort-35978-button']").should("not.be.disabled");
+      cy.get("[data-cy='delete-standort-35978-button']").should("not.be.disabled");
+    });
   });
 });

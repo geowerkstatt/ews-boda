@@ -1,11 +1,15 @@
-﻿using EWS.Models;
+﻿using EWS.Authentication;
+using EWS.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using static EWS.Helpers;
 
 namespace EWS;
 
@@ -20,7 +24,7 @@ public class StandortControllerTest
     public void TestInitialize()
     {
         context = ContextFactory.CreateContext();
-        controller = new StandortController(context);
+        controller = new StandortController(context) { ControllerContext = GetControllerContext() };
     }
 
     [TestCleanup]
@@ -370,7 +374,7 @@ public class StandortControllerTest
     [TestMethod]
     public async Task TryDeleteInexistentStandortReturnsNotFound()
     {
-        var controller = new StandortController(context);
+        var controller = new StandortController(context) { ControllerContext = GetControllerContext(UserRole.Administrator) };
         var response = await controller.DeleteAsync(1600433).ConfigureAwait(false);
 
         Assert.IsInstanceOfType(response, typeof(NotFoundResult));
@@ -411,5 +415,135 @@ public class StandortControllerTest
         };
         var response = await controller.EditAsync(inexistentStandort).ConfigureAwait(false);
         Assert.IsInstanceOfType(response, typeof(NotFoundResult));
+    }
+
+    [TestMethod]
+    public async Task EditStandortAfUFreigabeIsNotAvailableForUserExtern()
+    {
+        // User with Role 'Extern'
+        await CreateAndAssertStandort(freigabeAfu: false, async standort =>
+        {
+            standort.FreigabeAfu = true;
+            var controller = new StandortController(context) { ControllerContext = GetControllerContext(UserRole.Extern) };
+            var response = await controller.EditAsync(standort).ConfigureAwait(false);
+            Assert.AreEqual(StatusCodes.Status403Forbidden, (response as ObjectResult)?.StatusCode);
+            var updatedStandort = await context.FindAsync<Standort>(standort.Id).ConfigureAwait(false);
+            Assert.AreEqual(false, updatedStandort.FreigabeAfu);
+        }).ConfigureAwait(false);
+
+        // User with Role 'SachbearbeiterAfU'
+        await CreateAndAssertStandort(freigabeAfu: false, async standort =>
+        {
+            standort.FreigabeAfu = true;
+            var controller = new StandortController(context) { ControllerContext = GetControllerContext(UserRole.SachbearbeiterAfU) };
+            var response = await controller.EditAsync(standort).ConfigureAwait(false);
+            Assert.AreEqual(StatusCodes.Status200OK, (response as OkResult)?.StatusCode);
+            var updatedStandort = await context.FindAsync<Standort>(standort.Id).ConfigureAwait(false);
+            Assert.AreEqual(true, updatedStandort.FreigabeAfu);
+        }).ConfigureAwait(false);
+
+        // User with Role 'Administrator'
+        await CreateAndAssertStandort(freigabeAfu: false, async standort =>
+        {
+            standort.FreigabeAfu = true;
+            var controller = new StandortController(context) { ControllerContext = GetControllerContext(UserRole.Administrator) };
+            var response = await controller.EditAsync(standort).ConfigureAwait(false);
+            Assert.AreEqual(StatusCodes.Status200OK, (response as OkResult)?.StatusCode);
+            var updatedStandort = await context.FindAsync<Standort>(standort.Id).ConfigureAwait(false);
+            Assert.AreEqual(true, updatedStandort.FreigabeAfu);
+        }).ConfigureAwait(false);
+    }
+
+    [TestMethod]
+    public async Task EditStandortWithActiveAfUFreigabeIsNotAllowedForUserExtern()
+    {
+        // User with Role 'Extern'
+        await CreateAndAssertStandort(freigabeAfu: true, async standort =>
+        {
+            standort.Bemerkung = "WRONGGOPHER";
+            var controller = new StandortController(context) { ControllerContext = GetControllerContext(UserRole.Extern) };
+            var response = await controller.EditAsync(standort).ConfigureAwait(false);
+            Assert.AreEqual(StatusCodes.Status403Forbidden, (response as ObjectResult)?.StatusCode);
+            var updatedStandort = await context.FindAsync<Standort>(standort.Id).ConfigureAwait(false);
+            Assert.AreEqual("GREENTRINITY", updatedStandort.Bemerkung);
+        }).ConfigureAwait(false);
+
+        // User with Role 'SachbearbeiterAfU'
+        await CreateAndAssertStandort(freigabeAfu: true, async standort =>
+        {
+            standort.Bemerkung = "WRONGGOPHER";
+            var controller = new StandortController(context) { ControllerContext = GetControllerContext(UserRole.SachbearbeiterAfU) };
+            var response = await controller.EditAsync(standort).ConfigureAwait(false);
+            Assert.AreEqual(StatusCodes.Status200OK, (response as OkResult)?.StatusCode);
+            var updatedStandort = await context.FindAsync<Standort>(standort.Id).ConfigureAwait(false);
+            Assert.AreEqual("WRONGGOPHER", updatedStandort.Bemerkung);
+        }).ConfigureAwait(false);
+
+        // User with Role 'Administrator'
+        await CreateAndAssertStandort(freigabeAfu: true, async standort =>
+        {
+            standort.Bemerkung = "WRONGGOPHER";
+            var controller = new StandortController(context) { ControllerContext = GetControllerContext(UserRole.Administrator) };
+            var response = await controller.EditAsync(standort).ConfigureAwait(false);
+            Assert.AreEqual(StatusCodes.Status200OK, (response as OkResult)?.StatusCode);
+            var updatedStandort = await context.FindAsync<Standort>(standort.Id).ConfigureAwait(false);
+            Assert.AreEqual("WRONGGOPHER", updatedStandort.Bemerkung);
+        }).ConfigureAwait(false);
+    }
+
+    [TestMethod]
+    public async Task DeleteStandortWithAfUFreigabeIsNotAllowedForUserExtern()
+    {
+        // User with Role 'Extern'
+        await CreateAndAssertStandort(freigabeAfu: true, async standort =>
+        {
+            var controller = new StandortController(context) { ControllerContext = GetControllerContext(UserRole.Extern) };
+            var response = await controller.DeleteAsync(standort.Id).ConfigureAwait(false);
+            Assert.AreEqual(StatusCodes.Status403Forbidden, (response as ObjectResult)?.StatusCode);
+            Assert.IsNotNull(await context.FindAsync<Standort>(standort.Id).ConfigureAwait(false));
+        }).ConfigureAwait(false);
+
+        // User with Role 'SachbearbeiterAfU'
+        await CreateAndAssertStandort(freigabeAfu: true, async standort =>
+        {
+            var controller = new StandortController(context) { ControllerContext = GetControllerContext(UserRole.SachbearbeiterAfU) };
+            var response = await controller.DeleteAsync(standort.Id).ConfigureAwait(false);
+            Assert.AreEqual(StatusCodes.Status200OK, (response as OkResult)?.StatusCode);
+            Assert.IsNull(await context.FindAsync<Standort>(standort.Id).ConfigureAwait(false));
+        }).ConfigureAwait(false);
+
+        // User with Role 'Administrator'
+        await CreateAndAssertStandort(freigabeAfu: true, async standort =>
+        {
+            var controller = new StandortController(context) { ControllerContext = GetControllerContext(UserRole.Administrator) };
+            var response = await controller.DeleteAsync(standort.Id).ConfigureAwait(false);
+            Assert.AreEqual(StatusCodes.Status200OK, (response as OkResult)?.StatusCode);
+            Assert.IsNull(await context.FindAsync<Standort>(standort.Id).ConfigureAwait(false));
+        }).ConfigureAwait(false);
+    }
+
+    private async Task CreateAndAssertStandort(bool freigabeAfu, Func<Standort, Task> assert)
+    {
+        var standort = context.Standorte.Add(new Standort
+        {
+            Bemerkung = "GREENTRINITY",
+            Gemeinde = "LATENTNIGHT",
+            GrundbuchNr = "WRONGSCAN",
+            Bezeichnung = "ODDCALENDAR",
+            FreigabeAfu = freigabeAfu,
+        }).Entity;
+
+        await context.SaveChangesAsync().ConfigureAwait(false);
+
+        var untrackedStandort = context.Standorte.AsNoTracking().Where(x => x.Id == standort.Id).First();
+        await assert(untrackedStandort);
+
+        // Cleanup
+        var standortToDelete = await context.FindAsync<Standort>(untrackedStandort.Id).ConfigureAwait(false);
+        if (standortToDelete != null)
+        {
+            context.Remove(standortToDelete);
+            await context.SaveChangesAsync().ConfigureAwait(false);
+        }
     }
 }
