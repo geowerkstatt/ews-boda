@@ -24,7 +24,7 @@ builder.Services
         options.AddPolicy(PolicyNames.SachbearbeiterAfU, options => options.RequireRole(UserRole.Administrator.ToString(), UserRole.SachbearbeiterAfU.ToString()));
         options.AddPolicy(PolicyNames.Extern, options => options.RequireRole(UserRole.Administrator.ToString(), UserRole.SachbearbeiterAfU.ToString(), UserRole.Extern.ToString()));
         options.DefaultPolicy = options.GetPolicy(PolicyNames.Administrator)!;
-        options.FallbackPolicy = options.DefaultPolicy;
+        options.FallbackPolicy = options.GetPolicy(PolicyNames.Extern)!;
     });
 
 builder.Services
