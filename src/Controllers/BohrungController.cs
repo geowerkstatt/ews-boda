@@ -24,30 +24,30 @@ public class BohrungController : EwsControllerBase<Bohrung>
     }
 
     /// <inheritdoc/>
-    public override async Task<IActionResult> CreateAsync(Bohrung item)
+    public override async Task<IActionResult> CreateAsync(Bohrung entity)
     {
-        item.Bohrprofile = null;
-        if (item.Geometrie == null)
+        entity.Bohrprofile = null;
+        if (entity.Geometrie == null)
         {
-            return await base.CreateAsync(item).ConfigureAwait(false);
+            return await base.CreateAsync(entity).ConfigureAwait(false);
         }
         else
         {
-            return await UpdateStandortBeforeContinouing(base.CreateAsync, item).ConfigureAwait(false);
+            return await UpdateStandortBeforeContinouing(base.CreateAsync, entity).ConfigureAwait(false);
         }
     }
 
     /// <inheritdoc/>
-    public override async Task<IActionResult> EditAsync(Bohrung item)
+    public override async Task<IActionResult> EditAsync(Bohrung entity)
     {
-        item.Bohrprofile = null;
-        if (item.Geometrie == null)
+        entity.Bohrprofile = null;
+        if (entity.Geometrie == null)
         {
-            return await base.EditAsync(item).ConfigureAwait(false);
+            return await base.EditAsync(entity).ConfigureAwait(false);
         }
         else
         {
-            return await UpdateStandortBeforeContinouing(base.EditAsync, item).ConfigureAwait(false);
+            return await UpdateStandortBeforeContinouing(base.EditAsync, entity).ConfigureAwait(false);
         }
     }
 
