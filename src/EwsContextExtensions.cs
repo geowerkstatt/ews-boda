@@ -122,7 +122,7 @@ namespace EWS
                .RuleFor(o => o.Bemerkung, f => f.Company.CatchPhrase().OrNull(f, .2f))
                .RuleFor(o => o.HQualitaet, f => 3)
                .RuleFor(o => o.HAblenkung, f => 9)
-               .RuleFor(o => o.Geometrie, f => f.PickRandomParam(new Point(new Coordinate(f.Random.Int(2592400, 2644800), f.Random.Int(1213500, 1261500)))).OrNull(f, .05f)) // Geometries in bounding box of Kanton Solothurn
+               .RuleFor(o => o.Geometrie, f => f.PickRandomParam(new Point(new Coordinate(f.Random.Double(2592400.1, 2644800.0), f.Random.Double(1213500.1, 1261500.0)))).OrNull(f, .05f)) // Geometries in bounding box of Kanton Solothurn
                .RuleFor(o => o.StandortId, f => f.PickRandom(standorteRange))
                .RuleFor(o => o.Bohrprofile, _ => default!);
 
@@ -151,14 +151,10 @@ namespace EWS
                .RuleFor(o => o.UserErstellung, f => f.Person.UserName)
                .RuleFor(o => o.UserMutation, f => f.Internet.UserName().OrNull(f, .2f))
                .RuleFor(o => o.Datum, f => f.Date.Past())
-               .RuleFor(o => o.HTektonikId, f => 10)
-               .RuleFor(o => o.HTektonik, _ => default!)
-               .RuleFor(o => o.HQualitaetId, f => 12)
-               .RuleFor(o => o.HQualitaet, _ => default!)
-               .RuleFor(o => o.HFormationFelsId, f => 5)
-               .RuleFor(o => o.HFormationFels, _ => default!)
-               .RuleFor(o => o.HFormationEndtiefeId, f => 5)
-               .RuleFor(o => o.HFormationEndtiefe, _ => default!)
+               .RuleFor(o => o.HTektonik, f => 10)
+               .RuleFor(o => o.HQualitaet, f => 12)
+               .RuleFor(o => o.HFormationFels, f => 5)
+               .RuleFor(o => o.HFormationEndtiefe, f => 5)
                .RuleFor(o => o.Schichten, _ => default!)
                .RuleFor(o => o.Vorkomnisse, _ => default!);
             Bohrprofil SeededBohrprofile(int seed) => fakeBohrprofile.UseSeed(seed).Generate();
