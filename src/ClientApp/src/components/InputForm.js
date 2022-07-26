@@ -83,6 +83,12 @@ export default function InputForm(props) {
       setAlertVariant("success");
       getStandort(updatedBohrung.standortId);
       handleBack();
+    } else {
+      setShowAlert(true);
+      setAlertMessage(
+        "Bohrung konnte nicht editiert werden. Überprüfen Sie, ob sich alle dem Standort zugeordneten Bohrungen in der gleichen Gemeinde im Kanton Solothurn befinden."
+      );
+      setAlertVariant("error");
     }
   }
 
