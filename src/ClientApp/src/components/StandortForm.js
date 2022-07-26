@@ -138,7 +138,7 @@ export default function StandortForm(props) {
         />
         {currentStandort && currentStandort.bohrungen?.length > 0 && (
           <TextField
-            defaultValue={currentStandort?.gemeinde}
+            value={currentStandort?.gemeinde}
             fullWidth
             type="string"
             InputProps={{
@@ -192,29 +192,20 @@ export default function StandortForm(props) {
             )}
             {currentStandort.freigabeAfu && (
               <React.Fragment>
-                <Controller
-                  name="afuUser"
-                  control={control}
-                  defaultValue={currentStandort.afuUser}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      sx={{ marginRight: "6%", width: "47%" }}
-                      InputProps={{
-                        readOnly: true,
-                      }}
-                      margin="normal"
-                      label="AfU Freigabe erfolgt durch"
-                      type="text"
-                      variant="standard"
-                    />
-                  )}
+                <TextField
+                  value={currentStandort.afuUser}
+                  sx={{ marginRight: "6%", width: "47%" }}
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                  margin="normal"
+                  label="AfU Freigabe erfolgt durch"
+                  type="text"
+                  variant="standard"
                 />
                 <TextField
                   name="afuDatum"
-                  defaultValue={
-                    currentStandort.afuDatum ? new Date(currentStandort.afuDatum).toLocaleDateString() : null
-                  }
+                  value={currentStandort.afuDatum ? new Date(currentStandort.afuDatum).toLocaleDateString() : null}
                   InputProps={{
                     readOnly: true,
                   }}
