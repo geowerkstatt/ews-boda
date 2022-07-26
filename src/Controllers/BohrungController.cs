@@ -33,7 +33,7 @@ public class BohrungController : EwsControllerBase<Bohrung>
         }
         else
         {
-            return await UpdateStandortBeforeContinouing(base.CreateAsync, entity).ConfigureAwait(false);
+            return await UpdateStandortAndBohrung(base.CreateAsync, entity).ConfigureAwait(false);
         }
     }
 
@@ -47,29 +47,29 @@ public class BohrungController : EwsControllerBase<Bohrung>
         }
         else
         {
-            return await UpdateStandortBeforeContinouing(base.EditAsync, entity).ConfigureAwait(false);
+            return await UpdateStandortAndBohrung(base.EditAsync, entity).ConfigureAwait(false);
         }
     }
 
-    private async Task<IActionResult> UpdateStandortBeforeContinouing(Func<Bohrung, Task<IActionResult>> operation, Bohrung item)
+    private async Task<IActionResult> UpdateStandortAndBohrung(Func<Bohrung, Task<IActionResult>> createOrUpdateBohrung, Bohrung item)
     {
         var updateResult = await UpdateStandort(item).ConfigureAwait(false);
 
-        // Case if Api Call is not successful.
-        if (updateResult != null && updateResult.Value == null)
+        // Case if Api call is not successful.
+        if (updateResult?.Value == null)
         {
             var objectResult = updateResult.Result as ObjectResult;
             return (IActionResult)Task.FromResult(objectResult);
         }
         else
         {
-            // Case if Api Call is successful but point is not in Kanton Solothurn
+            // Case if Api call is successful, but point is not in Kanton Solothurn
             if (string.IsNullOrEmpty(updateResult.Value.Gemeinde))
             {
-                return BadRequest();
+                return Problem($"Call to data service Api did not yield any results. The supplied geometry '{item.Geometrie}' may not lie in Kanton Solothurn.");
             }
 
-            return await operation(item).ConfigureAwait(false);
+            return await createOrUpdateBohrung(item).ConfigureAwait(false);
         }
     }
 
@@ -84,7 +84,7 @@ public class BohrungController : EwsControllerBase<Bohrung>
             bohrungen.AddRange(standortToUpdate.Bohrungen.ToList());
         }
 
-        // If no primary key is not present in the Bohrung it was newly added.
+        // If no primary key is present in the Bohrung it was newly added.
         // Otherwise it is being edited and the geometry of the existing Bohrung needs to be replaced for the Dataservice Api call.
         if (bohrung.Id == 0)
             bohrungen.Add(bohrung);
