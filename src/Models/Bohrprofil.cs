@@ -86,25 +86,45 @@ namespace EWS.Models
         /// Foreign Key: ID des Codetyps für Feld quali.
         /// </summary>
         [Column("h_quali")]
-        public int HQualitaet { get; set; }
+        public int HQualitaetId { get; set; }
+
+        /// <summary>
+        /// Codetyps für Feld quali.
+        /// </summary>
+        public Code HQualitaet { get; set; }
 
         /// <summary>
         /// Foreign Key: ID des Codetyps für Feld tektonik.
         /// </summary>
         [Column("h_tektonik")]
-        public int HTektonik { get; set; }
+        public int HTektonikId { get; set; }
+
+        /// <summary>
+        /// Codetyps für Feld tektonik.
+        /// </summary>
+        public CodeTyp HTektonik { get; set; }
 
         /// <summary>
         /// Foreign Key: ID des Codetyps für Feld fmfelso.
         /// </summary>
         [Column("h_fmfelso")]
-        public int HFormationFels { get; set; }
+        public int HFormationFelsId { get; set; }
+
+        /// <summary>
+        /// Codetyp für Feld fmfelso.
+        /// </summary>
+        public CodeTyp HFormationFels { get; set; }
 
         /// <summary>
         /// Foreign Key: ID des Codetyps für Feld fmeto.
         /// </summary>
         [Column("h_fmeto")]
-        public int HFormationEndtiefe { get; set; }
+        public int HFormationEndtiefeId { get; set; }
+
+        /// <summary>
+        /// Codetyp für Feld fmeto.
+        /// </summary>
+        public CodeTyp HFormationEndtiefe { get; set; }
 
         /// <summary>
         /// Schichten die dem Bohrprofil zugeordnet sind.
