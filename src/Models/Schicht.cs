@@ -62,7 +62,6 @@ namespace EWS.Models
         [Column("bemerkung")]
         public string? Bemerkung { get; set; }
 
-
         /// <summary>
         /// Codetyp für Feld quali.
         /// </summary>
