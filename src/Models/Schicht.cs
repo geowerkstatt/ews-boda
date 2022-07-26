@@ -31,7 +31,7 @@ namespace EWS.Models
         /// <summary>
         /// Codeschicht der Schicht.
         /// </summary>
-        public CodeSchicht CodeSchicht { get; set; }
+        public CodeSchicht? CodeSchicht { get; set; }
 
         /// <summary>
         /// Tiefe der Schichtgrenze [m].
@@ -48,7 +48,7 @@ namespace EWS.Models
         /// <summary>
         /// Qualitätsangabe zur Schicht.
         /// </summary>
-        public Code Qualitaet { get; set; }
+        public Code? Qualitaet { get; set; }
 
         /// <summary>
         /// Bemerkung zur Qualitätsangabe.
@@ -63,14 +63,9 @@ namespace EWS.Models
         public string? Bemerkung { get; set; }
 
         /// <summary>
-        /// Foreign Key: ID des Codetyps für Feld quali.
-        /// </summary>
-        [Column("h_quali")]
-        public int HQualitaetId { get; set; }
-
-        /// <summary>
         /// Codetyp für Feld quali.
         /// </summary>
-        public CodeTyp HQualitaet { get; set; }
+        [Column("h_quali")]
+        public int HQualitaet { get; set; }
     }
 }

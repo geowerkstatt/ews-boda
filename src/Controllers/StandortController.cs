@@ -114,7 +114,7 @@ public class StandortController : EwsControllerBase<Standort>
     private IQueryable<Standort> GetAll()
     {
         return Context.Standorte
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Schichten)
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Vorkomnisse).AsQueryable();
+            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Schichten).ThenInclude(s => s.CodeSchicht)
+            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Vorkommnisse).ThenInclude(s => s.Typ).AsQueryable();
     }
 }
