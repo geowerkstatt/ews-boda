@@ -43,7 +43,7 @@ export default function StandortForm(props) {
     deleteBohrung,
     currentUser,
   } = props;
-  const { control, handleSubmit, formState, reset } = useForm({ reValidateMode: "onChange" });
+  const { control, handleSubmit, formState, reset, register } = useForm({ reValidateMode: "onChange" });
   const { isDirty } = formState;
 
   const [openConfirmation, setOpenConfirmation] = useState(false);
@@ -102,20 +102,17 @@ export default function StandortForm(props) {
         <Controller
           name="bezeichnung"
           control={control}
-          rules={{
-            required: true,
-          }}
-          defaultValue={currentStandort?.bezeichnung || ""}
           render={({ field, fieldState: { error } }) => (
             <TextField
               {...field}
+              value={field.value || currentStandort?.bezeichnung || ""}
               autoFocus
               margin="normal"
-              value={field.value}
               label="Bezeichnung des Standorts"
               type="text"
               fullWidth
               variant="standard"
+              {...register("bezeichnung", { required: true })}
               error={error !== undefined}
               helperText={error ? "Geben Sie eine Bezeichnung ein" : ""}
             />
@@ -124,10 +121,10 @@ export default function StandortForm(props) {
         <Controller
           name="bemerkung"
           control={control}
-          defaultValue={currentStandort?.bemerkung}
           render={({ field }) => (
             <TextField
               {...field}
+              value={field.value || currentStandort?.bemerkung || ""}
               margin="normal"
               label="Bemerkung zum Standort"
               type="text"
@@ -138,7 +135,7 @@ export default function StandortForm(props) {
         />
         {currentStandort && currentStandort.bohrungen?.length > 0 && (
           <TextField
-            defaultValue={currentStandort?.gemeinde}
+            value={currentStandort?.gemeinde}
             fullWidth
             type="string"
             InputProps={{
@@ -151,10 +148,10 @@ export default function StandortForm(props) {
         <Controller
           name="grundbuchNr"
           control={control}
-          defaultValue={currentStandort?.grundbuchNr}
           render={({ field }) => (
             <TextField
               {...field}
+              value={field.value || currentStandort?.grundbuchNr || ""}
               inputProps={{
                 maxLength: 40,
               }}
@@ -177,8 +174,7 @@ export default function StandortForm(props) {
                     <Controller
                       name="freigabeAfu"
                       control={control}
-                      defaultValue={currentStandort.freigabeAfu}
-                      value={currentStandort.freigabeAfu}
+                      value={currentStandort.freigabeAfu || false}
                       render={({ field: { value, ref, ...field } }) => (
                         <Checkbox {...field} inputRef={ref} checked={value} />
                       )}
@@ -192,29 +188,21 @@ export default function StandortForm(props) {
             )}
             {currentStandort.freigabeAfu && (
               <React.Fragment>
-                <Controller
-                  name="afuUser"
-                  control={control}
-                  defaultValue={currentStandort.afuUser}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      sx={{ marginRight: "6%", width: "47%" }}
-                      InputProps={{
-                        readOnly: true,
-                      }}
-                      margin="normal"
-                      label="AfU Freigabe erfolgt durch"
-                      type="text"
-                      variant="standard"
-                    />
-                  )}
+                <TextField
+                  value={currentStandort.afuUser}
+                  sx={{ marginRight: "6%", width: "47%" }}
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                  margin="normal"
+                  label="AfU Freigabe erfolgt durch"
+                  type="text"
+                  variant="standard"
                 />
+
                 <TextField
                   name="afuDatum"
-                  defaultValue={
-                    currentStandort.afuDatum ? new Date(currentStandort.afuDatum).toLocaleDateString() : null
-                  }
+                  value={currentStandort.afuDatum ? new Date(currentStandort.afuDatum).toLocaleDateString() : null}
                   InputProps={{
                     readOnly: true,
                   }}

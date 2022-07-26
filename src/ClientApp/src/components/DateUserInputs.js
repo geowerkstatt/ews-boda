@@ -6,7 +6,7 @@ export default function DateUserInputs(props) {
   return (
     <React.Fragment>
       <TextField
-        defaultValue={formObject.userErstellung}
+        value={formObject.userErstellung}
         sx={{ marginRight: "6%", width: "47%" }}
         InputProps={{
           readOnly: true,
@@ -17,7 +17,7 @@ export default function DateUserInputs(props) {
         variant="standard"
       />
       <TextField
-        defaultValue={new Date(formObject.erstellungsdatum).toLocaleDateString()}
+        value={new Date(formObject.erstellungsdatum).toLocaleDateString()}
         InputProps={{
           readOnly: true,
         }}
@@ -30,7 +30,7 @@ export default function DateUserInputs(props) {
       {formObject.userMutation && (
         <React.Fragment>
           <TextField
-            defaultValue={formObject.userMutation}
+            value={formObject.userMutation}
             sx={{ marginRight: "6%", width: "47%" }}
             InputProps={{
               readOnly: true,
@@ -42,7 +42,7 @@ export default function DateUserInputs(props) {
           />
           <TextField
             name="mutationsdatum"
-            defaultValue={formObject.mutationsdatum ? new Date(formObject.mutationsdatum).toLocaleDateString() : null}
+            value={formObject.mutationsdatum ? new Date(formObject.mutationsdatum).toLocaleDateString() : null}
             InputProps={{
               readOnly: true,
             }}
