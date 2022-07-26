@@ -31,7 +31,7 @@ namespace EWS.Models
         /// <summary>
         /// Codeschicht der Schicht.
         /// </summary>
-        public CodeSchicht CodeSchicht { get; set; }
+        public CodeSchicht? CodeSchicht { get; set; }
 
         /// <summary>
         /// Tiefe der Schichtgrenze [m].
@@ -48,7 +48,7 @@ namespace EWS.Models
         /// <summary>
         /// Qualitätsangabe zur Schicht.
         /// </summary>
-        public Code Qualitaet { get; set; }
+        public Code? Qualitaet { get; set; }
 
         /// <summary>
         /// Bemerkung zur Qualitätsangabe.
