@@ -20,6 +20,7 @@ export default function InputForm(props) {
   } = props;
 
   const [currentBohrung, setCurrentBohrung] = useState(null);
+  const [currentBohrprofil, setCurrentBohrprofil] = useState(null);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -105,6 +106,75 @@ export default function InputForm(props) {
     }
   }
 
+  // Get bohrung by Id
+  async function getBohrung(id) {
+    const response = await fetch("/bohrung/" + id);
+    if (response.ok) {
+      const bohrung = await response.json();
+      setCurrentBohrung(bohrung);
+    }
+  }
+
+  // Add Bohrprofil
+  async function addBohrprofil(data) {
+    const bohrprofilToAdd = currentBohrprofil;
+    Object.entries(data).forEach(([key, value]) => {
+      bohrprofilToAdd[key] = value;
+    });
+    const response = await fetch("/bohrprofil", {
+      method: "POST",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(bohrprofilToAdd),
+    });
+    if (response.ok) {
+      const addedBohrprofil = await response.json();
+      setShowSuccessAlert(true);
+      setAlertMessage("Bohrprofil wurde hinzugefügt.");
+      getBohrung(addedBohrprofil.bohrungId);
+      handleBack();
+    }
+  }
+
+  // Edit Bohrprofil
+  async function editBohrprofil(data) {
+    const updatedBohrprofil = currentBohrprofil;
+    console.log(updatedBohrprofil);
+    Object.entries(data).forEach(([key, value]) => {
+      updatedBohrprofil[key] = value;
+    });
+    const response = await fetch("/bohrprofil", {
+      method: "PUT",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedBohrprofil),
+    });
+    if (response.ok) {
+      setShowSuccessAlert(true);
+      setAlertMessage("Bohrprofil wurde editiert.");
+      getBohrung(updatedBohrprofil.bohrungId);
+      handleBack();
+    }
+  }
+
+  // Delete Bohrprofil
+  async function deleteBohrprofil(bohrprofil) {
+    const response = await fetch("/bohrprofil?id=" + bohrprofil.id, {
+      method: "DELETE",
+    });
+    if (response.ok) {
+      setShowSuccessAlert(true);
+      setAlertMessage("Bohrprofil wurde gelöscht.");
+      getBohrung(bohrprofil.bohrungId);
+    }
+  }
+
   const steps = [
     {
       label: "zum Standort",
@@ -128,17 +198,29 @@ export default function InputForm(props) {
         <BohrungForm
           currentStandort={currentStandort}
           setCurrentBohrung={setCurrentBohrung}
+          setCurrentBohrprofil={setCurrentBohrprofil}
           currentBohrung={currentBohrung}
           handleNext={handleNext}
           handleBack={handleBack}
           addBohrung={addBohrung}
           editBohrung={editBohrung}
+          deleteBohrprofil={deleteBohrprofil}
         ></BohrungForm>
       ),
     },
     {
       label: "zum Bohrprofil",
-      form: <BohrprofilForm handleBack={handleBack}></BohrprofilForm>,
+      form: (
+        <BohrprofilForm
+          currentBohrung={currentBohrung}
+          setCurrentBohrprofil={setCurrentBohrprofil}
+          currentBohrprofil={currentBohrprofil}
+          handleNext={handleNext}
+          handleBack={handleBack}
+          addBohrprofil={addBohrprofil}
+          editBohrprofil={editBohrprofil}
+        ></BohrprofilForm>
+      ),
     },
   ];
 
