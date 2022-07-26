@@ -62,15 +62,11 @@ namespace EWS.Models
         [Column("bemerkung")]
         public string? Bemerkung { get; set; }
 
-        /// <summary>
-        /// Foreign Key: ID des Codetyps für Feld quali.
-        /// </summary>
-        [Column("h_quali")]
-        public int HQualitaetId { get; set; }
 
         /// <summary>
         /// Codetyp für Feld quali.
         /// </summary>
-        public CodeTyp HQualitaet { get; set; }
+        [Column("h_quali")]
+        public int HQualitaet { get; set; }
     }
 }

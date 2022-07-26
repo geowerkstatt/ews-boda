@@ -14,4 +14,20 @@ public class BohrprofilController : EwsControllerBase<Bohrprofil>
         : base(context)
     {
     }
+
+    /// <inheritdoc/>
+    public override Task<IActionResult> CreateAsync(Bohrprofil entity)
+    {
+        entity.Schichten = null;
+        entity.Vorkommnisse = null;
+        return base.CreateAsync(entity);
+    }
+
+    /// <inheritdoc/>
+    public override Task<IActionResult> EditAsync(Bohrprofil entity)
+    {
+        entity.Schichten = null;
+        entity.Vorkommnisse = null;
+        return base.EditAsync(entity);
+    }
 }

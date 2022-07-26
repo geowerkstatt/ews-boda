@@ -26,7 +26,13 @@ namespace EWS.Models
         /// Art des Vorkommnisses, z.B. Arteser.
         /// </summary>
         [Column("typ")]
-        public int Typ { get; set; }
+        public int TypId { get; set; }
+
+        /// <summary>
+        /// Codetyp Klassierung der Formation Endtiefe.
+        /// </summary>
+        [ForeignKey("TypId")]
+        public Code? Typ { get; set; }
 
         /// <summary>
         /// Tiefe des Vorkommnisses [m].
@@ -53,25 +59,15 @@ namespace EWS.Models
         public string? QualitaetBemerkung { get; set; }
 
         /// <summary>
-        /// Foreign Key: ID des Codetyps für Feld quali.
-        /// </summary>
-        [Column("h_quali")]
-        public int HQualitaetId { get; set; }
-
-        /// <summary>
         /// Codetyp für Feld quali.
         /// </summary>
-        public Code HQualitaet { get; set; }
-
-        /// <summary>
-        /// Foreign Key: ID des Codetyps für Feld typ.
-        /// </summary>
-        [Column("h_typ")]
-        public int HTypId { get; set; }
+        [Column("h_quali")]
+        public int HQualitaet { get; set; }
 
         /// <summary>
         /// Codetyp für Feld typ.
         /// </summary>
-        public CodeTyp HTyp { get; set; }
+        [Column("h_typ")]
+        public int HTyp { get; set; }
     }
 }

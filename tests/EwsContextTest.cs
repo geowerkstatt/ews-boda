@@ -37,10 +37,10 @@ public class EwsContextTest
         {
             Bemerkung = "Morbi ut lectus ligula.",
             BohrungId = newBohrung.Id,
-            HQualitaetId = 12,
-            HTektonikId = 10,
-            HFormationEndtiefeId = 5,
-            HFormationFelsId = 5,
+            HQualitaet = 12,
+            HTektonik = 10,
+            HFormationEndtiefe = 5,
+            HFormationFels = 5,
         };
         await new BohrprofilController(ContextFactory.CreateContext()).CreateAsync(newBohrprofil).ConfigureAwait(false);
 

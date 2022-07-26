@@ -139,28 +139,27 @@ namespace EWS
                .RuleFor(o => o.BohrungId, f => f.PickRandom(bohrungenRange))
                .RuleFor(o => o.Bemerkung, f => f.Random.Word())
                .RuleFor(o => o.Kote, f => f.Random.Int(0, 30000))
-               .RuleFor(o => o.Tektonik, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 10).Select(s => s.Id).ToList()))
+               .RuleFor(o => o.TektonikId, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 10).Select(s => s.Id).ToList()))
+               .RuleFor(o => o.Tektonik, _ => default!)
                .RuleFor(o => o.Endteufe, f => f.Random.Int(0, 30000))
                .RuleFor(o => o.QualitaetId, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 12).Select(s => s.Id).ToList()))
                .RuleFor(o => o.Qualitaet, _ => default!)
                .RuleFor(o => o.QualitaetBemerkung, f => f.Rant.Review().OrNull(f, .8f))
-               .RuleFor(o => o.FormationFels, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 5).Select(s => s.Id).ToList()))
-               .RuleFor(o => o.FormationEndtiefe, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 5).Select(s => s.Id).ToList()))
+               .RuleFor(o => o.FormationFelsId, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 5).Select(s => s.Id).ToList()))
+               .RuleFor(o => o.FormationFels, _ => default!)
+               .RuleFor(o => o.FormationEndtiefeId, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 5).Select(s => s.Id).ToList()))
+               .RuleFor(o => o.FormationEndtiefe, _ => default!)
                .RuleFor(o => o.Erstellungsdatum, f => f.Date.Past())
                .RuleFor(o => o.Mutationsdatum, f => f.Date.Past())
                .RuleFor(o => o.UserErstellung, f => f.Person.UserName)
                .RuleFor(o => o.UserMutation, f => f.Internet.UserName().OrNull(f, .2f))
                .RuleFor(o => o.Datum, f => f.Date.Past())
-               .RuleFor(o => o.HTektonikId, f => 10)
-               .RuleFor(o => o.HTektonik, _ => default!)
-               .RuleFor(o => o.HQualitaetId, f => 12)
-               .RuleFor(o => o.HQualitaet, _ => default!)
-               .RuleFor(o => o.HFormationFelsId, f => 5)
-               .RuleFor(o => o.HFormationFels, _ => default!)
-               .RuleFor(o => o.HFormationEndtiefeId, f => 5)
-               .RuleFor(o => o.HFormationEndtiefe, _ => default!)
+               .RuleFor(o => o.HTektonik, f => 10)
+               .RuleFor(o => o.HQualitaet, f => 12)
+               .RuleFor(o => o.HFormationFels, f => 5)
+               .RuleFor(o => o.HFormationEndtiefe, f => 5)
                .RuleFor(o => o.Schichten, _ => default!)
-               .RuleFor(o => o.Vorkomnisse, _ => default!);
+               .RuleFor(o => o.Vorkommnisse, _ => default!);
             Bohrprofil SeededBohrprofile(int seed) => fakeBohrprofile.UseSeed(seed).Generate();
             context.Bohrprofile.AddRange(bohrprofileRange.Select(SeededBohrprofile));
             context.SaveChangesWithoutUpdatingChangeInformation();
@@ -180,8 +179,7 @@ namespace EWS
                .RuleFor(o => o.UserErstellung, f => f.Person.UserName)
                .RuleFor(o => o.UserMutation, f => f.Internet.UserName())
                .RuleFor(o => o.Bemerkung, f => f.Company.CatchPhrase())
-               .RuleFor(o => o.HQualitaetId, f => 11)
-               .RuleFor(o => o.HQualitaet, _ => default!)
+               .RuleFor(o => o.HQualitaet, f => 11)
                .RuleFor(o => o.BohrprofilId, f => f.PickRandom(bohrprofileRange))
                .RuleFor(o => o.CodeSchichtId, f => f.PickRandom(codeschichtenRange))
                .RuleFor(o => o.CodeSchicht, _ => default!);
@@ -203,12 +201,11 @@ namespace EWS
                .RuleFor(o => o.UserErstellung, f => f.Person.UserName)
                .RuleFor(o => o.UserMutation, f => f.Internet.UserName())
                .RuleFor(o => o.Bemerkung, f => f.Random.Word())
-               .RuleFor(o => o.HQualitaetId, f => 3)
-               .RuleFor(o => o.HQualitaet, _ => default!)
+               .RuleFor(o => o.HQualitaet, f => 3)
                .RuleFor(o => o.BohrprofilId, f => f.PickRandom(bohrprofileRange))
-               .RuleFor(o => o.Typ, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 2).Select(s => s.Id).ToList()))
-               .RuleFor(o => o.HTypId, f => 2)
-               .RuleFor(o => o.HTyp, _ => default!);
+               .RuleFor(o => o.TypId, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 2).Select(s => s.Id).ToList()))
+               .RuleFor(o => o.Typ, _ => default!)
+               .RuleFor(o => o.HTyp, f => 2);
             Vorkommnis SeededVorkommnisse(int seed) => fakeVorkommnisse.UseSeed(seed).Generate();
             context.Vorkommnisse.AddRange(vorkommnisseRange.Select(SeededVorkommnisse));
             context.SaveChangesWithoutUpdatingChangeInformation();

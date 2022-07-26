@@ -2,6 +2,7 @@
 using EWS.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EWS;
 
@@ -27,5 +28,28 @@ public class BohrungController : EwsControllerBase<Bohrung>
     {
         entity.Bohrprofile = null;
         return base.EditAsync(entity);
+    }
+
+    /// <summary>
+    /// Asynchronously gets the <see cref="Bohrung"/> for the specified <paramref name="id"/>.
+    /// </summary>
+    /// <param name="id">The standort id.</param>
+    [HttpGet]
+    [Route("{id}")]
+    public async Task<IActionResult> GetByIdAsync(int id)
+    {
+        var bohrung = await Context.Bohrungen
+            .Include(b => b.Bohrprofile).ThenInclude(b => b.Schichten).ThenInclude(s => s.CodeSchicht)
+            .Include(b => b.Bohrprofile).ThenInclude(b => b.Vorkommnisse)
+            .SingleOrDefaultAsync(s => s.Id == id).ConfigureAwait(false);
+
+        if (bohrung == null)
+        {
+            return NotFound();
+        }
+        else
+        {
+            return Ok(bohrung);
+        }
     }
 }
