@@ -312,7 +312,6 @@ export default function StandortForm(props) {
         <Button type="submit" disabled={!isDirty}>
           Standort speichern
         </Button>
-        <Button disabled>Standort freigeben</Button>
       </DialogActions>
       <ConfirmationDialog
         open={openConfirmation}
