@@ -22,7 +22,7 @@ import Popup from "./Popup";
 import "ol/ol.css";
 
 export default function MainMap(props) {
-  const { standorte } = props;
+  const { standorte, unfilteredBohrungenLength } = props;
   const [map, setMap] = useState();
   const [bohrungenLayer, setBohrungenLayer] = useState();
   const [latestExtent, setLatestExtent] = useState();
@@ -193,13 +193,22 @@ export default function MainMap(props) {
           features: parsedFeatures,
         })
       );
-      if (bohrungen.length) {
-        const currentExtent = map.getView().getProjection().getExtent();
+      if (bohrungen.length && unfilteredBohrungenLength) {
+        let currentExtent;
+        if (bohrungen.length !== unfilteredBohrungenLength) {
+          currentExtent = bohrungenLayer.getSource().getExtent();
+          map.getView().fit(currentExtent, {
+            padding: [30, 30, 30, 30],
+          });
+        } else {
+          currentExtent = map.getView().getProjection().getExtent();
+          map.getView().fit(currentExtent);
+        }
         setLatestExtent(currentExtent);
         map.getView().fit(currentExtent);
       }
     }
-  }, [standorte, bohrungenLayer, map]);
+  }, [standorte, bohrungenLayer, map, unfilteredBohrungenLength]);
 
   // Handle event from zoom to latest control
   useEffect(() => {
