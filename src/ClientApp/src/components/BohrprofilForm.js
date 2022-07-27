@@ -139,6 +139,7 @@ export default function BohrprofilForm(props) {
               {...field}
               value={field.value || currentBohrprofil?.bemerkung || ""}
               margin="normal"
+              multiline
               label="Bemerkung zum Bohrprofil"
               type="text"
               sx={{ width: "47%" }}
@@ -283,6 +284,7 @@ export default function BohrprofilForm(props) {
               {...field}
               value={field.value || currentBohrprofil?.qualitaetBemerkung || ""}
               margin="normal"
+              multiline
               label="Bemerkung zur Qualitätsangabe"
               type="text"
               sx={{ width: "100%" }}

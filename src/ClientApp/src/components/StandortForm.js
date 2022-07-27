@@ -129,6 +129,7 @@ export default function StandortForm(props) {
               label="Bemerkung zum Standort"
               type="text"
               fullWidth
+              multiline
               variant="standard"
               {...register("bemerkung")}
             />

@@ -224,6 +224,7 @@ export default function BohrungForm(props) {
               {...field}
               value={field.value || currentBohrung?.bemerkung || ""}
               margin="normal"
+              multiline
               label="Bemerkung zur Bohrung"
               type="text"
               fullWidth
@@ -331,6 +332,7 @@ export default function BohrungForm(props) {
               value={field.value || currentBohrung?.qualitaetBemerkung || ""}
               sx={{ marginRight: "6%", width: "47%" }}
               margin="normal"
+              multiline
               label="Bemerkung zur Qualitätsangabe"
               type="text"
               variant="standard"
