@@ -228,6 +228,7 @@ export default function BohrungForm(props) {
               type="text"
               fullWidth
               variant="standard"
+              {...register("bemerkung")}
             />
           )}
         />
@@ -235,6 +236,7 @@ export default function BohrungForm(props) {
           <Controller
             name="datum"
             control={control}
+            defaultValue={currentBohrung?.datum != null ? currentBohrung.datum : null}
             render={({ field }) => (
               <DatePicker
                 label="Datum des Bohrbeginns"
@@ -249,6 +251,7 @@ export default function BohrungForm(props) {
                     margin="normal"
                     variant="standard"
                     {...params}
+                    {...register("datum")}
                   />
                 )}
               />
@@ -267,12 +270,14 @@ export default function BohrungForm(props) {
               label="Durchmesser Bohrloch"
               type="number"
               variant="standard"
+              {...register("durchmesser")}
             />
           )}
         />
         <Controller
           name="ablenkungId"
           control={control}
+          defaultValue={currentBohrung?.ablenkungId || null}
           render={({ field }) => (
             <Autocomplete
               {...field}
@@ -296,6 +301,7 @@ export default function BohrungForm(props) {
         <Controller
           name="qualitaetId"
           control={control}
+          defaultValue={currentBohrung?.qualitaetId || null}
           render={({ field }) => (
             <Autocomplete
               {...field}
@@ -328,6 +334,7 @@ export default function BohrungForm(props) {
               label="Bemerkung zur Qualitätsangabe"
               type="text"
               variant="standard"
+              {...register("qualitaetBemerkung")}
             />
           )}
         />
@@ -343,6 +350,7 @@ export default function BohrungForm(props) {
               type="text"
               sx={{ width: "47%" }}
               variant="standard"
+              {...register("quelleRef")}
             />
           )}
         />
