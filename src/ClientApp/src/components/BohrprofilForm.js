@@ -46,6 +46,7 @@ export default function BohrprofilForm(props) {
   const [tektonikCodes, setTektonikCodes] = useState([]);
   const [formationFelsCodes, setFormationFelsCodes] = useState([]);
   const [formationEndtiefeCodes, setFormationEndtiefeCodes] = useState([]);
+  const [mapExpanded, setMapExpanded] = useState(true);
 
   const currentBohrprofilIndex = currentBohrung.bohrprofile.indexOf(currentBohrprofil);
   const numberOfBohrprofile = currentBohrung.bohrprofile.length;
@@ -294,8 +295,12 @@ export default function BohrprofilForm(props) {
           )}
         />
         {currentBohrprofil?.id && <DateUserInputs formObject={currentBohrprofil}></DateUserInputs>}
-        <Accordion sx={{ boxShadow: "none" }} defaultExpanded={true}>
-          <Tooltip title="Übersichtskarte anzeigen">
+        <Accordion
+          sx={{ boxShadow: "none" }}
+          expanded={mapExpanded}
+          onChange={(_, expanded) => setMapExpanded(expanded)}
+        >
+          <Tooltip title={mapExpanded ? "Übersichtskarte verbergen" : "Übersichtskarte anzeigen"}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>Lokalität der Bohrung</AccordionSummary>
           </Tooltip>
           <AccordionDetails>
