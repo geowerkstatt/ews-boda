@@ -407,7 +407,7 @@ export default function BohrprofilForm(props) {
       <DialogActions>
         <Button onClick={handleBack}>Abbrechen</Button>
         <Button type="submit" disabled={!isDirty}>
-          Bohrprofil Speichern
+          Bohrprofil speichern
         </Button>
       </DialogActions>
     </Box>
