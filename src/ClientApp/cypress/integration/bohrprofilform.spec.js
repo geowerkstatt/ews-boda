@@ -40,7 +40,7 @@ describe("Input form tests", () => {
       .should("be.visible")
       .click({ force: true })
       .type(" And More");
-    cy.contains("button", "Bohrprofil Speichern").scrollIntoView().should("not.be.disabled").click();
+    cy.contains("button", "Bohrprofil speichern").scrollIntoView().should("not.be.disabled").click();
   });
 
   it("Open Bohrprofil Edit Form", function () {
@@ -54,7 +54,7 @@ describe("Input form tests", () => {
       .click({ force: true })
       .type(" And More");
 
-    cy.contains("button", "Bohrprofil Speichern").scrollIntoView().should("be.visible").click();
+    cy.contains("button", "Bohrprofil speichern").scrollIntoView().should("be.visible").click();
   });
 
   it("Delete Bohrprofil", function () {
