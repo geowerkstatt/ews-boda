@@ -38,7 +38,7 @@ export default function BohrprofilForm(props) {
     addBohrprofil,
     editBohrprofil,
   } = props;
-  const { control, handleSubmit, formState, reset } = useForm({
+  const { control, handleSubmit, formState, reset, register } = useForm({
     reValidateMode: "onChange",
   });
   const { isDirty } = formState;
@@ -110,6 +110,7 @@ export default function BohrprofilForm(props) {
           <Controller
             name="datum"
             control={control}
+            defaultValue={currentBohrprofil?.datum != null ? currentBohrprofil.datum : null}
             render={({ field }) => (
               <DatePicker
                 label="Datum des Bohrprofils"
@@ -142,6 +143,7 @@ export default function BohrprofilForm(props) {
               type="text"
               sx={{ width: "47%" }}
               variant="standard"
+              {...register("bemerkung")}
             />
           )}
         />
@@ -157,6 +159,7 @@ export default function BohrprofilForm(props) {
               label="Terrainkote der Bohrung [m]"
               type="number"
               variant="standard"
+              {...register("kote")}
             />
           )}
         />
@@ -172,12 +175,14 @@ export default function BohrprofilForm(props) {
               label="Endtiefe der Bohrung [m]"
               type="number"
               variant="standard"
+              {...register("endteufe")}
             />
           )}
         />
         <Controller
           name="tektonikId"
           control={control}
+          defaultValue={currentBohrprofil?.tektonikId || null}
           render={({ field }) => (
             <Autocomplete
               {...field}
@@ -201,6 +206,7 @@ export default function BohrprofilForm(props) {
         <Controller
           name="formationFelsId"
           control={control}
+          defaultValue={currentBohrprofil?.formationFelsId || null}
           render={({ field }) => (
             <Autocomplete
               {...field}
@@ -224,6 +230,7 @@ export default function BohrprofilForm(props) {
         <Controller
           name="formationEndtiefeId"
           control={control}
+          defaultValue={currentBohrprofil?.formationEndtiefeId || null}
           render={({ field }) => (
             <Autocomplete
               {...field}
@@ -247,6 +254,7 @@ export default function BohrprofilForm(props) {
         <Controller
           name="qualitaetId"
           control={control}
+          defaultValue={currentBohrprofil?.qualitaetId || null}
           render={({ field }) => (
             <Autocomplete
               {...field}
@@ -279,6 +287,7 @@ export default function BohrprofilForm(props) {
               type="text"
               sx={{ width: "100%" }}
               variant="standard"
+              {...register("qualitaetBemerkung")}
             />
           )}
         />
