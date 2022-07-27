@@ -5,11 +5,12 @@
         {
           "src": "../",
           "files": [
-            "src/**.csproj"
+            "**/*.csproj"
           ],
           "exclude": [
             "**/bin/**",
-            "**/obj/**"
+            "**/obj/**",
+            "**/tests/**"
           ]
         }
       ],
