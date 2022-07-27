@@ -132,8 +132,9 @@ export default function InputForm(props) {
     });
     if (response.ok) {
       const addedBohrprofil = await response.json();
-      setShowSuccessAlert(true);
+      setShowAlert(true);
       setAlertMessage("Bohrprofil wurde hinzugefügt.");
+      setAlertVariant("success");
       getBohrung(addedBohrprofil.bohrungId);
       handleBack();
     }
@@ -156,8 +157,9 @@ export default function InputForm(props) {
       body: JSON.stringify(updatedBohrprofil),
     });
     if (response.ok) {
-      setShowSuccessAlert(true);
+      setShowAlert(true);
       setAlertMessage("Bohrprofil wurde editiert.");
+      setAlertVariant("success");
       getBohrung(updatedBohrprofil.bohrungId);
       handleBack();
     }
@@ -169,8 +171,9 @@ export default function InputForm(props) {
       method: "DELETE",
     });
     if (response.ok) {
-      setShowSuccessAlert(true);
+      setShowAlert(true);
       setAlertMessage("Bohrprofil wurde gelöscht.");
+      setAlertVariant("success");
       getBohrung(bohrprofil.bohrungId);
     }
   }
