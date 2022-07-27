@@ -36,7 +36,7 @@ describe("Input form tests", () => {
     cy.get("form[name=bohrprofil-form]").should("contain", "Bohrprofil erstellen");
     cy.get("form[name=bohrprofil-form]")
       .scrollIntoView()
-      .find("input[name=bemerkung]")
+      .find("textarea[name=bemerkung]")
       .should("be.visible")
       .click({ force: true })
       .type(" And More");
@@ -49,7 +49,7 @@ describe("Input form tests", () => {
     cy.get("form[name=bohrprofil-form]").should("contain", "Bohrprofil bearbeiten");
     cy.get("form[name=bohrprofil-form]")
       .scrollIntoView()
-      .find("input[name=bemerkung]")
+      .find("textarea[name=bemerkung]")
       .should("be.visible")
       .click({ force: true })
       .type(" And More");
