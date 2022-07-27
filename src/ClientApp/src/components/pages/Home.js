@@ -27,6 +27,7 @@ export function Home(props) {
   const [alertMessage, setAlertMessage] = useState("");
   // Cache standorte on client for better performance
   const [unfilteredStandorte, setUnfilteredStandorte] = useState([]);
+  const [unfilteredBohrungenLength, setUnfilteredBohrungenLength] = useState([]);
 
   const handleClose = () => {
     setOpenStandortForm(false);
@@ -147,6 +148,11 @@ export function Home(props) {
       });
   }, []);
 
+  // Get bohrungen count
+  useEffect(() => {
+    setUnfilteredBohrungenLength(unfilteredStandorte.flatMap((s) => s.bohrungen).length);
+  }, [unfilteredStandorte]);
+
   return (
     <Box
       component="main"
@@ -205,7 +211,7 @@ export function Home(props) {
                 padding: "0 0 0 0",
               }}
             >
-              <MainMap standorte={standorte} />
+              <MainMap standorte={standorte} unfilteredBohrungenLength={unfilteredBohrungenLength} />
             </Paper>
           </Grid>
           <Grid item xs={12}>
