@@ -43,7 +43,7 @@ export default function StandortForm(props) {
     deleteBohrung,
     currentUser,
   } = props;
-  const { control, handleSubmit, formState, reset } = useForm({ reValidateMode: "onChange" });
+  const { control, handleSubmit, formState, reset, register } = useForm({ reValidateMode: "onChange" });
   const { isDirty } = formState;
 
   const [openConfirmation, setOpenConfirmation] = useState(false);
@@ -102,20 +102,17 @@ export default function StandortForm(props) {
         <Controller
           name="bezeichnung"
           control={control}
-          rules={{
-            required: true,
-          }}
-          defaultValue={currentStandort?.bezeichnung || ""}
           render={({ field, fieldState: { error } }) => (
             <TextField
               {...field}
+              value={field.value || currentStandort?.bezeichnung || ""}
               autoFocus
               margin="normal"
-              value={field.value}
               label="Bezeichnung des Standorts"
               type="text"
               fullWidth
               variant="standard"
+              {...register("bezeichnung", { required: true })}
               error={error !== undefined}
               helperText={error ? "Geben Sie eine Bezeichnung ein" : ""}
             />
@@ -124,10 +121,10 @@ export default function StandortForm(props) {
         <Controller
           name="bemerkung"
           control={control}
-          defaultValue={currentStandort?.bemerkung}
           render={({ field }) => (
             <TextField
               {...field}
+              value={field.value || currentStandort?.bemerkung || ""}
               margin="normal"
               label="Bemerkung zum Standort"
               type="text"
@@ -175,8 +172,7 @@ export default function StandortForm(props) {
                     <Controller
                       name="freigabeAfu"
                       control={control}
-                      defaultValue={currentStandort.freigabeAfu}
-                      value={currentStandort.freigabeAfu}
+                      value={currentStandort.freigabeAfu || false}
                       render={({ field: { value, ref, ...field } }) => (
                         <Checkbox {...field} inputRef={ref} checked={value} />
                       )}
@@ -201,6 +197,7 @@ export default function StandortForm(props) {
                   type="text"
                   variant="standard"
                 />
+
                 <TextField
                   name="afuDatum"
                   value={currentStandort.afuDatum ? new Date(currentStandort.afuDatum).toLocaleDateString() : null}
