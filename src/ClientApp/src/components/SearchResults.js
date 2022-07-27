@@ -43,11 +43,11 @@ export default function SearchResults(props) {
           {standorte &&
             standorte.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((standort) => (
               <TableRow key={standort.id}>
-                <TableCell>{standort.gemeinde}</TableCell>
-                <TableCell>{standort.grundbuchNr}</TableCell>
-                <TableCell>{standort.bezeichnung}</TableCell>
-                <TableCell>{standort.bohrungen?.length}</TableCell>
-                <TableCell align="right">
+                <TableCell sx={{ width: "20%", wordBreak: "break-all" }}>{standort.gemeinde}</TableCell>
+                <TableCell sx={{ width: "30%", wordBreak: "break-all" }}>{standort.grundbuchNr}</TableCell>
+                <TableCell sx={{ width: "30%", wordBreak: "break-all" }}>{standort.bezeichnung}</TableCell>
+                <TableCell sx={{ width: "10%", wordBreak: "break-all" }}>{standort.bohrungen?.length}</TableCell>
+                <TableCell sx={{ width: "10%", wordBreak: "break-all" }} align="right">
                   <Tooltip title="Standort editieren">
                     <IconButton
                       name="edit-button"
