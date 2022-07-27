@@ -130,6 +130,7 @@ export default function StandortForm(props) {
               type="text"
               fullWidth
               variant="standard"
+              {...register("bemerkung")}
             />
           )}
         />
@@ -179,6 +180,7 @@ export default function StandortForm(props) {
                       onClick={(e) => {
                         currentStandort.freigabeAfu = e.target.checked;
                       }}
+                      {...register("freigabeAfu")}
                     />
                   }
                 />
