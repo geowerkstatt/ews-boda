@@ -1,5 +1,4 @@
-﻿using EWS.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -36,8 +35,7 @@ public class BohrungControllerTest
     {
         var bohrungId = 40097;
         var actionResult = await controller.GetByIdAsync(bohrungId).ConfigureAwait(false);
-        var okResult = actionResult as OkObjectResult;
-        var bohrungToTest = okResult.Value as Bohrung;
+        var bohrungToTest = actionResult.Value;
         Assert.AreEqual(32, bohrungToTest.AblenkungId);
         Assert.AreEqual("Exclusive transitional migration", bohrungToTest.Bemerkung);
         Assert.AreEqual("Generic Steel Chips", bohrungToTest.Bezeichnung);
@@ -63,6 +61,6 @@ public class BohrungControllerTest
     {
         var inexistentBohrungId = 61325584;
         var actionResult = await controller.GetByIdAsync(inexistentBohrungId).ConfigureAwait(false);
-        Assert.AreEqual(typeof(NotFoundResult), actionResult.GetType());
+        Assert.AreEqual(typeof(NotFoundResult), actionResult.Result.GetType());
     }
 }

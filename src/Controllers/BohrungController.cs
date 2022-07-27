@@ -109,10 +109,10 @@ public class BohrungController : EwsControllerBase<Bohrung>
     /// <summary>
     /// Asynchronously gets the <see cref="Bohrung"/> for the specified <paramref name="id"/>.
     /// </summary>
-    /// <param name="id">The standort id.</param>
+    /// <param name="id">The bohrung id.</param>
     [HttpGet]
     [Route("{id}")]
-    public async Task<IActionResult> GetByIdAsync(int id)
+    public async Task<ActionResult<Bohrung>> GetByIdAsync(int id)
     {
         var bohrung = await Context.Bohrungen
             .Include(b => b.Bohrprofile).ThenInclude(b => b.Schichten).ThenInclude(s => s.CodeSchicht)
@@ -125,7 +125,7 @@ public class BohrungController : EwsControllerBase<Bohrung>
         }
         else
         {
-            return Ok(bohrung);
+            return bohrung;
         }
     }
 }
