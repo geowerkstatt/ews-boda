@@ -116,7 +116,7 @@ public class BohrungController : EwsControllerBase<Bohrung>
     {
         var bohrung = await Context.Bohrungen
             .Include(b => b.Bohrprofile).ThenInclude(b => b.Schichten).ThenInclude(s => s.CodeSchicht)
-            .Include(b => b.Bohrprofile).ThenInclude(b => b.Vorkommnisse)
+            .Include(b => b.Bohrprofile).ThenInclude(b => b.Vorkommnisse).ThenInclude(v => v.Typ)
             .SingleOrDefaultAsync(s => s.Id == id).ConfigureAwait(false);
 
         if (bohrung == null)
