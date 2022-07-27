@@ -15,8 +15,8 @@ export default function Search(props) {
   const onSearch = (formData) => {
     let query = `?gemeinde=${formData.gemeinde || ""}`;
     query += `&gbnummer=${formData.gbnummer}&bezeichnung=${formData.bezeichnung}`;
-    query += `&erstellungsdatum=${formData.erstellungsDatum ? new Date(formData.erstellungsDatum).toUTCString() : ""}`;
-    query += `&mutationsdatum=${formData.mutationsDatum ? new Date(formData.mutationsDatum).toUTCString() : ""}`;
+    query += `&erstellungsdatum=${formData.erstellungsDatum ? new Date(formData.erstellungsDatum).toDateString() : ""}`;
+    query += `&mutationsdatum=${formData.mutationsDatum ? new Date(formData.mutationsDatum).toDateString() : ""}`;
     getStandorte(query);
   };
 
