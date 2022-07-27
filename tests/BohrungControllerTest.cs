@@ -1,28 +1,33 @@
 ﻿using EWS.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
-using static EWS.Helpers;
 
 namespace EWS;
 
 [TestClass]
 public class BohrungControllerTest
 {
+    private HttpClient httpClient;
     private EwsContext context;
     private BohrungController controller;
 
     [TestInitialize]
     public void TestInitialize()
     {
+        httpClient = new HttpClient();
         context = ContextFactory.CreateContext();
-        controller = new BohrungController(context) { ControllerContext = GetControllerContext() };
+        controller = new BohrungController(httpClient, new Mock<ILogger<DataServiceController>>().Object, ContextFactory.CreateContext());
     }
 
     [TestCleanup]
     public void TestCleanup()
     {
+        httpClient.Dispose();
         context.Dispose();
     }
 
