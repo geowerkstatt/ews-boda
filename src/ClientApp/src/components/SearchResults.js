@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -26,6 +26,12 @@ export default function SearchResults(props) {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  // Reset page count on search
+  useEffect(() => {
+    setPage(0);
+  }, [standorte]);
+
   return (
     <React.Fragment>
       <Title>Standorte</Title>
