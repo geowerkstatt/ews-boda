@@ -9,6 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -26,13 +27,25 @@ import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import DetailMap from "./DetailMap";
 import DateUserInputs from "./DateUserInputs";
+import ConfirmationDialog from "./ConfirmationDialog";
 import { getDistance } from "ol/sphere";
 import { transform } from "ol/proj";
 import { register as registerProjection } from "ol/proj/proj4";
 import proj4 from "proj4";
+import { CodeTypes } from "./Codetypes";
 
 export default function BohrungForm(props) {
-  const { currentStandort, currentBohrung, setCurrentBohrung, handleNext, handleBack, addBohrung, editBohrung } = props;
+  const {
+    currentStandort,
+    currentBohrung,
+    setCurrentBohrung,
+    setCurrentBohrprofil,
+    handleNext,
+    handleBack,
+    addBohrung,
+    editBohrung,
+    deleteBohrprofil,
+  } = props;
   const { control, handleSubmit, formState, reset, register, setValue } = useForm({
     reValidateMode: "onChange",
   });
@@ -41,6 +54,7 @@ export default function BohrungForm(props) {
   const [qualitaetCodes, setQualitaetCodes] = useState([]);
   const [xCoordinate, setXCoordinate] = useState();
   const [yCoordinate, setYCoordinate] = useState();
+  const [openConfirmation, setOpenConfirmation] = useState(false);
 
   const currentBohrungIndex = currentStandort.bohrungen?.indexOf(currentBohrung) || 0;
   const numberOfBohrungen = currentStandort.bohrungen?.length || 0;
@@ -48,8 +62,8 @@ export default function BohrungForm(props) {
   // Get codes for dropdowns
   useEffect(() => {
     const getCodes = async () => {
-      const ablenkungResponse = await fetch("/code?codetypid=9");
-      const qualitaetResponse = await fetch("/code?codetypid=3");
+      const ablenkungResponse = await fetch("/code?codetypid=" + CodeTypes.Bohrung_hablenkung);
+      const qualitaetResponse = await fetch("/code?codetypid=" + CodeTypes.Bohrung_hquali);
       const ablenkungCodes = await ablenkungResponse.json();
       const qualitaetCodes = await qualitaetResponse.json();
       setAblenkungCodes(ablenkungCodes);
@@ -86,6 +100,53 @@ export default function BohrungForm(props) {
     currentBohrung.id
       ? editBohrung(formData).finally(() => reset(formData))
       : addBohrung(formData).finally(() => reset(formData));
+  };
+
+  const onAddBohrprofil = () => {
+    let bohrprofil = {
+      bohrungId: currentBohrung.id,
+      hFormationEndtiefe: CodeTypes.Bohrprofil_fmeto,
+      hFormationFels: CodeTypes.Bohrprofil_fmfelso,
+      hQualitaet: CodeTypes.Bohrprofil_hquali,
+      hTektonik: CodeTypes.Bohrprofil_htektonik,
+      schichten: [],
+      vorkommnisse: [],
+    };
+    setCurrentBohrprofil(bohrprofil);
+    handleNext();
+  };
+
+  const onEditBohrprofil = (bohrprofil) => {
+    setCurrentBohrprofil(bohrprofil);
+    handleNext();
+  };
+
+  const onCopyBohrprofil = (bohrprofil) => {
+    let bohrprofilToCopy = structuredClone(bohrprofil);
+    delete bohrprofilToCopy.id;
+    delete bohrprofilToCopy.schichten;
+    delete bohrprofilToCopy.vorkommnisse;
+    delete bohrprofilToCopy.erstellungsdatum;
+    delete bohrprofilToCopy.mutationsdatum;
+    // will be preserved via tektonikId, formationfelsId,formationendtiefeId and qualitaetId
+    delete bohrprofilToCopy.tektonik;
+    delete bohrprofilToCopy.formationfels;
+    delete bohrprofilToCopy.formationendtiefe;
+    delete bohrprofilToCopy.qualitaet;
+    setCurrentBohrprofil(bohrprofilToCopy);
+    handleNext();
+  };
+
+  const onDeleteBohrprofil = (bohrprofil) => {
+    setCurrentBohrprofil(bohrprofil);
+    setOpenConfirmation(true);
+  };
+
+  const confirmDeleteBohrprofil = (confirmation) => {
+    if (confirmation) {
+      deleteBohrprofil(currentBohrung);
+    }
+    setOpenConfirmation(false);
   };
 
   const onNavigateNext = () => setCurrentBohrung(currentStandort.bohrungen[currentBohrungIndex + 1]);
@@ -371,7 +432,12 @@ export default function BohrungForm(props) {
           Bohrprofile ({currentBohrung?.bohrprofile ? currentBohrung.bohrprofile.length : 0})
           {currentBohrung?.id != null && (
             <Tooltip title="Bohrprofil hinzufügen">
-              <IconButton color="primary">
+              <IconButton
+                color="primary"
+                name="add-button"
+                disabled={currentBohrung?.id == null}
+                onClick={onAddBohrprofil}
+              >
                 <AddCircleIcon />
               </IconButton>
             </Tooltip>
@@ -388,30 +454,38 @@ export default function BohrungForm(props) {
         {currentBohrung?.bohrprofile?.length > 0 && (
           <React.Fragment>
             {currentBohrung?.bohrprofile?.length > 0 && (
-              <Table name="seach-results-table" size="small">
+              <Table name="bohrprofile-table" size="small">
                 <TableHead>
                   <TableRow>
                     <TableCell>Datum</TableCell>
                     <TableCell>Endteufe [m]</TableCell>
-                    <TableCell></TableCell>
                     <TableCell></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {currentBohrung.bohrprofile.map((bohrprofil) => (
                     <TableRow key={bohrprofil.id}>
-                      <TableCell>{new Date(bohrprofil.datum).toLocaleDateString()}</TableCell>
-                      <TableCell>{bohrprofil.endteufe}</TableCell>
                       <TableCell>
+                        {bohrprofil?.datum != null ? new Date(bohrprofil.datum).toLocaleDateString() : null}
+                      </TableCell>
+                      <TableCell>{bohrprofil.endteufe}</TableCell>
+                      <TableCell align="right">
                         <Tooltip title="Bohrprofil editieren">
-                          <IconButton onClick={handleNext} color="primary">
+                          <IconButton onClick={() => onEditBohrprofil(bohrprofil)} name="edit-button" color="primary">
                             <EditIcon />
                           </IconButton>
                         </Tooltip>
-                      </TableCell>
-                      <TableCell>
+                        <Tooltip title="Bohrprofil duplizieren">
+                          <IconButton onClick={() => onCopyBohrprofil(bohrprofil)} name="copy-button" color="primary">
+                            <ContentCopyIcon />
+                          </IconButton>
+                        </Tooltip>
                         <Tooltip title="Bohrprofil löschen">
-                          <IconButton color="primary" aria-label="delete bohrprofil">
+                          <IconButton
+                            onClick={() => onDeleteBohrprofil(bohrprofil)}
+                            name="delete-button"
+                            color="primary"
+                          >
                             <DeleteIcon />
                           </IconButton>
                         </Tooltip>
@@ -430,6 +504,11 @@ export default function BohrungForm(props) {
           Bohrung Speichern
         </Button>
       </DialogActions>
+      <ConfirmationDialog
+        open={openConfirmation}
+        confirm={confirmDeleteBohrprofil}
+        entityName="Bohrprofil"
+      ></ConfirmationDialog>
     </Box>
   );
 }

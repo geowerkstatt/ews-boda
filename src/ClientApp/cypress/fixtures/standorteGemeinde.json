@@ -44,8 +44,7 @@
         "mutationsdatum": "2021-11-12T13:17:37.416361",
         "userErstellung": "Elmer_Kris36",
         "userMutation": "Jaunita44",
-        "hQualitaetId": 3,
-        "hQualitaet": null,
+        "hQualitaet": 3,
         "hAblenkung": 9,
         "geometrie": {
           "type": "Point",
@@ -69,8 +68,7 @@
         "mutationsdatum": "2021-07-02T15:07:46.279572",
         "userErstellung": "Patricia.Anderson",
         "userMutation": "Alexandrea74",
-        "hQualitaetId": 3,
-        "hQualitaet": null,
+        "hQualitaet": 3,
         "hAblenkung": 9,
         "geometrie": {
           "type": "Point",
@@ -94,8 +92,7 @@
         "mutationsdatum": "2021-05-26T09:07:56.916438",
         "userErstellung": "Brandy98",
         "userMutation": "Leonie_Yost",
-        "hQualitaetId": 3,
-        "hQualitaet": null,
+        "hQualitaet": 3,
         "hAblenkung": 9,
         "geometrie": {
           "type": "Point",
@@ -135,14 +132,21 @@
         "mutationsdatum": "2021-07-26T01:07:06.458065",
         "userErstellung": "Kate2",
         "userMutation": "Herbert_Mertz90",
-        "hQualitaetId": 3,
-        "hQualitaet": null,
+        "hQualitaet": 3,
         "hAblenkung": 9,
         "geometrie": {
           "type": "Point",
           "coordinates": [2623182, 1224923]
         },
-        "bohrprofile": null
+        "bohrprofile": [
+          {
+            "id": 9645411,
+            "bohrungId": 41063,
+            "endteufe": 12345678,
+            "vorkommnisse": null,
+            "schichten": null
+          }
+        ]
       }
     ]
   },
@@ -226,8 +230,7 @@
         "mutationsdatum": "2021-09-02T19:31:46.941838",
         "userErstellung": "Lamar_DuBuque58",
         "userMutation": "Santino4",
-        "hQualitaetId": 3,
-        "hQualitaet": null,
+        "hQualitaet": 3,
         "hAblenkung": 9,
         "geometrie": {
           "type": "Point",
@@ -251,8 +254,7 @@
         "mutationsdatum": "2021-10-25T00:13:15.979026",
         "userErstellung": "Karl_Runolfsson97",
         "userMutation": "Zachary_Kuhic",
-        "hQualitaetId": 3,
-        "hQualitaet": null,
+        "hQualitaet": 3,
         "hAblenkung": 9,
         "geometrie": {
           "type": "Point",
@@ -276,8 +278,7 @@
         "mutationsdatum": "2021-03-13T10:18:16.021015",
         "userErstellung": "Angela_Hessel",
         "userMutation": "Ciara11",
-        "hQualitaetId": 3,
-        "hQualitaet": null,
+        "hQualitaet": 3,
         "hAblenkung": 9,
         "geometrie": {
           "type": "Point",
