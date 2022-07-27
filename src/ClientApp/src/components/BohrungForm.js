@@ -96,7 +96,7 @@ export default function BohrungForm(props) {
 
   const validateDistance = () => {
     let isValid = false;
-    if (numberOfBohrungen === 0) {
+    if (numberOfBohrungen === 0 || (currentInteraction === "edit" && numberOfBohrungen === 1)) {
       isValid = true;
     } else if (xCoordinate && yCoordinate) {
       const src = "EPSG:2056";

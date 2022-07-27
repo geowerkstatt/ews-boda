@@ -22,8 +22,9 @@ export function Home(props) {
   const [openStandortForm, setOpenStandortForm] = useState(false);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [currentStandort, setCurrentStandort] = useState(false);
-  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertVariant, setAlertVariant] = useState("success");
+  const [alertMessage, setAlertMessage] = useState("");
   // Cache standorte on client for better performance
   const [unfilteredStandorte, setUnfilteredStandorte] = useState([]);
 
@@ -95,7 +96,7 @@ export function Home(props) {
     });
     if (response.ok) {
       const addedStandort = await response.json();
-      setShowSuccessAlert(true);
+      setShowAlert(true);
       setAlertMessage("Standort wurde hinzugefügt");
       setCurrentStandort(addedStandort);
       setUnfilteredStandorte([...unfilteredStandorte, addedStandort]);
@@ -119,7 +120,7 @@ export function Home(props) {
     });
     if (response.ok) {
       getStandort(updatedStandort.id);
-      setShowSuccessAlert(true);
+      setShowAlert(true);
       setAlertMessage("Standort wurde editiert.");
     }
   }
@@ -231,10 +232,11 @@ export function Home(props) {
             editStandort={editStandort}
             addStandort={addStandort}
             currentStandort={currentStandort}
-            showSuccessAlert={showSuccessAlert}
-            setShowSuccessAlert={setShowSuccessAlert}
+            showAlert={showAlert}
+            setShowAlert={setShowAlert}
             setAlertMessage={setAlertMessage}
             getStandort={getStandort}
+            setAlertVariant={setAlertVariant}
             currentUser={currentUser}
           ></InputForm>
         </Dialog>
@@ -244,10 +246,10 @@ export function Home(props) {
           entityName="Standort"
         ></ConfirmationDialog>
         <SnackbarMessage
-          showSuccessAlert={showSuccessAlert}
-          setShowSuccessAlert={setShowSuccessAlert}
+          showSuccessAlert={showAlert}
+          setShowSuccessAlert={setShowAlert}
           message={alertMessage}
-          variant="success"
+          variant={alertVariant}
         ></SnackbarMessage>
       </Container>
     </Box>

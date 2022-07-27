@@ -134,35 +134,33 @@ export default function StandortForm(props) {
           )}
         />
         {currentStandort && currentStandort.bohrungen?.length > 0 && (
-          <TextField
-            value={currentStandort?.gemeinde}
-            fullWidth
-            type="string"
-            InputProps={{
-              readOnly: true,
-            }}
-            variant="standard"
-            label="Gemeinde"
-          />
-        )}
-        <Controller
-          name="grundbuchNr"
-          control={control}
-          render={({ field }) => (
+          <React.Fragment>
             <TextField
-              {...field}
-              value={field.value || currentStandort?.grundbuchNr || ""}
+              value={currentStandort?.gemeinde}
+              fullWidth
+              type="text"
+              InputProps={{
+                readOnly: true,
+              }}
+              variant="standard"
+              label="Gemeinde"
+            />
+            <TextField
+              value={currentStandort?.grundbuchNr}
+              fullWidth
+              type="text"
               inputProps={{
                 maxLength: 40,
               }}
+              InputProps={{
+                readOnly: true,
+              }}
               margin="normal"
               label="Grundbuchnummer"
-              type="text"
-              fullWidth
               variant="standard"
             />
-          )}
-        />
+          </React.Fragment>
+        )}
         {currentStandort && (
           <React.Fragment>
             {currentStandort.id && <DateUserInputs formObject={currentStandort}></DateUserInputs>}
@@ -300,7 +298,6 @@ export default function StandortForm(props) {
         <Button type="submit" disabled={!isDirty}>
           Standort speichern
         </Button>
-        <Button disabled>Standort freigeben</Button>
       </DialogActions>
       <ConfirmationDialog
         open={openConfirmation}

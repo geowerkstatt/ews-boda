@@ -1,6 +1,4 @@
-﻿using EWS.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
 using System.Text.Json;
@@ -33,16 +31,14 @@ public class DataServiceController : ControllerBase
     /// </summary>
     /// <param name="points">A list of <see cref="Point"/> to get the information for.</param>
     /// <returns>A <see cref="DataServiceResponse"/> containing the Gemeinde and Grundbuchnummern information.</returns>
-    [Authorize(Policy = PolicyNames.Extern)]
-    [HttpGet]
-    public async Task<ActionResult<DataServiceResponse>> GetAsync([FromQuery] List<Point> points)
+    public async Task<ActionResult<DataServiceResponse>> GetAsync(List<Point> points)
     {
         try
         {
             List<string?> gemeinden = new(), grundbuchNummern = new();
             foreach (var point in points)
             {
-                var boundingBox = $"{point.X},{point.Y},{point.X},{point.Y}";
+                var boundingBox = FormattableString.Invariant($"{point.X},{point.Y},{point.X},{point.Y}");
 
                 var gemeinde = await GetDataServiceApiResponse($"{GemeindeLayer}/?bbox={boundingBox}", "gemeindename").ConfigureAwait(false);
                 if (!gemeinden.Contains(gemeinde))
