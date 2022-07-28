@@ -60,7 +60,12 @@ export function Layout(props) {
               EWS-Boda
             </Typography>
             <Tooltip title="Abmelden">
-              <IconButton component="a" href="login/sls/auth?cmd=logout" color="inherit">
+              <IconButton
+                onClick={() => {
+                  window.location.href = "/login/sls/auth?cmd=logout";
+                }}
+                color="inherit"
+              >
                 <LogoutIcon />
               </IconButton>
             </Tooltip>
