@@ -149,4 +149,20 @@ public class BohrungControllerTest
         Assert.AreEqual("", standort.Gemeinde);
         Assert.AreEqual("", standort.GrundbuchNr);
     }
+
+    [TestMethod]
+    public async Task CreateAsyncWithGeometryOutsideOfSolothurnShouldReturnProblem()
+    {
+        var bohrung = new Bohrung
+        {
+            Bezeichnung = "FRUGALRECORD",
+            StandortId = standort.Id,
+            Geometrie = new Point(2759206, 1191408), // Chur
+            HAblenkung = 9,
+            HQualitaet = 3,
+        };
+
+        var result = await bohrungController.CreateAsync(bohrung) as ObjectResult;
+        Assert.AreEqual("Call to Data Service API did not yield any results. The supplied geometry 'POINT (2759206 1191408)' may not lie in Kanton Solothurn.", ((ProblemDetails)result.Value!).Detail);
+    }
 }

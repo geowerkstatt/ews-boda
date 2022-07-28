@@ -25,31 +25,11 @@ public class BohrungController : EwsControllerBase<Bohrung>
 
     /// <inheritdoc/>
     public override async Task<IActionResult> CreateAsync(Bohrung entity)
-    {
-        entity.Bohrprofile = null;
-        if (entity.Geometrie == null)
-        {
-            return await base.CreateAsync(entity).ConfigureAwait(false);
-        }
-        else
-        {
-            return await UpdateStandortAndBohrung(base.CreateAsync, entity).ConfigureAwait(false);
-        }
-    }
+        => await UpdateStandortAndBohrung(base.CreateAsync, entity).ConfigureAwait(false);
 
     /// <inheritdoc/>
     public override async Task<IActionResult> EditAsync(Bohrung entity)
-    {
-        entity.Bohrprofile = null;
-        if (entity.Geometrie == null)
-        {
-            return await base.EditAsync(entity).ConfigureAwait(false);
-        }
-        else
-        {
-            return await UpdateStandortAndBohrung(base.EditAsync, entity).ConfigureAwait(false);
-        }
-    }
+        => await UpdateStandortAndBohrung(base.EditAsync, entity).ConfigureAwait(false);
 
     /// <inheritdoc/>
     public override async Task<IActionResult> DeleteAsync(int id)
@@ -74,20 +54,25 @@ public class BohrungController : EwsControllerBase<Bohrung>
 
     private async Task<IActionResult> UpdateStandortAndBohrung(Func<Bohrung, Task<IActionResult>> createOrUpdateBohrung, Bohrung item)
     {
+        item.Bohrprofile = null;
+        if (item.Geometrie == null)
+        {
+            return await createOrUpdateBohrung(item).ConfigureAwait(false);
+        }
+
         var updateResult = await UpdateStandort(item).ConfigureAwait(false);
 
         // Case if Api call is not successful.
         if (updateResult?.Value == null)
         {
-            var objectResult = updateResult.Result as ObjectResult;
-            return (IActionResult)Task.FromResult(objectResult);
+            return (IActionResult)Task.FromResult(updateResult);
         }
         else
         {
             // Case if Api call is successful, but point is not in Kanton Solothurn
             if (string.IsNullOrEmpty(updateResult.Value.Gemeinde))
             {
-                return Problem($"Call to data service Api did not yield any results. The supplied geometry '{item.Geometrie}' may not lie in Kanton Solothurn.");
+                return Problem($"Call to Data Service API did not yield any results. The supplied geometry '{item.Geometrie.AsText()}' may not lie in Kanton Solothurn.");
             }
 
             return await createOrUpdateBohrung(item).ConfigureAwait(false);
@@ -115,7 +100,7 @@ public class BohrungController : EwsControllerBase<Bohrung>
         var controller = new DataServiceController(client, logger, context);
         var response = await controller.GetAsync(bohrungen.Select(b => b.Geometrie).ToList()).ConfigureAwait(false);
 
-        if (response.Value != null && response.Value.Gemeinde != null)
+        if (response.Value?.Gemeinde != null)
         {
             var dataServiceResponse = response.Value;
             standort.Gemeinde = dataServiceResponse.Gemeinde;
