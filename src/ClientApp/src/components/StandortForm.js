@@ -47,6 +47,7 @@ export default function StandortForm(props) {
   const { isDirty } = formState;
 
   const [openConfirmation, setOpenConfirmation] = useState(false);
+  const [mapExpanded, setMapExpanded] = useState(true);
 
   const onAddBohrung = () => {
     let bohrung = {
@@ -242,8 +243,12 @@ export default function StandortForm(props) {
         )}
         {currentStandort?.bohrungen?.length > 0 && (
           <React.Fragment>
-            <Accordion sx={{ boxShadow: "none" }} defaultExpanded={true}>
-              <Tooltip title="Übersichtskarte anzeigen">
+            <Accordion
+              sx={{ boxShadow: "none" }}
+              expanded={mapExpanded}
+              onChange={(_, expanded) => setMapExpanded(expanded)}
+            >
+              <Tooltip title={mapExpanded ? "Übersichtskarte verbergen" : "Übersichtskarte anzeigen"}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>Lokalität der Bohrungen</AccordionSummary>
               </Tooltip>
               {currentStandort?.bohrungen?.length > 0 && (

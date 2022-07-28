@@ -17,6 +17,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import GroupIcon from "@mui/icons-material/Group";
 import InfoIcon from "@mui/icons-material/Info";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import Tooltip from "@mui/material/Tooltip";
 import { Footer } from "./Footer";
 import { AppBar } from "./AppBar";
 import { Drawer } from "./Drawer";
@@ -58,9 +59,11 @@ export function Layout(props) {
             <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
               EWS-Boda
             </Typography>
-            <IconButton component="a" href="login/sls/auth?cmd=logout" color="inherit">
-              <LogoutIcon />
-            </IconButton>
+            <Tooltip title="Abmelden">
+              <IconButton component="a" href="login/sls/auth?cmd=logout" color="inherit">
+                <LogoutIcon />
+              </IconButton>
+            </Tooltip>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>

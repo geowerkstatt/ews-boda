@@ -55,6 +55,7 @@ export default function BohrungForm(props) {
   const [xCoordinate, setXCoordinate] = useState();
   const [yCoordinate, setYCoordinate] = useState();
   const [openConfirmation, setOpenConfirmation] = useState(false);
+  const [mapExpanded, setMapExpanded] = useState(true);
 
   const currentBohrungIndex = currentStandort.bohrungen?.indexOf(currentBohrung) || 0;
   const numberOfBohrungen = currentStandort.bohrungen?.length || 0;
@@ -358,8 +359,12 @@ export default function BohrungForm(props) {
         />
         {currentBohrung?.id && <DateUserInputs formObject={currentBohrung}></DateUserInputs>}
 
-        <Accordion sx={{ boxShadow: "none" }} defaultExpanded={true}>
-          <Tooltip title="Übersichtskarte anzeigen">
+        <Accordion
+          sx={{ boxShadow: "none" }}
+          expanded={mapExpanded}
+          onChange={(_, expanded) => setMapExpanded(expanded)}
+        >
+          <Tooltip title={mapExpanded ? "Übersichtskarte verbergen" : "Übersichtskarte anzeigen"}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               {currentInteraction === "add"
                 ? "Position der Bohrung durch Klicken in der Karte wählen"
