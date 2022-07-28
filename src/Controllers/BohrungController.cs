@@ -51,6 +51,27 @@ public class BohrungController : EwsControllerBase<Bohrung>
         }
     }
 
+    /// <inheritdoc/>
+    public override async Task<IActionResult> DeleteAsync(int id)
+    {
+        var bohrung = await Context.Bohrungen.FindAsync(id).ConfigureAwait(false);
+        if (bohrung == null)
+        {
+            return NotFound();
+        }
+
+        var standortToUpdate = Context.Standorte.Include(s => s.Bohrungen).SingleOrDefault(s => s.Id == bohrung.StandortId);
+        var result = await base.DeleteAsync(id).ConfigureAwait(false);
+
+        // Update Gemeinde and Grundbuchnummer information upon deletion
+        if (result is OkResult)
+        {
+            await UpdateStandort(standortToUpdate!, bohrung: null).ConfigureAwait(false);
+        }
+
+        return result;
+    }
+
     private async Task<IActionResult> UpdateStandortAndBohrung(Func<Bohrung, Task<IActionResult>> createOrUpdateBohrung, Bohrung item)
     {
         var updateResult = await UpdateStandort(item).ConfigureAwait(false);
@@ -73,23 +94,23 @@ public class BohrungController : EwsControllerBase<Bohrung>
         }
     }
 
-    private async Task<ActionResult<DataServiceResponse>> UpdateStandort(Bohrung bohrung)
+    private async Task<ActionResult<DataServiceResponse>> UpdateStandort(Standort standort, Bohrung? bohrung)
     {
-        var standortToUpdate = Context.Standorte.Include(s => s.Bohrungen).SingleOrDefault(s => s.Id == bohrung.StandortId);
-
         var bohrungen = new List<Bohrung>();
-
-        if (standortToUpdate.Bohrungen != null)
+        if (standort.Bohrungen != null)
         {
-            bohrungen.AddRange(standortToUpdate.Bohrungen.ToList());
+            bohrungen.AddRange(standort.Bohrungen.ToList());
         }
 
         // If no primary key is present in the Bohrung it was newly added.
         // Otherwise it is being edited and the geometry of the existing Bohrung needs to be replaced for the Dataservice Api call.
-        if (bohrung.Id == 0)
-            bohrungen.Add(bohrung);
-        else
-            bohrungen.Find(b => b.Id == bohrung.Id).Geometrie = bohrung.Geometrie;
+        if (bohrung != null)
+        {
+            if (bohrung.Id == 0)
+                bohrungen.Add(bohrung);
+            else
+                bohrungen.Find(b => b.Id == bohrung.Id).Geometrie = bohrung.Geometrie;
+        }
 
         var controller = new DataServiceController(client, logger, context);
         var response = await controller.GetAsync(bohrungen.Select(b => b.Geometrie).ToList()).ConfigureAwait(false);
@@ -97,13 +118,19 @@ public class BohrungController : EwsControllerBase<Bohrung>
         if (response.Value != null && response.Value.Gemeinde != null)
         {
             var dataServiceResponse = response.Value;
-            standortToUpdate.Gemeinde = dataServiceResponse.Gemeinde;
-            standortToUpdate.GrundbuchNr = dataServiceResponse.Grundbuchnummer;
-            Context.Standorte.Update(standortToUpdate);
+            standort.Gemeinde = dataServiceResponse.Gemeinde;
+            standort.GrundbuchNr = dataServiceResponse.Grundbuchnummer;
+            Context.Standorte.Update(standort);
             Context.SaveChanges();
         }
 
         return response;
+    }
+
+    private async Task<ActionResult<DataServiceResponse>> UpdateStandort(Bohrung bohrung)
+    {
+        var standortToUpdate = Context.Standorte.Include(s => s.Bohrungen).SingleOrDefault(s => s.Id == bohrung.StandortId);
+        return await UpdateStandort(standortToUpdate!, bohrung).ConfigureAwait(false);
     }
 
     /// <summary>
