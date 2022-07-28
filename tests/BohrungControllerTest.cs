@@ -93,19 +93,24 @@ public class BohrungControllerTest
             HQualitaet = 3,
         };
 
+        async Task AssertStandortHasntChanged() => await AssertStandort("", "");
+
         Assert.IsInstanceOfType(await bohrungController.CreateAsync(bohrung), typeof(CreatedAtActionResult));
         bohrung = await context.Bohrungen.FindAsync(bohrung.Id);
         Assert.AreEqual("PERFECTBOOK", bohrung.Bezeichnung);
+        await AssertStandortHasntChanged();
 
         // Edit
         bohrung.Bezeichnung = "RESERVEOLIVE";
         Assert.IsInstanceOfType(await bohrungController.EditAsync(bohrung), typeof(OkResult));
         bohrung = await context.Bohrungen.FindAsync(bohrung.Id);
         Assert.AreEqual("RESERVEOLIVE", bohrung.Bezeichnung);
+        await AssertStandortHasntChanged();
 
         // Delete
         await bohrungController.DeleteAsync(bohrung.Id);
         Assert.IsInstanceOfType((await bohrungController.GetByIdAsync(bohrung.Id)).Result, typeof(NotFoundResult));
+        await AssertStandortHasntChanged();
     }
 
     [TestMethod]
@@ -124,10 +129,7 @@ public class BohrungControllerTest
         Assert.IsInstanceOfType(await bohrungController.CreateAsync(bohrung), typeof(CreatedAtActionResult));
         bohrung = await context.Bohrungen.FindAsync(bohrung.Id);
         Assert.AreEqual("LIONMAGIC", bohrung.Bezeichnung);
-
-        standort = await context.Standorte.AsNoTracking().SingleAsync(x => x.Id == standort.Id);
-        Assert.AreEqual("Langendorf", standort.Gemeinde);
-        Assert.AreEqual("1950", standort.GrundbuchNr);
+        await AssertStandort("Langendorf", "1950");
 
         // Edit
         bohrung.Bezeichnung = "WINDHAIR";
@@ -136,18 +138,32 @@ public class BohrungControllerTest
         Assert.IsInstanceOfType(await bohrungController.EditAsync(bohrung), typeof(OkResult));
         bohrung = await context.Bohrungen.FindAsync(bohrung.Id);
         Assert.AreEqual("WINDHAIR", bohrung.Bezeichnung);
+        await AssertStandort("Bellach", "730");
 
-        standort = await context.Standorte.AsNoTracking().SingleAsync(x => x.Id == standort.Id);
-        Assert.AreEqual("Bellach", standort.Gemeinde);
-        Assert.AreEqual("730", standort.GrundbuchNr);
+        // Add second Bohrung
+        var secondBohrung = new Bohrung
+        {
+            Bezeichnung = "VESUVIUSTAFFY",
+            StandortId = standort.Id,
+            Geometrie = new Point(2605198, 1228541), // Gemeinde Bellach with different Grundbuchnummer
+            HAblenkung = 9,
+            HQualitaet = 3,
+        };
 
-        // Delete
+        Assert.IsInstanceOfType(await bohrungController.CreateAsync(secondBohrung), typeof(CreatedAtActionResult));
+        secondBohrung = await context.Bohrungen.FindAsync(secondBohrung.Id);
+        Assert.AreEqual("VESUVIUSTAFFY", secondBohrung.Bezeichnung);
+        await AssertStandort("Bellach", "730,731");
+
+        // Remove first bohrung
         await bohrungController.DeleteAsync(bohrung.Id);
         Assert.IsInstanceOfType((await bohrungController.GetByIdAsync(bohrung.Id)).Result, typeof(NotFoundResult));
+        await AssertStandort("Bellach", "731");
 
-        standort = await context.Standorte.AsNoTracking().SingleAsync(x => x.Id == standort.Id);
-        Assert.AreEqual("", standort.Gemeinde);
-        Assert.AreEqual("", standort.GrundbuchNr);
+        // Delete remaining bohrung
+        await bohrungController.DeleteAsync(secondBohrung.Id);
+        Assert.IsInstanceOfType((await bohrungController.GetByIdAsync(bohrung.Id)).Result, typeof(NotFoundResult));
+        await AssertStandort("", "");
     }
 
     [TestMethod]
@@ -164,5 +180,12 @@ public class BohrungControllerTest
 
         var result = await bohrungController.CreateAsync(bohrung) as ObjectResult;
         Assert.AreEqual("Call to Data Service API did not yield any results. The supplied geometry 'POINT (2759206 1191408)' may not lie in Kanton Solothurn.", ((ProblemDetails)result.Value!).Detail);
+    }
+
+    private async Task AssertStandort(string expectedGemeinde, string expectedGrundbuchNr)
+    {
+        standort = await context.Standorte.AsNoTracking().SingleAsync(x => x.Id == standort.Id);
+        Assert.AreEqual(expectedGemeinde, standort.Gemeinde);
+        Assert.AreEqual(expectedGrundbuchNr, standort.GrundbuchNr);
     }
 }
