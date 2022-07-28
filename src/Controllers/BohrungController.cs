@@ -11,16 +11,12 @@ namespace EWS;
 [Route("[controller]")]
 public class BohrungController : EwsControllerBase<Bohrung>
 {
-    private readonly HttpClient client;
-    private readonly ILogger<DataServiceController> logger;
-    private readonly EwsContext context;
+    private readonly DataService dataService;
 
-    public BohrungController(HttpClient client, ILogger<DataServiceController> logger, EwsContext context)
+    public BohrungController(EwsContext context, DataService dataService)
         : base(context)
     {
-        this.client = client;
-        this.logger = logger;
-        this.context = context;
+        this.dataService = dataService;
     }
 
     /// <inheritdoc/>
@@ -97,14 +93,12 @@ public class BohrungController : EwsControllerBase<Bohrung>
                 bohrungen.Find(b => b.Id == bohrung.Id).Geometrie = bohrung.Geometrie;
         }
 
-        var controller = new DataServiceController(client, logger, context);
-        var response = await controller.GetAsync(bohrungen.Select(b => b.Geometrie).ToList()).ConfigureAwait(false);
+        var response = await dataService.GetAsync(bohrungen.Select(b => b.Geometrie).ToList()).ConfigureAwait(false);
 
-        if (response.Value?.Gemeinde != null)
+        if (response.Gemeinde != null)
         {
-            var dataServiceResponse = response.Value;
-            standort.Gemeinde = dataServiceResponse.Gemeinde;
-            standort.GrundbuchNr = dataServiceResponse.Grundbuchnummer;
+            standort.Gemeinde = response.Gemeinde;
+            standort.GrundbuchNr = response.Grundbuchnummer;
             Context.Standorte.Update(standort);
             Context.SaveChanges();
         }

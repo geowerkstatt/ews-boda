@@ -27,7 +27,7 @@ public class BohrungControllerTest
     {
         httpClient = new HttpClient();
         context = ContextFactory.CreateContext();
-        bohrungController = new BohrungController(httpClient, new Mock<ILogger<DataServiceController>>().Object, ContextFactory.CreateContext());
+        bohrungController = new BohrungController(ContextFactory.CreateContext(), new DataService(httpClient, new Mock<ILogger<DataService>>().Object));
         standortController = new StandortController(ContextFactory.CreateContext()) { ControllerContext = GetControllerContext() };
 
         // Setup standort for manipulating Bohrungen
@@ -133,7 +133,7 @@ public class BohrungControllerTest
         bohrung.Bezeichnung = "WINDHAIR";
         bohrung.Geometrie = new Point(2605164, 1228521); // Gemeinde Bellach
 
-        Assert.IsInstanceOfType(await new BohrungController(new(), new Mock<ILogger<DataServiceController>>().Object, ContextFactory.CreateContext()).EditAsync(bohrung), typeof(OkResult));
+        Assert.IsInstanceOfType(await bohrungController.EditAsync(bohrung), typeof(OkResult));
         bohrung = await context.Bohrungen.FindAsync(bohrung.Id);
         Assert.AreEqual("WINDHAIR", bohrung.Bezeichnung);
 
@@ -142,8 +142,8 @@ public class BohrungControllerTest
         Assert.AreEqual("730", standort.GrundbuchNr);
 
         // Delete
-        await new BohrungController(new(), new Mock<ILogger<DataServiceController>>().Object, ContextFactory.CreateContext()).DeleteAsync(bohrung.Id);
-        Assert.IsInstanceOfType((await new BohrungController(new(), new Mock<ILogger<DataServiceController>>().Object, ContextFactory.CreateContext()).GetByIdAsync(bohrung.Id)).Result, typeof(NotFoundResult));
+        await bohrungController.DeleteAsync(bohrung.Id);
+        Assert.IsInstanceOfType((await bohrungController.GetByIdAsync(bohrung.Id)).Result, typeof(NotFoundResult));
 
         standort = await context.Standorte.AsNoTracking().SingleAsync(x => x.Id == standort.Id);
         Assert.AreEqual("", standort.Gemeinde);

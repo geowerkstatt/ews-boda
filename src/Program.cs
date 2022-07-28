@@ -2,7 +2,6 @@
 using EWS.Authentication;
 using EWS.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
@@ -47,6 +46,7 @@ builder.Services
     });
 
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<DataService>();
 
 var connectionString = builder.Configuration.GetConnectionString("BohrungContext");
 builder.Services.AddDbContext<EwsContext>(x => x.UseNpgsql(connectionString, option => option.UseNetTopologySuite().UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
