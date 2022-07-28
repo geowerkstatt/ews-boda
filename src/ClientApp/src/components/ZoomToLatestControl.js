@@ -13,7 +13,7 @@ export class ZoomToLatest extends Control {
 
     button.appendChild(icon);
     button.setAttribute("type", "button");
-    button.setAttribute("title", "Anischt zurück");
+    button.setAttribute("title", "Extent aktuelle Suche");
 
     const element = document.createElement("div");
     element.className = "ol-unselectable ol-control";
