@@ -1,15 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace EWS.Migrations
-{
-    public partial class InitialCreate : Migration
-    {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-        }
+namespace EWS.Migrations;
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-        }
+public partial class InitialCreate : Migration
+{
+    protected override void Up(MigrationBuilder migrationBuilder)
+    {
+    }
+
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
     }
 }

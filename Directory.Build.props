@@ -12,6 +12,7 @@
     <PackageProjectUrl>https://github.com/GeoWerkstatt/ews-boda</PackageProjectUrl>
     <RepositoryUrl>https://github.com/GeoWerkstatt/ews-boda.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(MSBuildProjectExtension)' != '.dcproj' ">

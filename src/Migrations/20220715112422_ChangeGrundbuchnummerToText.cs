@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
-namespace EWS.Migrations
+namespace EWS.Migrations;
+
+public partial class ChangeGrundbuchnummerToText : Migration
 {
-    public partial class ChangeGrundbuchnummerToText : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.Sql(@"DROP VIEW IF EXISTS bohrung.""GIS_standort"";");
-            migrationBuilder.Sql(@"DROP VIEW IF EXISTS bohrung.""data_export"";");
-            migrationBuilder.Sql("ALTER TABLE bohrung.standort ALTER COLUMN gbnummer TYPE text;");
-            migrationBuilder.Sql(@"CREATE VIEW bohrung.""GIS_standort"" AS SELECT standort_id, bezeichnung, bemerkung, gemeinde, gbnummer, new_date, mut_date, new_usr, mut_usr, freigabe_afu, afu_usr, afu_date FROM bohrung.standort;");
-            migrationBuilder.Sql(@"CREATE VIEW bohrung.""data_export"" AS
+        migrationBuilder.Sql(@"DROP VIEW IF EXISTS bohrung.""GIS_standort"";");
+        migrationBuilder.Sql(@"DROP VIEW IF EXISTS bohrung.""data_export"";");
+        migrationBuilder.Sql("ALTER TABLE bohrung.standort ALTER COLUMN gbnummer TYPE text;");
+        migrationBuilder.Sql(@"CREATE VIEW bohrung.""GIS_standort"" AS SELECT standort_id, bezeichnung, bemerkung, gemeinde, gbnummer, new_date, mut_date, new_usr, mut_usr, freigabe_afu, afu_usr, afu_date FROM bohrung.standort;");
+        migrationBuilder.Sql(@"CREATE VIEW bohrung.""data_export"" AS
             SELECT
                 standort.standort_id AS ""standort.standort_id"", standort.bezeichnung AS ""standort.bezeichnung"", standort.bemerkung AS ""standort.bemerkung"", COALESCE(anzbohrungen.anzahl, 0) AS ""standort.anzbohrloch"", standort.gbnummer AS ""standort.gbnummer"", standort.freigabe_afu AS ""standort.freigabe_afu"", standort.afu_usr AS ""standort.afu_usr"", standort.afu_date AS ""standort.afu_date"",
                 bohrung.bohrung_id AS ""bohrung.bohrung_id"", bohrung.bezeichnung AS ""bohrung.bezeichnung"", bohrung.bemerkung AS ""bohrung.bemerkung"", bohrung.datum AS ""bohrung.datum"", bohrung.durchmesserbohrloch AS ""bohrung.durchmesserbohrloch"", bohrung.ablenkung AS ""bohrung.ablenkung"", bohrung.quali AS ""bohrung.quali"", bohrung.qualibem AS ""bohrung.qualibem"", bohrung.quelleref AS ""bohrung.quelleref"", bohrung.h_quali AS ""bohrung.h_quali"", ST_X(bohrung.wkb_geometry) AS ""bohrung.X"", ST_Y(bohrung.wkb_geometry) AS ""bohrung.Y"",
@@ -25,10 +25,9 @@ namespace EWS.Migrations
             LEFT OUTER JOIN bohrung.codeschicht codeschicht ON codeschicht.codeschicht_id = schicht.schichten_id
             LEFT OUTER JOIN bohrung.vorkommnis vorkommnis ON vorkommnis.bohrprofil_id = bohrprofil.bohrprofil_id
             ORDER BY standort.standort_id;");
-        }
+    }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-        }
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
     }
 }
