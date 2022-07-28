@@ -175,7 +175,8 @@ export default function StandortForm(props) {
                     <Controller
                       name="freigabeAfu"
                       control={control}
-                      value={currentStandort.freigabeAfu || false}
+                      defaultValue={currentStandort.freigabeAfu}
+                      value={currentStandort.freigabeAfu}
                       render={({ field: { value, ref, ...field } }) => (
                         <Checkbox {...field} inputRef={ref} checked={value} />
                       )}
