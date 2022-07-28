@@ -1,7 +1,6 @@
-﻿namespace EWS.Models
+﻿namespace EWS.Models;
+
+public interface IEwsModelBase
 {
-    public interface IEwsModelBase
-    {
-        int Id { get; set; }
-    }
+    int Id { get; set; }
 }
