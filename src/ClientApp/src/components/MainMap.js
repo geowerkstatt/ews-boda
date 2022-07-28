@@ -205,7 +205,6 @@ export default function MainMap(props) {
           map.getView().fit(currentExtent);
         }
         setLatestExtent(currentExtent);
-        map.getView().fit(currentExtent);
       }
     }
   }, [standorte, bohrungenLayer, map, unfilteredBohrungenLength]);
