@@ -286,7 +286,7 @@ export default function BohrungForm(props) {
               value={field.value}
               sx={{ width: "47%" }}
               margin="normal"
-              label="Durchmesser Bohrloch"
+              label="Durchmesser Bohrloch [mm]"
               type="number"
               variant="standard"
               {...register("durchmesserBohrloch")}
