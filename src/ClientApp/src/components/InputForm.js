@@ -5,6 +5,7 @@ import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import StandortForm from "./StandortForm";
 import BohrungForm from "./BohrungForm";
 import BohrprofilForm from "./BohrprofilForm";
+import SchichtForm from "./SchichtForm";
 
 export default function InputForm(props) {
   const {
@@ -21,6 +22,7 @@ export default function InputForm(props) {
 
   const [currentBohrung, setCurrentBohrung] = useState(null);
   const [currentBohrprofil, setCurrentBohrprofil] = useState(null);
+  const [currentSchicht, setCurrentSchicht] = useState(null);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -143,7 +145,6 @@ export default function InputForm(props) {
   // Edit Bohrprofil
   async function editBohrprofil(data) {
     const updatedBohrprofil = currentBohrprofil;
-    console.log(updatedBohrprofil);
     Object.entries(data).forEach(([key, value]) => {
       updatedBohrprofil[key] = value;
     });
@@ -178,20 +179,91 @@ export default function InputForm(props) {
     }
   }
 
+  // Get Bohrprofil by Id
+  async function getBohrprofil(id) {
+    const response = await fetch("/bohrprofil/" + id);
+    if (response.ok) {
+      const bohrprofil = await response.json();
+      setCurrentBohrprofil(bohrprofil);
+    }
+  }
+
+  // Add Schicht
+  async function addSchicht(data) {
+    const schichtToAdd = currentSchicht;
+    Object.entries(data).forEach(([key, value]) => {
+      schichtToAdd[key] = value;
+    });
+    const response = await fetch("/schicht", {
+      method: "POST",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(schichtToAdd),
+    });
+    if (response.ok) {
+      const addedSchicht = await response.json();
+      setShowAlert(true);
+      setAlertMessage("Schicht wurde hinzugefügt.");
+      setAlertVariant("success");
+      getBohrprofil(addedSchicht.bohrprofilId);
+      handleBack();
+    }
+  }
+
+  // Edit Schicht
+  async function editSchicht(data) {
+    const updatedSchicht = currentSchicht;
+    Object.entries(data).forEach(([key, value]) => {
+      updatedSchicht[key] = value;
+    });
+    const response = await fetch("/schicht", {
+      method: "PUT",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedSchicht),
+    });
+    if (response.ok) {
+      setShowAlert(true);
+      setAlertMessage("Schicht wurde editiert.");
+      setAlertVariant("success");
+      getBohrprofil(updatedSchicht.bohrprofilId);
+      handleBack();
+    }
+  }
+
+  // Delete Schicht
+  async function deleteSchicht(schicht) {
+    const response = await fetch("/schicht?id=" + schicht.id, {
+      method: "DELETE",
+    });
+    if (response.ok) {
+      setShowAlert(true);
+      setAlertMessage("Schicht wurde gelöscht.");
+      setAlertVariant("success");
+      getBohrprofil(schicht.bohrprofilId);
+    }
+  }
+
   const steps = [
     {
       label: "zum Standort",
       form: (
         <StandortForm
-          handleNext={handleNext}
           currentStandort={currentStandort}
-          setCurrentBohrung={setCurrentBohrung}
-          deleteBohrung={deleteBohrung}
           currentBohrung={currentBohrung}
+          setCurrentBohrung={setCurrentBohrung}
+          currentUser={currentUser}
+          handleNext={handleNext}
+          deleteBohrung={deleteBohrung}
           handleClose={handleClose}
           editStandort={editStandort}
           addStandort={addStandort}
-          currentUser={currentUser}
         ></StandortForm>
       ),
     },
@@ -200,9 +272,9 @@ export default function InputForm(props) {
       form: (
         <BohrungForm
           currentStandort={currentStandort}
+          currentBohrung={currentBohrung}
           setCurrentBohrung={setCurrentBohrung}
           setCurrentBohrprofil={setCurrentBohrprofil}
-          currentBohrung={currentBohrung}
           handleNext={handleNext}
           handleBack={handleBack}
           addBohrung={addBohrung}
@@ -216,13 +288,30 @@ export default function InputForm(props) {
       form: (
         <BohrprofilForm
           currentBohrung={currentBohrung}
-          setCurrentBohrprofil={setCurrentBohrprofil}
           currentBohrprofil={currentBohrprofil}
+          setCurrentBohrprofil={setCurrentBohrprofil}
+          currentSchicht={currentSchicht}
+          setCurrentSchicht={setCurrentSchicht}
           handleNext={handleNext}
           handleBack={handleBack}
           addBohrprofil={addBohrprofil}
           editBohrprofil={editBohrprofil}
+          deleteSchicht={deleteSchicht}
         ></BohrprofilForm>
+      ),
+    },
+    {
+      label: "zur Schicht",
+      form: (
+        <SchichtForm
+          currentBohrung={currentBohrung}
+          currentBohrprofil={currentBohrprofil}
+          currentSchicht={currentSchicht}
+          setCurrentSchicht={setCurrentSchicht}
+          handleBack={handleBack}
+          addSchicht={addSchicht}
+          editSchicht={editSchicht}
+        ></SchichtForm>
       ),
     },
   ];
