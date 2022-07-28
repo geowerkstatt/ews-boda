@@ -18,6 +18,7 @@ export default function Search(props) {
     query += `&bezeichnung=${encodeURIComponent(formData.bezeichnung)}`;
     query += `&erstellungsdatum=${formData.erstellungsDatum ? new Date(formData.erstellungsDatum).toDateString() : ""}`;
     query += `&mutationsdatum=${formData.mutationsDatum ? new Date(formData.mutationsDatum).toDateString() : ""}`;
+    console.log(query);
     getStandorte(query);
   };
 
