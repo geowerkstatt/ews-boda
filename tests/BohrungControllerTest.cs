@@ -30,7 +30,7 @@ public class BohrungControllerTest
         bohrungController = new BohrungController(ContextFactory.CreateContext(), new DataService(httpClient, new Mock<ILogger<DataService>>().Object));
         standortController = new StandortController(ContextFactory.CreateContext()) { ControllerContext = GetControllerContext() };
 
-        // Setup standort for manipulating Bohrungen
+        // Setup standort for manipulating bohrungen
         standort = new Standort { Bezeichnung = "THUNDER-V", UserErstellung = "BohrungControllerTest" };
         var result = await standortController.CreateAsync(standort);
         Assert.IsInstanceOfType(result, typeof(CreatedAtActionResult));
