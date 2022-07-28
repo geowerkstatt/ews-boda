@@ -144,7 +144,38 @@
             "bohrungId": 41063,
             "endteufe": 12345678,
             "vorkommnisse": null,
-            "schichten": null
+            "schichten": [
+              {
+                "id": 82440,
+                "bohrprofilId": 9645411,
+                "codeSchichtId": 20052,
+                "codeSchicht": {
+                  "id": 20052,
+                  "kurztext": "Bedfordshire best-of-breed Auto Loan Account",
+                  "text": "https://eulalia.biz/trafficway/iceland"
+                },
+                "tiefe": 0.46914503,
+                "qualitaetId": 80,
+                "qualitaet": null,
+                "qualitaetBemerkung": null,
+                "bemerkung": "Innovative non-volatile benchmark"
+              },
+              {
+                "id": 80644,
+                "bohrprofilId": 59645411,
+                "codeSchichtId": 20024,
+                "codeSchicht": {
+                  "id": 20024,
+                  "kurztext": "Avon Intelligent Cotton Keyboard",
+                  "text": "http://earl.com/front-line/pennsylvania/buckinghamshire"
+                },
+                "tiefe": 0.19328074,
+                "qualitaetId": 103,
+                "qualitaet": null,
+                "qualitaetBemerkung": null,
+                "bemerkung": "Multi-lateral well-modulated frame"
+              }
+            ]
           }
         ]
       }

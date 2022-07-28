@@ -27,8 +27,3 @@
 .MuiSvgIcon-root {
   width: 10px;
 }
-
-.MuiAutocomplete-root {
-  min-width: none;
-  margin: 0px;
-}
