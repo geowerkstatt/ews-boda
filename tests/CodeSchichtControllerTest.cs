@@ -27,7 +27,6 @@ public class CodeSchichtControllerTest
     [TestMethod]
     public async Task GetAsync()
     {
-
         // get codesschichten
         var codeSchichten = await controller.GetAsync().ConfigureAwait(false);
         Assert.AreEqual(100, codeSchichten.Count());
