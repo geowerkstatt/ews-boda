@@ -21,8 +21,8 @@ export function Footer() {
           position: "fixed",
           left: "0",
           bottom: "0",
-          width: "100%",
-          textAlign: "center",
+          width: "98%",
+          textAlign: "end",
         }}
       >
         Version: {version}
