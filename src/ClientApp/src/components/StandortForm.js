@@ -103,10 +103,11 @@ export default function StandortForm(props) {
         <Controller
           name="bezeichnung"
           control={control}
+          defaultValue={currentStandort?.bezeichnung}
           render={({ field, fieldState: { error } }) => (
             <TextField
               {...field}
-              value={field.value || currentStandort?.bezeichnung || ""}
+              value={field.value}
               autoFocus
               margin="normal"
               label="Bezeichnung des Standorts"
@@ -122,10 +123,11 @@ export default function StandortForm(props) {
         <Controller
           name="bemerkung"
           control={control}
+          defaultValue={currentStandort?.bemerkung}
           render={({ field }) => (
             <TextField
               {...field}
-              value={field.value || currentStandort?.bemerkung || ""}
+              value={field.value}
               margin="normal"
               label="Bemerkung zum Standort"
               type="text"

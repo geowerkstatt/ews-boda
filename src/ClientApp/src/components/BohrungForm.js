@@ -85,6 +85,20 @@ export default function BohrungForm(props) {
     }
   }, [currentBohrung, setValue]);
 
+  // Update form values if currentBohrung changes, to allow next/previous navigation
+  useEffect(() => {
+    if (currentBohrung) {
+      setValue("bezeichnung", currentBohrung?.bezeichnung);
+      setValue("bemerkung", currentBohrung?.bemerkung);
+      setValue("datum", currentBohrung?.datum);
+      setValue("durchmesserBohrloch", currentBohrung?.durchmesserBohrloch);
+      setValue("ablenkungId", currentBohrung?.ablenkungId);
+      setValue("qualitaetId", currentBohrung?.qualitaetId);
+      setValue("qualitaetBemerkung", currentBohrung?.qualitaetBemerkung);
+      setValue("quelleRef", currentBohrung?.quelleRef);
+    }
+  }, [currentBohrung, setValue]);
+
   // Register projection for distance validation
   useEffect(() => {
     proj4.defs(
@@ -201,11 +215,12 @@ export default function BohrungForm(props) {
         <Controller
           name="bezeichnung"
           control={control}
+          defaultValue={currentBohrung?.bezeichnung}
           render={({ field, fieldState: { error } }) => (
             <TextField
               {...field}
               autoFocus
-              value={field.value || currentBohrung?.bezeichnung || ""}
+              value={field.value}
               margin="normal"
               label="Bezeichnung der Bohrung"
               type="text"
@@ -220,10 +235,11 @@ export default function BohrungForm(props) {
         <Controller
           name="bemerkung"
           control={control}
+          defaultValue={currentBohrung?.bemerkung}
           render={({ field }) => (
             <TextField
               {...field}
-              value={field.value || currentBohrung?.bemerkung || ""}
+              value={field.value}
               margin="normal"
               multiline
               label="Bemerkung zur Bohrung"
@@ -244,7 +260,7 @@ export default function BohrungForm(props) {
                 label="Datum des Bohrbeginns"
                 disableFuture
                 inputFormat="dd.MM.yyyy"
-                value={field.value || currentBohrung?.datum || null}
+                value={field.value}
                 onChange={(value) => field.onChange(value)}
                 renderInput={(params) => (
                   <TextField
@@ -261,30 +277,31 @@ export default function BohrungForm(props) {
           />
         </LocalizationProvider>
         <Controller
-          name="durchmesser"
+          name="durchmesserBohrloch"
           control={control}
+          defaultValue={currentBohrung?.durchmesserBohrloch}
           render={({ field }) => (
             <TextField
               {...field}
-              value={field.value || currentBohrung?.durchmesserBohrloch || ""}
+              value={field.value}
               sx={{ width: "47%" }}
               margin="normal"
               label="Durchmesser Bohrloch"
               type="number"
               variant="standard"
-              {...register("durchmesser")}
+              {...register("durchmesserBohrloch")}
             />
           )}
         />
         <Controller
           name="ablenkungId"
           control={control}
-          defaultValue={currentBohrung?.ablenkungId || null}
+          defaultValue={currentBohrung?.ablenkungId}
           render={({ field }) => (
             <Autocomplete
               {...field}
               options={ablenkungCodes.map((c) => c.id)}
-              value={field.value || currentBohrung?.ablenkungId || null}
+              value={field.value}
               onChange={(_, data) => field.onChange(data)}
               getOptionLabel={(option) => ablenkungCodes.find((c) => c.id === option)?.kurztext}
               renderInput={(params) => (
@@ -303,12 +320,12 @@ export default function BohrungForm(props) {
         <Controller
           name="qualitaetId"
           control={control}
-          defaultValue={currentBohrung?.qualitaetId || null}
+          defaultValue={currentBohrung?.qualitaetId}
           render={({ field }) => (
             <Autocomplete
               {...field}
               options={qualitaetCodes.map((c) => c.id)}
-              value={field.value || currentBohrung?.qualitaetId || null}
+              value={field.value}
               getOptionLabel={(option) => qualitaetCodes.find((c) => c.id === option)?.kurztext}
               onChange={(_, data) => field.onChange(data)}
               renderInput={(params) => (
@@ -327,10 +344,11 @@ export default function BohrungForm(props) {
         <Controller
           name="qualitaetBemerkung"
           control={control}
+          defaultValue={currentBohrung?.qualitaetBemerkung}
           render={({ field }) => (
             <TextField
               {...field}
-              value={field.value || currentBohrung?.qualitaetBemerkung || ""}
+              value={field.value}
               sx={{ marginRight: "6%", width: "47%" }}
               margin="normal"
               multiline
@@ -344,10 +362,11 @@ export default function BohrungForm(props) {
         <Controller
           name="quelleRef"
           control={control}
+          defaultValue={currentBohrung?.quelleRef}
           render={({ field }) => (
             <TextField
               {...field}
-              value={field.value || currentBohrung?.quelleRef || ""}
+              value={field.value}
               margin="normal"
               label="Autor der geologischen Aufnahme"
               type="text"

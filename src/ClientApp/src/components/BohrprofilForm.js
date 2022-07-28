@@ -38,7 +38,7 @@ export default function BohrprofilForm(props) {
     addBohrprofil,
     editBohrprofil,
   } = props;
-  const { control, handleSubmit, formState, reset, register } = useForm({
+  const { control, handleSubmit, formState, reset, register, setValue } = useForm({
     reValidateMode: "onChange",
   });
   const { isDirty } = formState;
@@ -71,6 +71,21 @@ export default function BohrprofilForm(props) {
     };
     getCodes();
   }, []);
+
+  // Update form values if currentBohrprofil changes, to allow next/previous navigation
+  useEffect(() => {
+    if (currentBohrprofil) {
+      setValue("datum", currentBohrprofil?.datum);
+      setValue("bemerkung", currentBohrprofil?.bemerkung);
+      setValue("kote", currentBohrprofil?.kote);
+      setValue("endteufe", currentBohrprofil?.endteufe);
+      setValue("tektonikId", currentBohrprofil?.tektonikId);
+      setValue("formationFelsId", currentBohrprofil?.formationFelsId);
+      setValue("formationEndtiefeId", currentBohrprofil?.formationEndtiefeId);
+      setValue("qualitaetId", currentBohrprofil?.qualitaetId);
+      setValue("qualitaetBemerkung", currentBohrprofil?.qualitaetBemerkung);
+    }
+  }, [currentBohrprofil, setValue]);
 
   const currentInteraction = currentBohrprofil?.id ? "edit" : currentBohrprofil?.bezeichnung ? "copy" : "add";
 
@@ -117,7 +132,7 @@ export default function BohrprofilForm(props) {
                 label="Datum des Bohrprofils"
                 disableFuture
                 inputFormat="dd.MM.yyyy"
-                value={field.value || currentBohrprofil?.datum || null}
+                value={field.value}
                 onChange={(value) => field.onChange(value)}
                 renderInput={(params) => (
                   <TextField
@@ -135,10 +150,11 @@ export default function BohrprofilForm(props) {
         <Controller
           name="bemerkung"
           control={control}
+          defaultValue={currentBohrprofil?.bemerkung}
           render={({ field }) => (
             <TextField
               {...field}
-              value={field.value || currentBohrprofil?.bemerkung || ""}
+              value={field.value}
               margin="normal"
               multiline
               label="Bemerkung zum Bohrprofil"
@@ -152,10 +168,11 @@ export default function BohrprofilForm(props) {
         <Controller
           name="kote"
           control={control}
+          defaultValue={currentBohrprofil?.kote}
           render={({ field }) => (
             <TextField
               {...field}
-              value={field.value || currentBohrprofil?.kote || ""}
+              value={field.value}
               sx={{ marginRight: "6%", width: "47%" }}
               margin="normal"
               label="Terrainkote der Bohrung [m]"
@@ -168,10 +185,11 @@ export default function BohrprofilForm(props) {
         <Controller
           name="endteufe"
           control={control}
+          defaultValue={currentBohrprofil?.endteufe}
           render={({ field }) => (
             <TextField
               {...field}
-              value={field.value || currentBohrprofil?.endteufe || ""}
+              value={field.value}
               sx={{ width: "47%" }}
               margin="normal"
               label="Endtiefe der Bohrung [m]"
@@ -184,12 +202,12 @@ export default function BohrprofilForm(props) {
         <Controller
           name="tektonikId"
           control={control}
-          defaultValue={currentBohrprofil?.tektonikId || null}
+          defaultValue={currentBohrprofil?.tektonikId}
           render={({ field }) => (
             <Autocomplete
               {...field}
               options={tektonikCodes.map((c) => c.id)}
-              value={field.value || currentBohrprofil?.tektonikId}
+              value={field.value}
               getOptionLabel={(option) => tektonikCodes.find((c) => c.id === option)?.kurztext}
               onChange={(_, data) => field.onChange(data)}
               renderInput={(params) => (
@@ -208,12 +226,12 @@ export default function BohrprofilForm(props) {
         <Controller
           name="formationFelsId"
           control={control}
-          defaultValue={currentBohrprofil?.formationFelsId || null}
+          defaultValue={currentBohrprofil?.formationFelsId}
           render={({ field }) => (
             <Autocomplete
               {...field}
               options={formationFelsCodes.map((c) => c.id)}
-              value={field.value || currentBohrprofil?.formationFelsId}
+              value={field.value}
               getOptionLabel={(option) => formationFelsCodes.find((c) => c.id === option)?.kurztext}
               onChange={(_, data) => field.onChange(data)}
               renderInput={(params) => (
@@ -232,12 +250,12 @@ export default function BohrprofilForm(props) {
         <Controller
           name="formationEndtiefeId"
           control={control}
-          defaultValue={currentBohrprofil?.formationEndtiefeId || null}
+          defaultValue={currentBohrprofil?.formationEndtiefeId}
           render={({ field }) => (
             <Autocomplete
               {...field}
               options={formationEndtiefeCodes.map((c) => c.id)}
-              value={field.value || currentBohrprofil?.formationEndtiefeId}
+              value={field.value}
               getOptionLabel={(option) => formationEndtiefeCodes.find((c) => c.id === option)?.kurztext}
               onChange={(_, data) => field.onChange(data)}
               renderInput={(params) => (
@@ -256,12 +274,12 @@ export default function BohrprofilForm(props) {
         <Controller
           name="qualitaetId"
           control={control}
-          defaultValue={currentBohrprofil?.qualitaetId || null}
+          defaultValue={currentBohrprofil?.qualitaetId}
           render={({ field }) => (
             <Autocomplete
               {...field}
               options={qualitaetCodes.map((c) => c.id)}
-              value={field.value || currentBohrprofil?.qualitaetId}
+              value={field.value}
               getOptionLabel={(option) => qualitaetCodes.find((c) => c.id === option)?.kurztext}
               onChange={(_, data) => field.onChange(data)}
               renderInput={(params) => (
@@ -280,10 +298,11 @@ export default function BohrprofilForm(props) {
         <Controller
           name="qualitaetBemerkung"
           control={control}
+          defaultValue={currentBohrprofil?.qualitaetBemerkung}
           render={({ field }) => (
             <TextField
               {...field}
-              value={field.value || currentBohrprofil?.qualitaetBemerkung || ""}
+              value={field.value}
               margin="normal"
               multiline
               label="Bemerkung zur Qualitätsangabe"
