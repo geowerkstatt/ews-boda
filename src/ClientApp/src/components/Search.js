@@ -13,8 +13,9 @@ export default function Search(props) {
   const { isDirty } = formState;
 
   const onSearch = (formData) => {
-    let query = `?gemeinde=${formData.gemeinde || ""}`;
-    query += `&gbnummer=${formData.gbnummer}&bezeichnung=${formData.bezeichnung}`;
+    let query = `?gemeinde=${encodeURIComponent(formData.gemeinde) || ""}`;
+    query += `&gbnummer=${encodeURIComponent(formData.gbnummer)}`;
+    query += `&bezeichnung=${encodeURIComponent(formData.bezeichnung)}`;
     query += `&erstellungsdatum=${formData.erstellungsDatum ? new Date(formData.erstellungsDatum).toDateString() : ""}`;
     query += `&mutationsdatum=${formData.mutationsDatum ? new Date(formData.mutationsDatum).toDateString() : ""}`;
     getStandorte(query);
