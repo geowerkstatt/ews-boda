@@ -28,7 +28,7 @@ describe("Home page tests", () => {
   it("Show search result box if search for grundbuchnummer", function () {
     const gbnummer = "h5r0wdwsz6ef39zb2d31a0zfou7i4tdguvddcklb";
     cy.intercept(
-      `/standort?gemeinde=null&gbnummer=${gbnummer}&bezeichnung=&erstellungsdatum=&mutationsdatum=`,
+      `/standort?gemeinde=&gbnummer=${gbnummer}&bezeichnung=&erstellungsdatum=&mutationsdatum=`,
       standorteGbnummer
     );
     cy.visit("/");
@@ -41,7 +41,7 @@ describe("Home page tests", () => {
 
   it("Show search result box if search for bezeichnung", function () {
     cy.intercept(
-      `/standort?gemeinde=null&gbnummer=&bezeichnung=Rustic%20Wooden%20Keyboard&erstellungsdatum=&mutationsdatum=`,
+      `/standort?gemeinde=&gbnummer=&bezeichnung=Rustic%20Wooden%20Keyboard&erstellungsdatum=&mutationsdatum=`,
       standorteBezeichnung
     );
     cy.visit("/");
