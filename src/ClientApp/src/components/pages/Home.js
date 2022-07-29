@@ -14,6 +14,7 @@ import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import SnackbarMessage from "../SnackbarMessage";
 import ConfirmationDialog from "../ConfirmationDialog";
+import { UserRolesMap } from "../../UserRolesMap";
 
 export function Home(props) {
   const { currentUser } = props;
@@ -245,6 +246,7 @@ export function Home(props) {
             getStandort={getStandort}
             setAlertVariant={setAlertVariant}
             currentUser={currentUser}
+            readOnly={currentStandort.freigabeAfu && currentUser?.role === UserRolesMap.Extern}
           ></InputForm>
         </Dialog>
         <ConfirmationDialog

@@ -12,6 +12,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import PreviewIcon from "@mui/icons-material/Preview";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Tooltip from "@mui/material/Tooltip";
@@ -42,6 +43,7 @@ export default function BohrprofilForm(props) {
     addBohrprofil,
     editBohrprofil,
     deleteSchicht,
+    readOnly,
   } = props;
   const { control, handleSubmit, formState, reset, register, setValue } = useForm({
     reValidateMode: "onChange",
@@ -178,6 +180,7 @@ export default function BohrprofilForm(props) {
                 inputFormat="dd.MM.yyyy"
                 value={field.value}
                 onChange={(value) => field.onChange(value)}
+                disabled={readOnly}
                 renderInput={(params) => (
                   <TextField
                     {...field}
@@ -372,23 +375,16 @@ export default function BohrprofilForm(props) {
         </Accordion>
         <Typography sx={{ marginTop: "15px" }} variant="h6" gutterBottom>
           Schichten ({currentBohrprofil?.schichten ? currentBohrprofil.schichten.length : 0})
-          {currentBohrprofil?.id != null && (
-            <Tooltip title="Schicht hinzufügen">
-              <IconButton
-                color="primary"
-                name="add-button"
-                disabled={currentBohrprofil?.id == null}
-                onClick={onAddSchicht}
-              >
-                <AddCircleIcon />
-              </IconButton>
-            </Tooltip>
-          )}
-          {currentBohrprofil?.id == null && (
-            <IconButton color="primary" disabled>
+          <Tooltip title="Schicht hinzufügen">
+            <IconButton
+              color="primary"
+              name="add-button"
+              disabled={readOnly || currentBohrprofil?.id == null}
+              onClick={onAddSchicht}
+            >
               <AddCircleIcon />
             </IconButton>
-          )}
+          </Tooltip>
         </Typography>
         {currentBohrprofil?.id == null && (
           <Typography>Bitte speichern Sie das Bohrprofil bevor Sie Schichten und Vorkommnisse hinzufügen.</Typography>
@@ -412,16 +408,26 @@ export default function BohrprofilForm(props) {
                       <TableCell align="right">
                         <Tooltip title="Schicht editieren">
                           <IconButton onClick={() => onEditSchicht(schicht)} name="edit-button" color="primary">
-                            <EditIcon />
+                            {readOnly ? <PreviewIcon /> : <EditIcon />}
                           </IconButton>
                         </Tooltip>
                         <Tooltip title="Schicht duplizieren">
-                          <IconButton onClick={() => onCopySchicht(schicht)} name="copy-button" color="primary">
+                          <IconButton
+                            onClick={() => onCopySchicht(schicht)}
+                            name="copy-button"
+                            color="primary"
+                            disabled={readOnly}
+                          >
                             <ContentCopyIcon />
                           </IconButton>
                         </Tooltip>
                         <Tooltip title="Schicht löschen">
-                          <IconButton onClick={() => onDeleteSchicht(schicht)} name="delete-button" color="primary">
+                          <IconButton
+                            onClick={() => onDeleteSchicht(schicht)}
+                            name="delete-button"
+                            color="primary"
+                            disabled={readOnly}
+                          >
                             <DeleteIcon />
                           </IconButton>
                         </Tooltip>
@@ -435,18 +441,11 @@ export default function BohrprofilForm(props) {
         )}
         <Typography sx={{ marginTop: "15px" }} variant="h6" gutterBottom>
           Vorkommnisse ({currentBohrprofil?.vorkommnisse ? currentBohrprofil.vorkommnisse.length : 0})
-          {currentBohrprofil?.id != null && (
-            <Tooltip title="Vorkommnis hinzufügen">
-              <IconButton color="primary">
-                <AddCircleIcon />
-              </IconButton>
-            </Tooltip>
-          )}
-          {currentBohrprofil?.id == null && (
-            <IconButton color="primary" disabled>
+          <Tooltip title="Vorkommnis hinzufügen">
+            <IconButton color="primary" disabled={readOnly || currentBohrprofil?.id == null}>
               <AddCircleIcon />
             </IconButton>
-          )}
+          </Tooltip>
         </Typography>
         {currentBohrprofil?.vorkommnisse?.length > 0 && (
           <React.Fragment>
@@ -467,11 +466,11 @@ export default function BohrprofilForm(props) {
                       <TableCell align="right">
                         <Tooltip title="Vorkommnis editieren">
                           <IconButton onClick={handleNext} color="primary">
-                            <EditIcon />
+                            {readOnly ? <PreviewIcon /> : <EditIcon />}
                           </IconButton>
                         </Tooltip>
                         <Tooltip title="Vorkommnis löschen">
-                          <IconButton color="primary">
+                          <IconButton color="primary" disabled={readOnly}>
                             <DeleteIcon />
                           </IconButton>
                         </Tooltip>
@@ -485,8 +484,8 @@ export default function BohrprofilForm(props) {
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleBack}>Abbrechen</Button>
-        <Button type="submit" disabled={!isDirty}>
+        <Button onClick={handleBack}>{!isDirty || readOnly ? "Schliessen" : "Abbrechen"}</Button>
+        <Button type="submit" disabled={!isDirty || readOnly}>
           Bohrprofil speichern
         </Button>
       </DialogActions>

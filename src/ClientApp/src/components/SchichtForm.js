@@ -18,8 +18,16 @@ import DateUserInputs from "./DateUserInputs";
 import { CodeTypes } from "./Codetypes";
 
 export default function SchichtForm(props) {
-  const { currentBohrung, currentBohrprofil, currentSchicht, setCurrentSchicht, handleBack, addSchicht, editSchicht } =
-    props;
+  const {
+    currentBohrung,
+    currentBohrprofil,
+    currentSchicht,
+    setCurrentSchicht,
+    handleBack,
+    addSchicht,
+    editSchicht,
+    readOnly,
+  } = props;
   const { control, handleSubmit, formState, reset, register, setValue } = useForm({
     reValidateMode: "onChange",
   });
@@ -215,8 +223,8 @@ export default function SchichtForm(props) {
         </Accordion>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleBack}>Abbrechen</Button>
-        <Button type="submit" disabled={!isDirty}>
+        <Button onClick={handleBack}>{!isDirty || readOnly ? "Schliessen" : "Abbrechen"}</Button>
+        <Button type="submit" disabled={!isDirty || readOnly}>
           Schicht speichern
         </Button>
       </DialogActions>

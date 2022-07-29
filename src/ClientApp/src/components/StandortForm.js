@@ -10,6 +10,7 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import EditIcon from "@mui/icons-material/Edit";
+import PreviewIcon from "@mui/icons-material/Preview";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -42,6 +43,7 @@ export default function StandortForm(props) {
     addStandort,
     deleteBohrung,
     currentUser,
+    readOnly,
   } = props;
   const { control, handleSubmit, formState, reset, register } = useForm({ reValidateMode: "onChange" });
   const { isDirty } = formState;
@@ -223,23 +225,16 @@ export default function StandortForm(props) {
         )}
         <Typography sx={{ marginTop: "15px" }} variant="h6" gutterBottom>
           Bohrungen ({currentStandort?.bohrungen ? currentStandort.bohrungen.length : 0})
-          {currentStandort?.id != null && (
-            <Tooltip title="Bohrung hinzufügen">
-              <IconButton
-                color="primary"
-                name="add-button"
-                disabled={currentStandort?.id == null}
-                onClick={onAddBohrung}
-              >
-                <AddCircleIcon />
-              </IconButton>
-            </Tooltip>
-          )}
-          {currentStandort?.id == null && (
-            <IconButton color="primary" disabled>
+          <Tooltip title="Bohrung hinzufügen">
+            <IconButton
+              color="primary"
+              name="add-button"
+              onClick={onAddBohrung}
+              disabled={readOnly || currentStandort?.id == null}
+            >
               <AddCircleIcon />
             </IconButton>
-          )}
+          </Tooltip>
         </Typography>
         {currentStandort?.id == null && (
           <Typography>Bitte speichern Sie den Standort bevor Sie Bohrungen hinzufügen.</Typography>
@@ -277,11 +272,16 @@ export default function StandortForm(props) {
                       <TableCell align="right">
                         <Tooltip title="Bohrung editieren">
                           <IconButton onClick={() => onEditBohrung(bohrung)} name="edit-button" color="primary">
-                            <EditIcon />
+                            {readOnly ? <PreviewIcon /> : <EditIcon />}
                           </IconButton>
                         </Tooltip>
                         <Tooltip title="Bohrung duplizieren">
-                          <IconButton onClick={() => onCopyBohrung(bohrung)} name="copy-button" color="primary">
+                          <IconButton
+                            onClick={() => onCopyBohrung(bohrung)}
+                            name="copy-button"
+                            color="primary"
+                            disabled={readOnly}
+                          >
                             <ContentCopyIcon />
                           </IconButton>
                         </Tooltip>
@@ -291,6 +291,7 @@ export default function StandortForm(props) {
                             name="delete-button"
                             color="primary"
                             aria-label="delete bohrung"
+                            disabled={readOnly}
                           >
                             <DeleteIcon />
                           </IconButton>
@@ -305,8 +306,8 @@ export default function StandortForm(props) {
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}> {!isDirty ? "Schliessen" : "Abbrechen"}</Button>
-        <Button type="submit" disabled={!isDirty}>
+        <Button onClick={handleClose}>{!isDirty || readOnly ? "Schliessen" : "Abbrechen"}</Button>
+        <Button type="submit" disabled={!isDirty || readOnly}>
           Standort speichern
         </Button>
       </DialogActions>

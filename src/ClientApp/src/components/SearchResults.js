@@ -8,6 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import TablePagination from "@mui/material/TablePagination";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import PreviewIcon from "@mui/icons-material/Preview";
 import IconButton from "@mui/material/IconButton";
 import Title from "./Title";
 import { UserRolesMap } from "../UserRolesMap";
@@ -26,6 +27,8 @@ export default function SearchResults(props) {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  const isStandortReadOnly = (standort) => standort.freigabeAfu && currentUser?.role === UserRolesMap.Extern;
 
   // Reset page count on search
   useEffect(() => {
@@ -54,16 +57,15 @@ export default function SearchResults(props) {
                 <TableCell sx={{ width: "30%", wordBreak: "break-all" }}>{standort.bezeichnung}</TableCell>
                 <TableCell sx={{ width: "10%", wordBreak: "break-all" }}>{standort.bohrungen?.length}</TableCell>
                 <TableCell sx={{ width: "10%", wordBreak: "break-all" }} align="right">
-                  <Tooltip title="Standort editieren">
+                  <Tooltip title={isStandortReadOnly(standort) ? "Standort anzeigen" : "Standort editieren"}>
                     <IconButton
                       name="edit-button"
                       onClick={() => openEditForm(standort)}
                       color="primary"
                       aria-label="edit standort"
-                      disabled={standort.freigabeAfu && currentUser?.role === UserRolesMap.Extern}
                       data-cy={`edit-standort-${standort.id}-button`}
                     >
-                      <EditIcon />
+                      {isStandortReadOnly(standort) ? <PreviewIcon /> : <EditIcon />}
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Standort löschen">
@@ -72,7 +74,7 @@ export default function SearchResults(props) {
                       onClick={() => onDeleteStandort(standort)}
                       color="primary"
                       aria-label="delete standort"
-                      disabled={standort.freigabeAfu && currentUser?.role === UserRolesMap.Extern}
+                      disabled={isStandortReadOnly(standort)}
                       data-cy={`delete-standort-${standort.id}-button`}
                     >
                       <DeleteIcon />

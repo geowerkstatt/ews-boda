@@ -8,6 +8,7 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import EditIcon from "@mui/icons-material/Edit";
+import PreviewIcon from "@mui/icons-material/Preview";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DialogActions from "@mui/material/DialogActions";
@@ -45,6 +46,7 @@ export default function BohrungForm(props) {
     addBohrung,
     editBohrung,
     deleteBohrprofil,
+    readOnly,
   } = props;
   const { control, handleSubmit, formState, reset, register, setValue } = useForm({
     reValidateMode: "onChange",
@@ -262,6 +264,7 @@ export default function BohrungForm(props) {
                 inputFormat="dd.MM.yyyy"
                 value={field.value}
                 onChange={(value) => field.onChange(value)}
+                disabled={readOnly}
                 renderInput={(params) => (
                   <TextField
                     {...field}
@@ -456,23 +459,16 @@ export default function BohrungForm(props) {
 
         <Typography sx={{ marginTop: "15px" }} variant="h6" gutterBottom>
           Bohrprofile ({currentBohrung?.bohrprofile ? currentBohrung.bohrprofile.length : 0})
-          {currentBohrung?.id != null && (
-            <Tooltip title="Bohrprofil hinzufügen">
-              <IconButton
-                color="primary"
-                name="add-button"
-                disabled={currentBohrung?.id == null}
-                onClick={onAddBohrprofil}
-              >
-                <AddCircleIcon />
-              </IconButton>
-            </Tooltip>
-          )}
-          {currentBohrung?.id == null && (
-            <IconButton color="primary" disabled>
+          <Tooltip title="Bohrprofil hinzufügen">
+            <IconButton
+              color="primary"
+              name="add-button"
+              disabled={readOnly || currentBohrung?.id == null}
+              onClick={onAddBohrprofil}
+            >
               <AddCircleIcon />
             </IconButton>
-          )}
+          </Tooltip>
         </Typography>
         {currentBohrung?.id == null && (
           <Typography>Bitte speichern Sie die Bohrung bevor Sie Bohrprofile hinzufügen.</Typography>
@@ -498,11 +494,16 @@ export default function BohrungForm(props) {
                       <TableCell align="right">
                         <Tooltip title="Bohrprofil editieren">
                           <IconButton onClick={() => onEditBohrprofil(bohrprofil)} name="edit-button" color="primary">
-                            <EditIcon />
+                            {readOnly ? <PreviewIcon /> : <EditIcon />}
                           </IconButton>
                         </Tooltip>
                         <Tooltip title="Bohrprofil duplizieren">
-                          <IconButton onClick={() => onCopyBohrprofil(bohrprofil)} name="copy-button" color="primary">
+                          <IconButton
+                            onClick={() => onCopyBohrprofil(bohrprofil)}
+                            name="copy-button"
+                            color="primary"
+                            disabled={readOnly}
+                          >
                             <ContentCopyIcon />
                           </IconButton>
                         </Tooltip>
@@ -511,6 +512,7 @@ export default function BohrungForm(props) {
                             onClick={() => onDeleteBohrprofil(bohrprofil)}
                             name="delete-button"
                             color="primary"
+                            disabled={readOnly}
                           >
                             <DeleteIcon />
                           </IconButton>
@@ -525,9 +527,9 @@ export default function BohrungForm(props) {
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleBack}>Abbrechen</Button>
-        <Button type="submit" disabled={!isDirty}>
-          Bohrung Speichern
+        <Button onClick={handleBack}>{!isDirty || readOnly ? "Schliessen" : "Abbrechen"}</Button>
+        <Button type="submit" disabled={!isDirty || readOnly}>
+          Bohrung speichern
         </Button>
       </DialogActions>
       <ConfirmationDialog
