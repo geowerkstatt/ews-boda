@@ -302,6 +302,7 @@ export default function BohrungForm(props) {
               value={field.value}
               onChange={(_, data) => field.onChange(data)}
               getOptionLabel={(option) => ablenkungCodes.find((c) => c.id === option)?.kurztext}
+              autoHighlight={true}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -326,6 +327,7 @@ export default function BohrungForm(props) {
               value={field.value}
               getOptionLabel={(option) => qualitaetCodes.find((c) => c.id === option)?.kurztext}
               onChange={(_, data) => field.onChange(data)}
+              autoHighlight={true}
               renderInput={(params) => (
                 <TextField
                   {...params}
