@@ -11,99 +11,105 @@ namespace EWS;
 [Route("[controller]")]
 public class BohrungController : EwsControllerBase<Bohrung>
 {
-    private readonly HttpClient client;
-    private readonly ILogger<DataServiceController> logger;
-    private readonly EwsContext context;
+    private readonly DataService dataService;
 
-    public BohrungController(HttpClient client, ILogger<DataServiceController> logger, EwsContext context)
+    public BohrungController(EwsContext context, DataService dataService)
         : base(context)
     {
-        this.client = client;
-        this.logger = logger;
-        this.context = context;
+        this.dataService = dataService;
     }
 
     /// <inheritdoc/>
     public override async Task<IActionResult> CreateAsync(Bohrung entity)
-    {
-        entity.Bohrprofile = null;
-        if (entity.Geometrie == null)
-        {
-            return await base.CreateAsync(entity).ConfigureAwait(false);
-        }
-        else
-        {
-            return await UpdateStandortAndBohrung(base.CreateAsync, entity).ConfigureAwait(false);
-        }
-    }
+        => await UpdateStandortAndBohrung(base.CreateAsync, entity).ConfigureAwait(false);
 
     /// <inheritdoc/>
     public override async Task<IActionResult> EditAsync(Bohrung entity)
+        => await UpdateStandortAndBohrung(base.EditAsync, entity).ConfigureAwait(false);
+
+    /// <inheritdoc/>
+    public override async Task<IActionResult> DeleteAsync(int id)
     {
-        entity.Bohrprofile = null;
-        if (entity.Geometrie == null)
+        var bohrung = await Context.Bohrungen.FindAsync(id).ConfigureAwait(false);
+        if (bohrung == null)
         {
-            return await base.EditAsync(entity).ConfigureAwait(false);
+            return NotFound();
         }
-        else
+
+        var standortToUpdate = Context.Standorte.Include(s => s.Bohrungen).SingleOrDefault(s => s.Id == bohrung.StandortId);
+        var result = await base.DeleteAsync(id).ConfigureAwait(false);
+
+        // Update Gemeinde and Grundbuchnummer information upon deletion
+        if (result is OkResult)
         {
-            return await UpdateStandortAndBohrung(base.EditAsync, entity).ConfigureAwait(false);
+            await UpdateStandort(standortToUpdate!, bohrung: null).ConfigureAwait(false);
         }
+
+        return result;
     }
 
     private async Task<IActionResult> UpdateStandortAndBohrung(Func<Bohrung, Task<IActionResult>> createOrUpdateBohrung, Bohrung item)
     {
+        item.Bohrprofile = null;
+        if (item.Geometrie == null)
+        {
+            return await createOrUpdateBohrung(item).ConfigureAwait(false);
+        }
+
         var updateResult = await UpdateStandort(item).ConfigureAwait(false);
 
         // Case if Api call is not successful.
         if (updateResult?.Value == null)
         {
-            var objectResult = updateResult.Result as ObjectResult;
-            return (IActionResult)Task.FromResult(objectResult);
+            return (IActionResult)Task.FromResult(updateResult);
         }
         else
         {
             // Case if Api call is successful, but point is not in Kanton Solothurn
             if (string.IsNullOrEmpty(updateResult.Value.Gemeinde))
             {
-                return Problem($"Call to data service Api did not yield any results. The supplied geometry '{item.Geometrie}' may not lie in Kanton Solothurn.");
+                return Problem($"Call to Data Service API did not yield any results. The supplied geometry '{item.Geometrie.AsText()}' may not lie in Kanton Solothurn.");
             }
 
             return await createOrUpdateBohrung(item).ConfigureAwait(false);
         }
     }
 
-    private async Task<ActionResult<DataServiceResponse>> UpdateStandort(Bohrung bohrung)
+    private async Task<ActionResult<DataServiceResponse>> UpdateStandort(Standort standort, Bohrung? bohrung)
     {
-        var standortToUpdate = Context.Standorte.Include(s => s.Bohrungen).SingleOrDefault(s => s.Id == bohrung.StandortId);
-
         var bohrungen = new List<Bohrung>();
-
-        if (standortToUpdate.Bohrungen != null)
+        if (standort.Bohrungen != null)
         {
-            bohrungen.AddRange(standortToUpdate.Bohrungen.ToList());
+            bohrungen.AddRange(standort.Bohrungen.ToList());
         }
 
         // If no primary key is present in the Bohrung it was newly added.
         // Otherwise it is being edited and the geometry of the existing Bohrung needs to be replaced for the Dataservice Api call.
-        if (bohrung.Id == 0)
-            bohrungen.Add(bohrung);
-        else
-            bohrungen.Find(b => b.Id == bohrung.Id).Geometrie = bohrung.Geometrie;
-
-        var controller = new DataServiceController(client, logger, context);
-        var response = await controller.GetAsync(bohrungen.Select(b => b.Geometrie).ToList()).ConfigureAwait(false);
-
-        if (response.Value != null && response.Value.Gemeinde != null)
+        if (bohrung != null)
         {
-            var dataServiceResponse = response.Value;
-            standortToUpdate.Gemeinde = dataServiceResponse.Gemeinde;
-            standortToUpdate.GrundbuchNr = dataServiceResponse.Grundbuchnummer;
-            Context.Standorte.Update(standortToUpdate);
+            if (bohrung.Id == 0)
+                bohrungen.Add(bohrung);
+            else
+                bohrungen.Find(b => b.Id == bohrung.Id).Geometrie = bohrung.Geometrie;
+        }
+
+        var response = await dataService.GetAsync(bohrungen.Select(b => b.Geometrie).ToList()).ConfigureAwait(false);
+
+        if (response.Gemeinde != null)
+        {
+            standort.Gemeinde = response.Gemeinde;
+            standort.GrundbuchNr = response.Grundbuchnummer;
+            Context.Standorte.Update(standort);
             Context.SaveChanges();
         }
 
         return response;
+    }
+
+    private async Task<ActionResult<DataServiceResponse>> UpdateStandort(Bohrung bohrung)
+    {
+        var standortToUpdate = Context.Standorte.Include(s => s.Bohrungen).SingleOrDefault(s => s.Id == bohrung.StandortId);
+        return await UpdateStandort(standortToUpdate!, bohrung).ConfigureAwait(false);
     }
 
     /// <summary>

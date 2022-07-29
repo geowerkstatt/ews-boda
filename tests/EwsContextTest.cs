@@ -51,7 +51,7 @@ public class EwsContextTest
             HQualitaet = 3,
             HAblenkung = 9,
         };
-        await new BohrungController(httpClient, new Mock<ILogger<DataServiceController>>().Object, ContextFactory.CreateContext()).CreateAsync(newBohrung).ConfigureAwait(false);
+        await new BohrungController(ContextFactory.CreateContext(), new DataService(httpClient, new Mock<ILogger<DataService>>().Object)).CreateAsync(newBohrung).ConfigureAwait(false);
 
         var newBohrprofil = new Bohrprofil
         {

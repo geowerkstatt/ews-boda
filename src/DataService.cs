@@ -1,27 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using NetTopologySuite.Geometries;
+﻿using NetTopologySuite.Geometries;
 using System.Text.Json;
 
 namespace EWS;
 
-[ApiController]
-[Route("[controller]")]
-public class DataServiceController : ControllerBase
+public class DataService
 {
     /// <summary>The well-known layer names for querying data.</summary>
     private const string GemeindeLayer = "ch.so.agi.gemeindegrenzen.data";
     private const string GrundstueckLayer = "ch.so.agi.av.grundstuecke.rechtskraeftig.data";
 
     private readonly HttpClient client;
-    private readonly ILogger<DataServiceController> logger;
-    private readonly EwsContext context;
+    private readonly ILogger<DataService> logger;
 
-    public DataServiceController(HttpClient client, ILogger<DataServiceController> logger, EwsContext context)
+    public DataService(HttpClient client, ILogger<DataService> logger)
     {
         this.client = client;
         this.logger = logger;
-        this.context = context;
 
         client.BaseAddress = new Uri("https://geo.so.ch/api/data/v1/");
     }
@@ -31,7 +25,7 @@ public class DataServiceController : ControllerBase
     /// </summary>
     /// <param name="points">A list of <see cref="Point"/> to get the information for.</param>
     /// <returns>A <see cref="DataServiceResponse"/> containing the Gemeinde and Grundbuchnummern information.</returns>
-    public async Task<ActionResult<DataServiceResponse>> GetAsync(List<Point> points)
+    public async Task<DataServiceResponse> GetAsync(List<Point> points)
     {
         try
         {
@@ -50,58 +44,14 @@ public class DataServiceController : ControllerBase
             }
 
             if (gemeinden.Count > 1)
-                return Problem($"Found multiple gemeinden for input points <{string.Join(", ", points.Select(x => x.AsText()))}>.");
+                throw new InvalidOperationException($"Found multiple gemeinden for input points <{string.Join(", ", points.Select(x => x.AsText()))}>.");
 
             return new DataServiceResponse(gemeinden.SingleOrDefault(string.Empty), string.Join(",", grundbuchNummern));
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            return Problem("Error retrieving information from Data Service API.");
+            throw new InvalidOperationException("Error retrieving information from Data Service API.", ex);
         }
-    }
-
-    [HttpGet("/migrategemeinden")]
-    public async Task<IActionResult> MigrateGemeinden([FromQuery] bool dryRun = true)
-    {
-        int found = 0;
-        Dictionary<string, string?> notFound = new(), errors = new();
-
-        // Only consider Standorte with Bohrungen
-        var standorteToMigrate = context.Standorte.Include(x => x.Bohrungen).Where(x => x.Bohrungen != null && x.Bohrungen.Any()).ToList();
-
-        await Parallel.ForEachAsync(standorteToMigrate, async (standort, _) =>
-        {
-            var standortId = $"{standort.Id}: {standort.Bezeichnung}";
-
-            // Query data service for Gemeinde data with Bohrungen points
-            var geometries = standort.Bohrungen!.Where(x => x.Geometrie != null).Select(x => x.Geometrie).ToList();
-            var dataServiceResponse = await GetAsync(geometries!).ConfigureAwait(false);
-            if (dataServiceResponse.Value != null)
-            {
-                var gemeinde = dataServiceResponse.Value.Gemeinde;
-                if (string.IsNullOrEmpty(gemeinde))
-                {
-                    notFound.Add(standortId, string.Join(", ", geometries.Select(x => x.AsText())));
-                }
-                else
-                {
-                    found++;
-                    standort.Gemeinde = gemeinde;
-                }
-            }
-            else
-            {
-                var error = (ObjectResult)dataServiceResponse.Result!;
-                errors.Add(standortId, ((ProblemDetails)error.Value!).Detail);
-            }
-        }).ConfigureAwait(false);
-
-        if (!dryRun)
-        {
-            context.SaveChangesWithoutUpdatingChangeInformation();
-        }
-
-        return new JsonResult(new { Total = standorteToMigrate.Count, Success = found, NotFoundCount = notFound.Count, NotFound = notFound, ErrorCount = errors.Count, Errors = errors });
     }
 
     private async Task<string?> GetDataServiceApiResponse(string requestUrl, string propertyName)

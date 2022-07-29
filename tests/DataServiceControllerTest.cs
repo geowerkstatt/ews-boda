@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NetTopologySuite.Geometries;
 using RichardSzalay.MockHttp;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -11,72 +12,65 @@ using System.Threading.Tasks;
 namespace EWS;
 
 [TestClass]
-public class DataServiceControllerTest
+public class DataServiceTest
 {
     private HttpClient httpClient;
-    private DataServiceController controller;
-    private EwsContext context;
+    private DataService dataService;
 
     [TestInitialize]
     public void Initialize()
     {
         httpClient = new HttpClient();
-        context = ContextFactory.CreateContext();
-        controller = new DataServiceController(httpClient, new Mock<ILogger<DataServiceController>>().Object, context);
+        dataService = new DataService(httpClient, new Mock<ILogger<DataService>>().Object);
     }
 
     [TestCleanup]
-    public void Cleanup()
-    {
-        httpClient.Dispose();
-        context.Dispose();
-    }
+    public void Cleanup() => httpClient.Dispose();
 
     [TestMethod]
     public async Task GetAsyncForSinglePoint()
     {
         var points = new List<Point> { new(2605532, 1229554) };
-        var result = await controller.GetAsync(points);
+        var result = await dataService.GetAsync(points);
 
-        Assert.AreEqual("Langendorf", result.Value.Gemeinde);
-        Assert.AreEqual("1950", result.Value.Grundbuchnummer);
+        Assert.AreEqual("Langendorf", result.Gemeinde);
+        Assert.AreEqual("1950", result.Grundbuchnummer);
     }
 
     [TestMethod]
     public async Task GetAsyncForMultiplePoints()
     {
         var points = new List<Point> { new(2605532, 1229554), new(2605590, 1229590) };
-        var result = await controller.GetAsync(points);
+        var result = await dataService.GetAsync(points);
 
-        Assert.AreEqual("Langendorf", result.Value.Gemeinde);
-        Assert.AreEqual("1950,1002", result.Value.Grundbuchnummer);
+        Assert.AreEqual("Langendorf", result.Gemeinde);
+        Assert.AreEqual("1950,1002", result.Grundbuchnummer);
     }
 
     [TestMethod]
     public async Task GetAsyncForMultiplePointsInDifferentGemeindenFails()
     {
         var points = new List<Point> { new(2605532, 1229554), new(2629600, 1246418) };
-        var result = await controller.GetAsync(points);
-        AssertErrorResult(result);
+        await Assert.ThrowsExceptionAsync<InvalidOperationException>(async () => await dataService.GetAsync(points));
     }
 
     [TestMethod]
     public async Task GetAsyncReturnsEmptyForUnknownLocation()
     {
         var points = new List<Point> { new(int.MaxValue, int.MinValue) };
-        var result = await controller.GetAsync(points);
+        var result = await dataService.GetAsync(points);
 
-        Assert.AreEqual(string.Empty, result.Value.Gemeinde);
-        Assert.AreEqual(string.Empty, result.Value.Grundbuchnummer);
+        Assert.AreEqual(string.Empty, result.Gemeinde);
+        Assert.AreEqual(string.Empty, result.Grundbuchnummer);
     }
 
     [TestMethod]
     public async Task GetAsyncReturnsEmptyForNoPoints()
     {
-        var result = await controller.GetAsync(new());
+        var result = await dataService.GetAsync(new());
 
-        Assert.AreEqual(string.Empty, result.Value.Gemeinde);
-        Assert.AreEqual(string.Empty, result.Value.Grundbuchnummer);
+        Assert.AreEqual(string.Empty, result.Gemeinde);
+        Assert.AreEqual(string.Empty, result.Grundbuchnummer);
     }
 
     [TestMethod]
@@ -86,18 +80,9 @@ public class DataServiceControllerTest
         mockHttp.When("https://geo.so.ch/api/*").Respond("application/json", "{'error' : 'Unit test: Invalid JSON format'}");
 
         using var mockHttpClient = new HttpClient(mockHttp);
-        controller = new DataServiceController(mockHttpClient, new Mock<ILogger<DataServiceController>>().Object, context);
+        dataService = new DataService(mockHttpClient, new Mock<ILogger<DataService>>().Object);
 
         var points = new List<Point> { new(int.MaxValue, int.MinValue) };
-        var result = await controller.GetAsync(points);
-        AssertErrorResult(result);
-    }
-
-    private static void AssertErrorResult(ActionResult<DataServiceResponse> result)
-    {
-        var objectResult = (ObjectResult)result.Result!;
-
-        Assert.AreEqual(500, objectResult.StatusCode);
-        Assert.AreEqual(null, result.Value);
+        await Assert.ThrowsExceptionAsync<InvalidOperationException>(async () => await dataService.GetAsync(points));
     }
 }
