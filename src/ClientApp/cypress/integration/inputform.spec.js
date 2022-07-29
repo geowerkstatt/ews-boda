@@ -34,7 +34,7 @@ describe("Input form tests", () => {
       .click({ force: true })
       .type(" And More");
 
-    cy.contains("button", "Bohrung Speichern").scrollIntoView().should("not.be.disabled").scrollIntoView().click();
+    cy.contains("button", "Bohrung speichern").scrollIntoView().should("not.be.disabled").scrollIntoView().click();
   });
 
   it("Open Bohrung Edit Form", function () {
@@ -53,7 +53,7 @@ describe("Input form tests", () => {
       .click({ force: true })
       .type(" And More");
 
-    cy.contains("button", "Bohrung Speichern").scrollIntoView().should("be.visible").scrollIntoView().click();
+    cy.contains("button", "Bohrung speichern").scrollIntoView().should("be.visible").scrollIntoView().click();
   });
 
   it("Delete Bohrung", function () {
