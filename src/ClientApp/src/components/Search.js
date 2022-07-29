@@ -7,10 +7,9 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 export default function Search(props) {
-  const { getStandorte, gemeinden } = props;
+  const { getStandorte, showSearchResults, gemeinden } = props;
 
-  const { control, handleSubmit, formState, reset } = useForm({ reValidateMode: "onChange" });
-  const { isDirty } = formState;
+  const { control, handleSubmit, reset } = useForm({ reValidateMode: "onChange" });
 
   const onSearch = (formData) => {
     let query = `?gemeinde=${formData.gemeinde || ""}`;
@@ -120,7 +119,7 @@ export default function Search(props) {
         />
       </LocalizationProvider>
       <Box sx={{ flexGrow: 1 }}></Box>
-      {isDirty && (
+      {showSearchResults && (
         <Button sx={{ marginBottom: 1 }} variant="outlined" onClick={resetSearch}>
           Suche zurücksetzen
         </Button>
