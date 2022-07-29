@@ -57,7 +57,7 @@ export function Layout(props) {
               <MenuIcon />
             </IconButton>
             <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-              EWS-Boda
+              Grundlagedaten EWS
             </Typography>
             <Tooltip title="Abmelden">
               <IconButton
