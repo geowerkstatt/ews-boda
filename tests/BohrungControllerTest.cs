@@ -74,7 +74,7 @@ public class BohrungControllerTest
     }
 
     [TestMethod]
-    public async Task GetByIdWithInexistentStandort()
+    public async Task GetByIdWithInexistentBohrung()
     {
         var inexistentBohrungId = 61325584;
         var actionResult = await bohrungController.GetByIdAsync(inexistentBohrungId).ConfigureAwait(false);

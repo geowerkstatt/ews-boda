@@ -13,6 +13,7 @@ import TableRow from "@mui/material/TableRow";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Tooltip from "@mui/material/Tooltip";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -27,16 +28,20 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import DetailMap from "./DetailMap";
 import DateUserInputs from "./DateUserInputs";
 import { CodeTypes } from "./Codetypes";
+import ConfirmationDialog from "./ConfirmationDialog";
 
 export default function BohrprofilForm(props) {
   const {
     currentBohrung,
     currentBohrprofil,
     setCurrentBohrprofil,
+    currentSchicht,
+    setCurrentSchicht,
     handleNext,
     handleBack,
     addBohrprofil,
     editBohrprofil,
+    deleteSchicht,
   } = props;
   const { control, handleSubmit, formState, reset, register, setValue } = useForm({
     reValidateMode: "onChange",
@@ -46,11 +51,12 @@ export default function BohrprofilForm(props) {
   const [tektonikCodes, setTektonikCodes] = useState([]);
   const [formationFelsCodes, setFormationFelsCodes] = useState([]);
   const [formationEndtiefeCodes, setFormationEndtiefeCodes] = useState([]);
+  const [openConfirmation, setOpenConfirmation] = useState(false);
   const [mapExpanded, setMapExpanded] = useState(true);
 
   const currentBohrprofilIndex = currentBohrung.bohrprofile.indexOf(currentBohrprofil);
   const numberOfBohrprofile = currentBohrung.bohrprofile.length;
-  console.log(currentBohrprofil);
+
   // Get codes for dropdowns
   useEffect(() => {
     const getCodes = async () => {
@@ -93,6 +99,44 @@ export default function BohrprofilForm(props) {
     currentBohrprofil.id
       ? editBohrprofil(formData).finally(() => reset(formData))
       : addBohrprofil(formData).finally(() => reset(formData));
+  };
+
+  const onAddSchicht = () => {
+    let schicht = {
+      bohrprofilId: currentBohrprofil.id,
+      hQualitaet: CodeTypes.Schicht_hquali,
+    };
+    setCurrentSchicht(schicht);
+    handleNext();
+  };
+
+  const onEditSchicht = (schicht) => {
+    setCurrentSchicht(schicht);
+    handleNext();
+  };
+
+  const onCopySchicht = (schicht) => {
+    let schichtToCopy = structuredClone(schicht);
+    delete schichtToCopy.id;
+    delete schichtToCopy.erstellungsdatum;
+    delete schichtToCopy.mutationsdatum;
+    // will be preserved via qualitaetId and codeSchichtId
+    delete schichtToCopy.qualitaet;
+    delete schichtToCopy.codeSchicht;
+    setCurrentSchicht(schichtToCopy);
+    handleNext();
+  };
+
+  const onDeleteSchicht = (schicht) => {
+    setCurrentSchicht(schicht);
+    setOpenConfirmation(true);
+  };
+
+  const confirmDeleteSchicht = (confirmation) => {
+    if (confirmation) {
+      deleteSchicht(currentSchicht);
+    }
+    setOpenConfirmation(false);
   };
 
   const onNavigateNext = () => setCurrentBohrprofil(currentBohrung.bohrprofile[currentBohrprofilIndex + 1]);
@@ -330,7 +374,12 @@ export default function BohrprofilForm(props) {
           Schichten ({currentBohrprofil?.schichten ? currentBohrprofil.schichten.length : 0})
           {currentBohrprofil?.id != null && (
             <Tooltip title="Schicht hinzufügen">
-              <IconButton color="primary">
+              <IconButton
+                color="primary"
+                name="add-button"
+                disabled={currentBohrprofil?.id == null}
+                onClick={onAddSchicht}
+              >
                 <AddCircleIcon />
               </IconButton>
             </Tooltip>
@@ -350,7 +399,7 @@ export default function BohrprofilForm(props) {
               <Table name="schichten-table" size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Tiefe [m]</TableCell>
+                    <TableCell>Tiefe [m u.T]</TableCell>
                     <TableCell>Schichtgrenze</TableCell>
                     <TableCell></TableCell>
                   </TableRow>
@@ -362,12 +411,17 @@ export default function BohrprofilForm(props) {
                       <TableCell>{schicht.codeSchicht?.kurztext}</TableCell>
                       <TableCell align="right">
                         <Tooltip title="Schicht editieren">
-                          <IconButton onClick={handleNext} color="primary">
+                          <IconButton onClick={() => onEditSchicht(schicht)} name="edit-button" color="primary">
                             <EditIcon />
                           </IconButton>
                         </Tooltip>
+                        <Tooltip title="Schicht duplizieren">
+                          <IconButton onClick={() => onCopySchicht(schicht)} name="copy-button" color="primary">
+                            <ContentCopyIcon />
+                          </IconButton>
+                        </Tooltip>
                         <Tooltip title="Schicht löschen">
-                          <IconButton color="primary">
+                          <IconButton onClick={() => onDeleteSchicht(schicht)} name="delete-button" color="primary">
                             <DeleteIcon />
                           </IconButton>
                         </Tooltip>
@@ -400,7 +454,7 @@ export default function BohrprofilForm(props) {
               <Table name="vorkommnisse-table" size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Tiefe [m]</TableCell>
+                    <TableCell>Tiefe [m u.T]</TableCell>
                     <TableCell>Typ</TableCell>
                     <TableCell></TableCell>
                   </TableRow>
@@ -436,6 +490,11 @@ export default function BohrprofilForm(props) {
           Bohrprofil speichern
         </Button>
       </DialogActions>
+      <ConfirmationDialog
+        open={openConfirmation}
+        confirm={confirmDeleteSchicht}
+        entityName="Schicht"
+      ></ConfirmationDialog>
     </Box>
   );
 }
