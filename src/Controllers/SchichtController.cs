@@ -14,16 +14,4 @@ public class SchichtController : EwsControllerBase<Schicht>
         : base(context)
     {
     }
-
-    /// <inheritdoc/>
-    public override Task<IActionResult> CreateAsync(Schicht entity)
-    {
-        return base.CreateAsync(entity);
-    }
-
-    /// <inheritdoc/>
-    public override Task<IActionResult> EditAsync(Schicht entity)
-    {
-        return base.EditAsync(entity);
-    }
 }

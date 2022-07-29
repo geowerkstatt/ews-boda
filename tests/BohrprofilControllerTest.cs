@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace EWS;
@@ -9,23 +8,12 @@ namespace EWS;
 [TestClass]
 public class BohrprofilControllerTest
 {
-    private HttpClient httpClient;
-    private EwsContext context;
     private BohrprofilController controller;
 
     [TestInitialize]
     public void TestInitialize()
     {
-        httpClient = new HttpClient();
-        context = ContextFactory.CreateContext();
         controller = new BohrprofilController(ContextFactory.CreateContext());
-    }
-
-    [TestCleanup]
-    public void TestCleanup()
-    {
-        httpClient.Dispose();
-        context.Dispose();
     }
 
     [TestMethod]
