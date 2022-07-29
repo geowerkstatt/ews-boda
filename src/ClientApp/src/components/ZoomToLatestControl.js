@@ -16,7 +16,7 @@ export class ZoomToLatest extends Control {
     button.setAttribute("title", "Extent aktuelle Suche");
 
     const element = document.createElement("div");
-    element.className = "ol-unselectable ol-control";
+    element.className = "ol-unselectable ol-control ol-zoom-to-latest";
     element.appendChild(button);
 
     super({
