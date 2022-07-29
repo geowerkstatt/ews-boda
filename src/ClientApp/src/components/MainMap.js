@@ -28,6 +28,7 @@ export default function MainMap(props) {
   const [latestExtent, setLatestExtent] = useState();
   const [doZoom, setDoZoom] = useState(true);
   const [selectedFeature, setSelectedFeature] = useState();
+  const [select, setSelect] = useState();
   const [popupVisible, setPopupVisible] = useState(false);
   const [popup, setPopup] = useState();
 
@@ -36,7 +37,10 @@ export default function MainMap(props) {
 
   const handleZoomToLatestExtend = () => setDoZoom(true);
   const resetZoom = () => setDoZoom(false);
-  const closePopup = () => setPopupVisible(false);
+  const closePopup = () => {
+    setPopupVisible(false);
+    select.getFeatures().clear();
+  };
 
   const defaultStyle = new Style({
     image: new Circle({
@@ -142,6 +146,7 @@ export default function MainMap(props) {
     setMap(initialMap);
     setBohrungenLayer(bohrungenLayer);
     setPopup(popup);
+    setSelect(selectClick);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
