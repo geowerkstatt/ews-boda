@@ -312,6 +312,7 @@ export default function InputForm(props) {
           handleBack={handleBack}
           addBohrprofil={addBohrprofil}
           editBohrprofil={editBohrprofil}
+          deleteSchicht={deleteSchicht}
           readOnly={readOnly}
         ></BohrprofilForm>
       ),
