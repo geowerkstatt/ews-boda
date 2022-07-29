@@ -190,6 +190,7 @@ export function Home(props) {
             >
               <Search
                 getStandorte={getStandorte}
+                showSearchResults={showSearchResults}
                 gemeinden={[
                   ...new Set(
                     unfilteredStandorte
