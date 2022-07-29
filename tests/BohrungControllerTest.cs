@@ -93,24 +93,22 @@ public class BohrungControllerTest
             HQualitaet = 3,
         };
 
-        async Task AssertStandortHasntChanged() => await AssertStandort("", "");
-
         Assert.IsInstanceOfType(await bohrungController.CreateAsync(bohrung), typeof(CreatedAtActionResult));
         bohrung = await context.Bohrungen.FindAsync(bohrung.Id);
         Assert.AreEqual("PERFECTBOOK", bohrung.Bezeichnung);
-        await AssertStandortHasntChanged();
+        await AssertStandort(null, null);
 
         // Edit
         bohrung.Bezeichnung = "RESERVEOLIVE";
         Assert.IsInstanceOfType(await bohrungController.EditAsync(bohrung), typeof(OkResult));
         bohrung = await context.Bohrungen.FindAsync(bohrung.Id);
         Assert.AreEqual("RESERVEOLIVE", bohrung.Bezeichnung);
-        await AssertStandortHasntChanged();
+        await AssertStandort(null, null);
 
         // Delete
         await bohrungController.DeleteAsync(bohrung.Id);
         Assert.IsInstanceOfType((await bohrungController.GetByIdAsync(bohrung.Id)).Result, typeof(NotFoundResult));
-        await AssertStandortHasntChanged();
+        await AssertStandort("", ""); // Got cleared upon deletion
     }
 
     [TestMethod]
