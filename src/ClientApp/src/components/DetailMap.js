@@ -17,6 +17,7 @@ export default function DetailMap(props) {
   const { bohrungen, currentForm, setCurrentBohrung } = props;
   const [map, setMap] = useState();
   const [bohrungenLayer, setBohrungenLayer] = useState();
+  const [geometrie, setGeometrie] = useState();
 
   const mapElement = useRef();
 
@@ -63,12 +64,7 @@ export default function DetailMap(props) {
     // Allow editing of geometry if map is displayed in bohrung form.
     if (currentForm === "bohrung") {
       initialMap.on("singleclick", function (evt) {
-        const updatedBohrung = {
-          ...bohrungen[0],
-          geometrie: { type: "Point", coordinates: evt.coordinate },
-          "Standort Id": bohrungen[0].standortId,
-        };
-        setCurrentBohrung(updatedBohrung);
+        setGeometrie({ type: "Point", coordinates: evt.coordinate });
       });
     }
 
@@ -131,6 +127,19 @@ export default function DetailMap(props) {
       });
     }
   }, [bohrungen, bohrungenLayer, map]);
+
+  // Update currentBohrung on geometry change
+  useEffect(() => {
+    if (geometrie) {
+      const updatedBohrung = {
+        ...bohrungen[0],
+        geometrie: geometrie,
+        "Standort Id": bohrungen[0].standortId,
+      };
+      setCurrentBohrung(updatedBohrung);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [geometrie]);
 
   return (
     <div>
