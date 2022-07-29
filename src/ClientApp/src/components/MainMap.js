@@ -183,6 +183,7 @@ export default function MainMap(props) {
                 gemeinde: standorte.find((s) => s.id === f.standortId).gemeinde,
                 grundbuchNr: standorte.find((s) => s.id === f.standortId).grundbuchNr,
                 datum: f.datum,
+                standortId: f.standortId,
               })
           );
       } else {
@@ -234,6 +235,7 @@ export default function MainMap(props) {
       <Popup
         closePopup={closePopup}
         selectedFeature={selectedFeature}
+        standorte={standorte}
         popupVisible={popupVisible}
         popupElement={popupElement}
       ></Popup>
