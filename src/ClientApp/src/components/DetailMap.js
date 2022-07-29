@@ -55,7 +55,7 @@ export default function DetailMap(props) {
       layers: [bohrungenLayer],
       view: new View({
         projection: projection,
-        maxZoom: 8,
+        maxZoom: 14,
         zoom: 2,
       }),
     });
@@ -127,6 +127,7 @@ export default function DetailMap(props) {
       }
       map.getView().fit(currentExtent, {
         padding: [30, 30, 30, 30],
+        maxZoom: 8,
       });
     }
   }, [bohrungen, bohrungenLayer, map]);
