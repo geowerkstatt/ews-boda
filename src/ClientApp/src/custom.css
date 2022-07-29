@@ -14,6 +14,7 @@
   position: sticky;
   padding-left: 10px;
   background-color: transparent;
+  width: 10px;
 }
 
 .ol-control button {
@@ -22,6 +23,10 @@
 
 .ol-control:hover {
   background-color: transparent;
+}
+
+.ol-zoom-to-latest {
+  left: 0.5em;
 }
 
 .MuiSvgIcon-root {
