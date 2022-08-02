@@ -256,7 +256,7 @@ export default function BohrprofilForm(props) {
           render={({ field }) => (
             <Autocomplete
               {...field}
-              options={tektonikCodes.map((c) => c.id)}
+              options={tektonikCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
               value={field.value}
               getOptionLabel={(option) => tektonikCodes.find((c) => c.id === option)?.kurztext}
               onChange={(_, data) => field.onChange(data)}
@@ -281,7 +281,7 @@ export default function BohrprofilForm(props) {
           render={({ field }) => (
             <Autocomplete
               {...field}
-              options={formationFelsCodes.map((c) => c.id)}
+              options={formationFelsCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
               value={field.value}
               getOptionLabel={(option) => formationFelsCodes.find((c) => c.id === option)?.kurztext}
               onChange={(_, data) => field.onChange(data)}
@@ -306,7 +306,7 @@ export default function BohrprofilForm(props) {
           render={({ field }) => (
             <Autocomplete
               {...field}
-              options={formationEndtiefeCodes.map((c) => c.id)}
+              options={formationEndtiefeCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
               value={field.value}
               getOptionLabel={(option) => formationEndtiefeCodes.find((c) => c.id === option)?.kurztext}
               onChange={(_, data) => field.onChange(data)}
@@ -331,7 +331,7 @@ export default function BohrprofilForm(props) {
           render={({ field }) => (
             <Autocomplete
               {...field}
-              options={qualitaetCodes.map((c) => c.id)}
+              options={qualitaetCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
               value={field.value}
               getOptionLabel={(option) => qualitaetCodes.find((c) => c.id === option)?.kurztext}
               onChange={(_, data) => field.onChange(data)}
