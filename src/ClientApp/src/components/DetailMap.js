@@ -14,7 +14,7 @@ import { Style, Circle, Fill, Stroke } from "ol/style";
 import "ol/ol.css";
 
 export default function DetailMap(props) {
-  const { bohrungen, currentForm, setCurrentBohrung } = props;
+  const { bohrungen, currentStandort, currentForm, setCurrentBohrung } = props;
   const [map, setMap] = useState();
   const [bohrungenLayer, setBohrungenLayer] = useState();
   const [geometrie, setGeometrie] = useState();
@@ -57,7 +57,7 @@ export default function DetailMap(props) {
       view: new View({
         projection: projection,
         maxZoom: 14,
-        zoom: 2,
+        zoom: 8,
       }),
     });
 
@@ -118,17 +118,23 @@ export default function DetailMap(props) {
       let currentExtent;
       if (bohrungen.length && bohrungen.some((bohrung) => bohrung?.geometrie)) {
         currentExtent = bohrungenLayer.getSource().getExtent();
+      } else if (currentStandort?.bohrungen.some((bohrung) => bohrung?.geometrie)) {
+        const bohrungPoint = new Point([
+          currentStandort?.bohrungen[0].geometrie?.coordinates[0],
+          currentStandort?.bohrungen[0].geometrie?.coordinates[1],
+        ]);
+        currentExtent = bohrungPoint.getExtent();
       } else {
         currentExtent = map.getView().getProjection().getExtent();
       }
       const res = map.getView().getResolution();
       map.getView().fit(currentExtent, {
         padding: [30, 30, 30, 30],
-        maxZoom: 8,
+        zoom: 8,
       });
       map.getView().setResolution(res);
     }
-  }, [bohrungen, bohrungenLayer, map]);
+  }, [bohrungen, bohrungenLayer, currentStandort, map]);
 
   // Update currentBohrung on geometry change
   useEffect(() => {
