@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import MobileStepper from "@mui/material/MobileStepper";
 import Button from "@mui/material/Button";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
+import CloseIcon from "@mui/icons-material/Close";
 import StandortForm from "./StandortForm";
 import BohrungForm from "./BohrungForm";
 import BohrprofilForm from "./BohrprofilForm";
@@ -352,6 +353,11 @@ export default function InputForm(props) {
           >
             <KeyboardArrowLeft />
             Zurück {activeStep !== 0 && steps[activeStep - 1].label}
+          </Button>
+        }
+        nextButton={
+          <Button size="small" onClick={handleClose}>
+            <CloseIcon />
           </Button>
         }
       />
