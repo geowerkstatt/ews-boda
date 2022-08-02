@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MobileStepper from "@mui/material/MobileStepper";
 import Button from "@mui/material/Button";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
@@ -18,7 +18,22 @@ export default function InputForm(props) {
     setAlertVariant,
     getStandort,
     currentUser,
+    readOnly,
   } = props;
+
+  useEffect(() => {
+    // Disable all input elements in the form if necessary. Text in disabled inputs still can be copied.
+    document.querySelectorAll("form[name$=form] input, form[name$=form] textarea").forEach((element) => {
+      element.disabled = readOnly;
+    });
+
+    // Disable pointer events in autocomplete boxes because disabling the underlying inputs does not work properly.
+    document.querySelectorAll("form[name$=form] div.MuiAutocomplete-inputRoot").forEach((element) => {
+      if (readOnly) {
+        element.style.pointerEvents = "none";
+      }
+    });
+  });
 
   const [currentBohrung, setCurrentBohrung] = useState(null);
   const [currentBohrprofil, setCurrentBohrprofil] = useState(null);
@@ -264,6 +279,7 @@ export default function InputForm(props) {
           handleClose={handleClose}
           editStandort={editStandort}
           addStandort={addStandort}
+          readOnly={readOnly}
         ></StandortForm>
       ),
     },
@@ -281,6 +297,7 @@ export default function InputForm(props) {
           addBohrung={addBohrung}
           editBohrung={editBohrung}
           deleteBohrprofil={deleteBohrprofil}
+          readOnly={readOnly}
         ></BohrungForm>
       ),
     },
@@ -298,6 +315,7 @@ export default function InputForm(props) {
           addBohrprofil={addBohrprofil}
           editBohrprofil={editBohrprofil}
           deleteSchicht={deleteSchicht}
+          readOnly={readOnly}
         ></BohrprofilForm>
       ),
     },
@@ -312,6 +330,7 @@ export default function InputForm(props) {
           handleBack={handleBack}
           addSchicht={addSchicht}
           editSchicht={editSchicht}
+          readOnly={readOnly}
         ></SchichtForm>
       ),
     },

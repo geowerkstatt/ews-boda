@@ -172,16 +172,29 @@ describe("Home page tests", () => {
     });
   });
 
-  describe("Edit and Delete Standort for Standort with Freigabe AfU", () => {
+  describe("Edit Standort for Standort with Freigabe AfU", () => {
+    it("view is available for users in role 'Extern'", () => {
+      cy.intercept("/standort*", standorteGemeinde);
+      cy.intercept("/user/self", userInRoleExtern);
+      cy.visit("/");
+      cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
+      cy.get("button[name=submit-button]").should("be.visible").click();
+      cy.get("[data-cy='edit-standort-35978-button']").should("not.be.disabled");
+    });
+  });
+
+  describe("Delete Standort for Standort with Freigabe AfU", () => {
     it("is not available for users in role 'Extern'", () => {
       cy.intercept("/standort*", standorteGemeinde);
       cy.intercept("/user/self", userInRoleExtern);
       cy.visit("/");
       cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
       cy.get("button[name=submit-button]").should("be.visible").click();
-      cy.get("[data-cy='edit-standort-35978-button']").should("be.disabled");
       cy.get("[data-cy='delete-standort-35978-button']").should("be.disabled");
     });
+  });
+
+  describe("Edit and Delete Standort for Standort with Freigabe AfU", () => {
     it("is available for users in role 'SachbearbeiterAfU'", () => {
       cy.intercept("/standort*", standorteGemeinde);
       cy.intercept("/user/self", userInRoleSachbearbeiterAfu);
