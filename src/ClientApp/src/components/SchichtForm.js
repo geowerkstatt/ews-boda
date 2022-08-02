@@ -101,7 +101,7 @@ export default function SchichtForm(props) {
               value={field.value}
               sx={{ width: "47%" }}
               margin="normal"
-              label="Tiefe [m u. T]"
+              label="Tiefe [m u. T.]"
               type="number"
               variant="standard"
               {...register("tiefe", { required: true })}
@@ -128,7 +128,7 @@ export default function SchichtForm(props) {
                 <TextField
                   {...params}
                   margin="normal"
-                  label="Schichtsgrenze"
+                  label="Schicht (bzw. Schichtgrenze)"
                   type="text"
                   variant="standard"
                   error={error !== undefined}
@@ -149,9 +149,10 @@ export default function SchichtForm(props) {
               value={field.value}
               margin="normal"
               multiline
-              label="Bemerkung zur Schicht"
+              label="Bemerkungen zur Schicht"
               type="text"
-              sx={{ marginRight: "6%", width: "47%" }}
+              fullWidth
+              sx={{ marginRight: "6%" }}
               variant="standard"
               {...register("bemerkung")}
             />
@@ -175,7 +176,7 @@ export default function SchichtForm(props) {
                 <TextField
                   {...params}
                   margin="normal"
-                  label="Qualität der Angaben zur Schicht"
+                  label="Qualität"
                   type="text"
                   variant="standard"
                   error={error !== undefined}
@@ -196,9 +197,10 @@ export default function SchichtForm(props) {
               value={field.value}
               margin="normal"
               multiline
-              label="Bemerkung zur Qualitätsangabe"
+              label="Bemerkungen zur Qualitätsangabe"
               type="text"
-              sx={{ marginRight: "6%", width: "47%" }}
+              fullWidth
+              sx={{ width: "100%" }}
               variant="standard"
               {...register("qualitaetBemerkung")}
             />
