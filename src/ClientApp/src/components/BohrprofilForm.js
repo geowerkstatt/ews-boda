@@ -204,7 +204,7 @@ export default function BohrprofilForm(props) {
               multiline
               label="Bemerkungen zum Bohrprofil"
               type="text"
-              sx={{ width: "100%" }}
+              fullWidth
               variant="standard"
               {...register("bemerkung")}
             />
@@ -359,7 +359,7 @@ export default function BohrprofilForm(props) {
               multiline
               label="Bemerkungen zur Qualitätsangabe"
               type="text"
-              sx={{ width: "100%" }}
+              fullWidth
               variant="standard"
               {...register("qualitaetBemerkung")}
             />
