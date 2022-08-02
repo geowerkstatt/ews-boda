@@ -223,6 +223,25 @@ export default function StandortForm(props) {
             )}
           </React.Fragment>
         )}
+        {currentStandort?.id == null && (
+          <Typography>Bitte speichern Sie den Standort bevor Sie Bohrungen hinzufügen.</Typography>
+        )}
+        {currentStandort?.bohrungen?.length > 0 && (
+          <Accordion
+            sx={{ boxShadow: "none" }}
+            expanded={mapExpanded}
+            onChange={(_, expanded) => setMapExpanded(expanded)}
+          >
+            <Tooltip title={mapExpanded ? "Übersichtskarte verbergen" : "Übersichtskarte anzeigen"}>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>Lokalität der Bohrungen</AccordionSummary>
+            </Tooltip>
+            {currentStandort?.bohrungen?.length > 0 && (
+              <AccordionDetails>
+                <DetailMap bohrungen={currentStandort?.bohrungen} currentForm={"standort"}></DetailMap>
+              </AccordionDetails>
+            )}
+          </Accordion>
+        )}
         <Typography sx={{ marginTop: "15px" }} variant="h6" gutterBottom>
           Bohrungen ({currentStandort?.bohrungen ? currentStandort.bohrungen.length : 0})
           <Tooltip title="Bohrung hinzufügen">
@@ -236,73 +255,52 @@ export default function StandortForm(props) {
             </IconButton>
           </Tooltip>
         </Typography>
-        {currentStandort?.id == null && (
-          <Typography>Bitte speichern Sie den Standort bevor Sie Bohrungen hinzufügen.</Typography>
-        )}
         {currentStandort?.bohrungen?.length > 0 && (
-          <React.Fragment>
-            <Accordion
-              sx={{ boxShadow: "none" }}
-              expanded={mapExpanded}
-              onChange={(_, expanded) => setMapExpanded(expanded)}
-            >
-              <Tooltip title={mapExpanded ? "Übersichtskarte verbergen" : "Übersichtskarte anzeigen"}>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>Lokalität der Bohrungen</AccordionSummary>
-              </Tooltip>
-              {currentStandort?.bohrungen?.length > 0 && (
-                <AccordionDetails>
-                  <DetailMap bohrungen={currentStandort?.bohrungen} currentForm={"standort"}></DetailMap>
-                </AccordionDetails>
-              )}
-            </Accordion>
-            {currentStandort?.bohrungen?.length > 0 && (
-              <Table name="seach-results-table" size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Bezeichnung</TableCell>
-                    <TableCell>Datum</TableCell>
-                    <TableCell></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {currentStandort.bohrungen.map((bohrung) => (
-                    <TableRow key={bohrung.id}>
-                      <TableCell>{bohrung.bezeichnung}</TableCell>
-                      <TableCell>{(bohrung.datum && new Date(bohrung.datum).toLocaleDateString()) || null}</TableCell>
-                      <TableCell align="right">
-                        <Tooltip title="Bohrung editieren">
-                          <IconButton onClick={() => onEditBohrung(bohrung)} name="edit-button" color="primary">
-                            {readOnly ? <PreviewIcon /> : <EditIcon />}
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Bohrung duplizieren">
-                          <IconButton
-                            onClick={() => onCopyBohrung(bohrung)}
-                            name="copy-button"
-                            color="primary"
-                            disabled={readOnly}
-                          >
-                            <ContentCopyIcon />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Bohrung löschen">
-                          <IconButton
-                            onClick={() => onDeleteBohrung(bohrung)}
-                            name="delete-button"
-                            color="primary"
-                            aria-label="delete bohrung"
-                            disabled={readOnly}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
-          </React.Fragment>
+          <Table name="seach-results-table" size="small">
+            <TableHead>
+              <TableRow>
+                <TableCell>Bezeichnung</TableCell>
+                <TableCell>Datum</TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {currentStandort.bohrungen.map((bohrung) => (
+                <TableRow key={bohrung.id}>
+                  <TableCell>{bohrung.bezeichnung}</TableCell>
+                  <TableCell>{(bohrung.datum && new Date(bohrung.datum).toLocaleDateString()) || null}</TableCell>
+                  <TableCell align="right">
+                    <Tooltip title="Bohrung editieren">
+                      <IconButton onClick={() => onEditBohrung(bohrung)} name="edit-button" color="primary">
+                        {readOnly ? <PreviewIcon /> : <EditIcon />}
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Bohrung duplizieren">
+                      <IconButton
+                        onClick={() => onCopyBohrung(bohrung)}
+                        name="copy-button"
+                        color="primary"
+                        disabled={readOnly}
+                      >
+                        <ContentCopyIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Bohrung löschen">
+                      <IconButton
+                        onClick={() => onDeleteBohrung(bohrung)}
+                        name="delete-button"
+                        color="primary"
+                        aria-label="delete bohrung"
+                        disabled={readOnly}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         )}
       </DialogContent>
       <DialogActions>

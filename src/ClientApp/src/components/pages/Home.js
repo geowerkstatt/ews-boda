@@ -246,7 +246,7 @@ export function Home(props) {
             getAndSetCurrentStandort={getAndSetCurrentStandort}
             setAlertVariant={setAlertVariant}
             currentUser={currentUser}
-            readOnly={currentStandort.freigabeAfu && currentUser?.role === UserRolesMap.Extern}
+            readOnly={currentStandort?.freigabeAfu && currentUser?.role === UserRolesMap.Extern}
           ></InputForm>
         </Dialog>
         <ConfirmationDialog
