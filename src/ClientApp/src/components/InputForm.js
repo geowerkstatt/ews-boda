@@ -275,6 +275,7 @@ export default function InputForm(props) {
           currentBohrung={currentBohrung}
           setCurrentBohrung={setCurrentBohrung}
           setCurrentBohrprofil={setCurrentBohrprofil}
+          currentBohrprofil={currentBohrprofil}
           handleNext={handleNext}
           handleBack={handleBack}
           addBohrung={addBohrung}

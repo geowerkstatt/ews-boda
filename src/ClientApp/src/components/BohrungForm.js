@@ -40,6 +40,7 @@ export default function BohrungForm(props) {
     currentBohrung,
     setCurrentBohrung,
     setCurrentBohrprofil,
+    currentBohrprofil,
     handleNext,
     handleBack,
     addBohrung,
@@ -157,7 +158,7 @@ export default function BohrungForm(props) {
 
   const confirmDeleteBohrprofil = (confirmation) => {
     if (confirmation) {
-      deleteBohrprofil(currentBohrung);
+      deleteBohrprofil(currentBohrprofil);
     }
     setOpenConfirmation(false);
   };
