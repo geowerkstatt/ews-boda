@@ -60,6 +60,9 @@ describe("Home page tests", () => {
   it("Open Standort Edit Form", function () {
     cy.intercept("/standort", standorte);
 
+    const standort = standorteGemeinde.find((s) => s.bezeichnung === "Ergonomic Metal Tuna");
+    cy.intercept("/standort/" + standort.id, standort);
+
     cy.intercept(
       "/standort?gemeinde=Heinrichswil-Winistorf&gbnummer=&bezeichnung=&erstellungsdatum=&mutationsdatum=",
       standorteGemeinde
@@ -113,7 +116,14 @@ describe("Home page tests", () => {
   });
 
   it("Check and uncheck AfU Freigabe", function () {
-    cy.intercept("/standort*", standorteGemeinde);
+    cy.intercept("/standort", standorte);
+    cy.intercept(
+      "/standort?gemeinde=Heinrichswil-Winistorf&gbnummer=&bezeichnung=&erstellungsdatum=&mutationsdatum=",
+      standorteGemeinde
+    );
+    const standort = standorteGemeinde.find((s) => s.bezeichnung === "Generic Steel Pants");
+    cy.intercept("/standort/" + standort.id, standort);
+
     cy.intercept("/user/self", userInRoleSachbearbeiterAfu);
     cy.intercept("PUT", "/standort").as("editStandortFreigabe");
 
@@ -154,6 +164,9 @@ describe("Home page tests", () => {
     });
     it("is available for users in role 'SachbearbeiterAfU'", () => {
       cy.intercept("/standort*", standorteGemeinde);
+      const standort = standorteGemeinde.find((s) => s.bezeichnung === "Generic Steel Pants");
+      cy.intercept("/standort/" + standort.id, standort);
+
       cy.intercept("/user/self", userInRoleSachbearbeiterAfu);
       cy.visit("/");
       cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
@@ -163,6 +176,8 @@ describe("Home page tests", () => {
     });
     it("is available for users in role 'Administrator'", () => {
       cy.intercept("/standort*", standorteGemeinde);
+      const standort = standorteGemeinde.find((s) => s.bezeichnung === "Generic Steel Pants");
+      cy.intercept("/standort/" + standort.id, standort);
       cy.intercept("/user/self", userInRoleAdministrator);
       cy.visit("/");
       cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");

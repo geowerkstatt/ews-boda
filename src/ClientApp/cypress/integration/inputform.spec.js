@@ -4,6 +4,8 @@ import standorte from "../fixtures/standorte.json";
 describe("Input form tests", () => {
   beforeEach(() => {
     cy.intercept("/standort", standorte);
+    const standort = standorteGemeinde.find((s) => s.bezeichnung === "Ergonomic Metal Tuna");
+    cy.intercept("/standort/" + standort.id, standort);
     cy.intercept(
       "/standort?gemeinde=Heinrichswil-Winistorf&gbnummer=&bezeichnung=&erstellungsdatum=&mutationsdatum=",
       standorteGemeinde

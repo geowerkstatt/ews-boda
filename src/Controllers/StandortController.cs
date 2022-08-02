@@ -20,7 +20,7 @@ public class StandortController : EwsControllerBase<Standort>
     public async Task<IEnumerable<Standort>> GetAsync(
          string? gemeinde = null, string? gbnummer = null, string? bezeichnung = null, DateTime? erstellungsdatum = null, DateTime? mutationsdatum = null)
     {
-        var standorte = GetAll();
+        var standorte = Context.Standorte.Include(s => s.Bohrungen).AsQueryable();
 #pragma warning disable CA1304 // Specify CultureInfo
 
         if (!string.IsNullOrEmpty(gemeinde))
@@ -60,7 +60,12 @@ public class StandortController : EwsControllerBase<Standort>
     [Route("{id}")]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
-        var standort = await GetAll().SingleOrDefaultAsync(s => s.Id == id).ConfigureAwait(false);
+        var standort = await Context.Standorte
+            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Schichten).ThenInclude(s => s.CodeSchicht)
+            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Vorkommnisse).ThenInclude(s => s.Typ)
+            .SingleOrDefaultAsync(s => s.Id == id)
+            .ConfigureAwait(false);
+
         if (standort == null)
         {
             return NotFound();
@@ -109,12 +114,5 @@ public class StandortController : EwsControllerBase<Standort>
         }
 
         return await base.DeleteAsync(id).ConfigureAwait(false);
-    }
-
-    private IQueryable<Standort> GetAll()
-    {
-        return Context.Standorte
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Schichten).ThenInclude(s => s.CodeSchicht)
-            .Include(s => s.Bohrungen).ThenInclude(b => b.Bohrprofile).ThenInclude(b => b.Vorkommnisse).ThenInclude(s => s.Typ).AsQueryable();
     }
 }
