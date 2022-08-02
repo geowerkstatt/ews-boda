@@ -22,11 +22,12 @@ export default function InputForm(props) {
   } = props;
 
   useEffect(() => {
-    // Disable all input elements in the form if necessary
+    // Disable all input elements in the form if necessary. Text in disabled inputs still can be copied.
     document.querySelectorAll("form[name$=form] input, form[name$=form] textarea").forEach((element) => {
       element.disabled = readOnly;
     });
 
+    // Disable pointer events in autocomplete boxes because disabling the underlying inputs does not work properly.
     document.querySelectorAll("form[name$=form] div.MuiAutocomplete-inputRoot").forEach((element) => {
       if (readOnly) {
         element.style.pointerEvents = "none";
