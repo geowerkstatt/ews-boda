@@ -302,7 +302,7 @@ export default function BohrungForm(props) {
           render={({ field }) => (
             <Autocomplete
               {...field}
-              options={ablenkungCodes.map((c) => c.id)}
+              options={ablenkungCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
               value={field.value}
               onChange={(_, data) => field.onChange(data)}
               getOptionLabel={(option) => ablenkungCodes.find((c) => c.id === option)?.kurztext}
@@ -327,7 +327,7 @@ export default function BohrungForm(props) {
           render={({ field }) => (
             <Autocomplete
               {...field}
-              options={qualitaetCodes.map((c) => c.id)}
+              options={qualitaetCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
               value={field.value}
               getOptionLabel={(option) => qualitaetCodes.find((c) => c.id === option)?.kurztext}
               onChange={(_, data) => field.onChange(data)}
