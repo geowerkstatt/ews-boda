@@ -84,17 +84,18 @@ export default function BohrungForm(props) {
       setYCoordinate(y);
       setValue("x_coordinate", x.toFixed(1), { shouldValidate: true, shouldTouch: true });
       setValue("y_coordinate", y.toFixed(1), { shouldValidate: true, shouldTouch: true });
+      currentBohrung.coordinatesChanged = false;
     }
     // Update form values if currentBohrung changes, to allow next/previous navigation.
-    if (currentBohrung) {
-      currentBohrung?.bezeichnung && setValue("bezeichnung", currentBohrung?.bezeichnung);
-      currentBohrung?.bemerkung && setValue("bemerkung", currentBohrung?.bemerkung);
-      currentBohrung?.datum && setValue("datum", currentBohrung?.datum);
-      currentBohrung?.durchmesserBohrloch && setValue("durchmesserBohrloch", currentBohrung?.durchmesserBohrloch);
-      currentBohrung?.ablenkungId && setValue("ablenkungId", currentBohrung?.ablenkungId);
-      currentBohrung?.qualitaetId && setValue("qualitaetId", currentBohrung?.qualitaetId);
-      currentBohrung?.qualitaetBemerkung && setValue("qualitaetBemerkung", currentBohrung?.qualitaetBemerkung);
-      currentBohrung?.quelleRef && setValue("quelleRef", currentBohrung?.quelleRef);
+    if (currentBohrung && !currentBohrung.coordinatesChanged) {
+      setValue("bezeichnung", currentBohrung?.bezeichnung);
+      setValue("bemerkung", currentBohrung?.bemerkung);
+      setValue("datum", currentBohrung?.datum);
+      setValue("durchmesserBohrloch", currentBohrung?.durchmesserBohrloch);
+      setValue("ablenkungId", currentBohrung?.ablenkungId);
+      setValue("qualitaetId", currentBohrung?.qualitaetId);
+      setValue("qualitaetBemerkung", currentBohrung?.qualitaetBemerkung);
+      setValue("quelleRef", currentBohrung?.quelleRef);
     }
   }, [currentBohrung, setValue]);
 
@@ -240,6 +241,7 @@ export default function BohrungForm(props) {
               {...field}
               value={field.value}
               margin="normal"
+              InputLabelProps={{ shrink: field.value != null }}
               multiline
               label="Bemerkung zur Bohrung"
               type="text"
@@ -264,6 +266,7 @@ export default function BohrungForm(props) {
                 renderInput={(params) => (
                   <TextField
                     {...field}
+                    InputLabelProps={{ shrink: field.value != null }}
                     sx={{ marginRight: "6%", width: "47%" }}
                     margin="normal"
                     variant="standard"
@@ -283,6 +286,7 @@ export default function BohrungForm(props) {
             <TextField
               {...field}
               value={field.value}
+              InputLabelProps={{ shrink: field.value != null }}
               sx={{ width: "47%" }}
               margin="normal"
               label="Durchmesser Bohrloch [mm]"
@@ -350,6 +354,7 @@ export default function BohrungForm(props) {
             <TextField
               {...field}
               value={field.value}
+              InputLabelProps={{ shrink: field.value != null }}
               sx={{ marginRight: "6%", width: "47%" }}
               margin="normal"
               multiline
@@ -367,6 +372,7 @@ export default function BohrungForm(props) {
           render={({ field }) => (
             <TextField
               {...field}
+              InputLabelProps={{ shrink: field.value != null }}
               value={field.value}
               margin="normal"
               label="Autor der geologischen Aufnahme"
