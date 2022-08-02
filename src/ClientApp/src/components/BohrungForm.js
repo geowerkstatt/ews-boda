@@ -47,14 +47,12 @@ export default function BohrungForm(props) {
     editBohrung,
     deleteBohrprofil,
   } = props;
-  const { control, handleSubmit, formState, reset, register, setValue } = useForm({
+  const { control, handleSubmit, formState, reset, register, getValues, setValue } = useForm({
     reValidateMode: "onChange",
   });
   const { isDirty } = formState;
   const [ablenkungCodes, setAblenkungCodes] = useState([]);
   const [qualitaetCodes, setQualitaetCodes] = useState([]);
-  const [xCoordinate, setXCoordinate] = useState();
-  const [yCoordinate, setYCoordinate] = useState();
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [mapExpanded, setMapExpanded] = useState(true);
 
@@ -80,8 +78,6 @@ export default function BohrungForm(props) {
     if (currentBohrung?.geometrie?.coordinates) {
       const x = currentBohrung.geometrie.coordinates[0];
       const y = currentBohrung.geometrie.coordinates[1];
-      setXCoordinate(x);
-      setYCoordinate(y);
       setValue("x_coordinate", x.toFixed(1), { shouldValidate: true, shouldTouch: true });
       setValue("y_coordinate", y.toFixed(1), { shouldValidate: true, shouldTouch: true });
       currentBohrung.coordinatesChanged = false;
@@ -170,14 +166,14 @@ export default function BohrungForm(props) {
   const validateXCoordinate = (value) => value > 2590000 && value < 2646000;
   const validateYCoordinate = (value) => value > 1212000 && value < 1264000;
 
-  const validateDistance = () => {
+  const validateDistance = (x, y) => {
     let isValid = false;
     if (numberOfBohrungen === 0 || (currentInteraction === "edit" && numberOfBohrungen === 1)) {
       isValid = true;
-    } else if (xCoordinate && yCoordinate) {
+    } else if (x && y) {
       const src = "EPSG:2056";
       const dest = "EPSG:4326";
-      const newCoordinates = transform([xCoordinate, yCoordinate], src, dest);
+      const newCoordinates = transform([Number(x), Number(y)], src, dest);
       isValid = currentStandort.bohrungen
         .map((b) => {
           const existingCoordinates = transform([b.geometrie.coordinates[0], b.geometrie.coordinates[1]], src, dest);
@@ -413,7 +409,7 @@ export default function BohrungForm(props) {
               {...field}
               sx={{ marginRight: "6%", width: "47%" }}
               margin="normal"
-              InputLabelProps={{ shrink: xCoordinate != null || field.value != null }}
+              InputLabelProps={{ shrink: field.value != null }}
               value={field.value}
               onChange={(value) => field.onChange(value)}
               label="X-Koordinate der Bohrung"
@@ -423,7 +419,7 @@ export default function BohrungForm(props) {
                 validate: {
                   range: (v) => validateXCoordinate(v) || "Die X-Koordinate muss zwischen 2590000 und 2646000 liegen",
                   distance: (v) =>
-                    validateDistance(v) ||
+                    validateDistance(v, getValues("y_coordinate")) ||
                     "Die Distanz der neu erstellten Bohrung darf nicht mehr als 200m zu den bereits vorhandenen Bohrungen betragen",
                 },
               })}
@@ -441,7 +437,7 @@ export default function BohrungForm(props) {
               {...field}
               sx={{ width: "47%" }}
               margin="normal"
-              InputLabelProps={{ shrink: yCoordinate != null || field.value != null }}
+              InputLabelProps={{ shrink: field.value != null }}
               value={field.value}
               onChange={(value) => field.onChange(value)}
               label="Y-Koordinate der Bohrung"
@@ -451,7 +447,7 @@ export default function BohrungForm(props) {
                 validate: {
                   range: (v) => validateYCoordinate(v) || "Die Y-Koordinate muss zwischen 1212000 und 1264000 liegen",
                   distance: (v) =>
-                    validateDistance(v) ||
+                    validateDistance(getValues("x_coordinate"), v) ||
                     "Die Distanz der neu erstellten Bohrung darf nicht mehr als 200m zu den bereits vorhandenen Bohrungen betragen",
                 },
               })}
