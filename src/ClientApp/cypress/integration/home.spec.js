@@ -60,7 +60,7 @@ describe("Home page tests", () => {
   it("Open Standort Edit Form", function () {
     cy.intercept("/standort", standorte);
 
-    let standort = standorteGemeinde.find((s) => s.bezeichnung === "Ergonomic Metal Tuna");
+    const standort = standorteGemeinde.find((s) => s.bezeichnung === "Ergonomic Metal Tuna");
     cy.intercept("/standort/" + standort.id, standort);
 
     cy.intercept(
@@ -121,7 +121,7 @@ describe("Home page tests", () => {
       "/standort?gemeinde=Heinrichswil-Winistorf&gbnummer=&bezeichnung=&erstellungsdatum=&mutationsdatum=",
       standorteGemeinde
     );
-    let standort = standorteGemeinde.find((s) => s.bezeichnung === "Generic Steel Pants");
+    const standort = standorteGemeinde.find((s) => s.bezeichnung === "Generic Steel Pants");
     cy.intercept("/standort/" + standort.id, standort);
 
     cy.intercept("/user/self", userInRoleSachbearbeiterAfu);
@@ -164,7 +164,7 @@ describe("Home page tests", () => {
     });
     it("is available for users in role 'SachbearbeiterAfU'", () => {
       cy.intercept("/standort*", standorteGemeinde);
-      let standort = standorteGemeinde.find((s) => s.bezeichnung === "Generic Steel Pants");
+      const standort = standorteGemeinde.find((s) => s.bezeichnung === "Generic Steel Pants");
       cy.intercept("/standort/" + standort.id, standort);
 
       cy.intercept("/user/self", userInRoleSachbearbeiterAfu);
@@ -176,7 +176,7 @@ describe("Home page tests", () => {
     });
     it("is available for users in role 'Administrator'", () => {
       cy.intercept("/standort*", standorteGemeinde);
-      let standort = standorteGemeinde.find((s) => s.bezeichnung === "Generic Steel Pants");
+      const standort = standorteGemeinde.find((s) => s.bezeichnung === "Generic Steel Pants");
       cy.intercept("/standort/" + standort.id, standort);
       cy.intercept("/user/self", userInRoleAdministrator);
       cy.visit("/");
