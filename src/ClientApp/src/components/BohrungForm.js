@@ -399,6 +399,7 @@ export default function BohrungForm(props) {
           <AccordionDetails>
             <DetailMap
               bohrungen={[currentBohrung]}
+              currentStandort={currentStandort}
               currentForm={"bohrung"}
               setCurrentBohrung={setCurrentBohrung}
             ></DetailMap>
