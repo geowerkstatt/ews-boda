@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import MobileStepper from "@mui/material/MobileStepper";
 import Button from "@mui/material/Button";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
+import CloseIcon from "@mui/icons-material/Close";
 import StandortForm from "./StandortForm";
 import BohrungForm from "./BohrungForm";
 import BohrprofilForm from "./BohrprofilForm";
@@ -260,7 +261,6 @@ export default function InputForm(props) {
 
   const steps = [
     {
-      label: "zum Standort",
       form: (
         <StandortForm
           currentStandort={currentStandort}
@@ -277,7 +277,6 @@ export default function InputForm(props) {
       ),
     },
     {
-      label: "zur Bohrung",
       form: (
         <BohrungForm
           currentStandort={currentStandort}
@@ -295,7 +294,6 @@ export default function InputForm(props) {
       ),
     },
     {
-      label: "zum Bohrprofil",
       form: (
         <BohrprofilForm
           currentBohrung={currentBohrung}
@@ -313,7 +311,6 @@ export default function InputForm(props) {
       ),
     },
     {
-      label: "zur Schicht",
       form: (
         <SchichtForm
           currentBohrung={currentBohrung}
@@ -340,6 +337,12 @@ export default function InputForm(props) {
         position="static"
         activeStep={activeStep}
         backButton={
+          <Button size="small" onClick={handleClose}>
+            <KeyboardArrowLeft />
+            Zurück zu Standortsuche
+          </Button>
+        }
+        nextButton={
           <Button
             size="small"
             onClick={handleBack}
@@ -350,8 +353,7 @@ export default function InputForm(props) {
               },
             }}
           >
-            <KeyboardArrowLeft />
-            Zurück {activeStep !== 0 && steps[activeStep - 1].label}
+            <CloseIcon />
           </Button>
         }
       />
