@@ -109,6 +109,9 @@ export default function BohrungForm(props) {
   const currentInteraction = currentBohrung?.id ? "edit" : currentBohrung?.bezeichnung ? "copy" : "add";
 
   const onSubmit = (formData) => {
+    const date = new Date(formData.datum);
+    // save date as UTC date ignoring the current timezone
+    formData.datum = new Date(date - date.getTimezoneOffset() * 60000).toISOString();
     formData.geometrie = { coordinates: [Number(formData.x_coordinate), Number(formData.y_coordinate)], type: "Point" };
     currentBohrung.id
       ? editBohrung(formData).finally(() => reset(formData))
