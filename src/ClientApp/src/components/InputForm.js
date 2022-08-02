@@ -69,14 +69,12 @@ export default function InputForm(props) {
       setAlertMessage("Bohrung wurde hinzugefügt.");
       setAlertVariant("success");
       getAndSetCurrentStandort(addedBohrung.standortId);
-      handleBack();
     } else {
       setShowAlert(true);
       setAlertMessage(
         "Bohrung konnte nicht hinzugefügt werden. Überprüfen Sie, ob sich alle dem Standort zugeordneten Bohrungen in der gleichen Gemeinde im Kanton Solothurn befinden."
       );
       setAlertVariant("error");
-      handleBack();
     }
   }
 
@@ -100,7 +98,6 @@ export default function InputForm(props) {
       setAlertMessage("Bohrung wurde editiert.");
       setAlertVariant("success");
       getAndSetCurrentStandort(updatedBohrung.standortId);
-      handleBack();
     } else {
       setShowAlert(true);
       setAlertMessage(
@@ -153,7 +150,6 @@ export default function InputForm(props) {
       setAlertMessage("Bohrprofil wurde hinzugefügt.");
       setAlertVariant("success");
       getBohrung(addedBohrprofil.bohrungId);
-      handleBack();
     }
   }
 
@@ -177,7 +173,6 @@ export default function InputForm(props) {
       setAlertMessage("Bohrprofil wurde editiert.");
       setAlertVariant("success");
       getBohrung(updatedBohrprofil.bohrungId);
-      handleBack();
     }
   }
 
@@ -224,7 +219,6 @@ export default function InputForm(props) {
       setAlertMessage("Schicht wurde hinzugefügt.");
       setAlertVariant("success");
       getBohrprofil(addedSchicht.bohrprofilId);
-      handleBack();
     }
   }
 
@@ -248,7 +242,6 @@ export default function InputForm(props) {
       setAlertMessage("Schicht wurde editiert.");
       setAlertVariant("success");
       getBohrprofil(updatedSchicht.bohrprofilId);
-      handleBack();
     }
   }
 
