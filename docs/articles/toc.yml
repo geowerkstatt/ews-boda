@@ -1,4 +1,16 @@
-- name: Einstiegsseite
+- name: Einstiegsseite / Suche
   href: einstiegsseite.md
+- name: Standort
+  href: standort.md
+- name: Bohrung
+  href: bohrung.md
+- name: Bohrprofil
+  href: bohrprofil.md
+- name: Schicht
+  href: schicht.md
+- name: Vorkommnis
+  href: vorkommnis.md
+- name: Daten exportieren
+  href: export.md
 - name: Benutzerverwaltung
   href: benutzerverwaltung.md
