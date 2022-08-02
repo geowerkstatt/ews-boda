@@ -38,8 +38,8 @@ export function Home(props) {
     setOpenStandortForm(true);
   };
 
-  const onEditStandort = (standort) => {
-    getAndSetCurrentStandort(standort.id);
+  const onEditStandort = async (standort) => {
+    await getAndSetCurrentStandort(standort.id);
     setOpenStandortForm(true);
   };
 
