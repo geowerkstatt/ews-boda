@@ -56,7 +56,7 @@ export default function Search(props) {
             options={gemeinden}
             value={field.value}
             onChange={(_, data) => field.onChange(data)}
-            autoHighlight={true}
+            autoHighlight
             renderInput={(params) => <TextField {...params} label="Gemeinde" type="text" variant="standard" />}
           />
         )}

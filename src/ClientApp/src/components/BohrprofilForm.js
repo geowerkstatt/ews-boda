@@ -254,7 +254,7 @@ export default function BohrprofilForm(props) {
               value={field.value}
               getOptionLabel={(option) => tektonikCodes.find((c) => c.id === option)?.kurztext}
               onChange={(_, data) => field.onChange(data)}
-              autoHighlight={true}
+              autoHighlight
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -279,7 +279,7 @@ export default function BohrprofilForm(props) {
               value={field.value}
               getOptionLabel={(option) => formationFelsCodes.find((c) => c.id === option)?.kurztext}
               onChange={(_, data) => field.onChange(data)}
-              autoHighlight={true}
+              autoHighlight
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -304,7 +304,7 @@ export default function BohrprofilForm(props) {
               value={field.value}
               getOptionLabel={(option) => formationEndtiefeCodes.find((c) => c.id === option)?.kurztext}
               onChange={(_, data) => field.onChange(data)}
-              autoHighlight={true}
+              autoHighlight
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -329,7 +329,7 @@ export default function BohrprofilForm(props) {
               value={field.value}
               getOptionLabel={(option) => qualitaetCodes.find((c) => c.id === option)?.kurztext}
               onChange={(_, data) => field.onChange(data)}
-              autoHighlight={true}
+              autoHighlight
               renderInput={(params) => (
                 <TextField
                   {...params}

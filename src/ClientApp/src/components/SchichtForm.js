@@ -123,7 +123,7 @@ export default function SchichtForm(props) {
               value={field.value}
               getOptionLabel={(option) => codeSchichten.find((c) => c.id === option)?.kurztext}
               onChange={(_, data) => field.onChange(data)}
-              autoHighlight={true}
+              autoHighlight
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -169,7 +169,7 @@ export default function SchichtForm(props) {
               getOptionLabel={(option) => qualitaetCodes.find((c) => c.id === option)?.kurztext}
               onChange={(_, data) => field.onChange(data)}
               sx={{ width: "47%" }}
-              autoHighlight={true}
+              autoHighlight
               renderInput={(params) => (
                 <TextField
                   {...params}
