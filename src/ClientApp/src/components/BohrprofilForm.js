@@ -199,6 +199,7 @@ export default function BohrprofilForm(props) {
             <TextField
               {...field}
               value={field.value}
+              InputLabelProps={{ shrink: field.value != null }}
               margin="normal"
               multiline
               label="Bemerkung zum Bohrprofil"
@@ -216,6 +217,7 @@ export default function BohrprofilForm(props) {
           render={({ field }) => (
             <TextField
               {...field}
+              InputLabelProps={{ shrink: field.value != null }}
               value={field.value}
               sx={{ marginRight: "6%", width: "47%" }}
               margin="normal"
@@ -233,6 +235,7 @@ export default function BohrprofilForm(props) {
           render={({ field }) => (
             <TextField
               {...field}
+              InputLabelProps={{ shrink: field.value != null }}
               value={field.value}
               sx={{ width: "47%" }}
               margin="normal"
@@ -347,6 +350,7 @@ export default function BohrprofilForm(props) {
             <TextField
               {...field}
               value={field.value}
+              InputLabelProps={{ shrink: field.value != null }}
               margin="normal"
               multiline
               label="Bemerkung zur Qualitätsangabe"

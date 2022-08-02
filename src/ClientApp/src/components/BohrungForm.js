@@ -239,6 +239,7 @@ export default function BohrungForm(props) {
               {...field}
               value={field.value}
               margin="normal"
+              InputLabelProps={{ shrink: field.value != null }}
               multiline
               label="Bemerkung zur Bohrung"
               type="text"
@@ -263,6 +264,7 @@ export default function BohrungForm(props) {
                 renderInput={(params) => (
                   <TextField
                     {...field}
+                    InputLabelProps={{ shrink: field.value != null }}
                     sx={{ marginRight: "6%", width: "47%" }}
                     margin="normal"
                     variant="standard"
@@ -282,6 +284,7 @@ export default function BohrungForm(props) {
             <TextField
               {...field}
               value={field.value}
+              InputLabelProps={{ shrink: field.value != null }}
               sx={{ width: "47%" }}
               margin="normal"
               label="Durchmesser Bohrloch [mm]"
@@ -347,6 +350,7 @@ export default function BohrungForm(props) {
             <TextField
               {...field}
               value={field.value}
+              InputLabelProps={{ shrink: field.value != null }}
               sx={{ marginRight: "6%", width: "47%" }}
               margin="normal"
               multiline
@@ -364,6 +368,7 @@ export default function BohrungForm(props) {
           render={({ field }) => (
             <TextField
               {...field}
+              InputLabelProps={{ shrink: field.value != null }}
               value={field.value}
               margin="normal"
               label="Autor der geologischen Aufnahme"

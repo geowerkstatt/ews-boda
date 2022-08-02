@@ -144,6 +144,7 @@ export default function SchichtForm(props) {
           render={({ field }) => (
             <TextField
               {...field}
+              InputLabelProps={{ shrink: field.value != null }}
               value={field.value}
               margin="normal"
               multiline
@@ -189,6 +190,7 @@ export default function SchichtForm(props) {
           render={({ field }) => (
             <TextField
               {...field}
+              InputLabelProps={{ shrink: field.value != null }}
               value={field.value}
               margin="normal"
               multiline
