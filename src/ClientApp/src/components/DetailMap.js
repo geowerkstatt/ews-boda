@@ -121,10 +121,12 @@ export default function DetailMap(props) {
       } else {
         currentExtent = map.getView().getProjection().getExtent();
       }
+      const res = map.getView().getResolution();
       map.getView().fit(currentExtent, {
         padding: [30, 30, 30, 30],
         maxZoom: 8,
       });
+      map.getView().setResolution(res);
     }
   }, [bohrungen, bohrungenLayer, map]);
 
