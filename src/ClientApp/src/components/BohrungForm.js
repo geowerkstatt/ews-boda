@@ -77,13 +77,6 @@ export default function BohrungForm(props) {
 
   // Set form values for coordinates if coordinates are changed from DetailMap component
   useEffect(() => {
-    if (currentBohrung?.geometrie?.coordinates) {
-      const x = currentBohrung.geometrie.coordinates[0];
-      const y = currentBohrung.geometrie.coordinates[1];
-      setValue("x_coordinate", x.toFixed(1), { shouldValidate: true, shouldTouch: true });
-      setValue("y_coordinate", y.toFixed(1), { shouldValidate: true, shouldTouch: true });
-      currentBohrung.coordinatesChanged = false;
-    }
     // Update form values if currentBohrung changes, to allow next/previous navigation.
     if (currentBohrung && !currentBohrung.coordinatesChanged) {
       setValue("bezeichnung", currentBohrung?.bezeichnung);
@@ -94,6 +87,13 @@ export default function BohrungForm(props) {
       setValue("qualitaetId", currentBohrung?.qualitaetId);
       setValue("qualitaetBemerkung", currentBohrung?.qualitaetBemerkung);
       setValue("quelleRef", currentBohrung?.quelleRef);
+    }
+    if (currentBohrung?.geometrie?.coordinates) {
+      const x = currentBohrung.geometrie.coordinates[0];
+      const y = currentBohrung.geometrie.coordinates[1];
+      setValue("x_coordinate", x.toFixed(1), { shouldValidate: true, shouldTouch: true });
+      setValue("y_coordinate", y.toFixed(1), { shouldValidate: true, shouldTouch: true });
+      currentBohrung.coordinatesChanged = false;
     }
   }, [currentBohrung, setValue]);
 
