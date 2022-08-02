@@ -205,9 +205,9 @@ export default function BohrprofilForm(props) {
               InputLabelProps={{ shrink: field.value != null }}
               margin="normal"
               multiline
-              label="Bemerkung zum Bohrprofil"
+              label="Bemerkungen zum Bohrprofil"
               type="text"
-              sx={{ width: "47%" }}
+              fullWidth
               variant="standard"
               {...register("bemerkung")}
             />
@@ -224,7 +224,7 @@ export default function BohrprofilForm(props) {
               value={field.value}
               sx={{ marginRight: "6%", width: "47%" }}
               margin="normal"
-              label="Terrainkote der Bohrung [m]"
+              label="Terrainkote der Bohrung [m ü. M.]"
               type="number"
               variant="standard"
               {...register("kote")}
@@ -242,7 +242,7 @@ export default function BohrprofilForm(props) {
               value={field.value}
               sx={{ width: "47%" }}
               margin="normal"
-              label="Endtiefe der Bohrung [m]"
+              label="Endtiefe der Bohrung [m u. T.]"
               type="number"
               variant="standard"
               {...register("endteufe")}
@@ -360,9 +360,9 @@ export default function BohrprofilForm(props) {
               InputLabelProps={{ shrink: field.value != null }}
               margin="normal"
               multiline
-              label="Bemerkung zur Qualitätsangabe"
+              label="Bemerkungen zur Qualitätsangabe"
               type="text"
-              sx={{ width: "100%" }}
+              fullWidth
               variant="standard"
               {...register("qualitaetBemerkung")}
             />
@@ -403,7 +403,7 @@ export default function BohrprofilForm(props) {
               <Table name="schichten-table" size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Tiefe [m u.T]</TableCell>
+                    <TableCell>Tiefe [m u. T.]</TableCell>
                     <TableCell>Schichtgrenze</TableCell>
                     <TableCell></TableCell>
                   </TableRow>
