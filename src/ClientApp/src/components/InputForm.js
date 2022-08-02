@@ -16,7 +16,7 @@ export default function InputForm(props) {
     setShowAlert,
     setAlertMessage,
     setAlertVariant,
-    getStandort,
+    getAndSetCurrentStandort,
     currentUser,
   } = props;
 
@@ -53,7 +53,7 @@ export default function InputForm(props) {
       setShowAlert(true);
       setAlertMessage("Bohrung wurde hinzugefügt.");
       setAlertVariant("success");
-      getStandort(addedBohrung.standortId);
+      getAndSetCurrentStandort(addedBohrung.standortId);
       handleBack();
     } else {
       setShowAlert(true);
@@ -84,7 +84,7 @@ export default function InputForm(props) {
       setShowAlert(true);
       setAlertMessage("Bohrung wurde editiert.");
       setAlertVariant("success");
-      getStandort(updatedBohrung.standortId);
+      getAndSetCurrentStandort(updatedBohrung.standortId);
       handleBack();
     } else {
       setShowAlert(true);
@@ -101,7 +101,7 @@ export default function InputForm(props) {
       method: "DELETE",
     });
     if (response.ok) {
-      getStandort(bohrung.standortId);
+      getAndSetCurrentStandort(bohrung.standortId);
       setShowAlert(true);
       setAlertMessage("Bohrung wurde gelöscht.");
       setAlertVariant("success");

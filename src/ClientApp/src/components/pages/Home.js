@@ -39,7 +39,7 @@ export function Home(props) {
   };
 
   const onEditStandort = (standort) => {
-    setCurrentStandort(standort);
+    getAndSetCurrentStandort(standort.id);
     setOpenStandortForm(true);
   };
 
@@ -73,7 +73,7 @@ export function Home(props) {
   }
 
   // Get standort by Id
-  async function getStandort(id) {
+  async function getAndSetCurrentStandort(id) {
     const response = await fetch("/standort/" + id);
     if (response.ok) {
       const standort = await response.json();
@@ -120,7 +120,7 @@ export function Home(props) {
       body: JSON.stringify(updatedStandort),
     });
     if (response.ok) {
-      getStandort(updatedStandort.id);
+      getAndSetCurrentStandort(updatedStandort.id);
       setShowAlert(true);
       setAlertMessage("Standort wurde editiert.");
     }
@@ -242,7 +242,7 @@ export function Home(props) {
             showAlert={showAlert}
             setShowAlert={setShowAlert}
             setAlertMessage={setAlertMessage}
-            getStandort={getStandort}
+            getAndSetCurrentStandort={getAndSetCurrentStandort}
             setAlertVariant={setAlertVariant}
             currentUser={currentUser}
           ></InputForm>
