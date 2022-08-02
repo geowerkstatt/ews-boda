@@ -83,17 +83,18 @@ export default function BohrungForm(props) {
       setYCoordinate(y);
       setValue("x_coordinate", x.toFixed(1), { shouldValidate: true, shouldTouch: true });
       setValue("y_coordinate", y.toFixed(1), { shouldValidate: true, shouldTouch: true });
+      currentBohrung.coordinatesChanged = false;
     }
     // Update form values if currentBohrung changes, to allow next/previous navigation.
-    if (currentBohrung) {
-      currentBohrung?.bezeichnung && setValue("bezeichnung", currentBohrung?.bezeichnung);
-      currentBohrung?.bemerkung && setValue("bemerkung", currentBohrung?.bemerkung);
-      currentBohrung?.datum && setValue("datum", currentBohrung?.datum);
-      currentBohrung?.durchmesserBohrloch && setValue("durchmesserBohrloch", currentBohrung?.durchmesserBohrloch);
-      currentBohrung?.ablenkungId && setValue("ablenkungId", currentBohrung?.ablenkungId);
-      currentBohrung?.qualitaetId && setValue("qualitaetId", currentBohrung?.qualitaetId);
-      currentBohrung?.qualitaetBemerkung && setValue("qualitaetBemerkung", currentBohrung?.qualitaetBemerkung);
-      currentBohrung?.quelleRef && setValue("quelleRef", currentBohrung?.quelleRef);
+    if (currentBohrung && !currentBohrung.coordinatesChanged) {
+      setValue("bezeichnung", currentBohrung?.bezeichnung);
+      setValue("bemerkung", currentBohrung?.bemerkung);
+      setValue("datum", currentBohrung?.datum);
+      setValue("durchmesserBohrloch", currentBohrung?.durchmesserBohrloch);
+      setValue("ablenkungId", currentBohrung?.ablenkungId);
+      setValue("qualitaetId", currentBohrung?.qualitaetId);
+      setValue("qualitaetBemerkung", currentBohrung?.qualitaetBemerkung);
+      setValue("quelleRef", currentBohrung?.quelleRef);
     }
   }, [currentBohrung, setValue]);
 

@@ -136,6 +136,7 @@ export default function DetailMap(props) {
         geometrie: geometrie,
         "Standort Id": bohrungen[0].standortId,
       };
+      updatedBohrung.coordinatesChanged = true;
       setCurrentBohrung(updatedBohrung);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
