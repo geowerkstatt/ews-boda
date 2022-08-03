@@ -70,6 +70,7 @@ export default function InputForm(props) {
       setShowAlert(true);
       setAlertMessage("Bohrung wurde hinzugefügt.");
       setAlertVariant("success");
+      getAndSetCurrentBohrung(addedBohrung.id);
       getAndSetCurrentStandort(addedBohrung.standortId);
     } else {
       setShowAlert(true);
@@ -123,7 +124,7 @@ export default function InputForm(props) {
   }
 
   // Get bohrung by Id
-  async function getBohrung(id) {
+  async function getAndSetCurrentBohrung(id) {
     const response = await fetch("/bohrung/" + id);
     if (response.ok) {
       const bohrung = await response.json();
@@ -151,7 +152,8 @@ export default function InputForm(props) {
       setShowAlert(true);
       setAlertMessage("Bohrprofil wurde hinzugefügt.");
       setAlertVariant("success");
-      getBohrung(addedBohrprofil.bohrungId);
+      getAndSetCurrentBohrprofil(addedBohrprofil.id);
+      getAndSetCurrentBohrung(addedBohrprofil.bohrungId);
     }
   }
 
@@ -174,7 +176,7 @@ export default function InputForm(props) {
       setShowAlert(true);
       setAlertMessage("Bohrprofil wurde editiert.");
       setAlertVariant("success");
-      getBohrung(updatedBohrprofil.bohrungId);
+      getAndSetCurrentBohrung(updatedBohrprofil.bohrungId);
     }
   }
 
@@ -187,12 +189,12 @@ export default function InputForm(props) {
       setShowAlert(true);
       setAlertMessage("Bohrprofil wurde gelöscht.");
       setAlertVariant("success");
-      getBohrung(bohrprofil.bohrungId);
+      getAndSetCurrentBohrung(bohrprofil.bohrungId);
     }
   }
 
   // Get Bohrprofil by Id
-  async function getBohrprofil(id) {
+  async function getAndSetCurrentBohrprofil(id) {
     const response = await fetch("/bohrprofil/" + id);
     if (response.ok) {
       const bohrprofil = await response.json();
@@ -220,7 +222,7 @@ export default function InputForm(props) {
       setShowAlert(true);
       setAlertMessage("Schicht wurde hinzugefügt.");
       setAlertVariant("success");
-      getBohrprofil(addedSchicht.bohrprofilId);
+      getAndSetCurrentBohrprofil(addedSchicht.bohrprofilId);
     }
   }
 
@@ -243,7 +245,7 @@ export default function InputForm(props) {
       setShowAlert(true);
       setAlertMessage("Schicht wurde editiert.");
       setAlertVariant("success");
-      getBohrprofil(updatedSchicht.bohrprofilId);
+      getAndSetCurrentBohrprofil(updatedSchicht.bohrprofilId);
     }
   }
 
@@ -256,7 +258,7 @@ export default function InputForm(props) {
       setShowAlert(true);
       setAlertMessage("Schicht wurde gelöscht.");
       setAlertVariant("success");
-      getBohrprofil(schicht.bohrprofilId);
+      getAndSetCurrentBohrprofil(schicht.bohrprofilId);
     }
   }
 
