@@ -159,7 +159,6 @@ export default function VorkommnisForm(props) {
               label="Bemerkungen zum Vorkommnis"
               type="text"
               fullWidth
-              sx={{ marginRight: "6%" }}
               variant="standard"
               {...register("bemerkung")}
             />
@@ -198,7 +197,6 @@ export default function VorkommnisForm(props) {
               label="Bemerkungen zur Qualitätsangabe"
               type="text"
               fullWidth
-              sx={{ width: "100%" }}
               variant="standard"
               {...register("qualitaetBemerkung")}
             />

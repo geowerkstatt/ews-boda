@@ -158,7 +158,6 @@ export default function SchichtForm(props) {
               label="Bemerkungen zur Schicht"
               type="text"
               fullWidth
-              sx={{ marginRight: "6%" }}
               variant="standard"
               {...register("bemerkung")}
             />
@@ -206,7 +205,6 @@ export default function SchichtForm(props) {
               label="Bemerkungen zur Qualitätsangabe"
               type="text"
               fullWidth
-              sx={{ width: "100%" }}
               variant="standard"
               {...register("qualitaetBemerkung")}
             />
