@@ -130,6 +130,7 @@ export default function BohrprofilForm(props) {
     delete schichtToCopy.id;
     delete schichtToCopy.erstellungsdatum;
     delete schichtToCopy.mutationsdatum;
+    delete schichtToCopy.userMutation;
     // will be preserved via qualitaetId and codeSchichtId
     delete schichtToCopy.qualitaet;
     delete schichtToCopy.codeSchicht;
@@ -172,6 +173,7 @@ export default function BohrprofilForm(props) {
     delete vorkommnisToCopy.id;
     delete vorkommnisToCopy.erstellungsdatum;
     delete vorkommnisToCopy.mutationsdatum;
+    delete vorkommnisToCopy.userMutation;
     // will be preserved via qualitaetId and typId
     delete vorkommnisToCopy.qualitaet;
     delete vorkommnisToCopy.typ;

@@ -73,6 +73,7 @@ export default function StandortForm(props) {
     delete bohrungToCopy.bohrprofile;
     delete bohrungToCopy.erstellungsdatum;
     delete bohrungToCopy.mutationsdatum;
+    delete bohrungToCopy.userMutation;
     // will be preserved via ablenkungId and qualitaetId
     delete bohrungToCopy.ablenkung;
     delete bohrungToCopy.qualitaet;
