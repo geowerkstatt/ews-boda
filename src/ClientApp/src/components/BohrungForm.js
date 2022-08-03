@@ -147,6 +147,7 @@ export default function BohrungForm(props) {
     delete bohrprofilToCopy.vorkommnisse;
     delete bohrprofilToCopy.erstellungsdatum;
     delete bohrprofilToCopy.mutationsdatum;
+    delete bohrprofilToCopy.userMutation;
     // will be preserved via tektonikId, formationfelsId,formationendtiefeId and qualitaetId
     delete bohrprofilToCopy.tektonik;
     delete bohrprofilToCopy.formationfels;
@@ -315,7 +316,7 @@ export default function BohrungForm(props) {
                   margin="normal"
                   label="Ablenkung der Bohrung"
                   type="text"
-                  fullWidth
+                  sx={{ marginRight: "6%", width: "47%" }}
                   variant="standard"
                 />
               )}
@@ -337,7 +338,7 @@ export default function BohrungForm(props) {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  fullWidth
+                  sx={{ width: "47%" }}
                   margin="normal"
                   label="Qualität der Angaben zur Bohrung"
                   type="text"
