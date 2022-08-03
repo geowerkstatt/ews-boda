@@ -83,14 +83,14 @@ export default function VorkommnisForm(props) {
       <DialogTitle>
         {currentInteraction === "edit" ? "Vorkommnis bearbeiten" : "Vorkommnis erstellen"}
         {currentVorkommnis?.id && currentVorkommnisIndex > 0 && (
-          <Tooltip title="Zur vorherigen Vorkommnis">
+          <Tooltip title="Zum vorherigen Vorkommnis">
             <IconButton onClick={onNavigatePrevious} color="primary">
               <ArrowLeftIcon />
             </IconButton>
           </Tooltip>
         )}
         {currentVorkommnis?.id && currentVorkommnisIndex < numberOfVorkommnisse - 1 && (
-          <Tooltip title="Zur nächsten Vorkommnis">
+          <Tooltip title="Zum nächsten Vorkommnis">
             <IconButton onClick={onNavigateNext} color="primary">
               <ArrowRightIcon />
             </IconButton>
