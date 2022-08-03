@@ -57,7 +57,8 @@ export default function DetailMap(props) {
       view: new View({
         projection: projection,
         maxZoom: 14,
-        zoom: 8,
+        zoom: 1,
+        extent: projection.getExtent(),
       }),
     });
 
@@ -116,25 +117,32 @@ export default function DetailMap(props) {
         })
       );
       let currentExtent;
+
+      // Fit map to extent of Bohrungen if at least one was passed to the DetailMap component
       if (bohrungen.length && bohrungen.some((bohrung) => bohrung?.geometrie)) {
         currentExtent = bohrungenLayer.getSource().getExtent();
+
+        // If no Bohrungen were passed to the DetailMap component, but the current Standort already contains at least one Bohrung, fit extent to first Bohrung of Standort.
       } else if (currentStandort?.bohrungen?.some((bohrung) => bohrung?.geometrie)) {
         const bohrungPoint = new Point([
           currentStandort?.bohrungen[0].geometrie?.coordinates[0],
           currentStandort?.bohrungen[0].geometrie?.coordinates[1],
         ]);
         currentExtent = bohrungPoint.getExtent();
+
+        // If current Standort contains no Bohrungen fit extent to Kanton Solothurn.
       } else {
         currentExtent = map.getView().getProjection().getExtent();
       }
-      const res = map.getView().getResolution();
-      map.getView().fit(currentExtent, {
-        padding: [30, 30, 30, 30],
-        zoom: 8,
-      });
-      map.getView().setResolution(res);
+      // Only update map extent if geometry of Bohrung was not changed from the DetailMap component
+      if (!geometrie) {
+        map.getView().fit(currentExtent, {
+          padding: [30, 30, 30, 30],
+          maxZoom: 10,
+        });
+      }
     }
-  }, [bohrungen, bohrungenLayer, currentStandort, map]);
+  }, [bohrungen, bohrungenLayer, currentStandort, geometrie, map]);
 
   // Update currentBohrung on geometry change
   useEffect(() => {
