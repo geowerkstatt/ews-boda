@@ -433,7 +433,7 @@ export default function BohrprofilForm(props) {
           <Tooltip title="Schicht hinzufügen">
             <IconButton
               color="primary"
-              name="add-button"
+              name="add-schicht-button"
               disabled={readOnly || currentBohrprofil?.id == null}
               onClick={onAddSchicht}
             >
@@ -499,7 +499,7 @@ export default function BohrprofilForm(props) {
           <Tooltip title="Vorkommnis hinzufügen">
             <IconButton
               color="primary"
-              name="add-button"
+              name="add-vorkommnis-button"
               disabled={readOnly || currentBohrprofil?.id == null}
               onClick={onAddVorkommnis}
             >
