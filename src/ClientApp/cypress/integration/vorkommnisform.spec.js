@@ -39,8 +39,8 @@ describe("Input form tests", () => {
   it("Open Vorkommnis Add Form", function () {
     cy.get("button[name=add-vorkommnis-button]").scrollIntoView().click();
     cy.get("button[type=submit]").should("be.disabled");
-    cy.get("form[name=schicht-form]").should("contain", "Vorkommnis erstellen");
-    cy.get("form[name=schicht-form]")
+    cy.get("form[name=vorkommnis-form]").should("contain", "Vorkommnis erstellen");
+    cy.get("form[name=vorkommnis-form]")
       .scrollIntoView()
       .find("textarea[name=bemerkung]")
       .should("be.visible")
@@ -57,8 +57,8 @@ describe("Input form tests", () => {
       .scrollIntoView()
       .click();
     cy.get("button[type=submit]").should("be.disabled");
-    cy.get("form[name=schicht-form]").should("contain", "Vorkommnis bearbeiten");
-    cy.get("form[name=schicht-form]")
+    cy.get("form[name=vorkommnis-form]").should("contain", "Vorkommnis bearbeiten");
+    cy.get("form[name=vorkommnis-form]")
       .scrollIntoView()
       .find("textarea[name=bemerkung]")
       .should("be.visible")
