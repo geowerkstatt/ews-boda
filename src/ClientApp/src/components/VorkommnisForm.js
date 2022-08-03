@@ -37,7 +37,10 @@ export default function VorkommnisForm(props) {
 
   const [mapExpanded, setMapExpanded] = useState(true);
 
-  const currentVorkommnisIndex = currentBohrprofil.vorkommnisse.indexOf(currentVorkommnis);
+  const currentVorkommnisIndex =
+    currentBohrprofil.vorkommnisse?.indexOf(
+      currentBohrprofil.vorkommnisse.find((b) => b.id === currentVorkommnis.id)
+    ) || 0;
   const numberOfVorkommnisse = currentBohrprofil.vorkommnisse.length;
 
   // Get codes for dropdowns

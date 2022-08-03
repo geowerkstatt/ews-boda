@@ -61,7 +61,8 @@ export default function BohrprofilForm(props) {
   const [openVorkommnisConfirmation, setOpenVorkommnisConfirmation] = useState(false);
   const [mapExpanded, setMapExpanded] = useState(true);
 
-  const currentBohrprofilIndex = currentBohrung.bohrprofile.indexOf(currentBohrprofil);
+  const currentBohrprofilIndex =
+    currentBohrung.bohrprofile?.indexOf(currentBohrung.bohrprofile.find((b) => b.id === currentBohrprofil.id)) || 0;
   const numberOfBohrprofile = currentBohrung.bohrprofile.length;
 
   // Get codes for dropdowns
