@@ -98,6 +98,12 @@ export default function BohrprofilForm(props) {
   const currentInteraction = currentBohrprofil?.id ? "edit" : "add";
 
   const onSubmit = (formData) => {
+    // Save date as UTC date ignoring the current timezone
+    const date = new Date(formData.datum);
+    if (!isNaN(date)) {
+      formData.datum = new Date(date - date.getTimezoneOffset() * 60000).toISOString();
+    }
+
     currentBohrprofil.id
       ? editBohrprofil(formData).finally(() => reset(formData))
       : addBohrprofil(formData).finally(() => reset(formData));
