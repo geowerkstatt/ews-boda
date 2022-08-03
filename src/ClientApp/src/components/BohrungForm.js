@@ -408,6 +408,7 @@ export default function BohrungForm(props) {
               currentStandort={currentStandort}
               currentForm={"bohrung"}
               setCurrentBohrung={setCurrentBohrung}
+              readOnly={readOnly}
             ></DetailMap>
           </AccordionDetails>
         </Accordion>

@@ -14,7 +14,7 @@ import { Style, Circle, Fill, Stroke } from "ol/style";
 import "ol/ol.css";
 
 export default function DetailMap(props) {
-  const { bohrungen, currentStandort, currentForm, setCurrentBohrung } = props;
+  const { bohrungen, currentStandort, currentForm, setCurrentBohrung, readOnly } = props;
   const [map, setMap] = useState();
   const [bohrungenLayer, setBohrungenLayer] = useState();
   const [geometrie, setGeometrie] = useState();
@@ -62,7 +62,7 @@ export default function DetailMap(props) {
     });
 
     // Allow editing of geometry if map is displayed in bohrung form.
-    if (currentForm === "bohrung") {
+    if (currentForm === "bohrung" && !readOnly) {
       initialMap.on("singleclick", function (evt) {
         setGeometrie({ type: "Point", coordinates: evt.coordinate });
       });
