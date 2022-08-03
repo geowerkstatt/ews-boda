@@ -190,6 +190,7 @@ export default function StandortForm(props) {
           <React.Fragment>
             <TextField
               value={currentStandort?.afuUser}
+              InputLabelProps={{ shrink: currentStandort?.afuUser != null }}
               sx={{ marginRight: "6%", width: "47%" }}
               disabled
               margin="normal"
@@ -201,6 +202,7 @@ export default function StandortForm(props) {
             <TextField
               name="afuDatum"
               value={currentStandort?.afuDatum ? new Date(currentStandort.afuDatum).toLocaleDateString() : null}
+              InputLabelProps={{ shrink: currentStandort?.afuDatum != null }}
               disabled
               sx={{ width: "47%" }}
               margin="normal"
