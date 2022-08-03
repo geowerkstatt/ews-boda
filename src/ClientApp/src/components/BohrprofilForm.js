@@ -95,7 +95,7 @@ export default function BohrprofilForm(props) {
     }
   }, [currentBohrprofil, setValue]);
 
-  const currentInteraction = currentBohrprofil?.id ? "edit" : currentBohrprofil?.bezeichnung ? "copy" : "add";
+  const currentInteraction = currentBohrprofil?.id ? "edit" : "add";
 
   const onSubmit = (formData) => {
     currentBohrprofil.id
@@ -147,11 +147,7 @@ export default function BohrprofilForm(props) {
   return (
     <Box component="form" name="bohrprofil-form" onSubmit={handleSubmit(onSubmit)}>
       <DialogTitle>
-        {currentInteraction === "edit"
-          ? "Bohrprofil bearbeiten"
-          : currentInteraction === "copy"
-          ? "Bohrprofil kopieren"
-          : "Bohrprofil erstellen"}
+        {currentInteraction === "edit" ? "Bohrprofil bearbeiten" : "Bohrprofil erstellen"}
         {currentBohrprofil?.id && currentBohrprofilIndex > 0 && (
           <Tooltip title="Zum vorherigen Bohrprofil">
             <IconButton onClick={onNavigatePrevious} color="primary">

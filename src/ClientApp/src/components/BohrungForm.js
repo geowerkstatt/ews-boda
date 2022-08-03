@@ -106,7 +106,7 @@ export default function BohrungForm(props) {
     registerProjection(proj4);
   }, []);
 
-  const currentInteraction = currentBohrung?.id ? "edit" : currentBohrung?.bezeichnung ? "copy" : "add";
+  const currentInteraction = currentBohrung?.id ? "edit" : "add";
 
   const onSubmit = (formData) => {
     // save date as UTC date ignoring the current timezone
@@ -195,11 +195,7 @@ export default function BohrungForm(props) {
   return (
     <Box component="form" name="bohrung-form" onSubmit={handleSubmit(onSubmit)}>
       <DialogTitle>
-        {currentInteraction === "edit"
-          ? "Bohrung bearbeiten"
-          : currentInteraction === "copy"
-          ? "Bohrung kopieren"
-          : "Bohrung erstellen"}
+        {currentInteraction === "edit" ? "Bohrung bearbeiten" : "Bohrung erstellen"}
         {currentBohrung?.id && currentBohrungIndex > 0 && (
           <Tooltip title="Zur vorherigen Bohrung">
             <IconButton onClick={onNavigatePrevious} color="primary">
