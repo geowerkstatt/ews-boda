@@ -64,7 +64,7 @@ export default function SchichtForm(props) {
     }
   }, [currentSchicht, setValue]);
 
-  const currentInteraction = currentSchicht?.id ? "edit" : currentSchicht?.tiefe ? "copy" : "add";
+  const currentInteraction = currentSchicht?.id ? "edit" : "add";
 
   const onSubmit = (formData) => {
     currentSchicht.id
@@ -78,11 +78,7 @@ export default function SchichtForm(props) {
   return (
     <Box component="form" name="schicht-form" onSubmit={handleSubmit(onSubmit)}>
       <DialogTitle>
-        {currentInteraction === "edit"
-          ? "Schicht bearbeiten"
-          : currentInteraction === "copy"
-          ? "Schicht kopieren"
-          : "Schicht erstellen"}
+        {currentInteraction === "edit" ? "Schicht bearbeiten" : "Schicht erstellen"}
         {currentSchicht?.id && currentSchichtIndex > 0 && (
           <Tooltip title="Zur vorherigen Schicht">
             <IconButton onClick={onNavigatePrevious} color="primary">
