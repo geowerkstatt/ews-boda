@@ -38,7 +38,7 @@ export default function SchichtForm(props) {
   const [mapExpanded, setMapExpanded] = useState(true);
 
   const currentSchichtIndex =
-    currentBohrprofil.schichten?.indexOf(currentBohrprofil.schichten.find((b) => b.id === currentSchicht.id)) || 0;
+    currentBohrprofil.schichten?.indexOf(currentBohrprofil.schichten.find((b) => b.id === currentSchicht?.id)) || 0;
 
   const numberOfSchichten = currentBohrprofil.schichten.length;
 
