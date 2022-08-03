@@ -115,24 +115,29 @@ export default function DetailMap(props) {
           features: parsedFeatures,
         })
       );
+
       let currentExtent;
-      if (bohrungen.length && bohrungen.some((bohrung) => bohrung?.geometrie)) {
-        currentExtent = bohrungenLayer.getSource().getExtent();
-      } else if (currentStandort?.bohrungen?.some((bohrung) => bohrung?.geometrie)) {
-        const bohrungPoint = new Point([
-          currentStandort?.bohrungen[0].geometrie?.coordinates[0],
-          currentStandort?.bohrungen[0].geometrie?.coordinates[1],
-        ]);
-        currentExtent = bohrungPoint.getExtent();
+      if (parsedFeatures.length) {
+        if (bohrungen.length && bohrungen.some((bohrung) => bohrung?.geometrie)) {
+          currentExtent = bohrungenLayer.getSource().getExtent();
+        } else if (currentStandort?.bohrungen?.some((bohrung) => bohrung?.geometrie)) {
+          const bohrungPoint = new Point([
+            currentStandort?.bohrungen[0].geometrie?.coordinates[0],
+            currentStandort?.bohrungen[0].geometrie?.coordinates[1],
+          ]);
+          currentExtent = bohrungPoint.getExtent();
+        }
+
+        const res = map.getView().getResolution();
+        map.getView().fit(currentExtent, {
+          padding: [30, 30, 30, 30],
+          zoom: 8,
+        });
+        map.getView().setResolution(res);
       } else {
         currentExtent = map.getView().getProjection().getExtent();
+        map.getView().fit(currentExtent);
       }
-      const res = map.getView().getResolution();
-      map.getView().fit(currentExtent, {
-        padding: [30, 30, 30, 30],
-        zoom: 8,
-      });
-      map.getView().setResolution(res);
     }
   }, [bohrungen, bohrungenLayer, currentStandort, map]);
 
