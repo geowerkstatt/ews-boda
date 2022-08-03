@@ -174,9 +174,7 @@ export default function StandortForm(props) {
                     control={control}
                     defaultValue={currentStandort?.freigabeAfu ?? false}
                     value={currentStandort?.freigabeAfu}
-                    render={({ field: { value, ref, ...field } }) => (
-                      <Checkbox {...field} inputRef={ref} checked={value} />
-                    )}
+                    render={({ field: { value, ...field } }) => <Checkbox {...field} checked={value} />}
                     onClick={(e) => {
                       currentStandort.freigabeAfu = e.target.checked;
                     }}
@@ -233,14 +231,16 @@ export default function StandortForm(props) {
         <Typography sx={{ marginTop: "15px" }} variant="h6" gutterBottom>
           Bohrungen ({currentStandort?.bohrungen ? currentStandort.bohrungen.length : 0})
           <Tooltip title="Bohrung hinzufügen">
-            <IconButton
-              color="primary"
-              name="add-button"
-              onClick={onAddBohrung}
-              disabled={readOnly || currentStandort?.id == null}
-            >
-              <AddCircleIcon />
-            </IconButton>
+            <span>
+              <IconButton
+                color="primary"
+                name="add-button"
+                onClick={onAddBohrung}
+                disabled={readOnly || currentStandort?.id == null}
+              >
+                <AddCircleIcon />
+              </IconButton>
+            </span>
           </Tooltip>
         </Typography>
         {currentStandort?.bohrungen?.length > 0 && (
