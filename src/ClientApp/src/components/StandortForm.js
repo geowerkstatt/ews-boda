@@ -145,9 +145,7 @@ export default function StandortForm(props) {
             value={currentStandort?.gemeinde}
             fullWidth
             type="text"
-            InputProps={{
-              readOnly: true,
-            }}
+            disabled
             variant="standard"
             label="Gemeinde"
           />
@@ -158,9 +156,7 @@ export default function StandortForm(props) {
             inputProps={{
               maxLength: 40,
             }}
-            InputProps={{
-              readOnly: true,
-            }}
+            disabled
             margin="normal"
             label="Grundbuchnummer"
             variant="standard"
@@ -194,9 +190,7 @@ export default function StandortForm(props) {
             <TextField
               value={currentStandort?.afuUser}
               sx={{ marginRight: "6%", width: "47%" }}
-              InputProps={{
-                readOnly: true,
-              }}
+              disabled
               margin="normal"
               label="AfU Freigabe erfolgt durch"
               type="text"
@@ -206,9 +200,7 @@ export default function StandortForm(props) {
             <TextField
               name="afuDatum"
               value={currentStandort?.afuDatum ? new Date(currentStandort.afuDatum).toLocaleDateString() : null}
-              InputProps={{
-                readOnly: true,
-              }}
+              disabled
               sx={{ width: "47%" }}
               margin="normal"
               label="AfU Freigabe erfolgt am"
