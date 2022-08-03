@@ -118,7 +118,7 @@ export default function DetailMap(props) {
       let currentExtent;
       if (bohrungen.length && bohrungen.some((bohrung) => bohrung?.geometrie)) {
         currentExtent = bohrungenLayer.getSource().getExtent();
-      } else if (currentStandort?.bohrungen.some((bohrung) => bohrung?.geometrie)) {
+      } else if (currentStandort?.bohrungen?.some((bohrung) => bohrung?.geometrie)) {
         const bohrungPoint = new Point([
           currentStandort?.bohrungen[0].geometrie?.coordinates[0],
           currentStandort?.bohrungen[0].geometrie?.coordinates[1],
