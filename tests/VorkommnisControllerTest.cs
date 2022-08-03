@@ -63,7 +63,7 @@ public class VorkommnisControllerTest
             Tiefe = 6341,
             QualitaetId = 330,
             HQualitaet = 3,
-            HTyp =2,
+            HTyp = 2,
             Bemerkung = "Physalis Mamnoun reaching new hights.",
             QualitaetBemerkung = "It only worked on full moon nights.",
         };
