@@ -100,6 +100,7 @@ export default function InputForm(props) {
       setShowAlert(true);
       setAlertMessage("Bohrung wurde editiert.");
       setAlertVariant("success");
+      getAndSetCurrentBohrung(updatedBohrung.id);
       getAndSetCurrentStandort(updatedBohrung.standortId);
     } else {
       setShowAlert(true);
@@ -176,6 +177,7 @@ export default function InputForm(props) {
       setShowAlert(true);
       setAlertMessage("Bohrprofil wurde editiert.");
       setAlertVariant("success");
+      getAndSetCurrentBohrprofil(updatedBohrprofil.id);
       getAndSetCurrentBohrung(updatedBohrprofil.bohrungId);
     }
   }
@@ -222,6 +224,7 @@ export default function InputForm(props) {
       setShowAlert(true);
       setAlertMessage("Schicht wurde hinzugefügt.");
       setAlertVariant("success");
+      setCurrentSchicht(addedSchicht.id);
       getAndSetCurrentBohrprofil(addedSchicht.bohrprofilId);
     }
   }
@@ -245,6 +248,7 @@ export default function InputForm(props) {
       setShowAlert(true);
       setAlertMessage("Schicht wurde editiert.");
       setAlertVariant("success");
+      setCurrentSchicht(updatedSchicht.id);
       getAndSetCurrentBohrprofil(updatedSchicht.bohrprofilId);
     }
   }
