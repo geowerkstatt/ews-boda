@@ -143,7 +143,38 @@
             "id": 9645411,
             "bohrungId": 41063,
             "endteufe": 12345678,
-            "vorkommnisse": null,
+            "vorkommnisse": [
+              {
+                "id": 618420,
+                "bohrprofilId": 9645411,
+                "tiefe": 618420,
+                "typId": 50521,
+                "typ": {
+                  "id": 50521,
+                  "kurztext": "Digitized upward-trending",
+                  "text": "This product works outstandingly well."
+                },
+                "qualitaetId": 80,
+                "qualitaet": null,
+                "qualitaetBemerkung": null,
+                "bemerkung": "one of my hobbies is gaming. and when i'm gaming this works great."
+              },
+              {
+                "id": 6971500,
+                "bohrprofilId": 5337810,
+                "tiefe": 545290,
+                "typId": 263,
+                "typ": {
+                  "id": 263,
+                  "kurztext": "It only works when I'm Malaysia.",
+                  "text": "Diverse zero administration"
+                },
+                "qualitaetId": 103,
+                "qualitaet": null,
+                "qualitaetBemerkung": null,
+                "bemerkung": "My velociraptor loves to play with it."
+              }
+            ],
             "schichten": [
               {
                 "id": 82440,

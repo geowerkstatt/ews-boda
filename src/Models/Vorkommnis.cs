@@ -47,10 +47,15 @@ public class Vorkommnis : EwsModelBase
     public string? Bemerkung { get; set; }
 
     /// <summary>
-    /// Qualitätsangabe zum Vorkommnis.
+    /// Foreign Key: ID Qualitätsangabe zum Vorkommnis.
     /// </summary>
     [Column("quali")]
-    public int? Qualitaet { get; set; }
+    public int? QualitaetId { get; set; }
+
+    /// <summary>
+    /// Qualitätsangabe zum Vorkommnis.
+    /// </summary>
+    public Code? Qualitaet { get; set; }
 
     /// <summary>
     /// Bemerkung zur Qualitätsangabe.

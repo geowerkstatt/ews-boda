@@ -36,40 +36,40 @@ describe("Input form tests", () => {
     cy.contains("td", "12345678").parent("tr").children("td").find("button[name=edit-button]").scrollIntoView().click();
   });
 
-  it("Open Schicht Add Form", function () {
-    cy.get("button[name=add-schicht-button]").scrollIntoView().click();
+  it("Open Vorkommnis Add Form", function () {
+    cy.get("button[name=add-vorkommnis-button]").scrollIntoView().click();
     cy.get("button[type=submit]").should("be.disabled");
-    cy.get("form[name=schicht-form]").should("contain", "Schicht erstellen");
-    cy.get("form[name=schicht-form]")
+    cy.get("form[name=vorkommnis-form]").should("contain", "Vorkommnis erstellen");
+    cy.get("form[name=vorkommnis-form]")
       .scrollIntoView()
       .find("textarea[name=bemerkung]")
       .should("be.visible")
       .click({ force: true })
       .type(" And More");
-    cy.contains("button", "Schicht speichern").scrollIntoView().should("not.be.disabled").click();
+    cy.contains("button", "Vorkommnis speichern").scrollIntoView().should("not.be.disabled").click();
   });
 
-  it("Open Schicht Edit Form", function () {
-    cy.contains("td", "Avon Intelligent Cotton Keyboard")
+  it("Open Vorkommnis Edit Form", function () {
+    cy.contains("td", "It only works when I'm Malaysia.")
       .parent("tr")
       .children("td")
       .find("button[name=edit-button]")
       .scrollIntoView()
       .click();
     cy.get("button[type=submit]").should("be.disabled");
-    cy.get("form[name=schicht-form]").should("contain", "Schicht bearbeiten");
-    cy.get("form[name=schicht-form]")
+    cy.get("form[name=vorkommnis-form]").should("contain", "Vorkommnis bearbeiten");
+    cy.get("form[name=vorkommnis-form]")
       .scrollIntoView()
       .find("textarea[name=bemerkung]")
       .should("be.visible")
       .click({ force: true })
       .type(" And More");
 
-    cy.contains("button", "Schicht speichern").scrollIntoView().should("be.visible").click();
+    cy.contains("button", "Vorkommnis speichern").scrollIntoView().should("be.visible").click();
   });
 
-  it("Delete Schicht", function () {
-    cy.contains("td", "Avon Intelligent Cotton Keyboard")
+  it("Delete Vorkommnis", function () {
+    cy.contains("td", "It only works when I'm Malaysia.")
       .parent("tr")
       .children("td")
       .find("button[name=delete-button]")

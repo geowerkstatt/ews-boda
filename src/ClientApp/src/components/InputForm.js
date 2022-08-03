@@ -8,6 +8,7 @@ import StandortForm from "./StandortForm";
 import BohrungForm from "./BohrungForm";
 import BohrprofilForm from "./BohrprofilForm";
 import SchichtForm from "./SchichtForm";
+import VorkommnisForm from "./VorkommnisForm";
 
 export default function InputForm(props) {
   const {
@@ -40,6 +41,8 @@ export default function InputForm(props) {
   const [currentBohrung, setCurrentBohrung] = useState(null);
   const [currentBohrprofil, setCurrentBohrprofil] = useState(null);
   const [currentSchicht, setCurrentSchicht] = useState(null);
+  const [currentVorkommnis, setCurrentVorkommnis] = useState(null);
+  const [finalStepIsSchicht, setFinalStepIsSchicht] = useState(false);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -201,6 +204,9 @@ export default function InputForm(props) {
     if (response.ok) {
       const bohrprofil = await response.json();
       setCurrentBohrprofil(bohrprofil);
+      currentSchicht?.id && setCurrentSchicht(bohrprofil.schichten.find((s) => s.id === currentSchicht.id) || null);
+      currentVorkommnis?.id &&
+        setCurrentVorkommnis(bohrprofil.vorkommnisse.find((v) => v.id === currentVorkommnis.id) || null);
     }
   }
 
@@ -224,7 +230,7 @@ export default function InputForm(props) {
       setShowAlert(true);
       setAlertMessage("Schicht wurde hinzugefügt.");
       setAlertVariant("success");
-      setCurrentSchicht(addedSchicht.id);
+      setCurrentSchicht(addedSchicht);
       getAndSetCurrentBohrprofil(addedSchicht.bohrprofilId);
     }
   }
@@ -248,7 +254,6 @@ export default function InputForm(props) {
       setShowAlert(true);
       setAlertMessage("Schicht wurde editiert.");
       setAlertVariant("success");
-      setCurrentSchicht(updatedSchicht.id);
       getAndSetCurrentBohrprofil(updatedSchicht.bohrprofilId);
     }
   }
@@ -263,6 +268,67 @@ export default function InputForm(props) {
       setAlertMessage("Schicht wurde gelöscht.");
       setAlertVariant("success");
       getAndSetCurrentBohrprofil(schicht.bohrprofilId);
+    }
+  }
+
+  // Add Vorkommnis
+  async function addVorkommnis(data) {
+    const vorkommnisToAdd = currentVorkommnis;
+    Object.entries(data).forEach(([key, value]) => {
+      vorkommnisToAdd[key] = value;
+    });
+    const response = await fetch("/vorkommnis", {
+      method: "POST",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(vorkommnisToAdd),
+    });
+    if (response.ok) {
+      const addedVorkommnis = await response.json();
+      setShowAlert(true);
+      setAlertMessage("Vorkommnis wurde hinzugefügt.");
+      setAlertVariant("success");
+      setCurrentVorkommnis(addedVorkommnis);
+      getAndSetCurrentBohrprofil(addedVorkommnis.bohrprofilId);
+    }
+  }
+
+  // Edit Vorkommnis
+  async function editVorkommnis(data) {
+    const updatedVorkommnis = currentVorkommnis;
+    Object.entries(data).forEach(([key, value]) => {
+      updatedVorkommnis[key] = value;
+    });
+    const response = await fetch("/vorkommnis", {
+      method: "PUT",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedVorkommnis),
+    });
+    if (response.ok) {
+      setShowAlert(true);
+      setAlertMessage("Vorkommnis wurde editiert.");
+      setAlertVariant("success");
+      getAndSetCurrentBohrprofil(updatedVorkommnis.bohrprofilId);
+    }
+  }
+
+  // Delete Vorkommnis
+  async function deleteVorkommnis(vorkommnis) {
+    const response = await fetch("/vorkommnis?id=" + vorkommnis.id, {
+      method: "DELETE",
+    });
+    if (response.ok) {
+      setShowAlert(true);
+      setAlertMessage("Vorkommnis wurde gelöscht.");
+      setAlertVariant("success");
+      getAndSetCurrentBohrprofil(vorkommnis.bohrprofilId);
     }
   }
 
@@ -311,18 +377,22 @@ export default function InputForm(props) {
           setCurrentBohrprofil={setCurrentBohrprofil}
           currentSchicht={currentSchicht}
           setCurrentSchicht={setCurrentSchicht}
+          currentVorkommnis={currentVorkommnis}
+          setCurrentVorkommnis={setCurrentVorkommnis}
           handleNext={handleNext}
           handleBack={handleBack}
+          setFinalStepIsSchicht={setFinalStepIsSchicht}
           addBohrprofil={addBohrprofil}
           editBohrprofil={editBohrprofil}
           deleteSchicht={deleteSchicht}
+          deleteVorkommnis={deleteVorkommnis}
           readOnly={readOnly}
         ></BohrprofilForm>
       ),
     },
     {
-      label: "zur Schicht",
-      form: (
+      label: "",
+      form: finalStepIsSchicht ? (
         <SchichtForm
           currentBohrung={currentBohrung}
           currentBohrprofil={currentBohrprofil}
@@ -333,6 +403,17 @@ export default function InputForm(props) {
           editSchicht={editSchicht}
           readOnly={readOnly}
         ></SchichtForm>
+      ) : (
+        <VorkommnisForm
+          currentBohrung={currentBohrung}
+          currentBohrprofil={currentBohrprofil}
+          currentVorkommnis={currentVorkommnis}
+          setCurrentVorkommnis={setCurrentVorkommnis}
+          handleBack={handleBack}
+          addVorkommnis={addVorkommnis}
+          editVorkommnis={editVorkommnis}
+          readOnly={readOnly}
+        ></VorkommnisForm>
       ),
     },
   ];

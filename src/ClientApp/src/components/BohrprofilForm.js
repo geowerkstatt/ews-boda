@@ -38,11 +38,15 @@ export default function BohrprofilForm(props) {
     setCurrentBohrprofil,
     currentSchicht,
     setCurrentSchicht,
+    currentVorkommnis,
+    setCurrentVorkommnis,
+    setFinalStepIsSchicht,
     handleNext,
     handleBack,
     addBohrprofil,
     editBohrprofil,
     deleteSchicht,
+    deleteVorkommnis,
     readOnly,
   } = props;
   const { control, handleSubmit, formState, reset, register, setValue } = useForm({
@@ -53,10 +57,12 @@ export default function BohrprofilForm(props) {
   const [tektonikCodes, setTektonikCodes] = useState([]);
   const [formationFelsCodes, setFormationFelsCodes] = useState([]);
   const [formationEndtiefeCodes, setFormationEndtiefeCodes] = useState([]);
-  const [openConfirmation, setOpenConfirmation] = useState(false);
+  const [openSchichtConfirmation, setOpenSchichtConfirmation] = useState(false);
+  const [openVorkommnisConfirmation, setOpenVorkommnisConfirmation] = useState(false);
   const [mapExpanded, setMapExpanded] = useState(true);
 
-  const currentBohrprofilIndex = currentBohrung.bohrprofile.indexOf(currentBohrprofil);
+  const currentBohrprofilIndex =
+    currentBohrung.bohrprofile?.indexOf(currentBohrung.bohrprofile.find((b) => b.id === currentBohrprofil.id)) || 0;
   const numberOfBohrprofile = currentBohrung.bohrprofile.length;
 
   // Get codes for dropdowns
@@ -110,41 +116,88 @@ export default function BohrprofilForm(props) {
   };
 
   const onAddSchicht = () => {
-    let schicht = {
+    const schicht = {
       bohrprofilId: currentBohrprofil.id,
       hQualitaet: CodeTypes.Schicht_hquali,
     };
     setCurrentSchicht(schicht);
+    setFinalStepIsSchicht(true);
     handleNext();
   };
 
   const onEditSchicht = (schicht) => {
     setCurrentSchicht(schicht);
+    setFinalStepIsSchicht(true);
     handleNext();
   };
 
   const onCopySchicht = (schicht) => {
-    let schichtToCopy = structuredClone(schicht);
+    const schichtToCopy = structuredClone(schicht);
     delete schichtToCopy.id;
     delete schichtToCopy.erstellungsdatum;
     delete schichtToCopy.mutationsdatum;
+    delete schichtToCopy.userMutation;
     // will be preserved via qualitaetId and codeSchichtId
     delete schichtToCopy.qualitaet;
     delete schichtToCopy.codeSchicht;
     setCurrentSchicht(schichtToCopy);
+    setFinalStepIsSchicht(true);
     handleNext();
   };
 
   const onDeleteSchicht = (schicht) => {
     setCurrentSchicht(schicht);
-    setOpenConfirmation(true);
+    setOpenSchichtConfirmation(true);
   };
 
   const confirmDeleteSchicht = (confirmation) => {
     if (confirmation) {
       deleteSchicht(currentSchicht);
     }
-    setOpenConfirmation(false);
+    setOpenSchichtConfirmation(false);
+  };
+
+  const onAddVorkommnis = () => {
+    const vorkommnis = {
+      bohrprofilId: currentBohrprofil.id,
+      hQualitaet: CodeTypes.Vorkommnis_hquali,
+      hTyp: CodeTypes.Vorkommnis_htyp,
+    };
+    setCurrentVorkommnis(vorkommnis);
+    setFinalStepIsSchicht(false);
+    handleNext();
+  };
+
+  const onEditVorkommnis = (vorkommnis) => {
+    setCurrentVorkommnis(vorkommnis);
+    setFinalStepIsSchicht(false);
+    handleNext();
+  };
+
+  const onCopyVorkommnis = (vorkommnis) => {
+    const vorkommnisToCopy = structuredClone(vorkommnis);
+    delete vorkommnisToCopy.id;
+    delete vorkommnisToCopy.erstellungsdatum;
+    delete vorkommnisToCopy.mutationsdatum;
+    delete vorkommnisToCopy.userMutation;
+    // will be preserved via qualitaetId and typId
+    delete vorkommnisToCopy.qualitaet;
+    delete vorkommnisToCopy.typ;
+    setCurrentVorkommnis(vorkommnisToCopy);
+    setFinalStepIsSchicht(false);
+    handleNext();
+  };
+
+  const onDeleteVorkommnis = (vorkommnis) => {
+    setCurrentVorkommnis(vorkommnis);
+    setOpenVorkommnisConfirmation(true);
+  };
+
+  const confirmDeleteVorkommnis = (confirmation) => {
+    if (confirmation) {
+      deleteVorkommnis(currentVorkommnis);
+    }
+    setOpenVorkommnisConfirmation(false);
   };
 
   const onNavigateNext = () => setCurrentBohrprofil(currentBohrung.bohrprofile[currentBohrprofilIndex + 1]);
@@ -388,7 +441,7 @@ export default function BohrprofilForm(props) {
           <Tooltip title="Schicht hinzufügen">
             <IconButton
               color="primary"
-              name="add-button"
+              name="add-schicht-button"
               disabled={readOnly || currentBohrprofil?.id == null}
               onClick={onAddSchicht}
             >
@@ -452,7 +505,12 @@ export default function BohrprofilForm(props) {
         <Typography sx={{ marginTop: "15px" }} variant="h6" gutterBottom>
           Vorkommnisse ({currentBohrprofil?.vorkommnisse ? currentBohrprofil.vorkommnisse.length : 0})
           <Tooltip title="Vorkommnis hinzufügen">
-            <IconButton color="primary" disabled={readOnly || currentBohrprofil?.id == null}>
+            <IconButton
+              color="primary"
+              name="add-vorkommnis-button"
+              disabled={readOnly || currentBohrprofil?.id == null}
+              onClick={onAddVorkommnis}
+            >
               <AddCircleIcon />
             </IconButton>
           </Tooltip>
@@ -475,12 +533,27 @@ export default function BohrprofilForm(props) {
                       <TableCell>{vorkommnis.typ?.kurztext}</TableCell>
                       <TableCell align="right">
                         <Tooltip title="Vorkommnis editieren">
-                          <IconButton onClick={handleNext} color="primary">
+                          <IconButton onClick={() => onEditVorkommnis(vorkommnis)} name="edit-button" color="primary">
                             {readOnly ? <PreviewIcon /> : <EditIcon />}
                           </IconButton>
                         </Tooltip>
+                        <Tooltip title="Vorkommnis duplizieren">
+                          <IconButton
+                            onClick={() => onCopyVorkommnis(vorkommnis)}
+                            name="copy-button"
+                            color="primary"
+                            disabled={readOnly}
+                          >
+                            <ContentCopyIcon />
+                          </IconButton>
+                        </Tooltip>
                         <Tooltip title="Vorkommnis löschen">
-                          <IconButton color="primary" disabled={readOnly}>
+                          <IconButton
+                            onClick={() => onDeleteVorkommnis(vorkommnis)}
+                            name="delete-button"
+                            color="primary"
+                            disabled={readOnly}
+                          >
                             <DeleteIcon />
                           </IconButton>
                         </Tooltip>
@@ -500,9 +573,14 @@ export default function BohrprofilForm(props) {
         </Button>
       </DialogActions>
       <ConfirmationDialog
-        open={openConfirmation}
+        open={openSchichtConfirmation}
         confirm={confirmDeleteSchicht}
         entityName="Schicht"
+      ></ConfirmationDialog>
+      <ConfirmationDialog
+        open={openVorkommnisConfirmation}
+        confirm={confirmDeleteVorkommnis}
+        entityName="Vorkommnis"
       ></ConfirmationDialog>
     </Box>
   );
