@@ -204,6 +204,9 @@ export default function InputForm(props) {
     if (response.ok) {
       const bohrprofil = await response.json();
       setCurrentBohrprofil(bohrprofil);
+      currentSchicht?.id && setCurrentSchicht(bohrprofil.schichten.find((s) => s.id === currentSchicht.id) || null);
+      currentVorkommnis?.id &&
+        setCurrentVorkommnis(bohrprofil.vorkommnisse.find((v) => v.id === currentVorkommnis.id) || null);
     }
   }
 
@@ -251,7 +254,6 @@ export default function InputForm(props) {
       setShowAlert(true);
       setAlertMessage("Schicht wurde editiert.");
       setAlertVariant("success");
-      setCurrentSchicht(updatedSchicht.id);
       getAndSetCurrentBohrprofil(updatedSchicht.bohrprofilId);
     }
   }
@@ -289,7 +291,8 @@ export default function InputForm(props) {
       setShowAlert(true);
       setAlertMessage("Vorkommnis wurde hinzugefügt.");
       setAlertVariant("success");
-      getBohrprofil(addedVorkommnis.bohrprofilId);
+      setCurrentVorkommnis(addedVorkommnis);
+      getAndSetCurrentBohrprofil(addedVorkommnis.bohrprofilId);
     }
   }
 
@@ -312,7 +315,7 @@ export default function InputForm(props) {
       setShowAlert(true);
       setAlertMessage("Vorkommnis wurde editiert.");
       setAlertVariant("success");
-      getBohrprofil(updatedVorkommnis.bohrprofilId);
+      getAndSetCurrentBohrprofil(updatedVorkommnis.bohrprofilId);
     }
   }
 
@@ -325,7 +328,7 @@ export default function InputForm(props) {
       setShowAlert(true);
       setAlertMessage("Vorkommnis wurde gelöscht.");
       setAlertVariant("success");
-      getBohrprofil(vorkommnis.bohrprofilId);
+      getAndSetCurrentBohrprofil(vorkommnis.bohrprofilId);
     }
   }
 
