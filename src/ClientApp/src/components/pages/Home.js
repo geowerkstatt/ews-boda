@@ -100,7 +100,7 @@ export function Home(props) {
       const addedStandort = await response.json();
       setShowAlert(true);
       setAlertMessage("Standort wurde hinzugefügt");
-      setCurrentStandort(addedStandort);
+      getAndSetCurrentStandort(addedStandort.id);
       setUnfilteredStandorte([...unfilteredStandorte, addedStandort]);
     }
   }
