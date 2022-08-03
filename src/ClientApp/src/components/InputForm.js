@@ -227,7 +227,7 @@ export default function InputForm(props) {
       setShowAlert(true);
       setAlertMessage("Schicht wurde hinzugefügt.");
       setAlertVariant("success");
-      setCurrentSchicht(addedSchicht.id);
+      setCurrentSchicht(addedSchicht);
       getAndSetCurrentBohrprofil(addedSchicht.bohrprofilId);
     }
   }
