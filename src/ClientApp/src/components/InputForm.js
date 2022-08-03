@@ -8,6 +8,7 @@ import StandortForm from "./StandortForm";
 import BohrungForm from "./BohrungForm";
 import BohrprofilForm from "./BohrprofilForm";
 import SchichtForm from "./SchichtForm";
+import VorkommnisForm from "./VorkommnisForm";
 
 export default function InputForm(props) {
   const {
@@ -40,6 +41,8 @@ export default function InputForm(props) {
   const [currentBohrung, setCurrentBohrung] = useState(null);
   const [currentBohrprofil, setCurrentBohrprofil] = useState(null);
   const [currentSchicht, setCurrentSchicht] = useState(null);
+  const [currentVorkommnis, setCurrentVorkommnis] = useState(null);
+  const [finalStepIsSchicht, setFinalStepIsSchicht] = useState(false);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -260,6 +263,66 @@ export default function InputForm(props) {
     }
   }
 
+  // Add Vorkommnis
+  async function addVorkommnis(data) {
+    const vorkommnisToAdd = currentVorkommnis;
+    Object.entries(data).forEach(([key, value]) => {
+      vorkommnisToAdd[key] = value;
+    });
+    const response = await fetch("/vorkommnis", {
+      method: "POST",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(vorkommnisToAdd),
+    });
+    if (response.ok) {
+      const addedVorkommnis = await response.json();
+      setShowAlert(true);
+      setAlertMessage("Vorkommnis wurde hinzugefügt.");
+      setAlertVariant("success");
+      getBohrprofil(addedVorkommnis.bohrprofilId);
+    }
+  }
+
+  // Edit Vorkommnis
+  async function editVorkommnis(data) {
+    const updatedVorkommnis = currentVorkommnis;
+    Object.entries(data).forEach(([key, value]) => {
+      updatedVorkommnis[key] = value;
+    });
+    const response = await fetch("/vorkommnis", {
+      method: "PUT",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedVorkommnis),
+    });
+    if (response.ok) {
+      setShowAlert(true);
+      setAlertMessage("Vorkommnis wurde editiert.");
+      setAlertVariant("success");
+      getBohrprofil(updatedVorkommnis.bohrprofilId);
+    }
+  }
+
+  // Delete Vorkommnis
+  async function deleteVorkommnis(vorkommnis) {
+    const response = await fetch("/vorkommnis?id=" + vorkommnis.id, {
+      method: "DELETE",
+    });
+    if (response.ok) {
+      setShowAlert(true);
+      setAlertMessage("Vorkommnis wurde gelöscht.");
+      setAlertVariant("success");
+      getBohrprofil(vorkommnis.bohrprofilId);
+    }
+  }
+
   const steps = [
     {
       label: "zum Standort",
@@ -305,18 +368,22 @@ export default function InputForm(props) {
           setCurrentBohrprofil={setCurrentBohrprofil}
           currentSchicht={currentSchicht}
           setCurrentSchicht={setCurrentSchicht}
+          currentVorkommnis={currentVorkommnis}
+          setCurrentVorkommnis={setCurrentVorkommnis}
           handleNext={handleNext}
           handleBack={handleBack}
+          setFinalStepIsSchicht={setFinalStepIsSchicht}
           addBohrprofil={addBohrprofil}
           editBohrprofil={editBohrprofil}
           deleteSchicht={deleteSchicht}
+          deleteVorkommnis={deleteVorkommnis}
           readOnly={readOnly}
         ></BohrprofilForm>
       ),
     },
     {
-      label: "zur Schicht",
-      form: (
+      label: "",
+      form: finalStepIsSchicht ? (
         <SchichtForm
           currentBohrung={currentBohrung}
           currentBohrprofil={currentBohrprofil}
@@ -327,6 +394,17 @@ export default function InputForm(props) {
           editSchicht={editSchicht}
           readOnly={readOnly}
         ></SchichtForm>
+      ) : (
+        <VorkommnisForm
+          currentBohrung={currentBohrung}
+          currentBohrprofil={currentBohrprofil}
+          currentVorkommnis={currentVorkommnis}
+          setCurrentVorkommnis={setCurrentVorkommnis}
+          handleBack={handleBack}
+          addVorkommnis={addVorkommnis}
+          editVorkommnis={editVorkommnis}
+          readOnly={readOnly}
+        ></VorkommnisForm>
       ),
     },
   ];

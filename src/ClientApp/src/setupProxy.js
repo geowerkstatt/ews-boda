@@ -13,6 +13,7 @@ const context = [
   "/bohrung",
   "/bohrprofil",
   "/schicht",
+  "/vorkommnis",
   "/export",
   "/code",
   "/codeschicht",
