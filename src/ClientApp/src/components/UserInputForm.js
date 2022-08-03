@@ -31,9 +31,7 @@ export default function UserInputForm(props) {
             <TextField
               {...field}
               sx={{ width: "45%" }}
-              InputProps={{
-                readOnly: true,
-              }}
+              disabled
               margin="normal"
               label="Benutzername"
               type="text"

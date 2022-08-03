@@ -140,89 +140,75 @@ export default function StandortForm(props) {
             />
           )}
         />
-        {currentStandort && currentStandort.bohrungen?.length > 0 && (
+        <React.Fragment>
+          <TextField
+            value={currentStandort?.gemeinde}
+            fullWidth
+            type="text"
+            disabled
+            variant="standard"
+            label="Gemeinde"
+          />
+          <TextField
+            value={currentStandort?.grundbuchNr}
+            fullWidth
+            type="text"
+            inputProps={{
+              maxLength: 40,
+            }}
+            disabled
+            margin="normal"
+            label="Grundbuchnummer"
+            variant="standard"
+          />
+        </React.Fragment>
+        <React.Fragment>
+          <DateUserInputs formObject={currentStandort}></DateUserInputs>
+          {currentUser?.role !== UserRolesMap.Extern && (
+            <FormGroup sx={{ marginTop: "3%" }}>
+              <FormControlLabel
+                label="Freigabe AfU"
+                control={
+                  <Controller
+                    name="freigabeAfu"
+                    control={control}
+                    defaultValue={currentStandort?.freigabeAfu}
+                    value={currentStandort?.freigabeAfu}
+                    render={({ field: { value, ref, ...field } }) => (
+                      <Checkbox {...field} inputRef={ref} checked={value} />
+                    )}
+                    onClick={(e) => {
+                      currentStandort.freigabeAfu = e.target.checked;
+                    }}
+                    {...register("freigabeAfu")}
+                  />
+                }
+              />
+            </FormGroup>
+          )}
           <React.Fragment>
             <TextField
-              value={currentStandort?.gemeinde}
-              fullWidth
-              type="text"
-              InputProps={{
-                readOnly: true,
-              }}
-              variant="standard"
-              label="Gemeinde"
-            />
-            <TextField
-              value={currentStandort?.grundbuchNr}
-              fullWidth
-              type="text"
-              inputProps={{
-                maxLength: 40,
-              }}
-              InputProps={{
-                readOnly: true,
-              }}
+              value={currentStandort?.afuUser}
+              sx={{ marginRight: "6%", width: "47%" }}
+              disabled
               margin="normal"
-              label="Grundbuchnummer"
+              label="AfU Freigabe erfolgt durch"
+              type="text"
+              variant="standard"
+            />
+
+            <TextField
+              name="afuDatum"
+              value={currentStandort?.afuDatum ? new Date(currentStandort.afuDatum).toLocaleDateString() : null}
+              disabled
+              sx={{ width: "47%" }}
+              margin="normal"
+              label="AfU Freigabe erfolgt am"
+              type="text"
               variant="standard"
             />
           </React.Fragment>
-        )}
-        {currentStandort && (
-          <React.Fragment>
-            {currentStandort.id && <DateUserInputs formObject={currentStandort}></DateUserInputs>}
-            {currentUser?.role !== UserRolesMap.Extern && (
-              <FormGroup sx={{ marginTop: "3%" }}>
-                <FormControlLabel
-                  label="Freigabe AfU"
-                  control={
-                    <Controller
-                      name="freigabeAfu"
-                      control={control}
-                      defaultValue={currentStandort.freigabeAfu}
-                      value={currentStandort.freigabeAfu}
-                      render={({ field: { value, ref, ...field } }) => (
-                        <Checkbox {...field} inputRef={ref} checked={value} />
-                      )}
-                      onClick={(e) => {
-                        currentStandort.freigabeAfu = e.target.checked;
-                      }}
-                      {...register("freigabeAfu")}
-                    />
-                  }
-                />
-              </FormGroup>
-            )}
-            {currentStandort.freigabeAfu && (
-              <React.Fragment>
-                <TextField
-                  value={currentStandort.afuUser}
-                  sx={{ marginRight: "6%", width: "47%" }}
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                  margin="normal"
-                  label="AfU Freigabe erfolgt durch"
-                  type="text"
-                  variant="standard"
-                />
-
-                <TextField
-                  name="afuDatum"
-                  value={currentStandort.afuDatum ? new Date(currentStandort.afuDatum).toLocaleDateString() : null}
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                  sx={{ width: "47%" }}
-                  margin="normal"
-                  label="AfU Freigabe erfolgt am"
-                  type="text"
-                  variant="standard"
-                />
-              </React.Fragment>
-            )}
-          </React.Fragment>
-        )}
+        </React.Fragment>
         {currentStandort?.id == null && (
           <Typography>Bitte speichern Sie den Standort bevor Sie Bohrungen hinzufügen.</Typography>
         )}
