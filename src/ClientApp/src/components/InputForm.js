@@ -3,6 +3,7 @@ import MobileStepper from "@mui/material/MobileStepper";
 import Button from "@mui/material/Button";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import CloseIcon from "@mui/icons-material/Close";
+import Tooltip from "@mui/material/Tooltip";
 import StandortForm from "./StandortForm";
 import BohrungForm from "./BohrungForm";
 import BohrprofilForm from "./BohrprofilForm";
@@ -356,9 +357,11 @@ export default function InputForm(props) {
           </Button>
         }
         nextButton={
-          <Button size="small" onClick={handleClose}>
-            <CloseIcon />
-          </Button>
+          <Tooltip title="Abbrechen und zurück zur Suche">
+            <Button size="small" onClick={handleClose}>
+              <CloseIcon />
+            </Button>
+          </Tooltip>
         }
       />
       <div>{steps[activeStep].form}</div>
