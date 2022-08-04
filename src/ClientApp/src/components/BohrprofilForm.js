@@ -462,9 +462,9 @@ export default function BohrprofilForm(props) {
                   <Table name="schichten-table" size="small">
                     <TableHead>
                       <TableRow>
-                        <TableCell>Tiefe [m u. T.]</TableCell>
-                        <TableCell>Schichtgrenze</TableCell>
-                        <TableCell></TableCell>
+                        <TableCell sx={{ width: "25%", wordBreak: "break-all" }}>Tiefe [m u. T.]</TableCell>
+                        <TableCell sx={{ width: "40%", wordBreak: "break-all" }}>Schichtgrenze</TableCell>
+                        <TableCell sx={{ width: "35%", wordBreak: "break-all" }}></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -527,9 +527,9 @@ export default function BohrprofilForm(props) {
                   <Table name="vorkommnisse-table" size="small">
                     <TableHead>
                       <TableRow>
-                        <TableCell>Tiefe [m u.T]</TableCell>
-                        <TableCell>Typ</TableCell>
-                        <TableCell></TableCell>
+                        <TableCell sx={{ width: "25%", wordBreak: "break-all" }}>Tiefe [m u.T]</TableCell>
+                        <TableCell sx={{ width: "40%", wordBreak: "break-all" }}>Typ</TableCell>
+                        <TableCell sx={{ width: "35%", wordBreak: "break-all" }}></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
