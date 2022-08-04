@@ -6,7 +6,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 export default function Search(props) {
-  const { getStandorte, showSearchResults, gemeinden } = props;
+  const { getStandorte, showSearchResults, gemeinden, setSearchResultsPage } = props;
 
   const { control, handleSubmit, reset } = useForm({ reValidateMode: "onChange" });
 
@@ -17,6 +17,7 @@ export default function Search(props) {
     query += `&erstellungsdatum=${formData.erstellungsDatum ? new Date(formData.erstellungsDatum).toDateString() : ""}`;
     query += `&mutationsdatum=${formData.mutationsDatum ? new Date(formData.mutationsDatum).toDateString() : ""}`;
     getStandorte(query);
+    setSearchResultsPage(0);
   };
 
   const resetSearch = () => {

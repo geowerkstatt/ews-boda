@@ -19,6 +19,7 @@ export function Home(props) {
   const [showAlert, setShowAlert] = useState(false);
   const [alertVariant, setAlertVariant] = useState("success");
   const [alertMessage, setAlertMessage] = useState("");
+  const [searchResultsPage, setSearchResultsPage] = React.useState(0);
   // Cache standorte on client for better performance
   const [unfilteredStandorte, setUnfilteredStandorte] = useState([]);
   const [unfilteredBohrungenLength, setUnfilteredBohrungenLength] = useState([]);
@@ -189,6 +190,7 @@ export function Home(props) {
               <Search
                 getStandorte={getStandorte}
                 showSearchResults={showSearchResults}
+                setSearchResultsPage={setSearchResultsPage}
                 gemeinden={[
                   ...new Set(
                     unfilteredStandorte
@@ -220,6 +222,8 @@ export function Home(props) {
                   standorte={standorte}
                   openEditForm={onEditStandort}
                   onDeleteStandort={onDeleteStandort}
+                  page={searchResultsPage}
+                  setPage={setSearchResultsPage}
                   currentUser={currentUser}
                 />
               </Paper>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   IconButton,
   Table,
@@ -17,8 +17,7 @@ import Title from "./Title";
 import { UserRolesMap } from "../UserRolesMap";
 
 export default function SearchResults(props) {
-  const { standorte, openEditForm, onDeleteStandort, currentUser } = props;
-  const [page, setPage] = React.useState(0);
+  const { standorte, openEditForm, onDeleteStandort, currentUser, page, setPage } = props;
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const handleChangePage = (event, newPage) => {
@@ -31,11 +30,6 @@ export default function SearchResults(props) {
   };
 
   const isStandortReadOnly = (standort) => standort.freigabeAfu && currentUser?.role === UserRolesMap.Extern;
-
-  // Reset page count on search
-  useEffect(() => {
-    setPage(0);
-  }, [standorte]);
 
   return (
     <React.Fragment>
