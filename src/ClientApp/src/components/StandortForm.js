@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import Table from "@mui/material/Table";
@@ -45,11 +45,14 @@ export default function StandortForm(props) {
     currentUser,
     readOnly,
   } = props;
-  const { control, handleSubmit, formState, reset, register } = useForm({ reValidateMode: "onChange" });
+  const { control, handleSubmit, formState, reset, register, setValue } = useForm({
+    reValidateMode: "onChange",
+  });
   const { isDirty } = formState;
 
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [mapExpanded, setMapExpanded] = useState(true);
+  const [afuFreigabe, setAfuFreigabe] = useState();
 
   const onAddBohrung = () => {
     let bohrung = {
@@ -98,6 +101,16 @@ export default function StandortForm(props) {
       ? editStandort(formData).finally(() => reset(formData))
       : addStandort(formData).finally(() => reset(formData));
   };
+
+  useEffect(() => {
+    if (afuFreigabe) {
+      setValue("afuUser", currentUser.name);
+      setValue("afuDatum", new Date().toLocaleDateString());
+    } else {
+      setValue("afuUser", "");
+      setValue("afuDatum", "");
+    }
+  }, [afuFreigabe, currentUser, setValue]);
 
   return (
     <Box component="form" name="standort-form" onSubmit={handleSubmit(onSubmit)}>
@@ -174,11 +187,16 @@ export default function StandortForm(props) {
                     name="freigabeAfu"
                     control={control}
                     defaultValue={currentStandort?.freigabeAfu ?? false}
-                    value={currentStandort?.freigabeAfu}
-                    render={({ field: { value, ...field } }) => <Checkbox {...field} checked={value} />}
-                    onClick={(e) => {
-                      currentStandort.freigabeAfu = e.target.checked;
-                    }}
+                    render={({ field }) => (
+                      <Checkbox
+                        {...field}
+                        checked={field.value}
+                        onChange={(e) => {
+                          field.onChange(e.target.checked);
+                          setAfuFreigabe(e.target.checked);
+                        }}
+                      />
+                    )}
                     {...register("freigabeAfu")}
                   />
                 }
@@ -188,25 +206,27 @@ export default function StandortForm(props) {
           <React.Fragment>
             <TextField
               value={currentStandort?.afuUser}
-              InputLabelProps={{ shrink: currentStandort?.afuUser != null }}
+              InputLabelProps={{ shrink: afuFreigabe }}
               sx={{ marginRight: "6%", width: "47%" }}
               disabled
               margin="normal"
               label="AfU Freigabe erfolgt durch"
               type="text"
               variant="standard"
+              {...register("afuUser")}
             />
 
             <TextField
               name="afuDatum"
               value={currentStandort?.afuDatum ? new Date(currentStandort.afuDatum).toLocaleDateString() : null}
-              InputLabelProps={{ shrink: currentStandort?.afuDatum != null }}
+              InputLabelProps={{ shrink: afuFreigabe }}
               disabled
               sx={{ width: "47%" }}
               margin="normal"
               label="AfU Freigabe erfolgt am"
               type="text"
               variant="standard"
+              {...register("afuDatum")}
             />
           </React.Fragment>
         </React.Fragment>
