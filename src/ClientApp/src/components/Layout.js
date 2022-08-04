@@ -60,16 +60,17 @@ export function Layout(props) {
               Grundlagedaten EWS
             </Typography>
             <Tooltip title="Abmelden">
-              <IconButton
-                onClick={() => {
-                  window.location.reload();
-                }}
-                color="inherit"
-                component="a"
-                href="/login/sls/auth?cmd=logout"
-              >
-                <LogoutIcon />
-              </IconButton>
+              <a href={window.location.origin.toString() + "/login/sls/auth?cmd=logout"}>
+                <IconButton
+                  onClick={() => {
+                    window.location.reload();
+                  }}
+                  color="inherit"
+                  sx={{ color: "white" }}
+                >
+                  <LogoutIcon />
+                </IconButton>
+              </a>
             </Tooltip>
           </Toolbar>
         </AppBar>
