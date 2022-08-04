@@ -439,14 +439,16 @@ export default function BohrprofilForm(props) {
         <Typography sx={{ marginTop: "15px" }} variant="h6" gutterBottom>
           Schichten ({currentBohrprofil?.schichten ? currentBohrprofil.schichten.length : 0})
           <Tooltip title="Schicht hinzufügen">
-            <IconButton
-              color="primary"
-              name="add-schicht-button"
-              disabled={readOnly || currentBohrprofil?.id == null}
-              onClick={onAddSchicht}
-            >
-              <AddCircleIcon />
-            </IconButton>
+            <span>
+              <IconButton
+                color="primary"
+                name="add-schicht-button"
+                disabled={readOnly || currentBohrprofil?.id == null}
+                onClick={onAddSchicht}
+              >
+                <AddCircleIcon />
+              </IconButton>
+            </span>
           </Tooltip>
         </Typography>
         {currentBohrprofil?.id == null && (
@@ -505,14 +507,16 @@ export default function BohrprofilForm(props) {
         <Typography sx={{ marginTop: "15px" }} variant="h6" gutterBottom>
           Vorkommnisse ({currentBohrprofil?.vorkommnisse ? currentBohrprofil.vorkommnisse.length : 0})
           <Tooltip title="Vorkommnis hinzufügen">
-            <IconButton
-              color="primary"
-              name="add-vorkommnis-button"
-              disabled={readOnly || currentBohrprofil?.id == null}
-              onClick={onAddVorkommnis}
-            >
-              <AddCircleIcon />
-            </IconButton>
+            <span>
+              <IconButton
+                color="primary"
+                name="add-vorkommnis-button"
+                disabled={readOnly || currentBohrprofil?.id == null}
+                onClick={onAddVorkommnis}
+              >
+                <AddCircleIcon />
+              </IconButton>
+            </span>
           </Tooltip>
         </Typography>
         {currentBohrprofil?.vorkommnisse?.length > 0 && (

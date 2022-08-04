@@ -468,14 +468,16 @@ export default function BohrungForm(props) {
         <Typography sx={{ marginTop: "15px" }} variant="h6" gutterBottom>
           Bohrprofile ({currentBohrung?.bohrprofile ? currentBohrung.bohrprofile.length : 0})
           <Tooltip title="Bohrprofil hinzufügen">
-            <IconButton
-              color="primary"
-              name="add-button"
-              disabled={readOnly || currentBohrung?.id == null}
-              onClick={onAddBohrprofil}
-            >
-              <AddCircleIcon />
-            </IconButton>
+            <span>
+              <IconButton
+                color="primary"
+                name="add-button"
+                disabled={readOnly || currentBohrung?.id == null}
+                onClick={onAddBohrprofil}
+              >
+                <AddCircleIcon />
+              </IconButton>
+            </span>
           </Tooltip>
         </Typography>
         {currentBohrung?.id == null && (
