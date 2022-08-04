@@ -89,7 +89,7 @@ export default function BohrungForm(props) {
       setValue("qualitaetBemerkung", currentBohrung?.qualitaetBemerkung);
       setValue("quelleRef", currentBohrung?.quelleRef);
       //DatePicker state must be handled separately from formState in order to preserve the date format (dd.MM.yyy). Otherwise the date will be stored as an unformatted string on manual input.
-      setSelectedDate(currentBohrung?.datum);
+      setSelectedDate(currentBohrung?.datum || null);
     }
     if (currentBohrung?.geometrie?.coordinates) {
       const x = currentBohrung.geometrie.coordinates[0];
