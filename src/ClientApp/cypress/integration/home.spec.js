@@ -110,7 +110,7 @@ describe("Home page tests", () => {
     cy.get("tbody").children().should("have.length", 4);
 
     cy.contains("td", "Ergonomic Metal Tuna").parent("tr").children("td").find("button[name=delete-button]").click();
-    cy.contains("button", "OK").click();
+    cy.contains("button", "Löschen").click();
 
     cy.get("tbody").children().should("have.length", 3);
   });

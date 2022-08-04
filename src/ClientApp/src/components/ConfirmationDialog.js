@@ -19,7 +19,7 @@ export default function ConfirmationDialog(props) {
         <DialogActions>
           <Button onClick={() => confirm(false)}>Abbrechen</Button>
           <Button onClick={() => confirm(true)} autoFocus>
-            OK
+            Löschen
           </Button>
         </DialogActions>
       </Dialog>

@@ -26,7 +26,7 @@ describe("User page tests", () => {
     cy.contains("Simon_Felber").should("exist");
 
     cy.contains("td", "Simon_Felber").siblings().find("[aria-label='delete user']").click();
-    cy.get('button:contains("OK")').click();
+    cy.get('button:contains("Löschen")').click();
 
     cy.get("tbody").children().should("have.length", 3);
     cy.contains("Simon_Felber").should("not.exist");

@@ -66,6 +66,6 @@ describe("Input form tests", () => {
       .find("button[name=delete-button]")
       .scrollIntoView()
       .click();
-    cy.contains("button", "OK").click();
+    cy.contains("button", "Löschen").click();
   });
 });
