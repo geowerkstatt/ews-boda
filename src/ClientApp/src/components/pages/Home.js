@@ -87,6 +87,8 @@ export function Home(props) {
   // Add standort
   async function addStandort(data) {
     data.bohrungen = [];
+    data.afuDatum = null;
+    data.afuUser = null;
     const response = await fetch("/standort", {
       method: "POST",
       cache: "no-cache",
@@ -107,6 +109,8 @@ export function Home(props) {
 
   // Edit standort
   async function editStandort(data) {
+    data.afuDatum = null;
+    data.afuUser = null;
     const updatedStandort = currentStandort;
     Object.entries(data).forEach(([key, value]) => {
       updatedStandort[key] = value;
