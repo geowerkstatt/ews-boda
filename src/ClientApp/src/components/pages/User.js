@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Container from "@mui/material/Container";
-import Paper from "@mui/material/Paper";
-import Dialog from "@mui/material/Dialog";
+import { Box, Container, Dialog, Paper, Toolbar } from "@mui/material";
 import UserList from "../UserList";
 import UserInputForm from "../UserInputForm";
 import ConfirmationDialog from "../ConfirmationDialog";

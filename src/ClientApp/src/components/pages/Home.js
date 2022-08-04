@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
+import { Box, Button, Container, Dialog, Grid, Paper, Toolbar, Tooltip } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 import InputForm from "../InputForm";
 import SearchResults from "../SearchResults";
 import Search from "../Search";
 import MainMap from "../MainMap";
-import Dialog from "@mui/material/Dialog";
-import Tooltip from "@mui/material/Tooltip";
-import Button from "@mui/material/Button";
-import AddIcon from "@mui/icons-material/Add";
 import SnackbarMessage from "../SnackbarMessage";
 import ConfirmationDialog from "../ConfirmationDialog";
 import { UserRolesMap } from "../../UserRolesMap";
@@ -238,7 +231,7 @@ export function Home(props) {
             )}
           </Grid>
         </Grid>
-        <Dialog open={openStandortForm} fullWidth={true} maxWidth="md">
+        <Dialog open={openStandortForm} fullWidth={true} maxWidth="xl">
           <InputForm
             handleClose={handleClose}
             editStandort={editStandort}

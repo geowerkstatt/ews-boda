@@ -1,14 +1,7 @@
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { UserRolesMap } from "../UserRolesMap";
-import TextField from "@mui/material/TextField";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import MenuItem from "@mui/material/MenuItem";
-
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
+import { Box, Button, DialogActions, DialogContent, DialogTitle, MenuItem, TextField } from "@mui/material";
 
 export default function UserInputForm(props) {
   const { control, handleSubmit } = useForm();

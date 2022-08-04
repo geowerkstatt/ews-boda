@@ -1,18 +1,20 @@
 import React, { useEffect } from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
-import TableFooter from "@mui/material/TableFooter";
-import TableRow from "@mui/material/TableRow";
-import TablePagination from "@mui/material/TablePagination";
+import {
+  IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableFooter,
+  TablePagination,
+  Tooltip,
+} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PreviewIcon from "@mui/icons-material/Preview";
-import IconButton from "@mui/material/IconButton";
 import Title from "./Title";
 import { UserRolesMap } from "../UserRolesMap";
-import Tooltip from "@mui/material/Tooltip";
 
 export default function SearchResults(props) {
   const { standorte, openEditForm, onDeleteStandort, currentUser } = props;

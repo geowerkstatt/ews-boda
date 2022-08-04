@@ -47,7 +47,7 @@ describe("Input form tests", () => {
       .scrollIntoView()
       .click();
 
-    cy.get("button[type=submit]").should("not.be.visible");
+    cy.get("button[type=submit]").should("be.disabled");
     cy.get("form[name=bohrung-form]").should("contain", "Bohrung bearbeiten");
     cy.get("form[name=bohrung-form]")
       .find("input[name=bezeichnung]")
@@ -55,7 +55,7 @@ describe("Input form tests", () => {
       .click({ force: true })
       .type(" And More");
 
-    cy.contains("button", "Bohrung speichern").scrollIntoView().should("be.visible").scrollIntoView().click();
+    cy.contains("button", "Bohrung speichern").scrollIntoView().should("not.be.disabled").scrollIntoView().click();
   });
 
   it("Delete Bohrung", function () {
