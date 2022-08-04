@@ -214,6 +214,11 @@ export default function MainMap(props) {
         setLatestExtent(currentExtent);
       }
     }
+
+    // Fix bug where map wasnt displayed after page
+    setTimeout(() => {
+      map && map.updateSize();
+    }, 300);
   }, [standorte, bohrungenLayer, map, unfilteredBohrungenLength]);
 
   // Handle event from zoom to latest control
