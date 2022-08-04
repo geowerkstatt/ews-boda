@@ -62,12 +62,11 @@ export function Layout(props) {
             <Tooltip title="Abmelden">
               <IconButton
                 onClick={() => {
-                  window.location.href = "/login/sls/auth?cmd=logout";
-                  setTimeout(window.location.reload, 10);
-                  window.location.href = "";
+                  window.location.reload();
                 }}
                 color="inherit"
                 component="a"
+                href="/login/sls/auth?cmd=logout"
               >
                 <LogoutIcon />
               </IconButton>
