@@ -60,6 +60,7 @@ export default function BohrprofilForm(props) {
   const [openSchichtConfirmation, setOpenSchichtConfirmation] = useState(false);
   const [openVorkommnisConfirmation, setOpenVorkommnisConfirmation] = useState(false);
   const [mapExpanded, setMapExpanded] = useState(true);
+  const [selectedDate, setSelectedDate] = useState();
 
   const currentBohrprofilIndex =
     currentBohrung.bohrprofile?.indexOf(currentBohrung.bohrprofile.find((b) => b.id === currentBohrprofil.id)) || 0;
@@ -89,7 +90,6 @@ export default function BohrprofilForm(props) {
   // Update form values if currentBohrprofil changes, to allow next/previous navigation
   useEffect(() => {
     if (currentBohrprofil) {
-      setValue("datum", currentBohrprofil?.datum);
       setValue("bemerkung", currentBohrprofil?.bemerkung);
       setValue("kote", currentBohrprofil?.kote);
       setValue("endteufe", currentBohrprofil?.endteufe);
@@ -98,6 +98,8 @@ export default function BohrprofilForm(props) {
       setValue("formationEndtiefeId", currentBohrprofil?.formationEndtiefeId);
       setValue("qualitaetId", currentBohrprofil?.qualitaetId);
       setValue("qualitaetBemerkung", currentBohrprofil?.qualitaetBemerkung);
+      //DatePicker state must be handled separately from formState in order to preserve the date format (dd.MM.yyy). Otherwise the date will be stored as an unformatted string on manual input.
+      setSelectedDate(currentBohrprofil?.datum);
     }
   }, [currentBohrprofil, setValue]);
 
@@ -105,7 +107,7 @@ export default function BohrprofilForm(props) {
 
   const onSubmit = (formData) => {
     // Save date as UTC date ignoring the current timezone
-    const date = new Date(formData.datum);
+    const date = new Date(selectedDate);
     if (!isNaN(date)) {
       formData.datum = new Date(date - date.getTimezoneOffset() * 60000).toISOString();
     }
@@ -224,27 +226,25 @@ export default function BohrprofilForm(props) {
       </DialogTitle>
       <DialogContent>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <Controller
-            name="datum"
-            control={control}
-            defaultValue={currentBohrprofil?.datum != null ? currentBohrprofil.datum : null}
-            render={({ field }) => (
-              <DatePicker
-                label="Datum des Bohrprofils"
-                disableFuture
-                inputFormat="dd.MM.yyyy"
-                value={field.value}
-                onChange={(value) => field.onChange(value)}
-                disabled={readOnly}
-                renderInput={(params) => (
-                  <TextField
-                    {...field}
-                    sx={{ marginRight: "6%", width: "47%" }}
-                    margin="normal"
-                    variant="standard"
-                    {...params}
-                  />
-                )}
+          <DatePicker
+            label="Datum des Bohrprofils"
+            disableFuture
+            inputFormat="dd.MM.yyyy"
+            value={selectedDate || null}
+            onChange={(value) => {
+              setSelectedDate(value);
+              //setValue only needed to dirty form
+              setValue("datum", value, { shouldDirty: true });
+            }}
+            disabled={readOnly}
+            renderInput={(params) => (
+              <TextField
+                InputLabelProps={{ shrink: selectedDate != null }}
+                sx={{ marginRight: "6%", width: "47%" }}
+                margin="normal"
+                variant="standard"
+                {...register("datum")}
+                {...params}
               />
             )}
           />

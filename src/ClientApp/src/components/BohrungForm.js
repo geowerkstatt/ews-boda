@@ -57,6 +57,7 @@ export default function BohrungForm(props) {
   const [qualitaetCodes, setQualitaetCodes] = useState([]);
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [mapExpanded, setMapExpanded] = useState(true);
+  const [selectedDate, setSelectedDate] = useState();
 
   const currentBohrungIndex =
     currentStandort.bohrungen?.indexOf(currentStandort.bohrungen.find((b) => b.id === currentBohrung.id)) || 0;
@@ -81,12 +82,13 @@ export default function BohrungForm(props) {
     if (currentBohrung && !currentBohrung.coordinatesChanged) {
       setValue("bezeichnung", currentBohrung?.bezeichnung);
       setValue("bemerkung", currentBohrung?.bemerkung);
-      setValue("datum", currentBohrung?.datum);
       setValue("durchmesserBohrloch", currentBohrung?.durchmesserBohrloch);
       setValue("ablenkungId", currentBohrung?.ablenkungId);
       setValue("qualitaetId", currentBohrung?.qualitaetId);
       setValue("qualitaetBemerkung", currentBohrung?.qualitaetBemerkung);
       setValue("quelleRef", currentBohrung?.quelleRef);
+      //DatePicker state must be handled separately from formState in order to preserve the date format (dd.MM.yyy). Otherwise the date will be stored as an unformatted string on manual input.
+      setSelectedDate(currentBohrung?.datum);
     }
     if (currentBohrung?.geometrie?.coordinates) {
       const x = currentBohrung.geometrie.coordinates[0];
@@ -109,8 +111,8 @@ export default function BohrungForm(props) {
   const currentInteraction = currentBohrung?.id ? "edit" : "add";
 
   const onSubmit = (formData) => {
-    // save date as UTC date ignoring the current timezone
-    const date = new Date(formData.datum);
+    // Save date as UTC date ignoring the current timezone
+    const date = new Date(selectedDate);
     if (!isNaN(date)) {
       formData.datum = new Date(date - date.getTimezoneOffset() * 60000).toISOString();
     }
@@ -253,29 +255,25 @@ export default function BohrungForm(props) {
           )}
         />
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <Controller
-            name="datum"
-            control={control}
-            defaultValue={currentBohrung?.datum != null ? currentBohrung.datum : null}
-            render={({ field }) => (
-              <DatePicker
-                label="Datum des Bohrbeginns"
-                disableFuture
-                inputFormat="dd.MM.yyyy"
-                value={field.value}
-                onChange={(value) => field.onChange(value)}
-                disabled={readOnly}
-                renderInput={(params) => (
-                  <TextField
-                    {...field}
-                    InputLabelProps={{ shrink: field.value != null }}
-                    sx={{ marginRight: "6%", width: "47%" }}
-                    margin="normal"
-                    variant="standard"
-                    {...params}
-                    {...register("datum")}
-                  />
-                )}
+          <DatePicker
+            label="Datum des Bohrbeginns"
+            disableFuture
+            inputFormat="dd.MM.yyyy"
+            value={selectedDate}
+            onChange={(value) => {
+              setSelectedDate(value);
+              //setValue only needed to dirty form
+              setValue("datum", value, { shouldDirty: true });
+            }}
+            disabled={readOnly}
+            renderInput={(params) => (
+              <TextField
+                InputLabelProps={{ shrink: selectedDate != null }}
+                sx={{ marginRight: "6%", width: "47%" }}
+                margin="normal"
+                variant="standard"
+                {...register("datum")}
+                {...params}
               />
             )}
           />
