@@ -238,7 +238,7 @@ export function Home(props) {
             )}
           </Grid>
         </Grid>
-        <Dialog open={openStandortForm} fullWidth={true} maxWidth="md">
+        <Dialog open={openStandortForm} fullWidth={true} maxWidth="xl">
           <InputForm
             handleClose={handleClose}
             editStandort={editStandort}

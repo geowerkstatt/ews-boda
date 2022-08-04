@@ -16,10 +16,7 @@ import PreviewIcon from "@mui/icons-material/Preview";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import Tooltip from "@mui/material/Tooltip";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Stack from "@mui/material/Stack";
 import { Autocomplete, Box, Button, Typography } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -59,7 +56,6 @@ export default function BohrprofilForm(props) {
   const [formationEndtiefeCodes, setFormationEndtiefeCodes] = useState([]);
   const [openSchichtConfirmation, setOpenSchichtConfirmation] = useState(false);
   const [openVorkommnisConfirmation, setOpenVorkommnisConfirmation] = useState(false);
-  const [mapExpanded, setMapExpanded] = useState(true);
   const [selectedDate, setSelectedDate] = useState();
 
   const currentBohrprofilIndex =
@@ -225,350 +221,357 @@ export default function BohrprofilForm(props) {
         )}
       </DialogTitle>
       <DialogContent>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DatePicker
-            label="Datum des Bohrprofils"
-            disableFuture
-            inputFormat="dd.MM.yyyy"
-            value={selectedDate || null}
-            onChange={(value) => {
-              setSelectedDate(value);
-              //setValue only needed to dirty form
-              setValue("datum", value, { shouldDirty: true });
-            }}
-            disabled={readOnly}
-            renderInput={(params) => (
-              <TextField
-                InputLabelProps={{ shrink: selectedDate != null }}
-                sx={{ marginRight: "6%", width: "47%" }}
-                margin="normal"
-                variant="standard"
-                {...register("datum")}
-                {...params}
-              />
-            )}
-          />
-        </LocalizationProvider>
-        <Controller
-          name="bemerkung"
-          control={control}
-          defaultValue={currentBohrprofil?.bemerkung}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              value={field.value}
-              InputLabelProps={{ shrink: field.value != null }}
-              margin="normal"
-              multiline
-              label="Bemerkungen zum Bohrprofil"
-              type="text"
-              fullWidth
-              variant="standard"
-              {...register("bemerkung")}
-            />
-          )}
-        />
-        <Controller
-          name="kote"
-          control={control}
-          defaultValue={currentBohrprofil?.kote}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              InputLabelProps={{ shrink: field.value != null }}
-              value={field.value}
-              sx={{ marginRight: "6%", width: "47%" }}
-              margin="normal"
-              label="Terrainkote der Bohrung [m ü. M.]"
-              type="number"
-              variant="standard"
-              {...register("kote")}
-            />
-          )}
-        />
-        <Controller
-          name="endteufe"
-          control={control}
-          defaultValue={currentBohrprofil?.endteufe}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              InputLabelProps={{ shrink: field.value != null }}
-              value={field.value}
-              sx={{ width: "47%" }}
-              margin="normal"
-              label="Endtiefe der Bohrung [m u. T.]"
-              type="number"
-              variant="standard"
-              {...register("endteufe")}
-            />
-          )}
-        />
-        <Controller
-          name="tektonikId"
-          control={control}
-          defaultValue={currentBohrprofil?.tektonikId}
-          render={({ field }) => (
-            <Autocomplete
-              {...field}
-              options={tektonikCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
-              value={field.value}
-              getOptionLabel={(option) => tektonikCodes.find((c) => c.id === option)?.kurztext}
-              onChange={(_, data) => field.onChange(data)}
-              autoHighlight
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  sx={{ marginRight: "6%", width: "47%" }}
-                  margin="normal"
-                  label="Klassierung der Tektonik"
-                  type="text"
-                  variant="standard"
-                />
-              )}
-            />
-          )}
-        />
-        <Controller
-          name="formationFelsId"
-          control={control}
-          defaultValue={currentBohrprofil?.formationFelsId}
-          render={({ field }) => (
-            <Autocomplete
-              {...field}
-              options={formationFelsCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
-              value={field.value}
-              getOptionLabel={(option) => formationFelsCodes.find((c) => c.id === option)?.kurztext}
-              onChange={(_, data) => field.onChange(data)}
-              autoHighlight
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  sx={{ width: "47%" }}
-                  margin="normal"
-                  label="Formation Felsoberfläche"
-                  type="text"
-                  variant="standard"
-                />
-              )}
-            />
-          )}
-        />
-        <Controller
-          name="formationEndtiefeId"
-          control={control}
-          defaultValue={currentBohrprofil?.formationEndtiefeId}
-          render={({ field }) => (
-            <Autocomplete
-              {...field}
-              options={formationEndtiefeCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
-              value={field.value}
-              getOptionLabel={(option) => formationEndtiefeCodes.find((c) => c.id === option)?.kurztext}
-              onChange={(_, data) => field.onChange(data)}
-              autoHighlight
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  sx={{ marginRight: "6%", width: "47%" }}
-                  margin="normal"
-                  label="Formation auf Endtiefe"
-                  type="text"
-                  variant="standard"
-                />
-              )}
-            />
-          )}
-        />
-        <Controller
-          name="qualitaetId"
-          control={control}
-          defaultValue={currentBohrprofil?.qualitaetId}
-          render={({ field }) => (
-            <Autocomplete
-              {...field}
-              options={qualitaetCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
-              value={field.value}
-              getOptionLabel={(option) => qualitaetCodes.find((c) => c.id === option)?.kurztext}
-              onChange={(_, data) => field.onChange(data)}
-              autoHighlight
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  sx={{ width: "47%" }}
-                  margin="normal"
-                  label="Qualität der Angaben zum Bohrprofil"
-                  type="text"
-                  variant="standard"
-                />
-              )}
-            />
-          )}
-        />
-        <Controller
-          name="qualitaetBemerkung"
-          control={control}
-          defaultValue={currentBohrprofil?.qualitaetBemerkung}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              value={field.value}
-              InputLabelProps={{ shrink: field.value != null }}
-              margin="normal"
-              multiline
-              label="Bemerkungen zur Qualitätsangabe"
-              type="text"
-              fullWidth
-              variant="standard"
-              {...register("qualitaetBemerkung")}
-            />
-          )}
-        />
-        {currentBohrprofil?.id && <DateUserInputs formObject={currentBohrprofil}></DateUserInputs>}
-        <Accordion
-          sx={{ boxShadow: "none" }}
-          expanded={mapExpanded}
-          onChange={(_, expanded) => setMapExpanded(expanded)}
+        <Stack
+          direction={{ xs: "column", md: "row" }}
+          justifyContent="space-evenly"
+          alignItems="flex-start"
+          spacing={2}
         >
-          <Tooltip title={mapExpanded ? "Übersichtskarte verbergen" : "Übersichtskarte anzeigen"}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>Lokalität der Bohrung</AccordionSummary>
-          </Tooltip>
-          <AccordionDetails>
+          <Box sx={{ width: { xs: "100%", md: "50%" } }}>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                label="Datum des Bohrprofils"
+                disableFuture
+                inputFormat="dd.MM.yyyy"
+                value={selectedDate || null}
+                onChange={(value) => {
+                  setSelectedDate(value);
+                  //setValue only needed to dirty form
+                  setValue("datum", value, { shouldDirty: true });
+                }}
+                disabled={readOnly}
+                renderInput={(params) => (
+                  <TextField
+                    InputLabelProps={{ shrink: selectedDate != null }}
+                    sx={{ marginRight: "6%", width: "47%" }}
+                    margin="normal"
+                    variant="standard"
+                    {...register("datum")}
+                    {...params}
+                  />
+                )}
+              />
+            </LocalizationProvider>
+            <Controller
+              name="bemerkung"
+              control={control}
+              defaultValue={currentBohrprofil?.bemerkung}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  value={field.value}
+                  InputLabelProps={{ shrink: field.value != null }}
+                  margin="normal"
+                  multiline
+                  label="Bemerkungen zum Bohrprofil"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  {...register("bemerkung")}
+                />
+              )}
+            />
+            <Controller
+              name="kote"
+              control={control}
+              defaultValue={currentBohrprofil?.kote}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  InputLabelProps={{ shrink: field.value != null }}
+                  value={field.value}
+                  sx={{ marginRight: "6%", width: "47%" }}
+                  margin="normal"
+                  label="Terrainkote der Bohrung [m ü. M.]"
+                  type="number"
+                  variant="standard"
+                  {...register("kote")}
+                />
+              )}
+            />
+            <Controller
+              name="endteufe"
+              control={control}
+              defaultValue={currentBohrprofil?.endteufe}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  InputLabelProps={{ shrink: field.value != null }}
+                  value={field.value}
+                  sx={{ width: "47%" }}
+                  margin="normal"
+                  label="Endtiefe der Bohrung [m u. T.]"
+                  type="number"
+                  variant="standard"
+                  {...register("endteufe")}
+                />
+              )}
+            />
+            <Controller
+              name="tektonikId"
+              control={control}
+              defaultValue={currentBohrprofil?.tektonikId}
+              render={({ field }) => (
+                <Autocomplete
+                  {...field}
+                  options={tektonikCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
+                  value={field.value}
+                  getOptionLabel={(option) => tektonikCodes.find((c) => c.id === option)?.kurztext}
+                  onChange={(_, data) => field.onChange(data)}
+                  autoHighlight
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      sx={{ marginRight: "6%", width: "47%" }}
+                      margin="normal"
+                      label="Klassierung der Tektonik"
+                      type="text"
+                      variant="standard"
+                    />
+                  )}
+                />
+              )}
+            />
+            <Controller
+              name="formationFelsId"
+              control={control}
+              defaultValue={currentBohrprofil?.formationFelsId}
+              render={({ field }) => (
+                <Autocomplete
+                  {...field}
+                  options={formationFelsCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
+                  value={field.value}
+                  getOptionLabel={(option) => formationFelsCodes.find((c) => c.id === option)?.kurztext}
+                  onChange={(_, data) => field.onChange(data)}
+                  autoHighlight
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      sx={{ width: "47%" }}
+                      margin="normal"
+                      label="Formation Felsoberfläche"
+                      type="text"
+                      variant="standard"
+                    />
+                  )}
+                />
+              )}
+            />
+            <Controller
+              name="formationEndtiefeId"
+              control={control}
+              defaultValue={currentBohrprofil?.formationEndtiefeId}
+              render={({ field }) => (
+                <Autocomplete
+                  {...field}
+                  options={formationEndtiefeCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
+                  value={field.value}
+                  getOptionLabel={(option) => formationEndtiefeCodes.find((c) => c.id === option)?.kurztext}
+                  onChange={(_, data) => field.onChange(data)}
+                  autoHighlight
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      sx={{ marginRight: "6%", width: "47%" }}
+                      margin="normal"
+                      label="Formation auf Endtiefe"
+                      type="text"
+                      variant="standard"
+                    />
+                  )}
+                />
+              )}
+            />
+            <Controller
+              name="qualitaetId"
+              control={control}
+              defaultValue={currentBohrprofil?.qualitaetId}
+              render={({ field }) => (
+                <Autocomplete
+                  {...field}
+                  options={qualitaetCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
+                  value={field.value}
+                  getOptionLabel={(option) => qualitaetCodes.find((c) => c.id === option)?.kurztext}
+                  onChange={(_, data) => field.onChange(data)}
+                  autoHighlight
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      sx={{ width: "47%" }}
+                      margin="normal"
+                      label="Qualität der Angaben zum Bohrprofil"
+                      type="text"
+                      variant="standard"
+                    />
+                  )}
+                />
+              )}
+            />
+            <Controller
+              name="qualitaetBemerkung"
+              control={control}
+              defaultValue={currentBohrprofil?.qualitaetBemerkung}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  value={field.value}
+                  InputLabelProps={{ shrink: field.value != null }}
+                  margin="normal"
+                  multiline
+                  label="Bemerkungen zur Qualitätsangabe"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  {...register("qualitaetBemerkung")}
+                />
+              )}
+            />
+            {currentBohrprofil?.id && <DateUserInputs formObject={currentBohrprofil}></DateUserInputs>}
+          </Box>
+          <Box sx={{ width: { xs: "100%", md: "50%" }, paddingLeft: { xs: 0, md: 4 } }}>
+            <Typography>Lokalität der Bohrung</Typography>
             <DetailMap bohrungen={[currentBohrung]} currentForm={"bohrprofil"}></DetailMap>
-          </AccordionDetails>
-        </Accordion>
-        <Typography sx={{ marginTop: "15px" }} variant="h6" gutterBottom>
-          Schichten ({currentBohrprofil?.schichten ? currentBohrprofil.schichten.length : 0})
-          <Tooltip title="Schicht hinzufügen">
-            <span>
-              <IconButton
-                color="primary"
-                name="add-schicht-button"
-                disabled={readOnly || currentBohrprofil?.id == null}
-                onClick={onAddSchicht}
-              >
-                <AddCircleIcon />
-              </IconButton>
-            </span>
-          </Tooltip>
-        </Typography>
-        {currentBohrprofil?.id == null && (
-          <Typography>Bitte speichern Sie das Bohrprofil bevor Sie Schichten und Vorkommnisse hinzufügen.</Typography>
-        )}
-        {currentBohrprofil?.schichten?.length > 0 && (
-          <React.Fragment>
+            <Typography sx={{ marginTop: "15px" }} variant="h6" gutterBottom>
+              Schichten ({currentBohrprofil?.schichten ? currentBohrprofil.schichten.length : 0})
+              <Tooltip title="Schicht hinzufügen">
+                <span>
+                  <IconButton
+                    color="primary"
+                    name="add-schicht-button"
+                    disabled={readOnly || currentBohrprofil?.id == null}
+                    onClick={onAddSchicht}
+                  >
+                    <AddCircleIcon />
+                  </IconButton>
+                </span>
+              </Tooltip>
+            </Typography>
+            {currentBohrprofil?.id == null && (
+              <Typography>
+                Bitte speichern Sie das Bohrprofil bevor Sie Schichten und Vorkommnisse hinzufügen.
+              </Typography>
+            )}
             {currentBohrprofil?.schichten?.length > 0 && (
-              <Table name="schichten-table" size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Tiefe [m u. T.]</TableCell>
-                    <TableCell>Schichtgrenze</TableCell>
-                    <TableCell></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {currentBohrprofil.schichten.map((schicht) => (
-                    <TableRow key={schicht.id}>
-                      <TableCell>{schicht.tiefe}</TableCell>
-                      <TableCell>{schicht.codeSchicht?.kurztext}</TableCell>
-                      <TableCell align="right">
-                        <Tooltip title="Schicht editieren">
-                          <IconButton onClick={() => onEditSchicht(schicht)} name="edit-button" color="primary">
-                            {readOnly ? <PreviewIcon /> : <EditIcon />}
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Schicht duplizieren">
-                          <IconButton
-                            onClick={() => onCopySchicht(schicht)}
-                            name="copy-button"
-                            color="primary"
-                            disabled={readOnly}
-                          >
-                            <ContentCopyIcon />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Schicht löschen">
-                          <IconButton
-                            onClick={() => onDeleteSchicht(schicht)}
-                            name="delete-button"
-                            color="primary"
-                            disabled={readOnly}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              <React.Fragment>
+                {currentBohrprofil?.schichten?.length > 0 && (
+                  <Table name="schichten-table" size="small">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Tiefe [m u. T.]</TableCell>
+                        <TableCell>Schichtgrenze</TableCell>
+                        <TableCell></TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {currentBohrprofil.schichten.map((schicht) => (
+                        <TableRow key={schicht.id}>
+                          <TableCell>{schicht.tiefe}</TableCell>
+                          <TableCell>{schicht.codeSchicht?.kurztext}</TableCell>
+                          <TableCell align="right">
+                            <Tooltip title="Schicht editieren">
+                              <IconButton onClick={() => onEditSchicht(schicht)} name="edit-button" color="primary">
+                                {readOnly ? <PreviewIcon /> : <EditIcon />}
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Schicht duplizieren">
+                              <IconButton
+                                onClick={() => onCopySchicht(schicht)}
+                                name="copy-button"
+                                color="primary"
+                                disabled={readOnly}
+                              >
+                                <ContentCopyIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Schicht löschen">
+                              <IconButton
+                                onClick={() => onDeleteSchicht(schicht)}
+                                name="delete-button"
+                                color="primary"
+                                disabled={readOnly}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                )}
+              </React.Fragment>
             )}
-          </React.Fragment>
-        )}
-        <Typography sx={{ marginTop: "15px" }} variant="h6" gutterBottom>
-          Vorkommnisse ({currentBohrprofil?.vorkommnisse ? currentBohrprofil.vorkommnisse.length : 0})
-          <Tooltip title="Vorkommnis hinzufügen">
-            <span>
-              <IconButton
-                color="primary"
-                name="add-vorkommnis-button"
-                disabled={readOnly || currentBohrprofil?.id == null}
-                onClick={onAddVorkommnis}
-              >
-                <AddCircleIcon />
-              </IconButton>
-            </span>
-          </Tooltip>
-        </Typography>
-        {currentBohrprofil?.vorkommnisse?.length > 0 && (
-          <React.Fragment>
+            <Typography sx={{ marginTop: "15px" }} variant="h6" gutterBottom>
+              Vorkommnisse ({currentBohrprofil?.vorkommnisse ? currentBohrprofil.vorkommnisse.length : 0})
+              <Tooltip title="Vorkommnis hinzufügen">
+                <span>
+                  <IconButton
+                    color="primary"
+                    name="add-vorkommnis-button"
+                    disabled={readOnly || currentBohrprofil?.id == null}
+                    onClick={onAddVorkommnis}
+                  >
+                    <AddCircleIcon />
+                  </IconButton>
+                </span>
+              </Tooltip>
+            </Typography>
             {currentBohrprofil?.vorkommnisse?.length > 0 && (
-              <Table name="vorkommnisse-table" size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Tiefe [m u.T]</TableCell>
-                    <TableCell>Typ</TableCell>
-                    <TableCell></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {currentBohrprofil.vorkommnisse.map((vorkommnis) => (
-                    <TableRow key={vorkommnis.id}>
-                      <TableCell>{vorkommnis.tiefe}</TableCell>
-                      <TableCell>{vorkommnis.typ?.kurztext}</TableCell>
-                      <TableCell align="right">
-                        <Tooltip title="Vorkommnis editieren">
-                          <IconButton onClick={() => onEditVorkommnis(vorkommnis)} name="edit-button" color="primary">
-                            {readOnly ? <PreviewIcon /> : <EditIcon />}
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Vorkommnis duplizieren">
-                          <IconButton
-                            onClick={() => onCopyVorkommnis(vorkommnis)}
-                            name="copy-button"
-                            color="primary"
-                            disabled={readOnly}
-                          >
-                            <ContentCopyIcon />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Vorkommnis löschen">
-                          <IconButton
-                            onClick={() => onDeleteVorkommnis(vorkommnis)}
-                            name="delete-button"
-                            color="primary"
-                            disabled={readOnly}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              <React.Fragment>
+                {currentBohrprofil?.vorkommnisse?.length > 0 && (
+                  <Table name="vorkommnisse-table" size="small">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Tiefe [m u.T]</TableCell>
+                        <TableCell>Typ</TableCell>
+                        <TableCell></TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {currentBohrprofil.vorkommnisse.map((vorkommnis) => (
+                        <TableRow key={vorkommnis.id}>
+                          <TableCell>{vorkommnis.tiefe}</TableCell>
+                          <TableCell>{vorkommnis.typ?.kurztext}</TableCell>
+                          <TableCell align="right">
+                            <Tooltip title="Vorkommnis editieren">
+                              <IconButton
+                                onClick={() => onEditVorkommnis(vorkommnis)}
+                                name="edit-button"
+                                color="primary"
+                              >
+                                {readOnly ? <PreviewIcon /> : <EditIcon />}
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Vorkommnis duplizieren">
+                              <IconButton
+                                onClick={() => onCopyVorkommnis(vorkommnis)}
+                                name="copy-button"
+                                color="primary"
+                                disabled={readOnly}
+                              >
+                                <ContentCopyIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Vorkommnis löschen">
+                              <IconButton
+                                onClick={() => onDeleteVorkommnis(vorkommnis)}
+                                name="delete-button"
+                                color="primary"
+                                disabled={readOnly}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                )}
+              </React.Fragment>
             )}
-          </React.Fragment>
-        )}
+          </Box>
+        </Stack>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleBack}>{!isDirty || readOnly ? "Schliessen" : "Abbrechen"}</Button>

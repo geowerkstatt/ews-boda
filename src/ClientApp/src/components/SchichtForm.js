@@ -6,11 +6,8 @@ import { Controller, useForm } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Autocomplete, Box, Button } from "@mui/material";
+import Stack from "@mui/material/Stack";
+import { Autocomplete, Box, Button, Typography } from "@mui/material";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import DetailMap from "./DetailMap";
@@ -34,8 +31,6 @@ export default function SchichtForm(props) {
   const { isDirty } = formState;
   const [qualitaetCodes, setQualitaetCodes] = useState([]);
   const [codeSchichten, setCodeschichten] = useState([]);
-
-  const [mapExpanded, setMapExpanded] = useState(true);
 
   const currentSchichtIndex =
     currentBohrprofil.schichten?.indexOf(currentBohrprofil.schichten.find((b) => b.id === currentSchicht?.id)) || 0;
@@ -97,132 +92,133 @@ export default function SchichtForm(props) {
         )}
       </DialogTitle>
       <DialogContent>
-        <Controller
-          name="tiefe"
-          control={control}
-          defaultValue={currentSchicht?.tiefe}
-          render={({ field, fieldState: { error } }) => (
-            <TextField
-              {...field}
-              value={field.value}
-              sx={{ width: "47%" }}
-              margin="normal"
-              label="Tiefe [m u. T.]"
-              type="number"
-              variant="standard"
-              {...register("tiefe", { required: true })}
-              error={error !== undefined}
-              helperText={error ? "Geben Sie die Tiefe ein" : ""}
-            />
-          )}
-        />
-        <Controller
-          name="codeSchichtId"
-          control={control}
-          defaultValue={currentSchicht?.codeSchichtId}
-          rules={{ required: true }}
-          render={({ field, fieldState: { error } }) => (
-            <Autocomplete
-              {...field}
-              sx={{ width: "47%" }}
-              options={codeSchichten.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
-              value={field.value}
-              getOptionLabel={(option) => codeSchichten.find((c) => c.id === option)?.kurztext}
-              onChange={(_, data) => field.onChange(data)}
-              autoHighlight
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  margin="normal"
-                  label="Schicht (bzw. Schichtgrenze)"
-                  type="text"
-                  variant="standard"
-                  error={error !== undefined}
-                  helperText={error ? "Wählen Sie eine Schichtgrenze aus" : ""}
-                />
-              )}
-            />
-          )}
-        />
-        <Controller
-          name="bemerkung"
-          control={control}
-          defaultValue={currentSchicht?.bemerkung}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              InputLabelProps={{ shrink: field.value != null }}
-              value={field.value}
-              margin="normal"
-              multiline
-              label="Bemerkungen zur Schicht"
-              type="text"
-              fullWidth
-              variant="standard"
-              {...register("bemerkung")}
-            />
-          )}
-        />
-        <Controller
-          name="qualitaetId"
-          control={control}
-          defaultValue={currentSchicht?.qualitaetId}
-          rules={{ required: true }}
-          render={({ field, fieldState: { error } }) => (
-            <Autocomplete
-              {...field}
-              options={qualitaetCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
-              value={field.value}
-              getOptionLabel={(option) => qualitaetCodes.find((c) => c.id === option)?.kurztext}
-              onChange={(_, data) => field.onChange(data)}
-              sx={{ width: "47%" }}
-              autoHighlight
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  margin="normal"
-                  label="Qualität"
-                  type="text"
-                  variant="standard"
-                  error={error !== undefined}
-                  helperText={error ? "Wählen Sie eine Qualitätsangabe aus" : ""}
-                />
-              )}
-            />
-          )}
-        />
-        <Controller
-          name="qualitaetBemerkung"
-          control={control}
-          defaultValue={currentSchicht?.qualitaetBemerkung}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              InputLabelProps={{ shrink: field.value != null }}
-              value={field.value}
-              margin="normal"
-              multiline
-              label="Bemerkungen zur Qualitätsangabe"
-              type="text"
-              fullWidth
-              variant="standard"
-              {...register("qualitaetBemerkung")}
-            />
-          )}
-        />
-        {currentSchicht?.id && <DateUserInputs formObject={currentSchicht}></DateUserInputs>}
-        <Accordion
-          sx={{ boxShadow: "none" }}
-          expanded={mapExpanded}
-          onChange={(_, expanded) => setMapExpanded(expanded)}
+        <Stack
+          direction={{ xs: "column", md: "row" }}
+          justifyContent="space-evenly"
+          alignItems="flex-start"
+          spacing={2}
         >
-          <Tooltip title={mapExpanded ? "Übersichtskarte verbergen" : "Übersichtskarte anzeigen"}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>Lokalität der Bohrung</AccordionSummary>
-          </Tooltip>
-          <AccordionDetails>
+          <Box sx={{ width: { xs: "100%", md: "50%" } }}>
+            <Controller
+              name="tiefe"
+              control={control}
+              defaultValue={currentSchicht?.tiefe}
+              render={({ field, fieldState: { error } }) => (
+                <TextField
+                  {...field}
+                  value={field.value}
+                  sx={{ width: "47%" }}
+                  margin="normal"
+                  label="Tiefe [m u. T.]"
+                  type="number"
+                  variant="standard"
+                  {...register("tiefe", { required: true })}
+                  error={error !== undefined}
+                  helperText={error ? "Geben Sie die Tiefe ein" : ""}
+                />
+              )}
+            />
+            <Controller
+              name="codeSchichtId"
+              control={control}
+              defaultValue={currentSchicht?.codeSchichtId}
+              rules={{ required: true }}
+              render={({ field, fieldState: { error } }) => (
+                <Autocomplete
+                  {...field}
+                  sx={{ width: "47%" }}
+                  options={codeSchichten.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
+                  value={field.value}
+                  getOptionLabel={(option) => codeSchichten.find((c) => c.id === option)?.kurztext}
+                  onChange={(_, data) => field.onChange(data)}
+                  autoHighlight
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      margin="normal"
+                      label="Schicht (bzw. Schichtgrenze)"
+                      type="text"
+                      variant="standard"
+                      error={error !== undefined}
+                      helperText={error ? "Wählen Sie eine Schichtgrenze aus" : ""}
+                    />
+                  )}
+                />
+              )}
+            />
+            <Controller
+              name="bemerkung"
+              control={control}
+              defaultValue={currentSchicht?.bemerkung}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  InputLabelProps={{ shrink: field.value != null }}
+                  value={field.value}
+                  margin="normal"
+                  multiline
+                  label="Bemerkungen zur Schicht"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  {...register("bemerkung")}
+                />
+              )}
+            />
+            <Controller
+              name="qualitaetId"
+              control={control}
+              defaultValue={currentSchicht?.qualitaetId}
+              rules={{ required: true }}
+              render={({ field, fieldState: { error } }) => (
+                <Autocomplete
+                  {...field}
+                  options={qualitaetCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
+                  value={field.value}
+                  getOptionLabel={(option) => qualitaetCodes.find((c) => c.id === option)?.kurztext}
+                  onChange={(_, data) => field.onChange(data)}
+                  sx={{ width: "47%" }}
+                  autoHighlight
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      margin="normal"
+                      label="Qualität"
+                      type="text"
+                      variant="standard"
+                      error={error !== undefined}
+                      helperText={error ? "Wählen Sie eine Qualitätsangabe aus" : ""}
+                    />
+                  )}
+                />
+              )}
+            />
+            <Controller
+              name="qualitaetBemerkung"
+              control={control}
+              defaultValue={currentSchicht?.qualitaetBemerkung}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  InputLabelProps={{ shrink: field.value != null }}
+                  value={field.value}
+                  margin="normal"
+                  multiline
+                  label="Bemerkungen zur Qualitätsangabe"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  {...register("qualitaetBemerkung")}
+                />
+              )}
+            />
+            {currentSchicht?.id && <DateUserInputs formObject={currentSchicht}></DateUserInputs>}
+          </Box>
+          <Box sx={{ width: { xs: "100%", md: "50%" }, paddingLeft: { xs: 0, md: 4 } }}>
+            <Typography>Lokalität der Bohrung</Typography>
             <DetailMap bohrungen={[currentBohrung]} currentForm={"schicht"}></DetailMap>
-          </AccordionDetails>
-        </Accordion>
+          </Box>
+        </Stack>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleBack}>{!isDirty || readOnly ? "Schliessen" : "Abbrechen"}</Button>

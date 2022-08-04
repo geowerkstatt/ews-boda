@@ -16,14 +16,11 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Tooltip from "@mui/material/Tooltip";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Autocomplete, Box, Button, Typography } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import Stack from "@mui/material/Stack";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import DetailMap from "./DetailMap";
@@ -56,7 +53,6 @@ export default function BohrungForm(props) {
   const [ablenkungCodes, setAblenkungCodes] = useState([]);
   const [qualitaetCodes, setQualitaetCodes] = useState([]);
   const [openConfirmation, setOpenConfirmation] = useState(false);
-  const [mapExpanded, setMapExpanded] = useState(true);
   const [selectedDate, setSelectedDate] = useState();
 
   const currentBohrungIndex =
@@ -215,189 +211,189 @@ export default function BohrungForm(props) {
         )}
       </DialogTitle>
       <DialogContent>
-        <Controller
-          name="bezeichnung"
-          control={control}
-          defaultValue={currentBohrung?.bezeichnung}
-          render={({ field, fieldState: { error } }) => (
-            <TextField
-              {...field}
-              autoFocus
-              value={field.value}
-              margin="normal"
-              label="Bezeichnung der Bohrung"
-              type="text"
-              fullWidth
-              variant="standard"
-              {...register("bezeichnung", { required: true })}
-              error={error !== undefined}
-              helperText={error ? "Geben Sie eine Bezeichnung ein" : ""}
-            />
-          )}
-        />
-        <Controller
-          name="bemerkung"
-          control={control}
-          defaultValue={currentBohrung?.bemerkung}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              value={field.value}
-              margin="normal"
-              InputLabelProps={{ shrink: field.value != null }}
-              multiline
-              label="Bemerkung zur Bohrung"
-              type="text"
-              fullWidth
-              variant="standard"
-              {...register("bemerkung")}
-            />
-          )}
-        />
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DatePicker
-            label="Datum des Bohrbeginns"
-            disableFuture
-            inputFormat="dd.MM.yyyy"
-            value={selectedDate}
-            onChange={(value) => {
-              setSelectedDate(value);
-              //setValue only needed to dirty form
-              setValue("datum", value, { shouldDirty: true });
-            }}
-            disabled={readOnly}
-            renderInput={(params) => (
-              <TextField
-                InputLabelProps={{ shrink: selectedDate != null }}
-                sx={{ marginRight: "6%", width: "47%" }}
-                margin="normal"
-                variant="standard"
-                {...register("datum")}
-                {...params}
-              />
-            )}
-          />
-        </LocalizationProvider>
-        <Controller
-          name="durchmesserBohrloch"
-          control={control}
-          defaultValue={currentBohrung?.durchmesserBohrloch}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              value={field.value}
-              InputLabelProps={{ shrink: field.value != null }}
-              sx={{ width: "47%" }}
-              margin="normal"
-              label="Durchmesser Bohrloch [mm]"
-              type="number"
-              variant="standard"
-              {...register("durchmesserBohrloch")}
-            />
-          )}
-        />
-        <Controller
-          name="ablenkungId"
-          control={control}
-          defaultValue={currentBohrung?.ablenkungId}
-          render={({ field }) => (
-            <Autocomplete
-              {...field}
-              options={ablenkungCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
-              value={field.value}
-              onChange={(_, data) => field.onChange(data)}
-              getOptionLabel={(option) => ablenkungCodes.find((c) => c.id === option)?.kurztext}
-              autoHighlight
-              renderInput={(params) => (
+        <Stack
+          direction={{ xs: "column", sm: "column", md: "row" }}
+          justifyContent="space-evenly"
+          alignItems="flex-start"
+          spacing={2}
+        >
+          <Box sx={{ width: { xs: "100%", sm: "100%", md: "50%" } }}>
+            <Controller
+              name="bezeichnung"
+              control={control}
+              defaultValue={currentBohrung?.bezeichnung}
+              render={({ field, fieldState: { error } }) => (
                 <TextField
-                  {...params}
+                  {...field}
+                  autoFocus
+                  value={field.value}
                   margin="normal"
-                  label="Ablenkung der Bohrung"
+                  label="Bezeichnung der Bohrung"
                   type="text"
-                  sx={{ marginRight: "6%", width: "47%" }}
+                  fullWidth
                   variant="standard"
+                  {...register("bezeichnung", { required: true })}
+                  error={error !== undefined}
+                  helperText={error ? "Geben Sie eine Bezeichnung ein" : ""}
                 />
               )}
             />
-          )}
-        />
-        <Controller
-          name="qualitaetId"
-          control={control}
-          defaultValue={currentBohrung?.qualitaetId}
-          render={({ field }) => (
-            <Autocomplete
-              {...field}
-              options={qualitaetCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
-              value={field.value}
-              getOptionLabel={(option) => qualitaetCodes.find((c) => c.id === option)?.kurztext}
-              onChange={(_, data) => field.onChange(data)}
-              autoHighlight
-              renderInput={(params) => (
+            <Controller
+              name="bemerkung"
+              control={control}
+              defaultValue={currentBohrung?.bemerkung}
+              render={({ field }) => (
                 <TextField
-                  {...params}
+                  {...field}
+                  value={field.value}
+                  margin="normal"
+                  InputLabelProps={{ shrink: field.value != null }}
+                  multiline
+                  label="Bemerkung zur Bohrung"
+                  type="text"
+                  fullWidth
+                  variant="standard"
+                  {...register("bemerkung")}
+                />
+              )}
+            />
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                label="Datum des Bohrbeginns"
+                disableFuture
+                inputFormat="dd.MM.yyyy"
+                value={selectedDate}
+                onChange={(value) => {
+                  setSelectedDate(value);
+                  //setValue only needed to dirty form
+                  setValue("datum", value, { shouldDirty: true });
+                }}
+                disabled={readOnly}
+                renderInput={(params) => (
+                  <TextField
+                    InputLabelProps={{ shrink: selectedDate != null }}
+                    sx={{ marginRight: "6%", width: "47%" }}
+                    margin="normal"
+                    variant="standard"
+                    {...register("datum")}
+                    {...params}
+                  />
+                )}
+              />
+            </LocalizationProvider>
+            <Controller
+              name="durchmesserBohrloch"
+              control={control}
+              defaultValue={currentBohrung?.durchmesserBohrloch}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  value={field.value}
+                  InputLabelProps={{ shrink: field.value != null }}
                   sx={{ width: "47%" }}
                   margin="normal"
-                  label="Qualität der Angaben zur Bohrung"
-                  type="text"
+                  label="Durchmesser Bohrloch [mm]"
+                  type="number"
                   variant="standard"
+                  {...register("durchmesserBohrloch")}
                 />
               )}
             />
-          )}
-        />
-        <Controller
-          name="qualitaetBemerkung"
-          control={control}
-          defaultValue={currentBohrung?.qualitaetBemerkung}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              value={field.value}
-              InputLabelProps={{ shrink: field.value != null }}
-              sx={{ marginRight: "6%", width: "47%" }}
-              margin="normal"
-              multiline
-              label="Bemerkung zur Qualitätsangabe"
-              type="text"
-              variant="standard"
-              {...register("qualitaetBemerkung")}
+            <Controller
+              name="ablenkungId"
+              control={control}
+              defaultValue={currentBohrung?.ablenkungId}
+              render={({ field }) => (
+                <Autocomplete
+                  {...field}
+                  options={ablenkungCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
+                  value={field.value}
+                  onChange={(_, data) => field.onChange(data)}
+                  getOptionLabel={(option) => ablenkungCodes.find((c) => c.id === option)?.kurztext}
+                  autoHighlight
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      margin="normal"
+                      label="Ablenkung der Bohrung"
+                      type="text"
+                      sx={{ marginRight: "6%", width: "47%" }}
+                      variant="standard"
+                    />
+                  )}
+                />
+              )}
             />
-          )}
-        />
-        <Controller
-          name="quelleRef"
-          control={control}
-          defaultValue={currentBohrung?.quelleRef}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              InputLabelProps={{ shrink: field.value != null }}
-              value={field.value}
-              margin="normal"
-              label="Autor der geologischen Aufnahme"
-              type="text"
-              sx={{ width: "47%" }}
-              variant="standard"
-              {...register("quelleRef")}
+            <Controller
+              name="qualitaetId"
+              control={control}
+              defaultValue={currentBohrung?.qualitaetId}
+              render={({ field }) => (
+                <Autocomplete
+                  {...field}
+                  options={qualitaetCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
+                  value={field.value}
+                  getOptionLabel={(option) => qualitaetCodes.find((c) => c.id === option)?.kurztext}
+                  onChange={(_, data) => field.onChange(data)}
+                  autoHighlight
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      sx={{ width: "47%" }}
+                      margin="normal"
+                      label="Qualität der Angaben zur Bohrung"
+                      type="text"
+                      variant="standard"
+                    />
+                  )}
+                />
+              )}
             />
-          )}
-        />
-        {currentBohrung?.id && <DateUserInputs formObject={currentBohrung}></DateUserInputs>}
-
-        <Accordion
-          sx={{ boxShadow: "none" }}
-          expanded={mapExpanded}
-          onChange={(_, expanded) => setMapExpanded(expanded)}
-        >
-          <Tooltip title={mapExpanded ? "Übersichtskarte verbergen" : "Übersichtskarte anzeigen"}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Controller
+              name="qualitaetBemerkung"
+              control={control}
+              defaultValue={currentBohrung?.qualitaetBemerkung}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  value={field.value}
+                  InputLabelProps={{ shrink: field.value != null }}
+                  sx={{ marginRight: "6%", width: "47%" }}
+                  margin="normal"
+                  multiline
+                  label="Bemerkung zur Qualitätsangabe"
+                  type="text"
+                  variant="standard"
+                  {...register("qualitaetBemerkung")}
+                />
+              )}
+            />
+            <Controller
+              name="quelleRef"
+              control={control}
+              defaultValue={currentBohrung?.quelleRef}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  InputLabelProps={{ shrink: field.value != null }}
+                  value={field.value}
+                  margin="normal"
+                  label="Autor der geologischen Aufnahme"
+                  type="text"
+                  sx={{ width: "47%" }}
+                  variant="standard"
+                  {...register("quelleRef")}
+                />
+              )}
+            />
+            {currentBohrung?.id && <DateUserInputs formObject={currentBohrung}></DateUserInputs>}
+          </Box>
+          <Box sx={{ width: { xs: "100%", md: "50%" }, paddingLeft: { xs: 0, md: 4 } }}>
+            <Typography>
               {currentInteraction === "add"
                 ? "Position der Bohrung durch Klicken in der Karte wählen"
                 : "Position der Bohrung durch Klicken in der Karte ändern"}
-            </AccordionSummary>
-          </Tooltip>
-          <AccordionDetails>
+            </Typography>
             <DetailMap
               bohrungen={[currentBohrung]}
               currentStandort={currentStandort}
@@ -405,134 +401,140 @@ export default function BohrungForm(props) {
               setCurrentBohrung={setCurrentBohrung}
               readOnly={readOnly}
             ></DetailMap>
-          </AccordionDetails>
-        </Accordion>
-        <Controller
-          name="x_coordinate"
-          control={control}
-          render={({ field, fieldState: { error } }) => (
-            <TextField
-              {...field}
-              sx={{ marginRight: "6%", width: "47%" }}
-              margin="normal"
-              InputLabelProps={{ shrink: field.value != null }}
-              value={field.value}
-              onChange={(value) => field.onChange(value)}
-              label="X-Koordinate der Bohrung"
-              type="number"
-              variant="standard"
-              {...register("x_coordinate", {
-                validate: {
-                  range: (v) => validateXCoordinate(v) || "Die X-Koordinate muss zwischen 2590000 und 2646000 liegen",
-                  distance: (v) =>
-                    validateDistance(v, getValues("y_coordinate")) ||
-                    "Die Distanz der neu erstellten Bohrung darf nicht mehr als 200m zu den bereits vorhandenen Bohrungen betragen",
-                },
-              })}
-              error={error !== undefined}
-              helperText={(error && error.message) || ""}
+            <Controller
+              name="x_coordinate"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <TextField
+                  {...field}
+                  sx={{ marginRight: "6%", width: "47%" }}
+                  margin="normal"
+                  InputLabelProps={{ shrink: field.value != null }}
+                  value={field.value}
+                  onChange={(value) => field.onChange(value)}
+                  label="X-Koordinate der Bohrung"
+                  type="number"
+                  variant="standard"
+                  {...register("x_coordinate", {
+                    validate: {
+                      range: (v) =>
+                        validateXCoordinate(v) || "Die X-Koordinate muss zwischen 2590000 und 2646000 liegen",
+                      distance: (v) =>
+                        validateDistance(v, getValues("y_coordinate")) ||
+                        "Die Distanz der neu erstellten Bohrung darf nicht mehr als 200m zu den bereits vorhandenen Bohrungen betragen",
+                    },
+                  })}
+                  error={error !== undefined}
+                  helperText={(error && error.message) || ""}
+                />
+              )}
             />
-          )}
-        />
 
-        <Controller
-          name="y_coordinate"
-          control={control}
-          render={({ field, fieldState: { error } }) => (
-            <TextField
-              {...field}
-              sx={{ width: "47%" }}
-              margin="normal"
-              InputLabelProps={{ shrink: field.value != null }}
-              value={field.value}
-              onChange={(value) => field.onChange(value)}
-              label="Y-Koordinate der Bohrung"
-              type="number"
-              variant="standard"
-              {...register("y_coordinate", {
-                validate: {
-                  range: (v) => validateYCoordinate(v) || "Die Y-Koordinate muss zwischen 1212000 und 1264000 liegen",
-                  distance: (v) =>
-                    validateDistance(getValues("x_coordinate"), v) ||
-                    "Die Distanz der neu erstellten Bohrung darf nicht mehr als 200m zu den bereits vorhandenen Bohrungen betragen",
-                },
-              })}
-              error={error !== undefined}
-              helperText={(error && error.message) || ""}
+            <Controller
+              name="y_coordinate"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <TextField
+                  {...field}
+                  sx={{ width: "47%" }}
+                  margin="normal"
+                  InputLabelProps={{ shrink: field.value != null }}
+                  value={field.value}
+                  onChange={(value) => field.onChange(value)}
+                  label="Y-Koordinate der Bohrung"
+                  type="number"
+                  variant="standard"
+                  {...register("y_coordinate", {
+                    validate: {
+                      range: (v) =>
+                        validateYCoordinate(v) || "Die Y-Koordinate muss zwischen 1212000 und 1264000 liegen",
+                      distance: (v) =>
+                        validateDistance(getValues("x_coordinate"), v) ||
+                        "Die Distanz der neu erstellten Bohrung darf nicht mehr als 200m zu den bereits vorhandenen Bohrungen betragen",
+                    },
+                  })}
+                  error={error !== undefined}
+                  helperText={(error && error.message) || ""}
+                />
+              )}
             />
-          )}
-        />
 
-        <Typography sx={{ marginTop: "15px" }} variant="h6" gutterBottom>
-          Bohrprofile ({currentBohrung?.bohrprofile ? currentBohrung.bohrprofile.length : 0})
-          <Tooltip title="Bohrprofil hinzufügen">
-            <span>
-              <IconButton
-                color="primary"
-                name="add-button"
-                disabled={readOnly || currentBohrung?.id == null}
-                onClick={onAddBohrprofil}
-              >
-                <AddCircleIcon />
-              </IconButton>
-            </span>
-          </Tooltip>
-        </Typography>
-        {currentBohrung?.id == null && (
-          <Typography>Bitte speichern Sie die Bohrung bevor Sie Bohrprofile hinzufügen.</Typography>
-        )}
-        {currentBohrung?.bohrprofile?.length > 0 && (
-          <React.Fragment>
-            {currentBohrung?.bohrprofile?.length > 0 && (
-              <Table name="bohrprofile-table" size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Datum</TableCell>
-                    <TableCell>Endteufe [m]</TableCell>
-                    <TableCell></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {currentBohrung.bohrprofile.map((bohrprofil) => (
-                    <TableRow key={bohrprofil.id}>
-                      <TableCell>
-                        {bohrprofil?.datum != null ? new Date(bohrprofil.datum).toLocaleDateString() : null}
-                      </TableCell>
-                      <TableCell>{bohrprofil.endteufe}</TableCell>
-                      <TableCell align="right">
-                        <Tooltip title="Bohrprofil editieren">
-                          <IconButton onClick={() => onEditBohrprofil(bohrprofil)} name="edit-button" color="primary">
-                            {readOnly ? <PreviewIcon /> : <EditIcon />}
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Bohrprofil duplizieren">
-                          <IconButton
-                            onClick={() => onCopyBohrprofil(bohrprofil)}
-                            name="copy-button"
-                            color="primary"
-                            disabled={readOnly}
-                          >
-                            <ContentCopyIcon />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Bohrprofil löschen">
-                          <IconButton
-                            onClick={() => onDeleteBohrprofil(bohrprofil)}
-                            name="delete-button"
-                            color="primary"
-                            disabled={readOnly}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+            <Typography sx={{ marginTop: "15px" }} variant="h6" gutterBottom>
+              Bohrprofile ({currentBohrung?.bohrprofile ? currentBohrung.bohrprofile.length : 0})
+              <Tooltip title="Bohrprofil hinzufügen">
+                <span>
+                  <IconButton
+                    color="primary"
+                    name="add-button"
+                    disabled={readOnly || currentBohrung?.id == null}
+                    onClick={onAddBohrprofil}
+                  >
+                    <AddCircleIcon />
+                  </IconButton>
+                </span>
+              </Tooltip>
+            </Typography>
+            {currentBohrung?.id == null && (
+              <Typography>Bitte speichern Sie die Bohrung bevor Sie Bohrprofile hinzufügen.</Typography>
             )}
-          </React.Fragment>
-        )}
+            {currentBohrung?.bohrprofile?.length > 0 && (
+              <React.Fragment>
+                {currentBohrung?.bohrprofile?.length > 0 && (
+                  <Table name="bohrprofile-table" size="small">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Datum</TableCell>
+                        <TableCell>Endteufe [m]</TableCell>
+                        <TableCell></TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {currentBohrung.bohrprofile.map((bohrprofil) => (
+                        <TableRow key={bohrprofil.id}>
+                          <TableCell>
+                            {bohrprofil?.datum != null ? new Date(bohrprofil.datum).toLocaleDateString() : null}
+                          </TableCell>
+                          <TableCell>{bohrprofil.endteufe}</TableCell>
+                          <TableCell align="right">
+                            <Tooltip title="Bohrprofil editieren">
+                              <IconButton
+                                onClick={() => onEditBohrprofil(bohrprofil)}
+                                name="edit-button"
+                                color="primary"
+                              >
+                                {readOnly ? <PreviewIcon /> : <EditIcon />}
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Bohrprofil duplizieren">
+                              <IconButton
+                                onClick={() => onCopyBohrprofil(bohrprofil)}
+                                name="copy-button"
+                                color="primary"
+                                disabled={readOnly}
+                              >
+                                <ContentCopyIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Bohrprofil löschen">
+                              <IconButton
+                                onClick={() => onDeleteBohrprofil(bohrprofil)}
+                                name="delete-button"
+                                color="primary"
+                                disabled={readOnly}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                )}
+              </React.Fragment>
+            )}
+          </Box>
+        </Stack>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleBack}>{!isDirty || readOnly ? "Schliessen" : "Abbrechen"}</Button>
