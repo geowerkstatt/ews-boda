@@ -65,7 +65,6 @@ export function Layout(props) {
                   onClick={() => {
                     window.location.reload();
                   }}
-                  color="inherit"
                   sx={{ color: "white" }}
                 >
                   <LogoutIcon />
