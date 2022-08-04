@@ -63,7 +63,7 @@ export function Layout(props) {
               <a href={window.location.origin.toString() + "/login/sls/auth?cmd=logout"}>
                 <IconButton
                   onClick={() => {
-                    window.location.reload();
+                    setTimeout(window.location.reload, 1000);
                   }}
                   sx={{ color: "white" }}
                 >
