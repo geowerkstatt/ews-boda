@@ -100,7 +100,7 @@ export default function BohrprofilForm(props) {
       setValue("qualitaetId", currentBohrprofil?.qualitaetId);
       setValue("qualitaetBemerkung", currentBohrprofil?.qualitaetBemerkung);
       //DatePicker state must be handled separately from formState in order to preserve the date format (dd.MM.yyy). Otherwise the date will be stored as an unformatted string on manual input.
-      setSelectedDate(currentBohrprofil?.datum);
+      setSelectedDate(currentBohrprofil?.datum || null);
     }
   }, [currentBohrprofil, setValue]);
 
@@ -238,7 +238,7 @@ export default function BohrprofilForm(props) {
                 label="Datum des Bohrprofils"
                 disableFuture
                 inputFormat="dd.MM.yyyy"
-                value={selectedDate || null}
+                value={selectedDate}
                 onChange={(value) => {
                   setSelectedDate(value);
                   //setValue only needed to dirty form
