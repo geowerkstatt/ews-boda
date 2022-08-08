@@ -235,11 +235,6 @@ export default function StandortForm(props) {
                 />
               </React.Fragment>
             </React.Fragment>
-            {currentStandort?.id == null && (
-              <Typography sx={{ marginTop: 3 }}>
-                Bitte speichern Sie den Standort bevor Sie Bohrungen hinzufügen.
-              </Typography>
-            )}
           </Box>
           <Box sx={{ width: { xs: "100%", md: "50%" }, paddingLeft: { xs: 0, md: 4 } }}>
             <Typography>Lokalität der Bohrungen</Typography>
@@ -259,6 +254,11 @@ export default function StandortForm(props) {
                 </span>
               </Tooltip>
             </Typography>
+            {currentStandort?.id == null && (
+              <Typography sx={{ marginTop: 3 }}>
+                Bitte speichern Sie den Standort bevor Sie Bohrungen hinzufügen.
+              </Typography>
+            )}
             {currentStandort?.bohrungen?.length > 0 && (
               <Table name="seach-results-table" size="small">
                 <TableHead>
