@@ -134,7 +134,7 @@ export default function SchichtForm(props) {
                   sx={{ width: "47%" }}
                   options={codeSchichten.map((c) => c.id).sort((a, b) => a - b)}
                   value={field.value}
-                  getOptionLabel={(option) => codeSchichten.find((c) => c.id === option)?.kurztext}
+                  getOptionLabel={(option) => codeSchichten.find((c) => c.id === option)?.text}
                   onChange={(_, data) => field.onChange(data)}
                   autoHighlight
                   renderInput={(params) => (
