@@ -471,7 +471,7 @@ export default function BohrprofilForm(props) {
                       {currentBohrprofil.schichten.map((schicht) => (
                         <TableRow key={schicht.id}>
                           <TableCell>{schicht.tiefe}</TableCell>
-                          <TableCell>{schicht.codeSchicht?.kurztext}</TableCell>
+                          <TableCell>{schicht.codeSchicht?.text}</TableCell>
                           <TableCell align="right">
                             <Tooltip title="Schicht editieren">
                               <IconButton onClick={() => onEditSchicht(schicht)} name="edit-button" color="primary">
