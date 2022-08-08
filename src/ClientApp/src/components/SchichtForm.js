@@ -132,7 +132,7 @@ export default function SchichtForm(props) {
                 <Autocomplete
                   {...field}
                   sx={{ width: "47%" }}
-                  options={codeSchichten.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
+                  options={codeSchichten.map((c) => c.id).sort((a, b) => a - b)}
                   value={field.value}
                   getOptionLabel={(option) => codeSchichten.find((c) => c.id === option)?.kurztext}
                   onChange={(_, data) => field.onChange(data)}
