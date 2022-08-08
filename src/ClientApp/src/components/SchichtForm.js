@@ -174,8 +174,7 @@ export default function SchichtForm(props) {
               name="qualitaetId"
               control={control}
               defaultValue={currentSchicht?.qualitaetId}
-              rules={{ required: true }}
-              render={({ field, fieldState: { error } }) => (
+              render={({ field }) => (
                 <Autocomplete
                   {...field}
                   options={qualitaetCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
@@ -185,15 +184,7 @@ export default function SchichtForm(props) {
                   sx={{ width: "47%" }}
                   autoHighlight
                   renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      margin="normal"
-                      label="Qualität"
-                      type="text"
-                      variant="standard"
-                      error={error !== undefined}
-                      helperText={error ? "Wählen Sie eine Qualitätsangabe aus" : ""}
-                    />
+                    <TextField {...params} margin="normal" label="Qualität" type="text" variant="standard" />
                   )}
                 />
               )}
