@@ -205,7 +205,7 @@ export default function MainMap(props) {
           currentExtent = bohrungenLayer.getSource().getExtent();
           map.getView().fit(currentExtent, {
             padding: [30, 30, 30, 30],
-            maxZoom: 8,
+            maxZoom: 10,
           });
         } else {
           currentExtent = map.getView().getProjection().getExtent();
@@ -226,6 +226,7 @@ export default function MainMap(props) {
     if (map && doZoom && latestExtent) {
       map.getView().fit(latestExtent, {
         padding: [30, 30, 30, 30],
+        maxZoom: 10,
       });
     }
   }, [doZoom, latestExtent, map]);
