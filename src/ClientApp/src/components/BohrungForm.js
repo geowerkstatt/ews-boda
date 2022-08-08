@@ -304,56 +304,58 @@ export default function BohrungForm(props) {
                 />
               )}
             />
-            <Controller
-              name="ablenkungId"
-              control={control}
-              defaultValue={currentBohrung?.ablenkungId}
-              render={({ field }) => (
-                <Autocomplete
-                  {...field}
-                  options={ablenkungCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
-                  value={field.value}
-                  onChange={(_, data) => field.onChange(data)}
-                  getOptionLabel={(option) => ablenkungCodes.find((c) => c.id === option)?.kurztext}
-                  autoHighlight
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      margin="normal"
-                      label="Ablenkung der Bohrung"
-                      type="text"
-                      sx={{ marginRight: "6%", width: "47%" }}
-                      variant="standard"
-                    />
-                  )}
-                />
-              )}
-            />
-            <Controller
-              name="qualitaetId"
-              control={control}
-              defaultValue={currentBohrung?.qualitaetId}
-              render={({ field }) => (
-                <Autocomplete
-                  {...field}
-                  options={qualitaetCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
-                  value={field.value}
-                  getOptionLabel={(option) => qualitaetCodes.find((c) => c.id === option)?.kurztext}
-                  onChange={(_, data) => field.onChange(data)}
-                  autoHighlight
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      sx={{ width: "47%" }}
-                      margin="normal"
-                      label="Qualität der Angaben zur Bohrung"
-                      type="text"
-                      variant="standard"
-                    />
-                  )}
-                />
-              )}
-            />
+            <Stack direction="row" justifyContent="space-evenly" spacing={2}>
+              <Controller
+                name="ablenkungId"
+                control={control}
+                defaultValue={currentBohrung?.ablenkungId}
+                render={({ field }) => (
+                  <Autocomplete
+                    {...field}
+                    options={ablenkungCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
+                    value={field.value}
+                    onChange={(_, data) => field.onChange(data)}
+                    getOptionLabel={(option) => ablenkungCodes.find((c) => c.id === option)?.kurztext}
+                    autoHighlight
+                    sx={{ marginRight: "6%", width: "47%" }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        margin="normal"
+                        label="Ablenkung der Bohrung"
+                        type="text"
+                        variant="standard"
+                      />
+                    )}
+                  />
+                )}
+              />
+              <Controller
+                name="qualitaetId"
+                control={control}
+                defaultValue={currentBohrung?.qualitaetId}
+                render={({ field }) => (
+                  <Autocomplete
+                    {...field}
+                    options={qualitaetCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
+                    value={field.value}
+                    getOptionLabel={(option) => qualitaetCodes.find((c) => c.id === option)?.kurztext}
+                    onChange={(_, data) => field.onChange(data)}
+                    autoHighlight
+                    sx={{ width: "47%" }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        margin="normal"
+                        label="Qualität der Angaben zur Bohrung"
+                        type="text"
+                        variant="standard"
+                      />
+                    )}
+                  />
+                )}
+              />
+            </Stack>
             <Controller
               name="qualitaetBemerkung"
               control={control}
@@ -363,7 +365,7 @@ export default function BohrungForm(props) {
                   {...field}
                   value={field.value}
                   InputLabelProps={{ shrink: field.value != null }}
-                  sx={{ marginRight: "6%", width: "47%" }}
+                  fullWidth
                   margin="normal"
                   multiline
                   label="Bemerkung zur Qualitätsangabe"
@@ -385,7 +387,7 @@ export default function BohrungForm(props) {
                   margin="normal"
                   label="Autor der geologischen Aufnahme"
                   type="text"
-                  sx={{ width: "47%" }}
+                  sx={{ width: "47%", marginRight: "53%" }}
                   variant="standard"
                   {...register("quelleRef")}
                 />
