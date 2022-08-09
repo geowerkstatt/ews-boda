@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import {
@@ -36,6 +37,15 @@ export function Layout(props) {
     setOpen(!open);
   };
 
+  async function handleLogout() {
+    const response = await fetch("/login/sls/auth?cmd=logout");
+    if (response.ok) {
+      history.push("/");
+    }
+  }
+
+  const history = useHistory();
+
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: "flex" }}>
@@ -62,16 +72,9 @@ export function Layout(props) {
               Grundlagedaten EWS
             </Typography>
             <Tooltip title="Abmelden">
-              <a href={window.location.origin.toString() + "/login/sls/auth?cmd=logout"}>
-                <IconButton
-                  onClick={() => {
-                    setTimeout(window.location.reload, 1000);
-                  }}
-                  sx={{ color: "white" }}
-                >
-                  <LogoutIcon />
-                </IconButton>
-              </a>
+              <IconButton onClick={handleLogout} sx={{ color: "white" }}>
+                <LogoutIcon />
+              </IconButton>
             </Tooltip>
           </Toolbar>
         </AppBar>
