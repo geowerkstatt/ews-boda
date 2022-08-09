@@ -36,7 +36,6 @@ export default function MainMap(props) {
   const popupElement = useRef();
 
   const handleZoomToLatestExtend = () => setDoZoom(true);
-  const resetZoom = () => setDoZoom(false);
   const closePopup = () => {
     setPopupVisible(false);
     select.getFeatures().clear();
@@ -131,7 +130,6 @@ export default function MainMap(props) {
 
     // Clear selection on random click
     initialMap.on("click", clearSelect);
-    initialMap.getView().on("change:resolution", resetZoom);
 
     // Add info popup
     let popup = new Overlay({
@@ -228,6 +226,7 @@ export default function MainMap(props) {
         padding: [30, 30, 30, 30],
         maxZoom: 10,
       });
+      setDoZoom(false);
     }
   }, [doZoom, latestExtent, map]);
 
