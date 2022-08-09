@@ -212,7 +212,13 @@ export function Home(props) {
                 padding: "0 0 0 0",
               }}
             >
-              <MainMap standorte={standorte} unfilteredBohrungenLength={unfilteredBohrungenLength} />
+              <MainMap
+                standorte={standorte}
+                unfilteredBohrungenLength={unfilteredBohrungenLength}
+                readOnly={currentStandort?.freigabeAfu && currentUser?.role === UserRolesMap.Extern}
+                setCurrentStandort={setCurrentStandort}
+                setOpenStandortForm={setOpenStandortForm}
+              />
             </Paper>
           </Grid>
           <Grid item xs={12}>

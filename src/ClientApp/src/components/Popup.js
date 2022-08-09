@@ -1,8 +1,26 @@
 import React from "react";
-import { Button, Card, CardActions, CardContent, Typography } from "@mui/material";
+import { Button, Card, CardActions, CardContent, IconButton, Tooltip, Typography } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import PreviewIcon from "@mui/icons-material/Preview";
 
 function Popup(props) {
-  const { popupElement, closePopup, selectedFeature, standorte, popupVisible } = props;
+  const {
+    popupElement,
+    closePopup,
+    selectedFeature,
+    standorte,
+    popupVisible,
+    readOnly,
+    setCurrentStandort,
+    setOpenStandortForm,
+  } = props;
+
+  const standort = selectedFeature && standorte.find((s) => s.id === selectedFeature.values_.standortId);
+
+  const onEditStandort = () => {
+    setCurrentStandort(standort);
+    setOpenStandortForm(true);
+  };
 
   return (
     <div ref={popupElement} id="popup">
@@ -10,7 +28,12 @@ function Popup(props) {
         <Card sx={{ minWidth: 275 }}>
           <CardContent>
             <Typography variant="h6">
-              {standorte.find((s) => s.id === selectedFeature.values_.standortId).bezeichnung}
+              {standort?.bezeichnung}
+              <Tooltip title={readOnly ? "Standort anzeigen" : "Standort editieren"}>
+                <IconButton onClick={onEditStandort} name="edit-button" color="primary">
+                  {readOnly ? <PreviewIcon /> : <EditIcon />}
+                </IconButton>
+              </Tooltip>
             </Typography>
             <Typography color="text.secondary">Bohrung: {selectedFeature.values_.bezeichnung}</Typography>
             <Typography color="text.secondary">Gemeinde: {selectedFeature.values_.gemeinde}</Typography>
