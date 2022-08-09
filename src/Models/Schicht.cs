@@ -43,7 +43,7 @@ public class Schicht : EwsModelBase
     /// Foreign Key: ID Qualitätsangabe zur Schicht.
     /// </summary>
     [Column("quali")]
-    public int QualitaetId { get; set; }
+    public int? QualitaetId { get; set; }
 
     /// <summary>
     /// Qualitätsangabe zur Schicht.

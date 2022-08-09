@@ -383,7 +383,7 @@ partial class EwsContextModelSnapshot : ModelSnapshot
                     .HasColumnType("text")
                     .HasColumnName("qualibem");
 
-                b.Property<int>("QualitaetId")
+                b.Property<int?>("QualitaetId")
                     .HasColumnType("integer")
                     .HasColumnName("quali");
 
