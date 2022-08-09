@@ -16,12 +16,10 @@ public partial class UpdateSchicht : Migration
             nullable: true,
             oldClrType: typeof(int),
             oldType: "integer");
-
     }
 
     protected override void Down(MigrationBuilder migrationBuilder)
     {
-
         migrationBuilder.AlterColumn<int>(
             name: "quali",
             schema: "bohrung",
@@ -32,6 +30,5 @@ public partial class UpdateSchicht : Migration
             oldClrType: typeof(int),
             oldType: "integer",
             oldNullable: true);
-
     }
 }
