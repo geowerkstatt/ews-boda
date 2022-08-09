@@ -41,6 +41,7 @@ export function Layout(props) {
     const response = await fetch("/login/sls/auth?cmd=logout");
     if (response.ok) {
       history.push("/");
+      window.location.reload();
     }
   }
 
