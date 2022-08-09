@@ -109,7 +109,7 @@ export default function VorkommnisForm(props) {
               name="tiefe"
               control={control}
               defaultValue={currentVorkommnis?.tiefe}
-              render={({ field, fieldState: { error } }) => (
+              render={({ field }) => (
                 <TextField
                   {...field}
                   value={field.value}
@@ -118,9 +118,7 @@ export default function VorkommnisForm(props) {
                   label="Tiefe [m u. T.]"
                   type="number"
                   variant="standard"
-                  {...register("tiefe", { required: true })}
-                  error={error !== undefined}
-                  helperText={error ? "Geben Sie die Tiefe ein" : ""}
+                  {...register("tiefe")}
                 />
               )}
             />
