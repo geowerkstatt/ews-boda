@@ -215,7 +215,7 @@ export function Home(props) {
               <MainMap
                 standorte={standorte}
                 unfilteredBohrungenLength={unfilteredBohrungenLength}
-                readOnly={currentStandort?.freigabeAfu && currentUser?.role === UserRolesMap.Extern}
+                currentUser={currentUser}
                 setCurrentStandort={setCurrentStandort}
                 setOpenStandortForm={setOpenStandortForm}
               />

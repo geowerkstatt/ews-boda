@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Card, CardActions, CardContent, IconButton, Tooltip, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import PreviewIcon from "@mui/icons-material/Preview";
+import { UserRolesMap } from "../UserRolesMap";
 
 function Popup(props) {
   const {
@@ -10,12 +11,13 @@ function Popup(props) {
     selectedFeature,
     standorte,
     popupVisible,
-    readOnly,
+    currentUser,
     setCurrentStandort,
     setOpenStandortForm,
   } = props;
 
   const standort = selectedFeature && standorte.find((s) => s.id === selectedFeature.values_.standortId);
+  const readOnly = standort?.freigabeAfu && currentUser?.role === UserRolesMap.Extern;
 
   const onEditStandort = () => {
     setCurrentStandort(standort);
