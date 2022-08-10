@@ -22,7 +22,7 @@ import Popup from "./Popup";
 import "ol/ol.css";
 
 export default function MainMap(props) {
-  const { standorte, unfilteredBohrungenLength, readOnly, setCurrentStandort, setOpenStandortForm } = props;
+  const { standorte, unfilteredBohrungenLength, currentUser, setCurrentStandort, setOpenStandortForm } = props;
   const [map, setMap] = useState();
   const [bohrungenLayer, setBohrungenLayer] = useState();
   const [latestExtent, setLatestExtent] = useState();
@@ -248,7 +248,7 @@ export default function MainMap(props) {
         standorte={standorte}
         popupVisible={popupVisible}
         popupElement={popupElement}
-        readOnly={readOnly}
+        currentUser={currentUser}
         setCurrentStandort={setCurrentStandort}
         setOpenStandortForm={setOpenStandortForm}
       ></Popup>
