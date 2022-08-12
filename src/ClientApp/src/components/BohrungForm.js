@@ -61,7 +61,7 @@ export default function BohrungForm(props) {
   const [selectedDate, setSelectedDate] = useState();
 
   const currentBohrungIndex =
-    currentStandort.bohrungen?.indexOf(currentStandort.bohrungen.find((b) => b.id === currentBohrung.id)) || 0;
+    currentStandort.bohrungen?.indexOf(currentStandort.bohrungen.find((b) => b.id === currentBohrung?.id)) || 0;
   const numberOfBohrungen = currentStandort.bohrungen?.length || 0;
 
   // Get codes for dropdowns
