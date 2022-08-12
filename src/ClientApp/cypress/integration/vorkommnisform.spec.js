@@ -1,5 +1,6 @@
 import standorteGemeinde from "../fixtures/standorteGemeinde.json";
 import standorte from "../fixtures/standorte.json";
+import bohrung from "../fixtures/bohrung.json";
 
 describe("Input form tests", () => {
   beforeEach(() => {
@@ -10,6 +11,8 @@ describe("Input form tests", () => {
       "/standort?gemeinde=Heinrichswil-Winistorf&gbnummer=&bezeichnung=&erstellungsdatum=&mutationsdatum=",
       standorteGemeinde
     );
+    cy.intercept("/bohrung/" + 41063, bohrung);
+
     cy.visit("/");
     cy.get("div[name=home-container]").should("not.contain", "Standorte");
     cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
