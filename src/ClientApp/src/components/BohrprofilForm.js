@@ -321,7 +321,7 @@ export default function BohrprofilForm(props) {
                   <Autocomplete
                     {...field}
                     sx={{ marginRight: "6%", width: "47%" }}
-                    options={formationFelsCodes.map((c) => c.id).sort((a, b) => a - b)}
+                    options={formationFelsCodes.sort((a, b) => a.sortierung - b.sortierung).map((c) => c.id)}
                     value={field.value}
                     getOptionLabel={(option) => formationFelsCodes.find((c) => c.id === option)?.kurztext}
                     onChange={(_, data) => field.onChange(data)}
@@ -373,7 +373,7 @@ export default function BohrprofilForm(props) {
                   <Autocomplete
                     {...field}
                     sx={{ marginRight: "6%", width: "47%" }}
-                    options={formationEndtiefeCodes.map((c) => c.id).sort((a, b) => a - b)}
+                    options={formationEndtiefeCodes.sort((a, b) => a.sortierung - b.sortierung).map((c) => c.id)}
                     value={field.value}
                     getOptionLabel={(option) => formationEndtiefeCodes.find((c) => c.id === option)?.kurztext}
                     onChange={(_, data) => field.onChange(data)}
