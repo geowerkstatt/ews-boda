@@ -36,6 +36,7 @@ export default function StandortForm(props) {
     currentStandort,
     currentBohrung,
     setCurrentBohrung,
+    getAndSetCurrentBohrung,
     handleNext,
     handleClose,
     editStandort,
@@ -64,8 +65,7 @@ export default function StandortForm(props) {
   };
 
   const onEditBohrung = (bohrung) => {
-    setCurrentBohrung(bohrung);
-    handleNext();
+    getAndSetCurrentBohrung(bohrung.id).then(handleNext());
   };
 
   const onCopyBohrung = (bohrung) => {

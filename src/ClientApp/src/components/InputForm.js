@@ -339,6 +339,7 @@ export default function InputForm(props) {
           currentStandort={currentStandort}
           currentBohrung={currentBohrung}
           setCurrentBohrung={setCurrentBohrung}
+          getAndSetCurrentBohrung={getAndSetCurrentBohrung}
           currentUser={currentUser}
           handleNext={handleNext}
           deleteBohrung={deleteBohrung}
