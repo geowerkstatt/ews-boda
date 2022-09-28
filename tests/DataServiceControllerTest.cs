@@ -14,18 +14,15 @@ namespace EWS;
 [TestClass]
 public class DataServiceTest
 {
-    private HttpClient httpClient;
     private DataService dataService;
 
     [TestInitialize]
     public void Initialize()
     {
-        httpClient = new HttpClient();
-        dataService = new DataService(httpClient, new Mock<ILogger<DataService>>().Object);
+        var httpClientFactoryMock = new Mock<IHttpClientFactory>();
+        httpClientFactoryMock.Setup(x => x.CreateClient("DataService")).Returns(new HttpClient());
+        dataService = new DataService(httpClientFactoryMock.Object, new Mock<ILogger<DataService>>().Object);
     }
-
-    [TestCleanup]
-    public void Cleanup() => httpClient.Dispose();
 
     [TestMethod]
     public async Task GetAsyncForSinglePoint()
@@ -80,7 +77,9 @@ public class DataServiceTest
         mockHttp.When("https://geo.so.ch/api/*").Respond("application/json", "{'error' : 'Unit test: Invalid JSON format'}");
 
         using var mockHttpClient = new HttpClient(mockHttp);
-        dataService = new DataService(mockHttpClient, new Mock<ILogger<DataService>>().Object);
+        var httpClientFactoryMock = new Mock<IHttpClientFactory>();
+        httpClientFactoryMock.Setup(x => x.CreateClient("DataService")).Returns(mockHttpClient);
+        dataService = new DataService(httpClientFactoryMock.Object, new Mock<ILogger<DataService>>().Object);
 
         var points = new List<Point> { new(int.MaxValue, int.MinValue) };
         await Assert.ThrowsExceptionAsync<InvalidOperationException>(async () => await dataService.GetAsync(points));

@@ -16,7 +16,6 @@ namespace EWS;
 [TestClass]
 public class BohrungControllerTest
 {
-    private HttpClient httpClient;
     private EwsContext context;
     private BohrungController bohrungController;
     private StandortController standortController;
@@ -25,9 +24,11 @@ public class BohrungControllerTest
     [TestInitialize]
     public async Task TestInitialize()
     {
-        httpClient = new HttpClient();
+        var httpClientFactoryMock = new Mock<IHttpClientFactory>();
+        httpClientFactoryMock.Setup(x => x.CreateClient("DataService")).Returns(new HttpClient());
+
         context = ContextFactory.CreateContext();
-        bohrungController = new BohrungController(ContextFactory.CreateContext(), new DataService(httpClient, new Mock<ILogger<DataService>>().Object));
+        bohrungController = new BohrungController(ContextFactory.CreateContext(), new DataService(httpClientFactoryMock.Object, new Mock<ILogger<DataService>>().Object));
         standortController = new StandortController(ContextFactory.CreateContext()) { ControllerContext = GetControllerContext() };
 
         // Setup standort for manipulating bohrungen
@@ -43,7 +44,6 @@ public class BohrungControllerTest
         await standortController.DeleteAsync(standort.Id);
         Assert.IsInstanceOfType(await standortController.GetByIdAsync(standort.Id), typeof(NotFoundResult));
 
-        httpClient.Dispose();
         await context.DisposeAsync();
     }
 

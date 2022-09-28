@@ -9,14 +9,16 @@ public class DataService
     private const string GemeindeLayer = "ch.so.agi.gemeindegrenzen.data";
     private const string GrundstueckLayer = "ch.so.agi.av.grundstuecke.rechtskraeftig.data";
 
+    private readonly IHttpClientFactory httpClientFactory;
     private readonly HttpClient client;
     private readonly ILogger<DataService> logger;
 
-    public DataService(HttpClient client, ILogger<DataService> logger)
+    public DataService(IHttpClientFactory httpClientFactory, ILogger<DataService> logger)
     {
-        this.client = client;
+        this.httpClientFactory = httpClientFactory;
         this.logger = logger;
 
+        client = httpClientFactory.CreateClient("DataService");
         client.BaseAddress = new Uri("https://geo.so.ch/api/data/v1/");
     }
 
