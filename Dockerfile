@@ -40,14 +40,6 @@ ENV TZ=Europe/Zurich
 ENV ASPNETCORE_ENVIRONMENT=Production
 WORKDIR ${HOME}
 
-# Install required packages
-RUN \
-  DEBIAN_FRONTEND=noninteractive && \
-  mkdir -p /usr/share/man/man1 /usr/share/man/man2 && \
-  apt-get update && \
-  apt-get install -y curl && \
-  rm -rf /var/lib/apt/lists/*
-
 EXPOSE 80
 
 # Set default locale
