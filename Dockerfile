@@ -56,6 +56,4 @@ ENV LC_ALL=C.UTF-8
 
 COPY --from=build /app/publish $HOME
 
-HEALTHCHECK CMD curl --fail http://localhost/ || exit 1
-
 ENTRYPOINT ["dotnet", "EWS.dll"]
