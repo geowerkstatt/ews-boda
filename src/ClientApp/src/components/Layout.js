@@ -38,7 +38,7 @@ export function Layout(props) {
   };
 
   async function handleLogout() {
-    const response = await fetch("/login/sls/auth?cmd=logout");
+    const response = await fetch("/ewsboda");
     if (response.ok) {
       history.push("/");
       window.location.reload();
