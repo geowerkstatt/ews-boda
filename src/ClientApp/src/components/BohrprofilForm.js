@@ -315,32 +315,57 @@ export default function BohrprofilForm(props) {
                 />
               )}
             />
+            <Controller
+              name="formationFelsId"
+              control={control}
+              defaultValue={currentBohrprofil?.formationFelsId}
+              render={({ field }) => (
+                <Autocomplete
+                  {...field}
+                  options={formationFelsCodes.sort((a, b) => a.sortierung - b.sortierung).map((c) => c.id)}
+                  value={field.value}
+                  getOptionLabel={(option) => formationFelsCodes.find((c) => c.id === option)?.kurztext}
+                  onChange={(_, data) => field.onChange(data)}
+                  autoHighlight
+                  fullWidth
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      margin="normal"
+                      label="Formation Felsoberfläche"
+                      type="text"
+                      variant="standard"
+                    />
+                  )}
+                />
+              )}
+            />
+            <Controller
+              name="formationEndtiefeId"
+              control={control}
+              defaultValue={currentBohrprofil?.formationEndtiefeId}
+              render={({ field }) => (
+                <Autocomplete
+                  {...field}
+                  options={formationEndtiefeCodes.sort((a, b) => a.sortierung - b.sortierung).map((c) => c.id)}
+                  value={field.value}
+                  getOptionLabel={(option) => formationEndtiefeCodes.find((c) => c.id === option)?.kurztext}
+                  onChange={(_, data) => field.onChange(data)}
+                  autoHighlight
+                  fullWidth
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      margin="normal"
+                      label="Formation auf Endtiefe"
+                      type="text"
+                      variant="standard"
+                    />
+                  )}
+                />
+              )}
+            />
             <Stack direction="row" justifyContent="space-evenly" spacing={2}>
-              <Controller
-                name="formationFelsId"
-                control={control}
-                defaultValue={currentBohrprofil?.formationFelsId}
-                render={({ field }) => (
-                  <Autocomplete
-                    {...field}
-                    sx={{ marginRight: "6%", width: "47%" }}
-                    options={formationFelsCodes.sort((a, b) => a.sortierung - b.sortierung).map((c) => c.id)}
-                    value={field.value}
-                    getOptionLabel={(option) => formationFelsCodes.find((c) => c.id === option)?.kurztext}
-                    onChange={(_, data) => field.onChange(data)}
-                    autoHighlight
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        margin="normal"
-                        label="Formation Felsoberfläche"
-                        type="text"
-                        variant="standard"
-                      />
-                    )}
-                  />
-                )}
-              />
               <Controller
                 name="tektonikId"
                 control={control}
@@ -348,7 +373,7 @@ export default function BohrprofilForm(props) {
                 render={({ field }) => (
                   <Autocomplete
                     {...field}
-                    sx={{ width: "47%" }}
+                    sx={{ marginRight: "6%", width: "47%" }}
                     options={tektonikCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
                     value={field.value}
                     getOptionLabel={(option) => tektonikCodes.find((c) => c.id === option)?.kurztext}
@@ -359,33 +384,6 @@ export default function BohrprofilForm(props) {
                         {...params}
                         margin="normal"
                         label="Klassierung der Tektonik"
-                        type="text"
-                        variant="standard"
-                      />
-                    )}
-                  />
-                )}
-              />
-            </Stack>
-            <Stack direction="row" justifyContent="space-evenly" spacing={2}>
-              <Controller
-                name="formationEndtiefeId"
-                control={control}
-                defaultValue={currentBohrprofil?.formationEndtiefeId}
-                render={({ field }) => (
-                  <Autocomplete
-                    {...field}
-                    sx={{ marginRight: "6%", width: "47%" }}
-                    options={formationEndtiefeCodes.sort((a, b) => a.sortierung - b.sortierung).map((c) => c.id)}
-                    value={field.value}
-                    getOptionLabel={(option) => formationEndtiefeCodes.find((c) => c.id === option)?.kurztext}
-                    onChange={(_, data) => field.onChange(data)}
-                    autoHighlight
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        margin="normal"
-                        label="Formation auf Endtiefe"
                         type="text"
                         variant="standard"
                       />
