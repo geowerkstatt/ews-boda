@@ -11,8 +11,8 @@ RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get install -y nodejs mono-complete unzip
 
 # Download and unzip latest DocFX release
-RUN curl https://github.com/dotnet/docfx/releases/latest/download/docfx.zip -LO --silent --show-error && \
-  unzip -o -q docfx.zip
+RUN curl https://github.com/dotnet/docfx/releases/download/v2.62.2/docfx-linux-x64-v2.62.2.zip -LO --silent --show-error && \
+  unzip -o -q docfx-linux-x64-v2.62.2.zip
 
 # Restore dependencies and tools
 COPY src/EWS.csproj .
