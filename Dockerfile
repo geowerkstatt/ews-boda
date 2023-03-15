@@ -8,7 +8,7 @@ SHELL ["/bin/bash", "-c"]
 
 # Install missing packages
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
-RUN apt-get install -y nodejs mono-complete unzip
+RUN apt-get install -y nodejs unzip
 
 # Install latest DocFX release
 RUN dotnet tool update -g docfx
