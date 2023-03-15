@@ -29,8 +29,6 @@ RUN dotnet publish "EWS.csproj" \
 
 # Build documentation
 COPY docs/ ./docs/
-RUN ls -lah
-RUN ls -lah
 RUN ~/.dotnet/tools/docfx build -o ${PUBLISH_DIR}/wwwroot/help docs/docfx.json
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
