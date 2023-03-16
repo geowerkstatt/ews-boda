@@ -25,6 +25,8 @@ ENV GENERATE_SOURCEMAP=false
 COPY src/ .
 RUN dotnet publish "EWS.csproj" \
   -c Release \
+  -p:VersionPrefix=${VERSION} \
+  -p:SourceRevisionId=${REVISION} \
   -o ${PUBLISH_DIR}
 
 # Build documentation
