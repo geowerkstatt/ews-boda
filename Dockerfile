@@ -8,11 +8,10 @@ SHELL ["/bin/bash", "-c"]
 
 # Install missing packages
 RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
-RUN apt-get install -y nodejs mono-complete unzip
+RUN apt-get install -y nodejs unzip
 
-# Download and unzip latest DocFX release
-RUN curl https://github.com/dotnet/docfx/releases/latest/download/docfx.zip -LO --silent --show-error && \
-  unzip -o -q docfx.zip
+# Install latest DocFX release
+RUN dotnet tool update -g docfx
 
 # Restore dependencies and tools
 COPY src/EWS.csproj .
@@ -32,7 +31,7 @@ RUN dotnet publish "EWS.csproj" \
 
 # Build documentation
 COPY docs/ ./docs/
-RUN mono docfx.exe build -o ${PUBLISH_DIR}/wwwroot/help docs/docfx.json
+RUN ~/.dotnet/tools/docfx build -o ${PUBLISH_DIR}/wwwroot/help docs/docfx.json
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 ENV HOME=/app
