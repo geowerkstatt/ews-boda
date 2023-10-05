@@ -1,11 +1,11 @@
 ﻿using EWS.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NetTopologySuite.Geometries;
+using RichardSzalay.MockHttp;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -24,8 +24,47 @@ public class BohrungControllerTest
     [TestInitialize]
     public async Task TestInitialize()
     {
+        var mockHttp = new MockHttpMessageHandler();
+
+        // Gemeinde Langendorf
+        mockHttp
+            .When("*ch.so.agi.gemeindegrenzen.data/?bbox=2605532,1229554,2605532,1229554")
+            .Respond("application/json", DataServiceApiResponseMocks.GemeindeLangendorfJson);
+
+        mockHttp
+            .When("*ch.so.agi.av.grundstuecke.rechtskraeftig.data/?bbox=2605532,1229554,2605532,1229554")
+            .Respond("application/json", DataServiceApiResponseMocks.GemeindeLangendorfGrundbuch1950Json);
+
+        // Gemeinde Bellach
+        mockHttp
+            .When("*ch.so.agi.gemeindegrenzen.data/?bbox=2605164,1228521,2605164,1228521")
+            .Respond("application/json", DataServiceApiResponseMocks.GemeindeBellachJson);
+
+        mockHttp
+            .When("*ch.so.agi.av.grundstuecke.rechtskraeftig.data/?bbox=2605164,1228521,2605164,1228521")
+            .Respond("application/json", DataServiceApiResponseMocks.GemeindeBellachGrundbuch730Json);
+
+        // Gemeinde Bellach with different Grundbuchnummer
+        mockHttp
+            .When("*ch.so.agi.gemeindegrenzen.data/?bbox=2605198,1228541,2605198,1228541")
+            .Respond("application/json", DataServiceApiResponseMocks.GemeindeBellachJson);
+
+        mockHttp
+            .When("*ch.so.agi.av.grundstuecke.rechtskraeftig.data/?bbox=2605198,1228541,2605198,1228541")
+            .Respond("application/json", DataServiceApiResponseMocks.GemeindeBellachGrundbuch731Json);
+
+        // Empty feature collection for Chur
+        mockHttp
+            .When("*ch.so.agi.gemeindegrenzen.data/?bbox=2759206,1191408,2759206,1191408")
+            .Respond("application/json", DataServiceApiResponseMocks.EmptyFeatureCollectionJson);
+
+        mockHttp
+            .When("*ch.so.agi.av.grundstuecke.rechtskraeftig.data/?bbox=2759206,1191408,2759206,1191408")
+            .Respond("application/json", DataServiceApiResponseMocks.EmptyFeatureCollectionJson);
+
+        var mockHttpClient = new HttpClient(mockHttp);
         var httpClientFactoryMock = new Mock<IHttpClientFactory>();
-        httpClientFactoryMock.Setup(x => x.CreateClient("DataService")).Returns(new HttpClient());
+        httpClientFactoryMock.Setup(x => x.CreateClient("DataService")).Returns(mockHttpClient);
 
         context = ContextFactory.CreateContext();
         bohrungController = new BohrungController(ContextFactory.CreateContext(), new DataService(httpClientFactoryMock.Object, new Mock<ILogger<DataService>>().Object));
