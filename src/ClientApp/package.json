@@ -25,7 +25,7 @@
   "devDependencies": {
     "ajv": "^6.9.1",
     "cross-env": "^7.0.3",
-    "cypress": "^9.6.1",
+    "cypress": "^13.3.0",
     "eslint": "^7.25.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-react-app": "^6.0.0",

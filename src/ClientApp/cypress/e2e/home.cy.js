@@ -78,8 +78,8 @@ describe("Home page tests", () => {
     cy.get("tbody").children().should("have.length", 4);
 
     cy.contains("td", "Ergonomic Metal Tuna").parent("tr").children("td").find("button[name=edit-button]").click();
-    // submit button should only be visible if form is dirty
-    cy.get("button[type=submit]").should("not.be.visible");
+    // submit button should only be enabled if form is dirty
+    cy.get("button[type=submit]").should("be.disabled");
     cy.get("form[name=standort-form]")
       .find("input[name=bezeichnung]")
       .should("be.visible")
