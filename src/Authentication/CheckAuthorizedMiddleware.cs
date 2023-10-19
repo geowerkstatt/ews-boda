@@ -29,14 +29,6 @@ public class CheckAuthorizedMiddleware
         {
             var errorMessage = $"The user is not authorized to use this application. Group name <{authorizedGroupName}> not found in claim <{GroupClaimType}>.";
             logger.LogError(errorMessage);
-
-            // Temporarily log all claims to help with debugging.
-            logger.LogError("Claims:");
-            foreach (var claim in httpContext.User.Claims)
-            {
-                logger.LogError($"{claim.Type}: {claim.Value}");
-            }
-
             await httpContext.Response.WriteProblemDetailsAsync(
                 "Authorization Exception", errorMessage, StatusCodes.Status403Forbidden).ConfigureAwait(false);
 
