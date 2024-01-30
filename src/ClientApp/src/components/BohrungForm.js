@@ -94,8 +94,9 @@ export default function BohrungForm(props) {
     if (currentBohrung?.geometrie?.coordinates) {
       const x = currentBohrung.geometrie.coordinates[0];
       const y = currentBohrung.geometrie.coordinates[1];
-      setValue("x_coordinate", x.toFixed(1), { shouldDirty: true });
-      setValue("y_coordinate", y.toFixed(1), { shouldDirty: true });
+      const changedFromMapClick = currentBohrung.coordinatesChanged;
+      setValue("x_coordinate", x.toFixed(1), { shouldDirty: changedFromMapClick });
+      setValue("y_coordinate", y.toFixed(1), { shouldDirty: changedFromMapClick });
       currentBohrung.coordinatesChanged = false;
     }
   }, [currentBohrung, setValue]);
