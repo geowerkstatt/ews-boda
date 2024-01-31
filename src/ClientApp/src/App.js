@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route } from "react-router";
+import { Route, Routes } from "react-router";
 import { Layout } from "./components/Layout";
 import { Home } from "./components/pages/Home";
 import { User } from "./components/pages/User";
@@ -27,12 +27,10 @@ export default function App() {
     <React.Fragment>
       <CssBaseline />
       <Layout currentUser={currentUser}>
-        <Route exact path="/">
-          <Home currentUser={currentUser} />
-        </Route>
-        <Route exact path="/benutzerverwaltung">
-          <User />
-        </Route>
+        <Routes>
+          <Route exact path="/" element={<Home currentUser={currentUser} />} />
+          <Route exact path="/benutzerverwaltung" element={<User />} />
+        </Routes>
       </Layout>
     </React.Fragment>
   );
