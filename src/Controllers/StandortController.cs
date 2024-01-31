@@ -21,8 +21,10 @@ public class StandortController : EwsControllerBase<Standort>
          string? gemeinde = null, string? gbnummer = null, string? bezeichnung = null, DateTime? erstellungsdatum = null, DateTime? mutationsdatum = null)
     {
         var standorte = Context.Standorte.Include(s => s.Bohrungen).AsQueryable();
-#pragma warning disable CA1304 // Specify CultureInfo
 
+#pragma warning disable CA1304 // Specify CultureInfo
+#pragma warning disable CA1311 // Specify a culture or use an invariant version
+#pragma warning disable CA1862 // Use the 'StringComparison' method overloads to perform case-insensitive string comparisons
         if (!string.IsNullOrEmpty(gemeinde))
         {
             standorte = standorte.Where(s => s.Gemeinde.ToLower().Contains(gemeinde.ToLower()));
@@ -36,8 +38,10 @@ public class StandortController : EwsControllerBase<Standort>
         if (!string.IsNullOrEmpty(bezeichnung))
         {
             standorte = standorte.Where(s => s.Bezeichnung.ToLower().Contains(bezeichnung.ToLower()));
-#pragma warning restore CA1304 // Specify CultureInfo
         }
+#pragma warning restore CA1304 // Specify CultureInfo
+#pragma warning restore CA1311 // Specify a culture or use an invariant version
+#pragma warning restore CA1862 // Use the 'StringComparison' method overloads to perform case-insensitive string comparisons
 
         if (erstellungsdatum != null)
         {

@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 ARG VERSION
 ARG REVISION
@@ -40,18 +40,20 @@ RUN dotnet publish "EWS.csproj" \
 COPY docs/ ./docs/
 RUN ~/.dotnet/tools/docfx build -o ${PUBLISH_DIR}/wwwroot/help docs/docfx.json
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 ENV HOME=/app
 ENV TZ=Europe/Zurich
 ENV ASPNETCORE_ENVIRONMENT=Production
 WORKDIR ${HOME}
 
-EXPOSE 80
+EXPOSE 8080
 
 # Set default locale
 ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 
 COPY --from=build /app/publish $HOME
+
+USER $APP_UID
 
 ENTRYPOINT ["dotnet", "EWS.dll"]
