@@ -196,7 +196,7 @@ export function Home(props) {
                     unfilteredStandorte
                       .map((s) => s.gemeinde)
                       .filter(Boolean)
-                      .sort()
+                      .sort(),
                   ),
                 ]}
               ></Search>

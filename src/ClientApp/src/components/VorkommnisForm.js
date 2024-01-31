@@ -39,7 +39,7 @@ export default function VorkommnisForm(props) {
 
   const currentVorkommnisIndex =
     currentBohrprofil.vorkommnisse?.indexOf(
-      currentBohrprofil.vorkommnisse.find((b) => b.id === currentVorkommnis?.id)
+      currentBohrprofil.vorkommnisse.find((b) => b.id === currentVorkommnis?.id),
     ) || 0;
   const numberOfVorkommnisse = currentBohrprofil.vorkommnisse.length;
 

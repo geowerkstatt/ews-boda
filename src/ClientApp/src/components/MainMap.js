@@ -187,7 +187,7 @@ export default function MainMap(props) {
                 grundbuchNr: standorte.find((s) => s.id === f.standortId).grundbuchNr,
                 datum: f.datum,
                 standortId: f.standortId,
-              })
+              }),
           );
       } else {
         parsedFeatures = [];
@@ -195,7 +195,7 @@ export default function MainMap(props) {
       bohrungenLayer.setSource(
         new VectorSource({
           features: parsedFeatures,
-        })
+        }),
       );
       if (bohrungen.length && unfilteredBohrungenLength) {
         let currentExtent;
