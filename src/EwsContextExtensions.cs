@@ -228,15 +228,15 @@ public static class EwsContextExtensions
         context.SaveChangesWithoutUpdatingChangeInformation();
 
         // Sync all database sequences
-        context.Database.ExecuteSqlRaw($"SELECT setval(pg_get_serial_sequence('bohrung.codetyp', 'codetyp_id'), {codetyp_ids - 1})");
-        context.Database.ExecuteSqlRaw($"SELECT setval(pg_get_serial_sequence('bohrung.code', 'code_id'), {code_ids - 1})");
-        context.Database.ExecuteSqlRaw($"SELECT setval(pg_get_serial_sequence('bohrung.codeschicht', 'codeschicht_id'),{codeschicht_ids - 1})");
-        context.Database.ExecuteSqlRaw($"SELECT setval(pg_get_serial_sequence('bohrung.standort', 'standort_id'),{standort_ids - 1})");
-        context.Database.ExecuteSqlRaw($"SELECT setval(pg_get_serial_sequence('bohrung.bohrung', 'bohrung_id'),{bohrung_ids - 1})");
-        context.Database.ExecuteSqlRaw($"SELECT setval(pg_get_serial_sequence('bohrung.bohrprofil', 'bohrprofil_id'),{bohrprofil_ids - 1})");
-        context.Database.ExecuteSqlRaw($"SELECT setval(pg_get_serial_sequence('bohrung.schicht', 'schicht_id'),{schicht_ids - 1})");
-        context.Database.ExecuteSqlRaw($"SELECT setval(pg_get_serial_sequence('bohrung.vorkommnis', 'vorkommnis_id'),{vorkommnis_ids - 1})");
-        context.Database.ExecuteSqlRaw($"SELECT setval(pg_get_serial_sequence('bohrung.user', 'user_id'),{user_ids - 1})");
+        context.Database.ExecuteSql($"SELECT setval(pg_get_serial_sequence('bohrung.codetyp', 'codetyp_id'), {codetyp_ids - 1})");
+        context.Database.ExecuteSql($"SELECT setval(pg_get_serial_sequence('bohrung.code', 'code_id'), {code_ids - 1})");
+        context.Database.ExecuteSql($"SELECT setval(pg_get_serial_sequence('bohrung.codeschicht', 'codeschicht_id'),{codeschicht_ids - 1})");
+        context.Database.ExecuteSql($"SELECT setval(pg_get_serial_sequence('bohrung.standort', 'standort_id'),{standort_ids - 1})");
+        context.Database.ExecuteSql($"SELECT setval(pg_get_serial_sequence('bohrung.bohrung', 'bohrung_id'),{bohrung_ids - 1})");
+        context.Database.ExecuteSql($"SELECT setval(pg_get_serial_sequence('bohrung.bohrprofil', 'bohrprofil_id'),{bohrprofil_ids - 1})");
+        context.Database.ExecuteSql($"SELECT setval(pg_get_serial_sequence('bohrung.schicht', 'schicht_id'),{schicht_ids - 1})");
+        context.Database.ExecuteSql($"SELECT setval(pg_get_serial_sequence('bohrung.vorkommnis', 'vorkommnis_id'),{vorkommnis_ids - 1})");
+        context.Database.ExecuteSql($"SELECT setval(pg_get_serial_sequence('bohrung.user', 'user_id'),{user_ids - 1})");
 
         transaction.Commit();
     }
