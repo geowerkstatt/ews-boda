@@ -194,6 +194,7 @@ export default function StandortForm(props) {
                         defaultValue={currentStandort?.freigabeAfu ?? false}
                         render={({ field }) => (
                           <Checkbox
+                            {...register("freigabeAfu")}
                             {...field}
                             checked={field.value}
                             onChange={(e) => {
@@ -202,7 +203,6 @@ export default function StandortForm(props) {
                             }}
                           />
                         )}
-                        {...register("freigabeAfu")}
                       />
                     }
                   />
