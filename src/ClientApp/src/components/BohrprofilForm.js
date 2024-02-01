@@ -27,7 +27,7 @@ import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import DetailMap from "./DetailMap";
 import DateUserInputs from "./DateUserInputs";
 import { CodeTypes } from "./Codetypes";
@@ -240,7 +240,7 @@ export default function BohrprofilForm(props) {
               <DatePicker
                 label="Datum des Bohrprofils"
                 disableFuture
-                inputFormat="dd.MM.yyyy"
+                format="dd.MM.yyyy"
                 value={selectedDate}
                 onChange={(value) => {
                   setSelectedDate(value);
@@ -248,16 +248,14 @@ export default function BohrprofilForm(props) {
                   setValue("datum", value, { shouldDirty: true });
                 }}
                 disabled={readOnly}
-                renderInput={(params) => (
-                  <TextField
-                    InputLabelProps={{ shrink: selectedDate != null }}
-                    sx={{ marginRight: "6%", width: "47%" }}
-                    margin="normal"
-                    variant="standard"
-                    {...register("datum")}
-                    {...params}
-                  />
-                )}
+                slotProps={{
+                  textField: {
+                    sx: { marginRight: "6%", width: "47%" },
+                    margin: "normal",
+                    variant: "standard",
+                    ...register("datum"),
+                  },
+                }}
               />
             </LocalizationProvider>
             <Controller

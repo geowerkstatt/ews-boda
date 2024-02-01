@@ -106,7 +106,7 @@ export default function DetailMap(props) {
           (f) =>
             new Feature({
               geometry: new Point([f.geometrie?.coordinates[0], f.geometrie?.coordinates[1]]),
-            })
+            }),
         );
       } else {
         parsedFeatures = [];
@@ -114,7 +114,7 @@ export default function DetailMap(props) {
       bohrungenLayer.setSource(
         new VectorSource({
           features: parsedFeatures,
-        })
+        }),
       );
       let currentExtent;
 

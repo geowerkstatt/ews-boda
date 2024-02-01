@@ -77,7 +77,7 @@ export default function InputForm(props) {
     } else {
       setShowAlert(true);
       setAlertMessage(
-        "Bohrung konnte nicht hinzugefügt werden. Überprüfen Sie, ob sich alle dem Standort zugeordneten Bohrungen in der gleichen Gemeinde im Kanton Solothurn befinden."
+        "Bohrung konnte nicht hinzugefügt werden. Überprüfen Sie, ob sich alle dem Standort zugeordneten Bohrungen in der gleichen Gemeinde im Kanton Solothurn befinden.",
       );
       setAlertVariant("error");
     }
@@ -107,7 +107,7 @@ export default function InputForm(props) {
     } else {
       setShowAlert(true);
       setAlertMessage(
-        "Bohrung konnte nicht editiert werden. Überprüfen Sie, ob sich alle dem Standort zugeordneten Bohrungen in der gleichen Gemeinde im Kanton Solothurn befinden."
+        "Bohrung konnte nicht editiert werden. Überprüfen Sie, ob sich alle dem Standort zugeordneten Bohrungen in der gleichen Gemeinde im Kanton Solothurn befinden.",
       );
       setAlertVariant("error");
     }

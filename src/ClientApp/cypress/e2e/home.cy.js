@@ -12,7 +12,7 @@ describe("Home page tests", () => {
 
     cy.intercept(
       "/standort?gemeinde=Heinrichswil-Winistorf&gbnummer=&bezeichnung=&erstellungsdatum=&mutationsdatum=",
-      standorteGemeinde
+      standorteGemeinde,
     );
 
     cy.visit("/");
@@ -29,7 +29,7 @@ describe("Home page tests", () => {
     const gbnummer = "h5r0wdwsz6ef39zb2d31a0zfou7i4tdguvddcklb";
     cy.intercept(
       `/standort?gemeinde=&gbnummer=${gbnummer}&bezeichnung=&erstellungsdatum=&mutationsdatum=`,
-      standorteGbnummer
+      standorteGbnummer,
     );
     cy.visit("/");
     cy.get("div[name=home-container]").should("not.contain", "Standorte");
@@ -42,7 +42,7 @@ describe("Home page tests", () => {
   it("Show search result box if search for bezeichnung", function () {
     cy.intercept(
       `/standort?gemeinde=&gbnummer=&bezeichnung=Rustic%20Wooden%20Keyboard&erstellungsdatum=&mutationsdatum=`,
-      standorteBezeichnung
+      standorteBezeichnung,
     );
     cy.visit("/");
     cy.get("div[name=home-container]").should("not.contain", "Standorte");
@@ -65,7 +65,7 @@ describe("Home page tests", () => {
 
     cy.intercept(
       "/standort?gemeinde=Heinrichswil-Winistorf&gbnummer=&bezeichnung=&erstellungsdatum=&mutationsdatum=",
-      standorteGemeinde
+      standorteGemeinde,
     );
 
     cy.visit("/");
@@ -94,7 +94,7 @@ describe("Home page tests", () => {
 
     cy.intercept(
       "/standort?gemeinde=Heinrichswil-Winistorf&gbnummer=&bezeichnung=&erstellungsdatum=&mutationsdatum=",
-      standorteGemeinde
+      standorteGemeinde,
     );
     cy.intercept("DELETE", "/standort*", {
       statusCode: 200,
@@ -119,7 +119,7 @@ describe("Home page tests", () => {
     cy.intercept("/standort", standorte);
     cy.intercept(
       "/standort?gemeinde=Heinrichswil-Winistorf&gbnummer=&bezeichnung=&erstellungsdatum=&mutationsdatum=",
-      standorteGemeinde
+      standorteGemeinde,
     );
     const standort = standorteGemeinde.find((s) => s.bezeichnung === "Generic Steel Pants");
     cy.intercept("/standort/" + standort.id, standort);

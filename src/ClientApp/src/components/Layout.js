@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import {
@@ -40,12 +40,12 @@ export function Layout(props) {
   async function handleLogout() {
     const response = await fetch("/ewsboda");
     if (response.ok) {
-      history.push("/");
+      navigate("/");
       window.location.reload();
     }
   }
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <ThemeProvider theme={mdTheme}>

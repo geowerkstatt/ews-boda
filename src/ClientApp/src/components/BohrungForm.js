@@ -25,7 +25,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import DetailMap from "./DetailMap";
@@ -105,7 +105,7 @@ export default function BohrungForm(props) {
   useEffect(() => {
     proj4.defs(
       "EPSG:2056",
-      "+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=2600000 +y_0=1200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs"
+      "+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=2600000 +y_0=1200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs",
     );
     registerProjection(proj4);
   }, []);
@@ -270,7 +270,7 @@ export default function BohrungForm(props) {
               <DatePicker
                 label="Datum des Bohrbeginns"
                 disableFuture
-                inputFormat="dd.MM.yyyy"
+                format="dd.MM.yyyy"
                 value={selectedDate}
                 onChange={(value) => {
                   setSelectedDate(value);
@@ -278,16 +278,14 @@ export default function BohrungForm(props) {
                   setValue("datum", value, { shouldDirty: true });
                 }}
                 disabled={readOnly}
-                renderInput={(params) => (
-                  <TextField
-                    InputLabelProps={{ shrink: selectedDate != null }}
-                    sx={{ marginRight: "6%", width: "47%" }}
-                    margin="normal"
-                    variant="standard"
-                    {...register("datum")}
-                    {...params}
-                  />
-                )}
+                slotProps={{
+                  textField: {
+                    sx: { marginRight: "6%", width: "47%" },
+                    margin: "normal",
+                    variant: "standard",
+                    ...register("datum"),
+                  },
+                }}
               />
             </LocalizationProvider>
             <Controller

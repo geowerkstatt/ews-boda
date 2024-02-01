@@ -10,7 +10,7 @@ describe("Input form tests", () => {
     cy.intercept("/bohrung/" + 41063, bohrung);
     cy.intercept(
       "/standort?gemeinde=Heinrichswil-Winistorf&gbnummer=&bezeichnung=&erstellungsdatum=&mutationsdatum=",
-      standorteGemeinde
+      standorteGemeinde,
     );
     // Open bohrung edit form
     cy.visit("/");
