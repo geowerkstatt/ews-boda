@@ -133,8 +133,8 @@ export default function SchichtForm(props) {
                   {...field}
                   sx={{ width: "47%" }}
                   options={codeSchichten.map((c) => c.id).sort((a, b) => a - b)}
-                  value={field.value}
-                  getOptionLabel={(option) => codeSchichten.find((c) => c.id === option)?.text}
+                  value={field.value ?? null}
+                  getOptionLabel={(option) => codeSchichten.find((c) => c.id === option)?.text ?? ""}
                   onChange={(_, data) => field.onChange(data)}
                   autoHighlight
                   renderInput={(params) => (
@@ -178,8 +178,8 @@ export default function SchichtForm(props) {
                 <Autocomplete
                   {...field}
                   options={qualitaetCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
-                  value={field.value}
-                  getOptionLabel={(option) => qualitaetCodes.find((c) => c.id === option)?.kurztext}
+                  value={field.value ?? null}
+                  getOptionLabel={(option) => qualitaetCodes.find((c) => c.id === option)?.kurztext ?? ""}
                   onChange={(_, data) => field.onChange(data)}
                   sx={{ width: "47%" }}
                   autoHighlight

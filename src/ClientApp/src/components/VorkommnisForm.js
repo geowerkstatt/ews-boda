@@ -132,8 +132,8 @@ export default function VorkommnisForm(props) {
                   {...field}
                   sx={{ width: "47%" }}
                   options={typCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
-                  value={field.value}
-                  getOptionLabel={(option) => typCodes.find((c) => c.id === option)?.kurztext}
+                  value={field.value ?? null}
+                  getOptionLabel={(option) => typCodes.find((c) => c.id === option)?.kurztext ?? ""}
                   onChange={(_, data) => field.onChange(data)}
                   autoHighlight
                   renderInput={(params) => (
@@ -177,8 +177,8 @@ export default function VorkommnisForm(props) {
                 <Autocomplete
                   {...field}
                   options={qualitaetCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
-                  value={field.value}
-                  getOptionLabel={(option) => qualitaetCodes.find((c) => c.id === option)?.kurztext}
+                  value={field.value ?? null}
+                  getOptionLabel={(option) => qualitaetCodes.find((c) => c.id === option)?.kurztext ?? ""}
                   onChange={(_, data) => field.onChange(data)}
                   sx={{ width: "47%" }}
                   autoHighlight

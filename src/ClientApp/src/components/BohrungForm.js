@@ -58,7 +58,7 @@ export default function BohrungForm(props) {
   const [ablenkungCodes, setAblenkungCodes] = useState([]);
   const [qualitaetCodes, setQualitaetCodes] = useState([]);
   const [openConfirmation, setOpenConfirmation] = useState(false);
-  const [selectedDate, setSelectedDate] = useState();
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const currentBohrungIndex =
     currentStandort.bohrungen?.indexOf(currentStandort.bohrungen.find((b) => b.id === currentBohrung?.id)) || 0;
@@ -283,7 +283,8 @@ export default function BohrungForm(props) {
                     sx: { marginRight: "6%", width: "47%" },
                     margin: "normal",
                     variant: "standard",
-                    ...register("datum"),
+                    name: "datum",
+                    ref: register("datum").ref,
                   },
                 }}
               />
@@ -315,9 +316,9 @@ export default function BohrungForm(props) {
                   <Autocomplete
                     {...field}
                     options={ablenkungCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
-                    value={field.value}
+                    value={field.value ?? null}
                     onChange={(_, data) => field.onChange(data)}
-                    getOptionLabel={(option) => ablenkungCodes.find((c) => c.id === option)?.kurztext}
+                    getOptionLabel={(option) => ablenkungCodes.find((c) => c.id === option)?.kurztext ?? ""}
                     autoHighlight
                     sx={{ marginRight: "6%", width: "47%" }}
                     renderInput={(params) => (
@@ -340,8 +341,8 @@ export default function BohrungForm(props) {
                   <Autocomplete
                     {...field}
                     options={qualitaetCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
-                    value={field.value}
-                    getOptionLabel={(option) => qualitaetCodes.find((c) => c.id === option)?.kurztext}
+                    value={field.value ?? null}
+                    getOptionLabel={(option) => qualitaetCodes.find((c) => c.id === option)?.kurztext ?? ""}
                     onChange={(_, data) => field.onChange(data)}
                     autoHighlight
                     sx={{ width: "47%" }}
