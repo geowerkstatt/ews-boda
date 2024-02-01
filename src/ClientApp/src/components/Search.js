@@ -94,10 +94,10 @@ export default function Search(props) {
             <DatePicker
               label="Erstellungsdatum"
               disableFuture
-              inputFormat="dd.MM.yyyy"
+              format="dd.MM.yyyy"
               value={field.value}
               onChange={(value) => field.onChange(value)}
-              renderInput={(params) => <TextField {...field} margin="normal" variant="standard" {...params} />}
+              slotProps={{ textField: { ...field, margin: "normal", variant: "standard" } }}
             />
           )}
         />
@@ -111,10 +111,10 @@ export default function Search(props) {
             <DatePicker
               label="Mutationsdatum"
               disableFuture
-              inputFormat="dd.MM.yyyy"
+              format="dd.MM.yyyy"
               value={field.value}
               onChange={(value) => field.onChange(value)}
-              renderInput={(params) => <TextField {...field} margin="normal" variant="standard" {...params} />}
+              slotProps={{ textField: { ...field, margin: "normal", variant: "standard" } }}
             />
           )}
         />

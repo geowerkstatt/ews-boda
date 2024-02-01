@@ -270,7 +270,7 @@ export default function BohrungForm(props) {
               <DatePicker
                 label="Datum des Bohrbeginns"
                 disableFuture
-                inputFormat="dd.MM.yyyy"
+                format="dd.MM.yyyy"
                 value={selectedDate}
                 onChange={(value) => {
                   setSelectedDate(value);
@@ -278,16 +278,14 @@ export default function BohrungForm(props) {
                   setValue("datum", value, { shouldDirty: true });
                 }}
                 disabled={readOnly}
-                renderInput={(params) => (
-                  <TextField
-                    InputLabelProps={{ shrink: selectedDate != null }}
-                    sx={{ marginRight: "6%", width: "47%" }}
-                    margin="normal"
-                    variant="standard"
-                    {...register("datum")}
-                    {...params}
-                  />
-                )}
+                slotProps={{
+                  textField: {
+                    sx: { marginRight: "6%", width: "47%" },
+                    margin: "normal",
+                    variant: "standard",
+                    ...register("datum"),
+                  },
+                }}
               />
             </LocalizationProvider>
             <Controller
