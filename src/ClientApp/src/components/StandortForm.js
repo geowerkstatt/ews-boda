@@ -128,7 +128,7 @@ export default function StandortForm(props) {
               render={({ field, fieldState: { error } }) => (
                 <TextField
                   {...field}
-                  value={field.value}
+                  value={field.value ?? ""}
                   autoFocus
                   margin="normal"
                   label="Bezeichnung des Standorts"
@@ -148,7 +148,7 @@ export default function StandortForm(props) {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  value={field.value}
+                  value={field.value ?? ""}
                   margin="normal"
                   label="Bemerkung zum Standort"
                   type="text"
@@ -161,7 +161,7 @@ export default function StandortForm(props) {
             />
             <React.Fragment>
               <TextField
-                value={currentStandort?.gemeinde}
+                value={currentStandort?.gemeinde ?? ""}
                 fullWidth
                 type="text"
                 disabled
@@ -169,7 +169,7 @@ export default function StandortForm(props) {
                 label="Gemeinde"
               />
               <TextField
-                value={currentStandort?.grundbuchNr}
+                value={currentStandort?.grundbuchNr ?? ""}
                 fullWidth
                 type="text"
                 inputProps={{
@@ -210,7 +210,7 @@ export default function StandortForm(props) {
               )}
               <React.Fragment>
                 <TextField
-                  value={currentStandort?.afuUser}
+                  value={currentStandort?.afuUser ?? ""}
                   InputLabelProps={{ shrink: afuFreigabe }}
                   sx={{ marginRight: "6%", width: "47%" }}
                   disabled
@@ -223,7 +223,7 @@ export default function StandortForm(props) {
 
                 <TextField
                   name="afuDatum"
-                  value={currentStandort?.afuDatum ? new Date(currentStandort.afuDatum).toLocaleDateString() : null}
+                  value={currentStandort?.afuDatum ? new Date(currentStandort.afuDatum).toLocaleDateString() : ""}
                   InputLabelProps={{ shrink: afuFreigabe }}
                   disabled
                   sx={{ width: "47%" }}

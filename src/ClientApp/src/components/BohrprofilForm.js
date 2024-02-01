@@ -265,7 +265,7 @@ export default function BohrprofilForm(props) {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  value={field.value}
+                  value={field.value ?? ""}
                   InputLabelProps={{ shrink: field.value != null }}
                   margin="normal"
                   multiline
@@ -285,7 +285,7 @@ export default function BohrprofilForm(props) {
                 <TextField
                   {...field}
                   InputLabelProps={{ shrink: field.value != null }}
-                  value={field.value}
+                  value={field.value ?? ""}
                   sx={{ marginRight: "6%", width: "47%" }}
                   margin="normal"
                   label="Terrainkote der Bohrung [m ü. M.]"
@@ -303,7 +303,7 @@ export default function BohrprofilForm(props) {
                 <TextField
                   {...field}
                   InputLabelProps={{ shrink: field.value != null }}
-                  value={field.value}
+                  value={field.value ?? ""}
                   sx={{ width: "47%" }}
                   margin="normal"
                   label="Endtiefe der Bohrung [m u. T.]"
@@ -423,7 +423,7 @@ export default function BohrprofilForm(props) {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  value={field.value}
+                  value={field.value ?? ""}
                   InputLabelProps={{ shrink: field.value != null }}
                   margin="normal"
                   multiline

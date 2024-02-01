@@ -112,7 +112,7 @@ export default function VorkommnisForm(props) {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  value={field.value}
+                  value={field.value ?? ""}
                   sx={{ width: "47%" }}
                   margin="normal"
                   label="Tiefe [m u. T.]"
@@ -158,7 +158,7 @@ export default function VorkommnisForm(props) {
                 <TextField
                   {...field}
                   InputLabelProps={{ shrink: field.value != null }}
-                  value={field.value}
+                  value={field.value ?? ""}
                   margin="normal"
                   multiline
                   label="Bemerkungen zum Vorkommnis"
@@ -196,7 +196,7 @@ export default function VorkommnisForm(props) {
                 <TextField
                   {...field}
                   InputLabelProps={{ shrink: field.value != null }}
-                  value={field.value}
+                  value={field.value ?? ""}
                   margin="normal"
                   multiline
                   label="Bemerkungen zur Qualitätsangabe"

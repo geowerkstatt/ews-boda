@@ -235,7 +235,7 @@ export default function BohrungForm(props) {
                 <TextField
                   {...field}
                   autoFocus
-                  value={field.value}
+                  value={field.value ?? ""}
                   margin="normal"
                   label="Bezeichnung der Bohrung"
                   type="text"
@@ -254,7 +254,7 @@ export default function BohrungForm(props) {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  value={field.value}
+                  value={field.value ?? ""}
                   margin="normal"
                   InputLabelProps={{ shrink: field.value != null }}
                   multiline
@@ -295,7 +295,7 @@ export default function BohrungForm(props) {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  value={field.value}
+                  value={field.value ?? ""}
                   InputLabelProps={{ shrink: field.value != null }}
                   sx={{ width: "47%" }}
                   margin="normal"
@@ -365,7 +365,7 @@ export default function BohrungForm(props) {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  value={field.value}
+                  value={field.value ?? ""}
                   InputLabelProps={{ shrink: field.value != null }}
                   fullWidth
                   margin="normal"
@@ -385,7 +385,7 @@ export default function BohrungForm(props) {
                 <TextField
                   {...field}
                   InputLabelProps={{ shrink: field.value != null }}
-                  value={field.value}
+                  value={field.value ?? ""}
                   margin="normal"
                   label="Autor der geologischen Aufnahme"
                   type="text"
@@ -419,7 +419,7 @@ export default function BohrungForm(props) {
                   sx={{ marginRight: "6%", width: "47%" }}
                   margin="normal"
                   InputLabelProps={{ shrink: field.value != null }}
-                  value={field.value}
+                  value={field.value ?? ""}
                   onChange={(value) => field.onChange(value)}
                   label="X-Koordinate der Bohrung"
                   type="number"
@@ -448,7 +448,7 @@ export default function BohrungForm(props) {
                   sx={{ width: "47%" }}
                   margin="normal"
                   InputLabelProps={{ shrink: field.value != null }}
-                  value={field.value}
+                  value={field.value ?? ""}
                   onChange={(value) => field.onChange(value)}
                   label="Y-Koordinate der Bohrung"
                   type="number"

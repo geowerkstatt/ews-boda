@@ -111,7 +111,7 @@ export default function SchichtForm(props) {
               render={({ field, fieldState: { error } }) => (
                 <TextField
                   {...field}
-                  value={field.value}
+                  value={field.value ?? ""}
                   sx={{ width: "47%" }}
                   margin="normal"
                   label="Tiefe [m u. T.]"
@@ -159,7 +159,7 @@ export default function SchichtForm(props) {
                 <TextField
                   {...field}
                   InputLabelProps={{ shrink: field.value != null }}
-                  value={field.value}
+                  value={field.value ?? ""}
                   margin="normal"
                   multiline
                   label="Bemerkungen zur Schicht"
@@ -197,7 +197,7 @@ export default function SchichtForm(props) {
                 <TextField
                   {...field}
                   InputLabelProps={{ shrink: field.value != null }}
-                  value={field.value}
+                  value={field.value ?? ""}
                   margin="normal"
                   multiline
                   label="Bemerkungen zur Qualitätsangabe"
