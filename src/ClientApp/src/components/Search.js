@@ -3,7 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Autocomplete, Box, Button, TextField, Typography } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 
 export default function Search(props) {
   const { getStandorte, showSearchResults, gemeinden, setSearchResultsPage } = props;
