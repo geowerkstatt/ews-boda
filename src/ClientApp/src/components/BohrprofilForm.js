@@ -61,7 +61,7 @@ export default function BohrprofilForm(props) {
   const [formationEndtiefeCodes, setFormationEndtiefeCodes] = useState([]);
   const [openSchichtConfirmation, setOpenSchichtConfirmation] = useState(false);
   const [openVorkommnisConfirmation, setOpenVorkommnisConfirmation] = useState(false);
-  const [selectedDate, setSelectedDate] = useState();
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const currentBohrprofilIndex =
     currentBohrung.bohrprofile?.indexOf(currentBohrung.bohrprofile.find((b) => b.id === currentBohrprofil.id)) || 0;
@@ -253,7 +253,8 @@ export default function BohrprofilForm(props) {
                     sx: { marginRight: "6%", width: "47%" },
                     margin: "normal",
                     variant: "standard",
-                    ...register("datum"),
+                    name: "datum",
+                    ref: register("datum").ref,
                   },
                 }}
               />
@@ -265,7 +266,7 @@ export default function BohrprofilForm(props) {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  value={field.value}
+                  value={field.value ?? ""}
                   InputLabelProps={{ shrink: field.value != null }}
                   margin="normal"
                   multiline
@@ -285,7 +286,7 @@ export default function BohrprofilForm(props) {
                 <TextField
                   {...field}
                   InputLabelProps={{ shrink: field.value != null }}
-                  value={field.value}
+                  value={field.value ?? ""}
                   sx={{ marginRight: "6%", width: "47%" }}
                   margin="normal"
                   label="Terrainkote der Bohrung [m ü. M.]"
@@ -303,7 +304,7 @@ export default function BohrprofilForm(props) {
                 <TextField
                   {...field}
                   InputLabelProps={{ shrink: field.value != null }}
-                  value={field.value}
+                  value={field.value ?? ""}
                   sx={{ width: "47%" }}
                   margin="normal"
                   label="Endtiefe der Bohrung [m u. T.]"
@@ -321,8 +322,8 @@ export default function BohrprofilForm(props) {
                 <Autocomplete
                   {...field}
                   options={formationFelsCodes.sort((a, b) => a.sortierung - b.sortierung).map((c) => c.id)}
-                  value={field.value}
-                  getOptionLabel={(option) => formationFelsCodes.find((c) => c.id === option)?.kurztext}
+                  value={field.value ?? null}
+                  getOptionLabel={(option) => formationFelsCodes.find((c) => c.id === option)?.kurztext ?? ""}
                   onChange={(_, data) => field.onChange(data)}
                   autoHighlight
                   fullWidth
@@ -346,8 +347,8 @@ export default function BohrprofilForm(props) {
                 <Autocomplete
                   {...field}
                   options={formationEndtiefeCodes.sort((a, b) => a.sortierung - b.sortierung).map((c) => c.id)}
-                  value={field.value}
-                  getOptionLabel={(option) => formationEndtiefeCodes.find((c) => c.id === option)?.kurztext}
+                  value={field.value ?? null}
+                  getOptionLabel={(option) => formationEndtiefeCodes.find((c) => c.id === option)?.kurztext ?? ""}
                   onChange={(_, data) => field.onChange(data)}
                   autoHighlight
                   fullWidth
@@ -373,8 +374,8 @@ export default function BohrprofilForm(props) {
                     {...field}
                     sx={{ marginRight: "6%", width: "47%" }}
                     options={tektonikCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
-                    value={field.value}
-                    getOptionLabel={(option) => tektonikCodes.find((c) => c.id === option)?.kurztext}
+                    value={field.value ?? null}
+                    getOptionLabel={(option) => tektonikCodes.find((c) => c.id === option)?.kurztext ?? ""}
                     onChange={(_, data) => field.onChange(data)}
                     autoHighlight
                     renderInput={(params) => (
@@ -399,8 +400,8 @@ export default function BohrprofilForm(props) {
                     {...field}
                     sx={{ width: "47%" }}
                     options={qualitaetCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
-                    value={field.value}
-                    getOptionLabel={(option) => qualitaetCodes.find((c) => c.id === option)?.kurztext}
+                    value={field.value ?? null}
+                    getOptionLabel={(option) => qualitaetCodes.find((c) => c.id === option)?.kurztext ?? ""}
                     onChange={(_, data) => field.onChange(data)}
                     autoHighlight
                     renderInput={(params) => (
@@ -423,7 +424,7 @@ export default function BohrprofilForm(props) {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  value={field.value}
+                  value={field.value ?? ""}
                   InputLabelProps={{ shrink: field.value != null }}
                   margin="normal"
                   multiline
