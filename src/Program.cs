@@ -57,7 +57,15 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<DataService>();
 
 var connectionString = builder.Configuration.GetConnectionString("BohrungContext");
-builder.Services.AddDbContext<EwsContext>(x => x.UseNpgsql(connectionString, option => option.UseNetTopologySuite().UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
+builder.Services.AddDbContext<EwsContext>(x =>
+{
+    x.UseNpgsql(connectionString, options =>
+    {
+        options.UseNetTopologySuite().UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+        options.MigrationsHistoryTable("__EFMigrationsHistory", "bohrung");
+    });
+});
+
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var app = builder.Build();
