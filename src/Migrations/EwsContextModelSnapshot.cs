@@ -19,7 +19,7 @@ partial class EwsContextModelSnapshot : ModelSnapshot
 #pragma warning disable 612, 618
         modelBuilder
             .HasDefaultSchema("bohrung")
-            .HasAnnotation("ProductVersion", "6.0.5")
+            .HasAnnotation("ProductVersion", "8.0.2")
             .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
         NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "postgis");
