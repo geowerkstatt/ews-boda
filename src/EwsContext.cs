@@ -32,7 +32,6 @@ public class EwsContext : DbContext
     {
         modelBuilder.HasDefaultSchema("bohrung");
         modelBuilder.HasPostgresExtension("postgis");
-        base.OnModelCreating(modelBuilder);
     }
 
     /// <inheritdoc />
