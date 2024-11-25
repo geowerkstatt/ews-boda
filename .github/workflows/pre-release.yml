@@ -8,6 +8,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   create-pre-release:
@@ -58,9 +59,5 @@ jobs:
           cache-to: type=inline
 
       - name: Create GitHub pre-release
-        uses: marvinpinto/action-automatic-releases@919008cf3f741b179569b7a6fb4d8860689ab7f0
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: v${{ env.VERSION }}
-          prerelease: true
-          title: ${{ env.VERSION }}
+        run: gh release create v${{ env.VERSION }} --title "${{ env.VERSION }}" --prerelease --target ${{ github.ref }}
+
