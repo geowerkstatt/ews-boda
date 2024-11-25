@@ -59,12 +59,5 @@ jobs:
           cache-to: type=inline
 
       - name: Create GitHub pre-release
-        run: |
-          gh api \
-            --method POST \
-            --header "Accept: application/vnd.github+json" \
-            /repos/${GITHUB_REPOSITORY}/releases \
-            -f tag_name='v${{ env.VERSION }}' \
-            -f target_commitish='main' \
-            -f name='${{ env.VERSION }}' \
-            -F prerelease=true \
+        run: gh release create ${{ env.VERSION }} --title "${{ env.VERSION }}" --prerelease --target ${{ github.ref }}
+
