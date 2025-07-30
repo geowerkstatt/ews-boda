@@ -44,9 +44,8 @@
     "dev": "vite",
     "preview": "vite preview",
     "build": "vite build",
-    "test": "start-server-and-test start http-get://127.0.0.1:44472 cy:run",
+    "test": "cypress run",
     "lint": "eslint ./src/ && eslint ./cypress/",
-    "cy:run": "cypress run",
     "cy": "cypress open"
   },
   "eslintConfig": {
