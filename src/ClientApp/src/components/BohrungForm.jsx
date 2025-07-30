@@ -31,7 +31,7 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import DetailMap from "./DetailMap";
 import DateUserInputs from "./DateUserInputs";
 import ConfirmationDialog from "./ConfirmationDialog";
-import { CodeTypes } from "./Codetypes";
+import { Codetypes } from "./Codetypes";
 import { getDistance } from "ol/sphere";
 import { transform } from "ol/proj";
 import { register as registerProjection } from "ol/proj/proj4";
@@ -67,8 +67,8 @@ export default function BohrungForm(props) {
   // Get codes for dropdowns
   useEffect(() => {
     const getCodes = async () => {
-      const ablenkungResponse = await fetch("/code?codetypid=" + CodeTypes.Bohrung_hablenkung);
-      const qualitaetResponse = await fetch("/code?codetypid=" + CodeTypes.Bohrung_hquali);
+      const ablenkungResponse = await fetch("/code?codetypid=" + Codetypes.Bohrung_hablenkung);
+      const qualitaetResponse = await fetch("/code?codetypid=" + Codetypes.Bohrung_hquali);
       const ablenkungCodes = await ablenkungResponse.json();
       const qualitaetCodes = await qualitaetResponse.json();
       setAblenkungCodes(ablenkungCodes);
@@ -131,10 +131,10 @@ export default function BohrungForm(props) {
   const onAddBohrprofil = () => {
     let bohrprofil = {
       bohrungId: currentBohrung.id,
-      hFormationEndtiefe: CodeTypes.Bohrprofil_fmeto,
-      hFormationFels: CodeTypes.Bohrprofil_fmfelso,
-      hQualitaet: CodeTypes.Bohrprofil_hquali,
-      hTektonik: CodeTypes.Bohrprofil_htektonik,
+      hFormationEndtiefe: Codetypes.Bohrprofil_fmeto,
+      hFormationFels: Codetypes.Bohrprofil_fmfelso,
+      hQualitaet: Codetypes.Bohrprofil_hquali,
+      hTektonik: Codetypes.Bohrprofil_htektonik,
       schichten: [],
       vorkommnisse: [],
     };

@@ -17,17 +17,17 @@ import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import DetailMap from "./DetailMap";
 import DateUserInputs from "./DateUserInputs";
-import { CodeTypes } from "./Codetypes";
+import { Codetypes } from "./Codetypes";
 
-export default function SchichtForm(props) {
+export default function VorkommnisForm(props) {
   const {
     currentBohrung,
     currentBohrprofil,
-    currentSchicht,
-    setCurrentSchicht,
+    currentVorkommnis,
+    setCurrentVorkommnis,
     handleBack,
-    addSchicht,
-    editSchicht,
+    addVorkommnis,
+    editVorkommnis,
     readOnly,
   } = props;
   const { control, handleSubmit, formState, reset, register, setValue } = useForm({
@@ -35,61 +35,62 @@ export default function SchichtForm(props) {
   });
   const { isDirty } = formState;
   const [qualitaetCodes, setQualitaetCodes] = useState([]);
-  const [codeSchichten, setCodeschichten] = useState([]);
+  const [typCodes, setTypCodes] = useState([]);
 
-  const currentSchichtIndex =
-    currentBohrprofil.schichten?.indexOf(currentBohrprofil.schichten.find((b) => b.id === currentSchicht?.id)) || 0;
-
-  const numberOfSchichten = currentBohrprofil.schichten.length;
+  const currentVorkommnisIndex =
+    currentBohrprofil.vorkommnisse?.indexOf(
+      currentBohrprofil.vorkommnisse.find((b) => b.id === currentVorkommnis?.id),
+    ) || 0;
+  const numberOfVorkommnisse = currentBohrprofil.vorkommnisse.length;
 
   // Get codes for dropdowns
   useEffect(() => {
     const getCodes = async () => {
-      const qualitaetResponse = await fetch("/code?codetypid=" + CodeTypes.Schicht_hquali);
-      const codeSchichtResponse = await fetch("/codeschicht");
+      const qualitaetResponse = await fetch("/code?codetypid=" + Codetypes.Vorkommnis_hquali);
+      const typResponse = await fetch("/code?codetypid=" + Codetypes.Vorkommnis_htyp);
       const qualitaetCodes = await qualitaetResponse.json();
-      const codeSchichten = await codeSchichtResponse.json();
+      const typCodes = await typResponse.json();
       setQualitaetCodes(qualitaetCodes);
-      setCodeschichten(codeSchichten);
+      setTypCodes(typCodes);
     };
     getCodes();
   }, []);
 
-  // Update form values if currentSchicht changes, to allow next/previous navigation
+  // Update form values if currentVorkommnis changes, to allow next/previous navigation
   useEffect(() => {
-    if (currentSchicht) {
-      setValue("tiefe", currentSchicht?.tiefe);
-      setValue("codeSchichtId", currentSchicht?.codeSchichtId);
-      setValue("qualitaetId", currentSchicht?.qualitaetId);
-      setValue("qualitaetBemerkung", currentSchicht?.qualitaetBemerkung);
-      setValue("bemerkung", currentSchicht?.bemerkung);
+    if (currentVorkommnis) {
+      setValue("tiefe", currentVorkommnis?.tiefe);
+      setValue("typId", currentVorkommnis?.typId);
+      setValue("qualitaetId", currentVorkommnis?.qualitaetId);
+      setValue("qualitaetBemerkung", currentVorkommnis?.qualitaetBemerkung);
+      setValue("bemerkung", currentVorkommnis?.bemerkung);
     }
-  }, [currentSchicht, setValue]);
+  }, [currentVorkommnis, setValue]);
 
-  const currentInteraction = currentSchicht?.id ? "edit" : "add";
+  const currentInteraction = currentVorkommnis?.id ? "edit" : "add";
 
   const onSubmit = (formData) => {
-    currentSchicht.id
-      ? editSchicht(formData).finally(() => reset(formData))
-      : addSchicht(formData).finally(() => reset(formData));
+    currentVorkommnis.id
+      ? editVorkommnis(formData).finally(() => reset(formData))
+      : addVorkommnis(formData).finally(() => reset(formData));
   };
 
-  const onNavigateNext = () => setCurrentSchicht(currentBohrprofil.schichten[currentSchichtIndex + 1]);
-  const onNavigatePrevious = () => setCurrentSchicht(currentBohrprofil.schichten[currentSchichtIndex - 1]);
+  const onNavigateNext = () => setCurrentVorkommnis(currentBohrprofil.vorkommnisse[currentVorkommnisIndex + 1]);
+  const onNavigatePrevious = () => setCurrentVorkommnis(currentBohrprofil.vorkommnisse[currentVorkommnisIndex - 1]);
 
   return (
-    <Box component="form" name="schicht-form" onSubmit={handleSubmit(onSubmit)}>
+    <Box component="form" name="vorkommnis-form" onSubmit={handleSubmit(onSubmit)}>
       <DialogTitle>
-        {currentInteraction === "edit" ? "Schicht bearbeiten" : "Schicht erstellen"}
-        {currentSchicht?.id && currentSchichtIndex > 0 && (
-          <Tooltip title="Zur vorherigen Schicht">
+        {currentInteraction === "edit" ? "Vorkommnis bearbeiten" : "Vorkommnis erstellen"}
+        {currentVorkommnis?.id && currentVorkommnisIndex > 0 && (
+          <Tooltip title="Zum vorherigen Vorkommnis">
             <IconButton onClick={onNavigatePrevious} color="primary">
               <ArrowLeftIcon />
             </IconButton>
           </Tooltip>
         )}
-        {currentSchicht?.id && currentSchichtIndex < numberOfSchichten - 1 && (
-          <Tooltip title="Zur nächsten Schicht">
+        {currentVorkommnis?.id && currentVorkommnisIndex < numberOfVorkommnisse - 1 && (
+          <Tooltip title="Zum nächsten Vorkommnis">
             <IconButton onClick={onNavigateNext} color="primary">
               <ArrowRightIcon />
             </IconButton>
@@ -107,8 +108,8 @@ export default function SchichtForm(props) {
             <Controller
               name="tiefe"
               control={control}
-              defaultValue={currentSchicht?.tiefe}
-              render={({ field, fieldState: { error } }) => (
+              defaultValue={currentVorkommnis?.tiefe}
+              render={({ field }) => (
                 <TextField
                   {...field}
                   value={field.value ?? ""}
@@ -117,35 +118,33 @@ export default function SchichtForm(props) {
                   label="Tiefe [m u. T.]"
                   type="number"
                   variant="standard"
-                  {...register("tiefe", { required: true })}
-                  error={error !== undefined}
-                  helperText={error ? "Geben Sie die Tiefe ein" : ""}
+                  {...register("tiefe")}
                 />
               )}
             />
             <Controller
-              name="codeSchichtId"
+              name="typId"
               control={control}
-              defaultValue={currentSchicht?.codeSchichtId}
+              defaultValue={currentVorkommnis?.typId}
               rules={{ required: true }}
               render={({ field, fieldState: { error } }) => (
                 <Autocomplete
                   {...field}
                   sx={{ width: "47%" }}
-                  options={codeSchichten.map((c) => c.id).sort((a, b) => a - b)}
+                  options={typCodes.sort((a, b) => a.kurztext.localeCompare(b.kurztext)).map((c) => c.id)}
                   value={field.value ?? null}
-                  getOptionLabel={(option) => codeSchichten.find((c) => c.id === option)?.text ?? ""}
+                  getOptionLabel={(option) => typCodes.find((c) => c.id === option)?.kurztext ?? ""}
                   onChange={(_, data) => field.onChange(data)}
                   autoHighlight
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       margin="normal"
-                      label="Schicht (bzw. Schichtgrenze)"
+                      label="Typ des Vorkommnisses"
                       type="text"
                       variant="standard"
                       error={error !== undefined}
-                      helperText={error ? "Wählen Sie eine Schichtgrenze aus" : ""}
+                      helperText={error ? "Wählen Sie einen Typ aus" : ""}
                     />
                   )}
                 />
@@ -154,7 +153,7 @@ export default function SchichtForm(props) {
             <Controller
               name="bemerkung"
               control={control}
-              defaultValue={currentSchicht?.bemerkung}
+              defaultValue={currentVorkommnis?.bemerkung}
               render={({ field }) => (
                 <TextField
                   {...field}
@@ -162,7 +161,7 @@ export default function SchichtForm(props) {
                   value={field.value ?? ""}
                   margin="normal"
                   multiline
-                  label="Bemerkungen zur Schicht"
+                  label="Bemerkungen zum Vorkommnis"
                   type="text"
                   fullWidth
                   variant="standard"
@@ -173,7 +172,7 @@ export default function SchichtForm(props) {
             <Controller
               name="qualitaetId"
               control={control}
-              defaultValue={currentSchicht?.qualitaetId}
+              defaultValue={currentVorkommnis?.qualitaetId}
               render={({ field }) => (
                 <Autocomplete
                   {...field}
@@ -192,7 +191,7 @@ export default function SchichtForm(props) {
             <Controller
               name="qualitaetBemerkung"
               control={control}
-              defaultValue={currentSchicht?.qualitaetBemerkung}
+              defaultValue={currentVorkommnis?.qualitaetBemerkung}
               render={({ field }) => (
                 <TextField
                   {...field}
@@ -208,18 +207,18 @@ export default function SchichtForm(props) {
                 />
               )}
             />
-            {currentSchicht?.id && <DateUserInputs formObject={currentSchicht}></DateUserInputs>}
+            {currentVorkommnis?.id && <DateUserInputs formObject={currentVorkommnis}></DateUserInputs>}
           </Box>
           <Box sx={{ width: { xs: "100%", md: "50%" }, paddingLeft: { xs: 0, md: 4 } }}>
             <Typography>Lokalität der Bohrung</Typography>
-            <DetailMap bohrungen={[currentBohrung]} currentForm={"schicht"}></DetailMap>
+            <DetailMap bohrungen={[currentBohrung]} currentForm={"vorkommnis"}></DetailMap>
           </Box>
         </Stack>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleBack}>{!isDirty || readOnly ? "Schliessen" : "Abbrechen"}</Button>
         <Button type="submit" disabled={!isDirty || readOnly}>
-          Schicht speichern
+          Vorkommnis speichern
         </Button>
       </DialogActions>
     </Box>

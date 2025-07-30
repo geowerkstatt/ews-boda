@@ -4,7 +4,7 @@ import AddIcon from "@mui/icons-material/Add";
 import InputForm from "../InputForm";
 import SearchResults from "../SearchResults";
 import Search from "../Search";
-import MainMap from "../MainMap";
+import MainMap from "../MainMap.jsx";
 import SnackbarMessage from "../SnackbarMessage";
 import ConfirmationDialog from "../ConfirmationDialog";
 import { UserRolesMap } from "../../UserRolesMap";

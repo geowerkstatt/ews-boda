@@ -17,7 +17,7 @@ import { Style, Circle, Fill, Stroke } from "ol/style";
 import { Select } from "ol/interaction";
 import { click } from "ol/events/condition";
 import { ZoomToExtent, defaults as defaultControls } from "ol/control";
-import { ZoomToLatest } from "./ZoomToLatestControl";
+import { ZoomToLatest } from "./ZoomToLatestControl.jsx";
 import Popup from "./Popup";
 import "ol/ol.css";
 

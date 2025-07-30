@@ -30,7 +30,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import DetailMap from "./DetailMap";
 import DateUserInputs from "./DateUserInputs";
-import { CodeTypes } from "./Codetypes";
+import { Codetypes } from "./Codetypes";
 import ConfirmationDialog from "./ConfirmationDialog";
 
 export default function BohrprofilForm(props) {
@@ -70,10 +70,10 @@ export default function BohrprofilForm(props) {
   // Get codes for dropdowns
   useEffect(() => {
     const getCodes = async () => {
-      const qualitaetResponse = await fetch("/code?codetypid=" + CodeTypes.Bohrprofil_hquali);
-      const tektonikResponse = await fetch("/code?codetypid=" + CodeTypes.Bohrprofil_htektonik);
-      const formationFelsResponse = await fetch("/code?codetypid=" + CodeTypes.Bohrprofil_fmfelso);
-      const formationEndtiefeResponse = await fetch("/code?codetypid=" + CodeTypes.Bohrprofil_fmeto);
+      const qualitaetResponse = await fetch("/code?codetypid=" + Codetypes.Bohrprofil_hquali);
+      const tektonikResponse = await fetch("/code?codetypid=" + Codetypes.Bohrprofil_htektonik);
+      const formationFelsResponse = await fetch("/code?codetypid=" + Codetypes.Bohrprofil_fmfelso);
+      const formationEndtiefeResponse = await fetch("/code?codetypid=" + Codetypes.Bohrprofil_fmeto);
 
       const qualitaetCodes = await qualitaetResponse.json();
       const tektonikCodes = await tektonikResponse.json();
@@ -124,7 +124,7 @@ export default function BohrprofilForm(props) {
   const onAddSchicht = () => {
     const schicht = {
       bohrprofilId: currentBohrprofil.id,
-      hQualitaet: CodeTypes.Schicht_hquali,
+      hQualitaet: Codetypes.Schicht_hquali,
     };
     setCurrentSchicht(schicht);
     setFinalStepIsSchicht(true);
@@ -166,8 +166,8 @@ export default function BohrprofilForm(props) {
   const onAddVorkommnis = () => {
     const vorkommnis = {
       bohrprofilId: currentBohrprofil.id,
-      hQualitaet: CodeTypes.Vorkommnis_hquali,
-      hTyp: CodeTypes.Vorkommnis_htyp,
+      hQualitaet: Codetypes.Vorkommnis_hquali,
+      hTyp: Codetypes.Vorkommnis_htyp,
     };
     setCurrentVorkommnis(vorkommnis);
     setFinalStepIsSchicht(false);
