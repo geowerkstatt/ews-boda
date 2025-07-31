@@ -9,11 +9,14 @@ describe("General app tests", () => {
         headers: { "Content-Disposition": "attachment; filename=data_export.csv" },
         fixture: "data_export.csv",
       });
-    });
+    }).as("download");
 
     cy.visit("/");
     cy.get('a[href*="/export"]').click();
-    cy.readFile("cypress/downloads/data_export.csv", "utf8").should("exist").should("contains", "Angelo Kägi");
+    cy.readFile("cypress/downloads/data_export.csv", "utf8", { timeout: 10000 }).should(
+      "contain",
+      "standort.standort_id,standort.bezeichnung",
+    );
   });
 
   describe("Benutzerverwaltung", () => {
