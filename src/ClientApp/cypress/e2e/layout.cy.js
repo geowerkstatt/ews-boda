@@ -13,10 +13,9 @@ describe("General app tests", () => {
 
     cy.visit("/");
     cy.get('a[href*="/export"]').click();
-    cy.readFile("cypress/downloads/data_export.csv", "utf8", { timeout: 10000 }).should(
-      "contain",
-      "standort.standort_id,standort.bezeichnung",
-    );
+    cy.readFile("cypress/downloads/data_export.csv", "utf8", { timeout: 10000 })
+      .should("exist")
+      .should("contain", "standort.standort_id,standort.bezeichnung");
   });
 
   describe("Benutzerverwaltung", () => {
