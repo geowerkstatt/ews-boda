@@ -30,7 +30,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import DetailMap from "./DetailMap";
 import DateUserInputs from "./DateUserInputs";
-import { CodeTypes } from "./Codetypes";
+import { CodeTypes } from "./CodeTypes";
 import ConfirmationDialog from "./ConfirmationDialog";
 
 export default function BohrprofilForm(props) {

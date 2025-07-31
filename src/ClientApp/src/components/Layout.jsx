@@ -108,7 +108,7 @@ export function Layout(props) {
                 <ListItemText primary="Benutzerverwaltung" />
               </ListItemButton>
             )}
-            <ListItemButton component="a" target="_blank" href="/export">
+            <ListItemButton component="a" href="/export">
               <ListItemIcon>
                 <FileDownloadIcon />
               </ListItemIcon>

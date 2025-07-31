@@ -31,7 +31,7 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import DetailMap from "./DetailMap";
 import DateUserInputs from "./DateUserInputs";
 import ConfirmationDialog from "./ConfirmationDialog";
-import { CodeTypes } from "./Codetypes";
+import { CodeTypes } from "./CodeTypes";
 import { getDistance } from "ol/sphere";
 import { transform } from "ol/proj";
 import { register as registerProjection } from "ol/proj/proj4";

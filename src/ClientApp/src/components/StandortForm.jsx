@@ -28,7 +28,7 @@ import ConfirmationDialog from "./ConfirmationDialog";
 import DateUserInputs from "./DateUserInputs";
 import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
-import { CodeTypes } from "./Codetypes";
+import { CodeTypes } from "./CodeTypes";
 import { UserRolesMap } from "../UserRolesMap";
 
 export default function StandortForm(props) {
