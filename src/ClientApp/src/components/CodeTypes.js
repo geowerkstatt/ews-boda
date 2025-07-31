@@ -1,4 +1,4 @@
-export const Codetypes = {
+export const CodeTypes = {
   Bohrprofil_fmeto: 5,
   Bohrprofil_fmfelso: 5,
   Bohrprofil_hquali: 12,

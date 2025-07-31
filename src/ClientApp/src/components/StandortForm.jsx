@@ -28,7 +28,7 @@ import ConfirmationDialog from "./ConfirmationDialog";
 import DateUserInputs from "./DateUserInputs";
 import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
-import { Codetypes } from "./Codetypes";
+import { CodeTypes } from "./CodeTypes";
 import { UserRolesMap } from "../UserRolesMap";
 
 export default function StandortForm(props) {
@@ -57,8 +57,8 @@ export default function StandortForm(props) {
     let bohrung = {
       standortId: currentStandort.id,
       bohrprofile: [],
-      hQualitaet: Codetypes.Bohrung_hquali,
-      hAblenkung: Codetypes.Bohrung_hablenkung,
+      hQualitaet: CodeTypes.Bohrung_hquali,
+      hAblenkung: CodeTypes.Bohrung_hablenkung,
     };
     setCurrentBohrung(bohrung);
     handleNext();

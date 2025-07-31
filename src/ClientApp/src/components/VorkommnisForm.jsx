@@ -17,7 +17,7 @@ import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import DetailMap from "./DetailMap";
 import DateUserInputs from "./DateUserInputs";
-import { Codetypes } from "./Codetypes";
+import { CodeTypes } from "./CodeTypes";
 
 export default function VorkommnisForm(props) {
   const {
@@ -46,8 +46,8 @@ export default function VorkommnisForm(props) {
   // Get codes for dropdowns
   useEffect(() => {
     const getCodes = async () => {
-      const qualitaetResponse = await fetch("/code?codetypid=" + Codetypes.Vorkommnis_hquali);
-      const typResponse = await fetch("/code?codetypid=" + Codetypes.Vorkommnis_htyp);
+      const qualitaetResponse = await fetch("/code?codetypid=" + CodeTypes.Vorkommnis_hquali);
+      const typResponse = await fetch("/code?codetypid=" + CodeTypes.Vorkommnis_htyp);
       const qualitaetCodes = await qualitaetResponse.json();
       const typCodes = await typResponse.json();
       setQualitaetCodes(qualitaetCodes);

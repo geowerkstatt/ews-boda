@@ -9,7 +9,7 @@ describe("General app tests", () => {
         headers: { "Content-Disposition": "attachment; filename=data_export.csv" },
         fixture: "data_export.csv",
       });
-    }).as("download");
+    });
 
     cy.visit("/");
     cy.get('a[href*="/export"]').click();

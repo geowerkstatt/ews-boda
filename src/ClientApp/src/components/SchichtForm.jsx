@@ -17,7 +17,7 @@ import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import DetailMap from "./DetailMap";
 import DateUserInputs from "./DateUserInputs";
-import { Codetypes } from "./Codetypes";
+import { CodeTypes } from "./CodeTypes";
 
 export default function SchichtForm(props) {
   const {
@@ -45,7 +45,7 @@ export default function SchichtForm(props) {
   // Get codes for dropdowns
   useEffect(() => {
     const getCodes = async () => {
-      const qualitaetResponse = await fetch("/code?codetypid=" + Codetypes.Schicht_hquali);
+      const qualitaetResponse = await fetch("/code?codetypid=" + CodeTypes.Schicht_hquali);
       const codeSchichtResponse = await fetch("/codeschicht");
       const qualitaetCodes = await qualitaetResponse.json();
       const codeSchichten = await codeSchichtResponse.json();
