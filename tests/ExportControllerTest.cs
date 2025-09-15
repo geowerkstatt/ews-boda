@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using EWS.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -35,6 +37,69 @@ public class ExportControllerTest
 
         Assert.AreEqual(expectedHeader, response.Content.Split('\n')[0]);
         Assert.AreEqual(31191, response.Content.Split('\n').Length);
+    }
+
+    [TestMethod]
+    public async Task GetExportDataShouldEliminateNewlineCharacters()
+    {
+        var testBemerkung = "New\nline\rcharacters\n\rall\nover";
+        var expectedFormattedText = "New line characters all over";
+
+        context.Standorte.Add(new Standort
+        {
+            Bezeichnung = "Standort Test",
+            Bemerkung = testBemerkung,
+        });
+
+        context.Bohrungen.Add(new Bohrung
+        {
+            Bezeichnung = "Bohrung Test",
+            StandortId = 6001,
+            HAblenkung = 2,
+            HQualitaet = 11,
+            Bemerkung = testBemerkung,
+        });
+
+        context.Bohrprofile.Add(new Bohrprofil
+        {
+            BohrungId = 54872,
+            HQualitaet = 11,
+            HFormationEndtiefe = 5,
+            HTektonik = 3,
+            HFormationFels = 1,
+            Bemerkung = testBemerkung,
+        });
+
+        context.Schichten.Add(new Schicht
+        {
+            BohrprofilId = 52234,
+            CodeSchichtId = 20094,
+            Tiefe = 7799345.79f,
+            HQualitaet = 11,
+            Bemerkung = testBemerkung,
+        });
+
+        context.Vorkommnisse.Add(new Vorkommnis
+        {
+            BohrprofilId = 54872,
+            TypId = 349,
+            HQualitaet = 3,
+            HTyp = 2,
+            Bemerkung = testBemerkung,
+        });
+
+        context.SaveChanges();
+        var controller = new ExportController(CreateConfiguration());
+        var httpContext = new DefaultHttpContext();
+        controller.ControllerContext.HttpContext = httpContext;
+        var response = await controller.GetAsync(CancellationToken.None).ConfigureAwait(false);
+        var csvContent = response.Content;
+
+        Assert.IsFalse(csvContent.Contains(testBemerkung),
+            "CSV should not contain the original text with newlines");
+
+        Assert.IsTrue(csvContent.Contains(expectedFormattedText),
+            "CSV should contain the text with newlines replaced by spaces");
     }
 
     private IConfiguration CreateConfiguration() =>
