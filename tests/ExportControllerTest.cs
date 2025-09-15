@@ -107,6 +107,14 @@ public class ExportControllerTest
 
         Assert.IsTrue(csvContent.Contains(expectedFormattedText),
             "CSV should contain the text with newlines replaced by spaces");
+
+        // Delete all created entities
+        context.Vorkommnisse.RemoveRange(context.Vorkommnisse.Where(v => v.BohrprofilId == newBohrprofil.Id));
+        context.Schichten.RemoveRange(context.Schichten.Where(s => s.BohrprofilId == newBohrprofil.Id));
+        context.Bohrprofile.Remove(newBohrprofil);
+        context.Bohrungen.Remove(newBohrung);
+        context.Standorte.Remove(newStandort);
+        await context.SaveChangesAsync();
     }
 
     private IConfiguration CreateConfiguration() =>
