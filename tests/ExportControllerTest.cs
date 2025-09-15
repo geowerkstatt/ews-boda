@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using EWS.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using static EWS.Helpers;
 
 namespace EWS;
 
@@ -35,6 +38,83 @@ public class ExportControllerTest
 
         Assert.AreEqual(expectedHeader, response.Content.Split('\n')[0]);
         Assert.AreEqual(31191, response.Content.Split('\n').Length);
+    }
+
+    [TestMethod]
+    public async Task GetExportDataShouldEliminateNewlineCharacters()
+    {
+        var testBemerkung = "New\nline\rcharacters\n\rall\nover";
+        var expectedFormattedText = "New line characters all over";
+
+        var newStandort = new Standort
+        {
+            Bezeichnung = "Standort Test",
+            Bemerkung = testBemerkung,
+        };
+        context.Standorte.Add(newStandort);
+        await context.SaveChangesAsync();
+
+        var newBohrung = new Bohrung
+        {
+            Bezeichnung = "Bohrung Test",
+            StandortId = newStandort.Id,
+            HAblenkung = 9,
+            HQualitaet = 3,
+            Bemerkung = testBemerkung,
+        };
+
+        context.Bohrungen.Add(newBohrung);
+        await context.SaveChangesAsync();
+
+        var newBohrprofil = new Bohrprofil
+        {
+            BohrungId = newBohrung.Id,
+            HQualitaet = 12,
+            HFormationEndtiefe = 5,
+            HTektonik = 10,
+            HFormationFels = 5,
+            Bemerkung = testBemerkung,
+        };
+        context.Bohrprofile.Add(newBohrprofil);
+        await context.SaveChangesAsync();
+
+        context.Schichten.Add(new Schicht
+        {
+            BohrprofilId = newBohrprofil.Id,
+            CodeSchichtId = 20094,
+            Tiefe = 10.79f,
+            HQualitaet = 11,
+            Bemerkung = testBemerkung,
+        });
+
+        context.Vorkommnisse.Add(new Vorkommnis
+        {
+            BohrprofilId = newBohrprofil.Id,
+            TypId = 349,
+            HQualitaet = 3,
+            HTyp = 2,
+            Bemerkung = testBemerkung,
+        });
+
+        await context.SaveChangesAsync();
+
+        var controller = new ExportController(CreateConfiguration()) { ControllerContext = GetControllerContext() };
+        var response = await controller.GetAsync(CancellationToken.None).ConfigureAwait(false);
+        var csvContent = response.Content;
+
+        Assert.IsFalse(csvContent.Contains(testBemerkung),
+            "CSV should not contain the original text with newlines");
+
+        Assert.IsTrue(csvContent.Contains(expectedFormattedText),
+            "CSV should contain the text with newlines replaced by spaces");
+
+        // Delete all created entities
+        context.Vorkommnisse.RemoveRange(context.Vorkommnisse.Where(v => v.BohrprofilId == newBohrprofil.Id));
+        context.Schichten.RemoveRange(context.Schichten.Where(s => s.BohrprofilId == newBohrprofil.Id));
+        context.Bohrprofile.Remove(newBohrprofil);
+        context.Bohrungen.Remove(newBohrung);
+        context.Standorte.Remove(newStandort);
+        await context.SaveChangesAsync();
     }
 
     private IConfiguration CreateConfiguration() =>

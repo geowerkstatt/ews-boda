@@ -404,3 +404,6 @@ src/ClientApp/cypress/downloads
 
 # Environment file containing sensitive data
 .env
+
+# Webstorm config
+/.idea
