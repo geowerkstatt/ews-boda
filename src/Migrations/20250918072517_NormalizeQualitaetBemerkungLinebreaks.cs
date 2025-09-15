@@ -1,11 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace EWS.Migrations;
+#nullable disable
 
-/// <inheritdoc />
-public partial class NormalizeBemerkungLinebreaks : Migration
+namespace EWS.Migrations
 {
     /// <inheritdoc />
+    public partial class NormalizeQualitaetBemerkungLinebreaks : Migration
+    {
+        /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
     {
         migrationBuilder.Sql(@"CREATE OR REPLACE VIEW bohrung.""data_export"" AS
@@ -27,7 +29,7 @@ public partial class NormalizeBemerkungLinebreaks : Migration
                 bohrung.quali AS ""bohrung.quali"",
                 bohrung_quali.text AS ""bohrung.quali_text"",
                 bohrung_quali.kurztext AS ""bohrung.quali_kurztext"",
-                bohrung.qualibem AS ""bohrung.qualibem"",
+                regexp_replace(bohrung.qualibem, '[\r\n]+', ' ', 'g') AS ""bohrung.qualibem"",
                 bohrung.quelleref AS ""bohrung.quelleref"",
                 bohrung.h_quali AS ""bohrung.h_quali"",
                 (CASE WHEN bohrung.h_quali IS NULL THEN '' ELSE 'Interpretationsqualitäten' END) AS ""bohrung.h_quali_text"",
@@ -51,7 +53,7 @@ public partial class NormalizeBemerkungLinebreaks : Migration
                 bohrprofil.quali AS ""bohrprofil.quali"",
                 bohrprofil_quali.text AS ""bohrprofil.quali_text"",
                 bohrprofil_quali.kurztext AS ""bohrprofil.quali_kurztext"",
-                bohrprofil.qualibem AS ""bohrprofil.qualibem"",
+                regexp_replace(bohrprofil.qualibem, '[\r\n]+', ' ', 'g') AS ""bohrprofil.qualibem"",
                 bohrprofil.h_quali AS ""bohrprofil.h_quali"",
                 (CASE WHEN bohrprofil.h_quali IS NULL THEN '' ELSE 'Qualität des Bohrprofils' END) AS ""bohrprofil.h_quali_text"",
                 (CASE WHEN bohrprofil.h_quali IS NULL THEN '' ELSE 'quali_bohrprofil' END) AS ""bohrprofil.h_quali_kurztext"",
@@ -69,7 +71,7 @@ public partial class NormalizeBemerkungLinebreaks : Migration
                 schicht.quali AS ""schicht.quali"",
                 schicht_quali.text AS ""schicht.quali_text"",
                 schicht_quali.kurztext AS ""schicht.quali_kurztext"",
-                schicht.qualibem AS ""schicht.qualibem"",
+                regexp_replace(schicht.qualibem, '[\r\n]+', ' ', 'g') AS ""schicht.qualibem"",
                 regexp_replace(schicht.bemerkung, '[\r\n]+', ' ', 'g') AS ""schicht.bemerkung"",
                 schicht.h_quali AS ""schicht.h_quali"",
                 (CASE WHEN schicht.h_quali IS NULL THEN '' ELSE 'Schichtvorzeichen' END) AS ""schicht.h_quali_text"",
@@ -86,7 +88,7 @@ public partial class NormalizeBemerkungLinebreaks : Migration
                 vorkommnis.quali AS ""vorkommnis.quali"",
                 vorkommnis_quali.text AS ""vorkommnis.quali_text"",
                 vorkommnis_quali.kurztext AS ""vorkommnis.quali_kurztext"",
-                vorkommnis.qualibem AS ""vorkommnis.qualibem"",
+                regexp_replace(vorkommnis.qualibem, '[\r\n]+', ' ', 'g') AS ""vorkommnis.qualibem"",
                 vorkommnis.h_quali AS ""vorkommnis.h_quali"",
                 (CASE WHEN vorkommnis.h_quali IS NULL THEN '' ELSE 'Interpretationsqualitäten' END) AS ""vorkommnis.h_quali_text"",
                 (CASE WHEN vorkommnis.h_quali IS NULL THEN '' ELSE 'quali' END) AS ""vorkommnis.h_quali_kurztext"",
