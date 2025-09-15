@@ -45,50 +45,57 @@ public class ExportControllerTest
         var testBemerkung = "New\nline\rcharacters\n\rall\nover";
         var expectedFormattedText = "New line characters all over";
 
-        context.Standorte.Add(new Standort
+        var newStandort = new Standort
         {
             Bezeichnung = "Standort Test",
             Bemerkung = testBemerkung,
-        });
+        };
+        context.Standorte.Add(newStandort);
+        await context.SaveChangesAsync();
 
-        context.Bohrungen.Add(new Bohrung
+        var newBohrung = new Bohrung
         {
             Bezeichnung = "Bohrung Test",
-            StandortId = 6001,
-            HAblenkung = 2,
-            HQualitaet = 11,
+            StandortId = newStandort.Id,
+            HAblenkung = 9,
+            HQualitaet = 3,
             Bemerkung = testBemerkung,
-        });
+        };
 
-        context.Bohrprofile.Add(new Bohrprofil
+        context.Bohrungen.Add(newBohrung);
+        await context.SaveChangesAsync();
+
+        var newBohrprofil = new Bohrprofil
         {
-            BohrungId = 54872,
-            HQualitaet = 11,
+            BohrungId = newBohrung.Id,
+            HQualitaet = 12,
             HFormationEndtiefe = 5,
-            HTektonik = 3,
-            HFormationFels = 1,
+            HTektonik = 10,
+            HFormationFels = 5,
             Bemerkung = testBemerkung,
-        });
+        };
+        context.Bohrprofile.Add(newBohrprofil);
+        await context.SaveChangesAsync();
 
         context.Schichten.Add(new Schicht
         {
-            BohrprofilId = 52234,
+            BohrprofilId = newBohrprofil.Id,
             CodeSchichtId = 20094,
-            Tiefe = 7799345.79f,
+            Tiefe = 10.79f,
             HQualitaet = 11,
             Bemerkung = testBemerkung,
         });
 
         context.Vorkommnisse.Add(new Vorkommnis
         {
-            BohrprofilId = 54872,
+            BohrprofilId = newBohrprofil.Id,
             TypId = 349,
             HQualitaet = 3,
             HTyp = 2,
             Bemerkung = testBemerkung,
         });
 
-        context.SaveChanges();
+        await context.SaveChangesAsync();
         var controller = new ExportController(CreateConfiguration());
         var httpContext = new DefaultHttpContext();
         controller.ControllerContext.HttpContext = httpContext;
