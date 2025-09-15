@@ -18,7 +18,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.50.0",
     "react-router-dom": "^7.5.2",
-    "vite": "^7.0.6",
+    "vite": "^7.1.5",
     "ws": "^7.5.10"
   },
   "devDependencies": {
