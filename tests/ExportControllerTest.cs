@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using static EWS.Helpers;
 
 namespace EWS;
 
@@ -96,9 +97,8 @@ public class ExportControllerTest
         });
 
         await context.SaveChangesAsync();
-        var controller = new ExportController(CreateConfiguration());
-        var httpContext = new DefaultHttpContext();
-        controller.ControllerContext.HttpContext = httpContext;
+
+        var controller = new ExportController(CreateConfiguration()) { ControllerContext = GetControllerContext() };
         var response = await controller.GetAsync(CancellationToken.None).ConfigureAwait(false);
         var csvContent = response.Content;
 
