@@ -61,6 +61,7 @@ public class ExportControllerTest
             HAblenkung = 9,
             HQualitaet = 3,
             Bemerkung = testBemerkung,
+            QualitaetBemerkung = testBemerkung,
         };
 
         context.Bohrungen.Add(newBohrung);
@@ -74,6 +75,7 @@ public class ExportControllerTest
             HTektonik = 10,
             HFormationFels = 5,
             Bemerkung = testBemerkung,
+            QualitaetBemerkung = testBemerkung,
         };
         context.Bohrprofile.Add(newBohrprofil);
         await context.SaveChangesAsync();
@@ -85,6 +87,7 @@ public class ExportControllerTest
             Tiefe = 10.79f,
             HQualitaet = 11,
             Bemerkung = testBemerkung,
+            QualitaetBemerkung = testBemerkung,
         });
 
         context.Vorkommnisse.Add(new Vorkommnis
@@ -94,6 +97,7 @@ public class ExportControllerTest
             HQualitaet = 3,
             HTyp = 2,
             Bemerkung = testBemerkung,
+            QualitaetBemerkung = testBemerkung,
         });
 
         await context.SaveChangesAsync();
