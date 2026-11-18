@@ -13,10 +13,15 @@ env:
   REGISTRY: ghcr.io
   TAG_NAME: ${{ github.event.inputs.TAG_NAME || github.event.release.tag_name }}
 
+permissions: {}
+
 jobs:
   retag-docker-image:
     runs-on: ubuntu-latest
     name: Push updated Docker image
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - name: Checkout repository

@@ -10,10 +10,15 @@ env:
   REGISTRY: ghcr.io
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+permissions: {}
+
 jobs:
   create-pre-release:
     runs-on: ubuntu-latest
     name: Build and push Docker image and create a new GitHub pre-release
+    permissions:
+      contents: write
+      packages: write
 
     steps:
       - name: Checkout repository
