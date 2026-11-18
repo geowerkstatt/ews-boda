@@ -9,7 +9,7 @@
     <SpaRoot>ClientApp\</SpaRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
     <SpaProxyServerUrl>http://localhost:44472</SpaProxyServerUrl>
-    <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
+    <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
     <RootNamespace>EWS</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
