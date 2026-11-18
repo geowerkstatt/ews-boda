@@ -1,0 +1,43 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react", "jsx-a11y", "import"],
+  "categories": {
+    "correctness": "warn"
+  },
+  "env": {
+    "browser": true,
+    "es2022": true
+  },
+  "settings": {
+    "react": {
+      "version": "18.2.0"
+    }
+  },
+  "rules": {
+    "no-undef": "error",
+    "react/jsx-no-undef": "error",
+    "react/rules-of-hooks": "error",
+    "react/exhaustive-deps": "warn",
+    "no-unused-expressions": [
+      "warn",
+      { "allowShortCircuit": true, "allowTernary": true, "allowTaggedTemplates": true }
+    ],
+    "jsx-a11y/no-autofocus": "off",
+    "react/immutability": "off",
+    "react/set-state-in-effect": "off"
+  },
+  "overrides": [
+    {
+      "files": ["cypress/**/*.js"],
+      "env": {
+        "mocha": true
+      },
+      "globals": {
+        "cy": "readonly",
+        "Cypress": "readonly",
+        "expect": "readonly",
+        "assert": "readonly"
+      }
+    }
+  ]
+}
