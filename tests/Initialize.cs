@@ -3,6 +3,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 
+// All tests share one Postgres database, so they must not run concurrently.
+[assembly: DoNotParallelize]
+
 namespace EWS;
 
 [TestClass]
