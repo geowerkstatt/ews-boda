@@ -12,4 +12,5 @@ Cypress.Commands.add("selectGemeinde", (searchText, gemeinde) => {
   // use click 'force: true' because element is covered by another element.
   cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type(searchText);
   cy.contains("li[role=option]", gemeinde).click();
+  cy.get("div[name=gemeinde] input").should("have.value", gemeinde);
 });
