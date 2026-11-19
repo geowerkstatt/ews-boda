@@ -32,6 +32,7 @@ import DetailMap from "./DetailMap";
 import DateUserInputs from "./DateUserInputs";
 import { CodeTypes } from "./CodeTypes";
 import ConfirmationDialog from "./ConfirmationDialog";
+import { useRecordDate } from "./useRecordDate";
 
 export default function BohrprofilForm(props) {
   const {
@@ -61,7 +62,7 @@ export default function BohrprofilForm(props) {
   const [formationEndtiefeCodes, setFormationEndtiefeCodes] = useState([]);
   const [openSchichtConfirmation, setOpenSchichtConfirmation] = useState(false);
   const [openVorkommnisConfirmation, setOpenVorkommnisConfirmation] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useRecordDate(currentBohrprofil);
 
   const currentBohrprofilIndex =
     currentBohrung.bohrprofile?.indexOf(currentBohrung.bohrprofile.find((b) => b.id === currentBohrprofil.id)) || 0;
@@ -75,15 +76,15 @@ export default function BohrprofilForm(props) {
       const formationFelsResponse = await fetch("/code?codetypid=" + CodeTypes.Bohrprofil_fmfelso);
       const formationEndtiefeResponse = await fetch("/code?codetypid=" + CodeTypes.Bohrprofil_fmeto);
 
-      const qualitaetCodes = await qualitaetResponse.json();
-      const tektonikCodes = await tektonikResponse.json();
-      const formationFelsCodes = await formationFelsResponse.json();
-      const formationEndtiefeCodes = await formationEndtiefeResponse.json();
+      const fetchedQualitaetCodes = await qualitaetResponse.json();
+      const fetchedTektonikCodes = await tektonikResponse.json();
+      const fetchedFormationFelsCodes = await formationFelsResponse.json();
+      const fetchedFormationEndtiefeCodes = await formationEndtiefeResponse.json();
 
-      setQualitaetCodes(qualitaetCodes);
-      setTektonikCodes(tektonikCodes);
-      setFormationFelsCodes(formationFelsCodes);
-      setFormationEndtiefeCodes(formationEndtiefeCodes);
+      setQualitaetCodes(fetchedQualitaetCodes);
+      setTektonikCodes(fetchedTektonikCodes);
+      setFormationFelsCodes(fetchedFormationFelsCodes);
+      setFormationEndtiefeCodes(fetchedFormationEndtiefeCodes);
     };
     getCodes();
   }, []);
@@ -99,8 +100,6 @@ export default function BohrprofilForm(props) {
       setValue("formationEndtiefeId", currentBohrprofil?.formationEndtiefeId);
       setValue("qualitaetId", currentBohrprofil?.qualitaetId);
       setValue("qualitaetBemerkung", currentBohrprofil?.qualitaetBemerkung);
-      //DatePicker state must be handled separately from formState in order to preserve the date format (dd.MM.yyy). Otherwise the date will be stored as an unformatted string on manual input.
-      setSelectedDate(currentBohrprofil?.datum || null);
     }
   }, [currentBohrprofil, setValue]);
 

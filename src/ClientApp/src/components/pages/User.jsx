@@ -29,7 +29,7 @@ export function User() {
 
   // Edit user with the specified id.
   async function editUser(data) {
-    currentUser.role = data.role;
+    const updatedUser = { ...currentUser, role: data.role };
     const response = await fetch("/user", {
       method: "PUT",
       cache: "no-cache",
@@ -37,7 +37,7 @@ export function User() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(currentUser, (key, value) => {
+      body: JSON.stringify(updatedUser, (key, value) => {
         if (key === "role") {
           return parseInt(value);
         }
@@ -45,8 +45,9 @@ export function User() {
       }),
     });
     if (response.ok) {
-      const updatedUsers = users.map((s) => (s.id === currentUser.id ? currentUser : s));
+      const updatedUsers = users.map((s) => (s.id === updatedUser.id ? updatedUser : s));
       setUsers(updatedUsers);
+      setCurrentUser(updatedUser);
     }
   }
 
@@ -66,8 +67,8 @@ export function User() {
     let fetchurl = "/user";
     fetch(fetchurl)
       .then((response) => response.json())
-      .then((users) => {
-        setUsers(users);
+      .then((fetchedUsers) => {
+        setUsers(fetchedUsers);
       });
   }, []);
 

@@ -31,7 +31,7 @@
     "preview": "vite preview",
     "build": "vite build",
     "test": "start-server-and-test dev http-get://127.0.0.1:44472 cy:run",
-    "lint": "oxlint src cypress && prettier --check \"src/**/*.{js,jsx}\" \"cypress/**/*.js\"",
+    "lint": "oxlint --deny-warnings src cypress && prettier --check \"src/**/*.{js,jsx}\" \"cypress/**/*.js\"",
     "cy:run": "cypress run",
     "cy": "cypress open"
   },

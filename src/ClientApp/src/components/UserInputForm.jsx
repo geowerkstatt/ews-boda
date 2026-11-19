@@ -44,8 +44,8 @@ export default function UserInputForm(props) {
               label="Rolle"
               data-cy="select-user-role"
             >
-              {Object.entries(UserRolesMap).map(([key, value], index) => (
-                <MenuItem key={index} value={value} data-cy={`role-id-${value}`}>
+              {Object.entries(UserRolesMap).map(([key, value]) => (
+                <MenuItem key={key} value={value} data-cy={`role-id-${value}`}>
                   {key}
                 </MenuItem>
               ))}

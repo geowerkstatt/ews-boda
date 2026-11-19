@@ -32,6 +32,7 @@ import DetailMap from "./DetailMap";
 import DateUserInputs from "./DateUserInputs";
 import ConfirmationDialog from "./ConfirmationDialog";
 import { CodeTypes } from "./CodeTypes";
+import { useRecordDate } from "./useRecordDate";
 import { getDistance } from "ol/sphere";
 import { transform } from "ol/proj";
 import { register as registerProjection } from "ol/proj/proj4";
@@ -58,7 +59,19 @@ export default function BohrungForm(props) {
   const [ablenkungCodes, setAblenkungCodes] = useState([]);
   const [qualitaetCodes, setQualitaetCodes] = useState([]);
   const [openConfirmation, setOpenConfirmation] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
+  // The Bohrung created by the last click in the DetailMap. Such a change only moves the coordinates
+  // and must not reset the other fields the user is editing.
+  const [bohrungFromMapClick, setBohrungFromMapClick] = useState(null);
+  const changedFromMapClick = currentBohrung != null && currentBohrung === bohrungFromMapClick;
+  const [selectedDate, setSelectedDate] = useRecordDate(
+    currentBohrung,
+    (bohrung) => Boolean(bohrung) && bohrung !== bohrungFromMapClick,
+  );
+
+  const setCurrentBohrungFromMap = (bohrung) => {
+    setBohrungFromMapClick(bohrung);
+    setCurrentBohrung(bohrung);
+  };
 
   const currentBohrungIndex =
     currentStandort.bohrungen?.indexOf(currentStandort.bohrungen.find((b) => b.id === currentBohrung?.id)) || 0;
@@ -69,10 +82,10 @@ export default function BohrungForm(props) {
     const getCodes = async () => {
       const ablenkungResponse = await fetch("/code?codetypid=" + CodeTypes.Bohrung_hablenkung);
       const qualitaetResponse = await fetch("/code?codetypid=" + CodeTypes.Bohrung_hquali);
-      const ablenkungCodes = await ablenkungResponse.json();
-      const qualitaetCodes = await qualitaetResponse.json();
-      setAblenkungCodes(ablenkungCodes);
-      setQualitaetCodes(qualitaetCodes);
+      const fetchedAblenkungCodes = await ablenkungResponse.json();
+      const fetchedQualitaetCodes = await qualitaetResponse.json();
+      setAblenkungCodes(fetchedAblenkungCodes);
+      setQualitaetCodes(fetchedQualitaetCodes);
     };
     getCodes();
   }, []);
@@ -80,7 +93,7 @@ export default function BohrungForm(props) {
   // Set form values for coordinates if coordinates are changed from DetailMap component
   useEffect(() => {
     // Update form values if currentBohrung changes, to allow next/previous navigation.
-    if (currentBohrung && !currentBohrung.coordinatesChanged) {
+    if (currentBohrung && !changedFromMapClick) {
       setValue("bezeichnung", currentBohrung?.bezeichnung);
       setValue("bemerkung", currentBohrung?.bemerkung);
       setValue("durchmesserBohrloch", currentBohrung?.durchmesserBohrloch);
@@ -88,18 +101,14 @@ export default function BohrungForm(props) {
       setValue("qualitaetId", currentBohrung?.qualitaetId);
       setValue("qualitaetBemerkung", currentBohrung?.qualitaetBemerkung);
       setValue("quelleRef", currentBohrung?.quelleRef);
-      //DatePicker state must be handled separately from formState in order to preserve the date format (dd.MM.yyy). Otherwise the date will be stored as an unformatted string on manual input.
-      setSelectedDate(currentBohrung?.datum || null);
     }
     if (currentBohrung?.geometrie?.coordinates) {
       const x = currentBohrung.geometrie.coordinates[0];
       const y = currentBohrung.geometrie.coordinates[1];
-      const changedFromMapClick = currentBohrung.coordinatesChanged;
       setValue("x_coordinate", x.toFixed(1), { shouldDirty: changedFromMapClick });
       setValue("y_coordinate", y.toFixed(1), { shouldDirty: changedFromMapClick });
-      currentBohrung.coordinatesChanged = false;
     }
-  }, [currentBohrung, setValue]);
+  }, [currentBohrung, changedFromMapClick, setValue]);
 
   // Register projection for distance validation
   useEffect(() => {
@@ -408,7 +417,7 @@ export default function BohrungForm(props) {
               bohrungen={[currentBohrung]}
               currentStandort={currentStandort}
               currentForm={"bohrung"}
-              setCurrentBohrung={setCurrentBohrung}
+              setCurrentBohrung={setCurrentBohrungFromMap}
               readOnly={readOnly}
             ></DetailMap>
             <Controller

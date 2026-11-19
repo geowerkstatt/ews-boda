@@ -22,7 +22,7 @@ export function Home(props) {
   const [searchResultsPage, setSearchResultsPage] = React.useState(0);
   // Cache standorte on client for better performance
   const [unfilteredStandorte, setUnfilteredStandorte] = useState([]);
-  const [unfilteredBohrungenLength, setUnfilteredBohrungenLength] = useState([]);
+  const unfilteredBohrungenLength = unfilteredStandorte.flatMap((s) => s.bohrungen).length;
 
   const handleClose = () => {
     setOpenStandortForm(false);
@@ -105,10 +105,7 @@ export function Home(props) {
   async function editStandort(data) {
     data.afuDatum = null;
     data.afuUser = null;
-    const updatedStandort = currentStandort;
-    Object.entries(data).forEach(([key, value]) => {
-      updatedStandort[key] = value;
-    });
+    const updatedStandort = { ...currentStandort, ...data };
     const response = await fetch("/standort", {
       method: "PUT",
       cache: "no-cache",
@@ -146,11 +143,6 @@ export function Home(props) {
         setUnfilteredStandorte(fetchedFeatures);
       });
   }, []);
-
-  // Get bohrungen count
-  useEffect(() => {
-    setUnfilteredBohrungenLength(unfilteredStandorte.flatMap((s) => s.bohrungen).length);
-  }, [unfilteredStandorte]);
 
   return (
     <Box

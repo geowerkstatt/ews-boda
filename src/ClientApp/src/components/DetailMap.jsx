@@ -45,7 +45,7 @@ export default function DetailMap(props) {
     addProjection(projection);
 
     // Create map and feature layer
-    const bohrungenLayer = new Vector({
+    const initialBohrungenLayer = new Vector({
       zIndex: 1,
       source: new VectorSource(),
       style: defaultStyle,
@@ -53,7 +53,7 @@ export default function DetailMap(props) {
 
     const initialMap = new Map({
       target: mapElement.current,
-      layers: [bohrungenLayer],
+      layers: [initialBohrungenLayer],
       view: new View({
         projection: projection,
         maxZoom: 14,
@@ -71,7 +71,7 @@ export default function DetailMap(props) {
 
     // Save map and vector layer references to state
     setMap(initialMap);
-    setBohrungenLayer(bohrungenLayer);
+    setBohrungenLayer(initialBohrungenLayer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -152,7 +152,6 @@ export default function DetailMap(props) {
         geometrie: geometrie,
         "Standort Id": bohrungen[0].standortId,
       };
-      updatedBohrung.coordinatesChanged = true;
       setCurrentBohrung(updatedBohrung);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

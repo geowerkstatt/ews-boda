@@ -98,7 +98,7 @@ export default function MainMap(props) {
     ]);
 
     // Create map and feature layer
-    const bohrungenLayer = new Vector({
+    const initialBohrungenLayer = new Vector({
       zIndex: 1,
       source: new VectorSource(),
       style: defaultStyle,
@@ -107,7 +107,7 @@ export default function MainMap(props) {
     const initialMap = new Map({
       controls: controls,
       target: mapElement.current,
-      layers: [bohrungenLayer],
+      layers: [initialBohrungenLayer],
       view: new View({
         projection: projection,
         maxZoom: 14,
@@ -119,7 +119,7 @@ export default function MainMap(props) {
     const clearSelect = () => {
       selectClick.getFeatures().clear();
       setSelectedFeature(null);
-      popup.setPosition(null);
+      initialPopup.setPosition(null);
     };
 
     const selectClick = new Select({
@@ -132,18 +132,18 @@ export default function MainMap(props) {
     initialMap.on("click", clearSelect);
 
     // Add info popup
-    let popup = new Overlay({
+    const initialPopup = new Overlay({
       element: popupElement.current,
       autoPan: true,
       autoPanAnimation: { duration: 250 },
     });
 
-    initialMap.addOverlay(popup);
+    initialMap.addOverlay(initialPopup);
 
     // Save map and vector layer references to state
     setMap(initialMap);
-    setBohrungenLayer(bohrungenLayer);
-    setPopup(popup);
+    setBohrungenLayer(initialBohrungenLayer);
+    setPopup(initialPopup);
     setSelect(selectClick);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -233,7 +233,7 @@ export default function MainMap(props) {
   // Handle event from info button control
   useEffect(() => {
     if (selectedFeature) {
-      popup && popup.setPosition(selectedFeature.values_.geometry.flatCoordinates);
+      popup && popup.setPosition(selectedFeature.getGeometry().getCoordinates());
       popup && popup.setPositioning("top-center");
       setPopupVisible(true);
     }

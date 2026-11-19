@@ -47,10 +47,10 @@ export default function SchichtForm(props) {
     const getCodes = async () => {
       const qualitaetResponse = await fetch("/code?codetypid=" + CodeTypes.Schicht_hquali);
       const codeSchichtResponse = await fetch("/codeschicht");
-      const qualitaetCodes = await qualitaetResponse.json();
-      const codeSchichten = await codeSchichtResponse.json();
-      setQualitaetCodes(qualitaetCodes);
-      setCodeschichten(codeSchichten);
+      const fetchedQualitaetCodes = await qualitaetResponse.json();
+      const fetchedCodeSchichten = await codeSchichtResponse.json();
+      setQualitaetCodes(fetchedQualitaetCodes);
+      setCodeschichten(fetchedCodeSchichten);
     };
     getCodes();
   }, []);
