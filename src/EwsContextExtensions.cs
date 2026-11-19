@@ -19,14 +19,15 @@ public static class EwsContextExtensions
     {
         using var transaction = context.Database.BeginTransaction();
 
-        // Set Bogus Data System Clock
-        Bogus.DataSets.Date.SystemClock = () => DateTime.Parse("01.01.2022 00:00:00", new CultureInfo("de_CH", false));
+        // Fixed reference date so seeded dates are deterministic
+        var seedDateTimeReference = DateTime.Parse("01.01.2022 00:00:00", new CultureInfo("de_CH", false));
 
         // Seed CodeTypen
         var codetyp_ids = 1;
         var codetypenRange = Enumerable.Range(codetyp_ids, 20);
         var fakeCodeTypen = new Faker<CodeTyp>()
            .StrictMode(true)
+           .UseDateTimeReference(seedDateTimeReference)
            .RuleFor(o => o.Id, f => codetyp_ids++)
            .RuleFor(o => o.Text, f => f.Random.Words())
            .RuleFor(o => o.Kurztext, f => f.Address.StreetName())
@@ -43,6 +44,7 @@ public static class EwsContextExtensions
         var codesRange = Enumerable.Range(code_ids, 400);
         var fakeCodes = new Faker<Code>()
            .StrictMode(true)
+           .UseDateTimeReference(seedDateTimeReference)
            .RuleFor(o => o.Id, f => code_ids++)
            .RuleFor(o => o.CodetypId, f => f.PickRandom(codetypenRange))
            .RuleFor(o => o.Text, f => f.Commerce.ProductName())
@@ -66,6 +68,7 @@ public static class EwsContextExtensions
         var codeschichtenRange = Enumerable.Range(codeschicht_ids, 100);
         var fakeCodeschichten = new Faker<CodeSchicht>()
            .StrictMode(true)
+           .UseDateTimeReference(seedDateTimeReference)
            .RuleFor(o => o.Id, f => codeschicht_ids++)
            .RuleFor(o => o.Text, f => f.Internet.UrlWithPath())
            .RuleFor(o => o.Kurztext, f => f.Random.Words())
@@ -83,6 +86,7 @@ public static class EwsContextExtensions
         var standorteRange = Enumerable.Range(standort_ids, 6000);
         var fakeStandorte = new Faker<Standort>()
            .StrictMode(true)
+           .UseDateTimeReference(seedDateTimeReference)
            .RuleFor(o => o.Id, f => standort_ids++)
            .RuleFor(o => o.Bezeichnung, f => f.Commerce.ProductName())
            .RuleFor(o => o.Bemerkung, f => f.Address.Country())
@@ -105,6 +109,7 @@ public static class EwsContextExtensions
         var bohrungenRange = Enumerable.Range(bohrung_ids, 8000);
         var fakeBohrungen = new Faker<Bohrung>()
            .StrictMode(true)
+           .UseDateTimeReference(seedDateTimeReference)
            .RuleFor(o => o.Id, f => bohrung_ids++)
            .RuleFor(o => o.Datum, f => f.Date.Past())
            .RuleFor(o => o.DurchmesserBohrloch, f => f.Random.Int(0, 30000))
@@ -135,6 +140,7 @@ public static class EwsContextExtensions
         var bohrprofileRange = Enumerable.Range(bohrprofil_ids, 9000);
         var fakeBohrprofile = new Faker<Bohrprofil>()
            .StrictMode(true)
+           .UseDateTimeReference(seedDateTimeReference)
            .RuleFor(o => o.Id, f => bohrprofil_ids++)
            .RuleFor(o => o.BohrungId, f => f.PickRandom(bohrungenRange))
            .RuleFor(o => o.Bemerkung, f => f.Random.Word())
@@ -169,6 +175,7 @@ public static class EwsContextExtensions
         var schichtenRange = Enumerable.Range(schicht_ids, 14000);
         var fakeSchichten = new Faker<Schicht>()
            .StrictMode(true)
+           .UseDateTimeReference(seedDateTimeReference)
            .RuleFor(o => o.Id, f => schicht_ids++)
            .RuleFor(o => o.Tiefe, f => f.Random.Float())
            .RuleFor(o => o.QualitaetId, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 11).Select(s => s.Id).ToList()))
@@ -192,6 +199,7 @@ public static class EwsContextExtensions
         var vorkommnisseRange = Enumerable.Range(vorkommnis_ids, 14000);
         var fakeVorkommnisse = new Faker<Vorkommnis>()
            .StrictMode(true)
+           .UseDateTimeReference(seedDateTimeReference)
            .RuleFor(o => o.Id, f => vorkommnis_ids++)
            .RuleFor(o => o.Tiefe, f => f.Random.Float())
            .RuleFor(o => o.QualitaetId, f => f.PickRandom(codesToAdd.Where(s => s.CodetypId == 3).Select(s => s.Id).ToList()))
@@ -216,6 +224,7 @@ public static class EwsContextExtensions
         var usersRange = Enumerable.Range(user_ids, 100);
         var fakeUsers = new Faker<User>("de_CH")
            .StrictMode(true)
+           .UseDateTimeReference(seedDateTimeReference)
            .RuleFor(o => o.Id, f => user_ids++)
            .RuleFor(o => o.Name, f => f.Person.UserName)
            .RuleFor(o => o.Role, f => f.PickRandom<UserRole>())

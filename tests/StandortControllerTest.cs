@@ -388,7 +388,7 @@ public class StandortControllerTest
         var editedBezeichnung = "We love Pasta more than Pesto";
         standortToEdit.Bezeichnung = editedBezeichnung;
         var response = await controller.EditAsync(standortToEdit).ConfigureAwait(false);
-        Assert.AreEqual(context.Standorte.Single(s => s.Id == 31098).Bezeichnung, "We love Pasta more than Pesto");
+        Assert.AreEqual(editedBezeichnung, context.Standorte.Single(s => s.Id == 31098).Bezeichnung);
         Assert.IsInstanceOfType(response, typeof(OkResult));
         Assert.AreEqual(6000, context.Standorte.Count());
     }
