@@ -34,10 +34,9 @@ import ConfirmationDialog from "./ConfirmationDialog";
 import { CodeTypes } from "./CodeTypes";
 import { useRecordDate } from "./useRecordDate";
 import { useDatePickerValidation } from "./useDatePickerValidation";
+import { lv95Projection } from "./lv95Projection";
 import { getDistance } from "ol/sphere";
 import { transform } from "ol/proj";
-import { register as registerProjection } from "ol/proj/proj4";
-import proj4 from "proj4";
 
 export default function BohrungForm(props) {
   const {
@@ -115,15 +114,6 @@ export default function BohrungForm(props) {
       setValue("y_coordinate", y.toFixed(1), { shouldDirty: changedFromMapClick });
     }
   }, [currentBohrung, changedFromMapClick, setValue]);
-
-  // Register projection for distance validation
-  useEffect(() => {
-    proj4.defs(
-      "EPSG:2056",
-      "+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=2600000 +y_0=1200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs",
-    );
-    registerProjection(proj4);
-  }, []);
 
   const currentInteraction = currentBohrung?.id ? "edit" : "add";
 
@@ -204,7 +194,7 @@ export default function BohrungForm(props) {
     if (numberOfBohrungen === 0 || (currentInteraction === "edit" && numberOfBohrungen === 1)) {
       isValid = true;
     } else if (x && y) {
-      const src = "EPSG:2056";
+      const src = lv95Projection;
       const dest = "EPSG:4326";
       const newCoordinates = transform([Number(x), Number(y)], src, dest);
       isValid = currentStandort.bohrungen
