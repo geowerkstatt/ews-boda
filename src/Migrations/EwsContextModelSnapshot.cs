@@ -9,732 +9,692 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace EWS.Migrations;
-
-[DbContext(typeof(EwsContext))]
-partial class EwsContextModelSnapshot : ModelSnapshot
+namespace EWS.Migrations
 {
-    protected override void BuildModel(ModelBuilder modelBuilder)
+    [DbContext(typeof(EwsContext))]
+    partial class EwsContextModelSnapshot : ModelSnapshot
     {
+        protected override void BuildModel(ModelBuilder modelBuilder)
+        {
 #pragma warning disable 612, 618
-        modelBuilder
-            .HasDefaultSchema("bohrung")
-            .HasAnnotation("ProductVersion", "8.0.2")
-            .HasAnnotation("Relational:MaxIdentifierLength", 63);
+            modelBuilder
+                .HasDefaultSchema("bohrung")
+                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-        NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "postgis");
-        NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "postgis");
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-        modelBuilder.Entity("EWS.Models.Bohrprofil", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("integer")
-                    .HasColumnName("bohrprofil_id");
+            modelBuilder.Entity("EWS.Models.Bohrprofil", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("bohrprofil_id");
 
-                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                b.Property<string>("Bemerkung")
-                    .HasColumnType("text")
-                    .HasColumnName("bemerkung");
+                    b.Property<string>("Bemerkung")
+                        .HasColumnType("text")
+                        .HasColumnName("bemerkung");
 
-                b.Property<int?>("BohrungId")
-                    .HasColumnType("integer")
-                    .HasColumnName("bohrung_id");
+                    b.Property<int?>("BohrungId")
+                        .HasColumnType("integer")
+                        .HasColumnName("bohrung_id");
 
-                b.Property<DateTime?>("Datum")
-                    .HasColumnType("timestamp with time zone")
-                    .HasColumnName("datum");
+                    b.Property<DateTime?>("Datum")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("datum");
 
-                b.Property<int?>("Endteufe")
-                    .HasColumnType("integer")
-                    .HasColumnName("endteufe");
+                    b.Property<int?>("Endteufe")
+                        .HasColumnType("integer")
+                        .HasColumnName("endteufe");
 
-                b.Property<DateTime>("Erstellungsdatum")
-                    .HasColumnType("timestamp with time zone")
-                    .HasColumnName("new_date");
+                    b.Property<DateTime?>("Erstellungsdatum")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("new_date");
 
-                b.Property<int?>("FormationEndtiefe")
-                    .HasColumnType("integer")
-                    .HasColumnName("fmeto");
+                    b.Property<int?>("FormationEndtiefeId")
+                        .HasColumnType("integer")
+                        .HasColumnName("fmeto");
 
-                b.Property<int?>("FormationFels")
-                    .HasColumnType("integer")
-                    .HasColumnName("fmfelso");
+                    b.Property<int?>("FormationFelsId")
+                        .HasColumnType("integer")
+                        .HasColumnName("fmfelso");
 
-                b.Property<int>("HFormationEndtiefeId")
-                    .HasColumnType("integer")
-                    .HasColumnName("h_fmeto");
+                    b.Property<int>("HFormationEndtiefe")
+                        .HasColumnType("integer")
+                        .HasColumnName("h_fmeto");
 
-                b.Property<int>("HFormationFelsId")
-                    .HasColumnType("integer")
-                    .HasColumnName("h_fmfelso");
+                    b.Property<int>("HFormationFels")
+                        .HasColumnType("integer")
+                        .HasColumnName("h_fmfelso");
 
-                b.Property<int>("HQualitaetId")
-                    .HasColumnType("integer")
-                    .HasColumnName("h_quali");
+                    b.Property<int>("HQualitaet")
+                        .HasColumnType("integer")
+                        .HasColumnName("h_quali");
 
-                b.Property<int>("HTektonikId")
-                    .HasColumnType("integer")
-                    .HasColumnName("h_tektonik");
+                    b.Property<int>("HTektonik")
+                        .HasColumnType("integer")
+                        .HasColumnName("h_tektonik");
 
-                b.Property<int?>("Kote")
-                    .HasColumnType("integer")
-                    .HasColumnName("kote");
+                    b.Property<int?>("Kote")
+                        .HasColumnType("integer")
+                        .HasColumnName("kote");
 
-                b.Property<DateTime?>("Mutationsdatum")
-                    .HasColumnType("timestamp with time zone")
-                    .HasColumnName("mut_date");
+                    b.Property<DateTime?>("Mutationsdatum")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("mut_date");
 
-                b.Property<string>("QualitaetBemerkung")
-                    .HasColumnType("text")
-                    .HasColumnName("qualibem");
+                    b.Property<string>("QualitaetBemerkung")
+                        .HasColumnType("text")
+                        .HasColumnName("qualibem");
 
-                b.Property<int?>("QualitaetId")
-                    .HasColumnType("integer")
-                    .HasColumnName("quali");
+                    b.Property<int?>("QualitaetId")
+                        .HasColumnType("integer")
+                        .HasColumnName("quali");
 
-                b.Property<int?>("Tektonik")
-                    .HasColumnType("integer")
-                    .HasColumnName("tektonik");
+                    b.Property<int?>("TektonikId")
+                        .HasColumnType("integer")
+                        .HasColumnName("tektonik");
 
-                b.Property<string>("UserErstellung")
-                    .IsRequired()
-                    .HasColumnType("text")
-                    .HasColumnName("new_usr");
+                    b.Property<string>("UserErstellung")
+                        .HasColumnType("text")
+                        .HasColumnName("new_usr");
 
-                b.Property<string>("UserMutation")
-                    .HasColumnType("text")
-                    .HasColumnName("mut_usr");
+                    b.Property<string>("UserMutation")
+                        .HasColumnType("text")
+                        .HasColumnName("mut_usr");
 
-                b.HasKey("Id");
+                    b.HasKey("Id");
 
-                b.HasIndex("BohrungId");
+                    b.HasIndex("BohrungId");
 
-                b.HasIndex("HFormationEndtiefeId");
+                    b.HasIndex("FormationEndtiefeId");
 
-                b.HasIndex("HFormationFelsId");
+                    b.HasIndex("FormationFelsId");
 
-                b.HasIndex("HQualitaetId");
+                    b.HasIndex("QualitaetId");
 
-                b.HasIndex("HTektonikId");
+                    b.HasIndex("TektonikId");
 
-                b.HasIndex("QualitaetId");
+                    b.ToTable("bohrprofil", "bohrung");
+                });
 
-                b.ToTable("bohrprofil", "bohrung");
-            });
+            modelBuilder.Entity("EWS.Models.Bohrung", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("bohrung_id");
 
-        modelBuilder.Entity("EWS.Models.Bohrung", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("integer")
-                    .HasColumnName("bohrung_id");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<int?>("AblenkungId")
+                        .HasColumnType("integer")
+                        .HasColumnName("ablenkung");
 
-                b.Property<int?>("AblenkungId")
-                    .HasColumnType("integer")
-                    .HasColumnName("ablenkung");
+                    b.Property<string>("Bemerkung")
+                        .HasColumnType("text")
+                        .HasColumnName("bemerkung");
 
-                b.Property<string>("Bemerkung")
-                    .HasColumnType("text")
-                    .HasColumnName("bemerkung");
+                    b.Property<string>("Bezeichnung")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("bezeichnung");
 
-                b.Property<string>("Bezeichnung")
-                    .IsRequired()
-                    .HasColumnType("text")
-                    .HasColumnName("bezeichnung");
+                    b.Property<DateTime?>("Datum")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("datum");
 
-                b.Property<DateTime?>("Datum")
-                    .HasColumnType("timestamp with time zone")
-                    .HasColumnName("datum");
+                    b.Property<int?>("DurchmesserBohrloch")
+                        .HasColumnType("integer")
+                        .HasColumnName("durchmesserbohrloch");
 
-                b.Property<int?>("DurchmesserBohrloch")
-                    .HasColumnType("integer")
-                    .HasColumnName("durchmesserbohrloch");
+                    b.Property<DateTime?>("Erstellungsdatum")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("new_date");
 
-                b.Property<DateTime>("Erstellungsdatum")
-                    .HasColumnType("timestamp with time zone")
-                    .HasColumnName("new_date");
+                    b.Property<Point>("Geometrie")
+                        .HasColumnType("geometry")
+                        .HasColumnName("wkb_geometry");
 
-                b.Property<Point>("Geometrie")
-                    .HasColumnType("geometry")
-                    .HasColumnName("wkb_geometry");
+                    b.Property<int>("HAblenkung")
+                        .HasColumnType("integer")
+                        .HasColumnName("h_ablenkung");
 
-                b.Property<int>("HAblenkung")
-                    .HasColumnType("integer")
-                    .HasColumnName("h_ablenkung");
+                    b.Property<int>("HQualitaet")
+                        .HasColumnType("integer")
+                        .HasColumnName("h_quali");
 
-                b.Property<int>("HQualitaetId")
-                    .HasColumnType("integer")
-                    .HasColumnName("h_quali");
+                    b.Property<DateTime?>("Mutationsdatum")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("mut_date");
 
-                b.Property<DateTime?>("Mutationsdatum")
-                    .HasColumnType("timestamp with time zone")
-                    .HasColumnName("mut_date");
+                    b.Property<string>("QualitaetBemerkung")
+                        .HasColumnType("text")
+                        .HasColumnName("qualibem");
 
-                b.Property<int?>("Qualitaet")
-                    .HasColumnType("integer")
-                    .HasColumnName("quali");
+                    b.Property<int?>("QualitaetId")
+                        .HasColumnType("integer")
+                        .HasColumnName("quali");
 
-                b.Property<string>("QualitaetBemerkung")
-                    .HasColumnType("text")
-                    .HasColumnName("qualibem");
+                    b.Property<string>("QuelleRef")
+                        .HasColumnType("text")
+                        .HasColumnName("quelleref");
 
-                b.Property<string>("QuelleRef")
-                    .HasColumnType("text")
-                    .HasColumnName("quelleref");
+                    b.Property<int>("StandortId")
+                        .HasColumnType("integer")
+                        .HasColumnName("standort_id");
 
-                b.Property<int>("StandortId")
-                    .HasColumnType("integer")
-                    .HasColumnName("standort_id");
+                    b.Property<string>("UserErstellung")
+                        .HasColumnType("text")
+                        .HasColumnName("new_usr");
 
-                b.Property<string>("UserErstellung")
-                    .IsRequired()
-                    .HasColumnType("text")
-                    .HasColumnName("new_usr");
+                    b.Property<string>("UserMutation")
+                        .HasColumnType("text")
+                        .HasColumnName("mut_usr");
 
-                b.Property<string>("UserMutation")
-                    .HasColumnType("text")
-                    .HasColumnName("mut_usr");
+                    b.HasKey("Id");
 
-                b.HasKey("Id");
+                    b.HasIndex("AblenkungId");
 
-                b.HasIndex("AblenkungId");
+                    b.HasIndex("QualitaetId");
 
-                b.HasIndex("HQualitaetId");
+                    b.HasIndex("StandortId");
 
-                b.HasIndex("StandortId");
+                    b.ToTable("bohrung", "bohrung");
+                });
 
-                b.ToTable("bohrung", "bohrung");
-            });
+            modelBuilder.Entity("EWS.Models.Code", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("code_id");
 
-        modelBuilder.Entity("EWS.Models.Code", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("integer")
-                    .HasColumnName("code_id");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<int>("CodetypId")
+                        .HasColumnType("integer")
+                        .HasColumnName("codetyp_id");
 
-                b.Property<int>("CodetypId")
-                    .HasColumnType("integer")
-                    .HasColumnName("codetyp_id");
+                    b.Property<DateTime?>("Erstellungsdatum")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("new_date");
 
-                b.Property<DateTime>("Erstellungsdatum")
-                    .HasColumnType("timestamp with time zone")
-                    .HasColumnName("new_date");
+                    b.Property<string>("Kurztext")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("kurztext");
 
-                b.Property<string>("Kurztext")
-                    .IsRequired()
-                    .HasColumnType("text")
-                    .HasColumnName("kurztext");
+                    b.Property<DateTime?>("Mutationsdatum")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("mut_date");
 
-                b.Property<DateTime?>("Mutationsdatum")
-                    .HasColumnType("timestamp with time zone")
-                    .HasColumnName("mut_date");
+                    b.Property<int?>("Sortierung")
+                        .HasColumnType("integer")
+                        .HasColumnName("sort");
 
-                b.Property<int?>("Sortierung")
-                    .HasColumnType("integer")
-                    .HasColumnName("sort");
+                    b.Property<string>("Text")
+                        .HasColumnType("text")
+                        .HasColumnName("text");
 
-                b.Property<string>("Text")
-                    .HasColumnType("text")
-                    .HasColumnName("text");
+                    b.Property<string>("UserErstellung")
+                        .HasColumnType("text")
+                        .HasColumnName("new_usr");
 
-                b.Property<string>("UserErstellung")
-                    .IsRequired()
-                    .HasColumnType("text")
-                    .HasColumnName("new_usr");
+                    b.Property<string>("UserMutation")
+                        .HasColumnType("text")
+                        .HasColumnName("mut_usr");
 
-                b.Property<string>("UserMutation")
-                    .HasColumnType("text")
-                    .HasColumnName("mut_usr");
+                    b.HasKey("Id");
 
-                b.HasKey("Id");
+                    b.HasIndex("CodetypId");
 
-                b.HasIndex("CodetypId");
+                    b.ToTable("code", "bohrung");
+                });
 
-                b.ToTable("code", "bohrung");
-            });
+            modelBuilder.Entity("EWS.Models.CodeSchicht", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("codeschicht_id");
 
-        modelBuilder.Entity("EWS.Models.CodeSchicht", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("integer")
-                    .HasColumnName("codeschicht_id");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<DateTime?>("Erstellungsdatum")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("new_date");
 
-                b.Property<DateTime>("Erstellungsdatum")
-                    .HasColumnType("timestamp with time zone")
-                    .HasColumnName("new_date");
+                    b.Property<string>("Kurztext")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("kurztext");
 
-                b.Property<string>("Kurztext")
-                    .IsRequired()
-                    .HasColumnType("text")
-                    .HasColumnName("kurztext");
+                    b.Property<DateTime?>("Mutationsdatum")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("mut_date");
 
-                b.Property<DateTime?>("Mutationsdatum")
-                    .HasColumnType("timestamp with time zone")
-                    .HasColumnName("mut_date");
+                    b.Property<int?>("Sortierung")
+                        .HasColumnType("integer")
+                        .HasColumnName("sort");
 
-                b.Property<int?>("Sortierung")
-                    .HasColumnType("integer")
-                    .HasColumnName("sort");
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("text");
 
-                b.Property<string>("Text")
-                    .IsRequired()
-                    .HasColumnType("text")
-                    .HasColumnName("text");
+                    b.Property<string>("UserErstellung")
+                        .HasColumnType("text")
+                        .HasColumnName("new_usr");
 
-                b.Property<string>("UserErstellung")
-                    .IsRequired()
-                    .HasColumnType("text")
-                    .HasColumnName("new_usr");
+                    b.Property<string>("UserMutation")
+                        .HasColumnType("text")
+                        .HasColumnName("mut_usr");
 
-                b.Property<string>("UserMutation")
-                    .HasColumnType("text")
-                    .HasColumnName("mut_usr");
+                    b.HasKey("Id");
 
-                b.HasKey("Id");
+                    b.ToTable("codeschicht", "bohrung");
+                });
 
-                b.ToTable("codeschicht", "bohrung");
-            });
+            modelBuilder.Entity("EWS.Models.CodeTyp", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("codetyp_id");
 
-        modelBuilder.Entity("EWS.Models.CodeTyp", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("integer")
-                    .HasColumnName("codetyp_id");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<DateTime?>("Erstellungsdatum")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("new_date");
 
-                b.Property<DateTime>("Erstellungsdatum")
-                    .HasColumnType("timestamp with time zone")
-                    .HasColumnName("new_date");
+                    b.Property<string>("Kurztext")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("kurztext");
 
-                b.Property<string>("Kurztext")
-                    .IsRequired()
-                    .HasColumnType("text")
-                    .HasColumnName("kurztext");
+                    b.Property<DateTime?>("Mutationsdatum")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("mut_date");
 
-                b.Property<DateTime?>("Mutationsdatum")
-                    .HasColumnType("timestamp with time zone")
-                    .HasColumnName("mut_date");
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("text");
 
-                b.Property<string>("Text")
-                    .IsRequired()
-                    .HasColumnType("text")
-                    .HasColumnName("text");
+                    b.Property<string>("UserErstellung")
+                        .HasColumnType("text")
+                        .HasColumnName("new_usr");
 
-                b.Property<string>("UserErstellung")
-                    .IsRequired()
-                    .HasColumnType("text")
-                    .HasColumnName("new_usr");
+                    b.Property<string>("UserMutation")
+                        .HasColumnType("text")
+                        .HasColumnName("mut_usr");
 
-                b.Property<string>("UserMutation")
-                    .HasColumnType("text")
-                    .HasColumnName("mut_usr");
+                    b.HasKey("Id");
 
-                b.HasKey("Id");
+                    b.ToTable("codetyp", "bohrung");
+                });
 
-                b.ToTable("codetyp", "bohrung");
-            });
+            modelBuilder.Entity("EWS.Models.Schicht", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("schicht_id");
 
-        modelBuilder.Entity("EWS.Models.Schicht", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("integer")
-                    .HasColumnName("schicht_id");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<string>("Bemerkung")
+                        .HasColumnType("text")
+                        .HasColumnName("bemerkung");
 
-                b.Property<string>("Bemerkung")
-                    .HasColumnType("text")
-                    .HasColumnName("bemerkung");
+                    b.Property<int>("BohrprofilId")
+                        .HasColumnType("integer")
+                        .HasColumnName("bohrprofil_id");
 
-                b.Property<int>("BohrprofilId")
-                    .HasColumnType("integer")
-                    .HasColumnName("bohrprofil_id");
+                    b.Property<int>("CodeSchichtId")
+                        .HasColumnType("integer")
+                        .HasColumnName("schichten_id");
 
-                b.Property<int>("CodeSchichtId")
-                    .HasColumnType("integer")
-                    .HasColumnName("schichten_id");
+                    b.Property<DateTime?>("Erstellungsdatum")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("new_date");
 
-                b.Property<DateTime>("Erstellungsdatum")
-                    .HasColumnType("timestamp with time zone")
-                    .HasColumnName("new_date");
+                    b.Property<int>("HQualitaet")
+                        .HasColumnType("integer")
+                        .HasColumnName("h_quali");
 
-                b.Property<int>("HQualitaetId")
-                    .HasColumnType("integer")
-                    .HasColumnName("h_quali");
+                    b.Property<DateTime?>("Mutationsdatum")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("mut_date");
 
-                b.Property<DateTime?>("Mutationsdatum")
-                    .HasColumnType("timestamp with time zone")
-                    .HasColumnName("mut_date");
+                    b.Property<string>("QualitaetBemerkung")
+                        .HasColumnType("text")
+                        .HasColumnName("qualibem");
 
-                b.Property<string>("QualitaetBemerkung")
-                    .HasColumnType("text")
-                    .HasColumnName("qualibem");
+                    b.Property<int?>("QualitaetId")
+                        .HasColumnType("integer")
+                        .HasColumnName("quali");
 
-                b.Property<int?>("QualitaetId")
-                    .HasColumnType("integer")
-                    .HasColumnName("quali");
+                    b.Property<float>("Tiefe")
+                        .HasColumnType("real")
+                        .HasColumnName("tiefe");
 
-                b.Property<float>("Tiefe")
-                    .HasColumnType("real")
-                    .HasColumnName("tiefe");
+                    b.Property<string>("UserErstellung")
+                        .HasColumnType("text")
+                        .HasColumnName("new_usr");
 
-                b.Property<string>("UserErstellung")
-                    .IsRequired()
-                    .HasColumnType("text")
-                    .HasColumnName("new_usr");
+                    b.Property<string>("UserMutation")
+                        .HasColumnType("text")
+                        .HasColumnName("mut_usr");
 
-                b.Property<string>("UserMutation")
-                    .HasColumnType("text")
-                    .HasColumnName("mut_usr");
+                    b.HasKey("Id");
 
-                b.HasKey("Id");
+                    b.HasIndex("BohrprofilId");
 
-                b.HasIndex("BohrprofilId");
+                    b.HasIndex("CodeSchichtId");
 
-                b.HasIndex("CodeSchichtId");
+                    b.HasIndex("QualitaetId");
 
-                b.HasIndex("HQualitaetId");
+                    b.ToTable("schicht", "bohrung");
+                });
 
-                b.HasIndex("QualitaetId");
+            modelBuilder.Entity("EWS.Models.Standort", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("standort_id");
 
-                b.ToTable("schicht", "bohrung");
-            });
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-        modelBuilder.Entity("EWS.Models.Standort", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("integer")
-                    .HasColumnName("standort_id");
+                    b.Property<DateTime?>("AfuDatum")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("afu_date");
 
-                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<string>("AfuUser")
+                        .HasColumnType("text")
+                        .HasColumnName("afu_usr");
 
-                b.Property<DateTime?>("AfuDatum")
-                    .HasColumnType("timestamp with time zone")
-                    .HasColumnName("afu_date");
+                    b.Property<string>("Bemerkung")
+                        .HasColumnType("text")
+                        .HasColumnName("bemerkung");
 
-                b.Property<string>("AfuUser")
-                    .HasColumnType("text")
-                    .HasColumnName("afu_usr");
+                    b.Property<string>("Bezeichnung")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("bezeichnung");
 
-                b.Property<string>("Bemerkung")
-                    .HasColumnType("text")
-                    .HasColumnName("bemerkung");
+                    b.Property<DateTime?>("Erstellungsdatum")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("new_date");
 
-                b.Property<string>("Bezeichnung")
-                    .IsRequired()
-                    .HasColumnType("text")
-                    .HasColumnName("bezeichnung");
+                    b.Property<bool>("FreigabeAfu")
+                        .HasColumnType("boolean")
+                        .HasColumnName("freigabe_afu");
 
-                b.Property<DateTime>("Erstellungsdatum")
-                    .HasColumnType("timestamp with time zone")
-                    .HasColumnName("new_date");
+                    b.Property<string>("Gemeinde")
+                        .HasColumnType("text")
+                        .HasColumnName("gemeinde");
 
-                b.Property<bool>("FreigabeAfu")
-                    .HasColumnType("boolean")
-                    .HasColumnName("freigabe_afu");
+                    b.Property<string>("GrundbuchNr")
+                        .HasColumnType("text")
+                        .HasColumnName("gbnummer");
 
-                b.Property<string>("Gemeinde")
-                    .HasColumnType("text")
-                    .HasColumnName("gemeinde");
+                    b.Property<DateTime?>("Mutationsdatum")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("mut_date");
 
-                b.Property<string>("GrundbuchNr")
-                    .HasColumnType("text")
-                    .HasColumnName("gbnummer");
+                    b.Property<string>("UserErstellung")
+                        .HasColumnType("text")
+                        .HasColumnName("new_usr");
 
-                b.Property<DateTime?>("Mutationsdatum")
-                    .HasColumnType("timestamp with time zone")
-                    .HasColumnName("mut_date");
+                    b.Property<string>("UserMutation")
+                        .HasColumnType("text")
+                        .HasColumnName("mut_usr");
 
-                b.Property<string>("UserErstellung")
-                    .IsRequired()
-                    .HasColumnType("text")
-                    .HasColumnName("new_usr");
+                    b.HasKey("Id");
 
-                b.Property<string>("UserMutation")
-                    .HasColumnType("text")
-                    .HasColumnName("mut_usr");
+                    b.ToTable("standort", "bohrung");
+                });
 
-                b.HasKey("Id");
+            modelBuilder.Entity("EWS.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
 
-                b.ToTable("standort", "bohrung");
-            });
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-        modelBuilder.Entity("EWS.Models.User", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("integer")
-                    .HasColumnName("user_id");
+                    b.Property<DateTime?>("Erstellungsdatum")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("new_date");
 
-                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<DateTime?>("Mutationsdatum")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("mut_date");
 
-                b.Property<DateTime>("Erstellungsdatum")
-                    .HasColumnType("timestamp with time zone")
-                    .HasColumnName("new_date");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("user_name");
 
-                b.Property<DateTime?>("Mutationsdatum")
-                    .HasColumnType("timestamp with time zone")
-                    .HasColumnName("mut_date");
+                    b.Property<int>("Role")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_role");
 
-                b.Property<string>("Name")
-                    .IsRequired()
-                    .HasColumnType("text")
-                    .HasColumnName("user_name");
+                    b.Property<string>("UserErstellung")
+                        .HasColumnType("text")
+                        .HasColumnName("new_usr");
 
-                b.Property<int>("Role")
-                    .HasColumnType("integer")
-                    .HasColumnName("user_role");
+                    b.Property<string>("UserMutation")
+                        .HasColumnType("text")
+                        .HasColumnName("mut_usr");
 
-                b.Property<string>("UserErstellung")
-                    .IsRequired()
-                    .HasColumnType("text")
-                    .HasColumnName("new_usr");
+                    b.HasKey("Id");
 
-                b.Property<string>("UserMutation")
-                    .HasColumnType("text")
-                    .HasColumnName("mut_usr");
+                    b.ToTable("user", "bohrung");
+                });
 
-                b.HasKey("Id");
+            modelBuilder.Entity("EWS.Models.Vorkommnis", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("vorkommnis_id");
 
-                b.ToTable("user", "bohrung");
-            });
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-        modelBuilder.Entity("EWS.Models.Vorkommnis", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("integer")
-                    .HasColumnName("vorkommnis_id");
+                    b.Property<string>("Bemerkung")
+                        .HasColumnType("text")
+                        .HasColumnName("bemerkung");
 
-                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<int>("BohrprofilId")
+                        .HasColumnType("integer")
+                        .HasColumnName("bohrprofil_id");
 
-                b.Property<string>("Bemerkung")
-                    .HasColumnType("text")
-                    .HasColumnName("bemerkung");
+                    b.Property<DateTime?>("Erstellungsdatum")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("new_date");
 
-                b.Property<int>("BohrprofilId")
-                    .HasColumnType("integer")
-                    .HasColumnName("bohrprofil_id");
+                    b.Property<int>("HQualitaet")
+                        .HasColumnType("integer")
+                        .HasColumnName("h_quali");
 
-                b.Property<DateTime>("Erstellungsdatum")
-                    .HasColumnType("timestamp with time zone")
-                    .HasColumnName("new_date");
+                    b.Property<int>("HTyp")
+                        .HasColumnType("integer")
+                        .HasColumnName("h_typ");
 
-                b.Property<int>("HQualitaetId")
-                    .HasColumnType("integer")
-                    .HasColumnName("h_quali");
+                    b.Property<DateTime?>("Mutationsdatum")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("mut_date");
 
-                b.Property<int>("HTypId")
-                    .HasColumnType("integer")
-                    .HasColumnName("h_typ");
+                    b.Property<string>("QualitaetBemerkung")
+                        .HasColumnType("text")
+                        .HasColumnName("qualibem");
 
-                b.Property<DateTime?>("Mutationsdatum")
-                    .HasColumnType("timestamp with time zone")
-                    .HasColumnName("mut_date");
+                    b.Property<int?>("QualitaetId")
+                        .HasColumnType("integer")
+                        .HasColumnName("quali");
 
-                b.Property<int?>("Qualitaet")
-                    .HasColumnType("integer")
-                    .HasColumnName("quali");
+                    b.Property<float?>("Tiefe")
+                        .HasColumnType("real")
+                        .HasColumnName("tiefe");
 
-                b.Property<string>("QualitaetBemerkung")
-                    .HasColumnType("text")
-                    .HasColumnName("qualibem");
+                    b.Property<int>("TypId")
+                        .HasColumnType("integer")
+                        .HasColumnName("typ");
 
-                b.Property<float?>("Tiefe")
-                    .HasColumnType("real")
-                    .HasColumnName("tiefe");
+                    b.Property<string>("UserErstellung")
+                        .HasColumnType("text")
+                        .HasColumnName("new_usr");
 
-                b.Property<int>("Typ")
-                    .HasColumnType("integer")
-                    .HasColumnName("typ");
+                    b.Property<string>("UserMutation")
+                        .HasColumnType("text")
+                        .HasColumnName("mut_usr");
 
-                b.Property<string>("UserErstellung")
-                    .IsRequired()
-                    .HasColumnType("text")
-                    .HasColumnName("new_usr");
+                    b.HasKey("Id");
 
-                b.Property<string>("UserMutation")
-                    .HasColumnType("text")
-                    .HasColumnName("mut_usr");
+                    b.HasIndex("BohrprofilId");
 
-                b.HasKey("Id");
+                    b.HasIndex("QualitaetId");
 
-                b.HasIndex("BohrprofilId");
+                    b.HasIndex("TypId");
 
-                b.HasIndex("HQualitaetId");
+                    b.ToTable("vorkommnis", "bohrung");
+                });
 
-                b.HasIndex("HTypId");
+            modelBuilder.Entity("EWS.Models.Bohrprofil", b =>
+                {
+                    b.HasOne("EWS.Models.Bohrung", null)
+                        .WithMany("Bohrprofile")
+                        .HasForeignKey("BohrungId");
 
-                b.ToTable("vorkommnis", "bohrung");
-            });
+                    b.HasOne("EWS.Models.Code", "FormationEndtiefe")
+                        .WithMany()
+                        .HasForeignKey("FormationEndtiefeId");
 
-        modelBuilder.Entity("EWS.Models.Bohrprofil", b =>
-            {
-                b.HasOne("EWS.Models.Bohrung", null)
-                    .WithMany("Bohrprofile")
-                    .HasForeignKey("BohrungId");
+                    b.HasOne("EWS.Models.Code", "FormationFels")
+                        .WithMany()
+                        .HasForeignKey("FormationFelsId");
 
-                b.HasOne("EWS.Models.CodeTyp", "HFormationEndtiefe")
-                    .WithMany()
-                    .HasForeignKey("HFormationEndtiefeId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+                    b.HasOne("EWS.Models.Code", "Qualitaet")
+                        .WithMany()
+                        .HasForeignKey("QualitaetId");
 
-                b.HasOne("EWS.Models.CodeTyp", "HFormationFels")
-                    .WithMany()
-                    .HasForeignKey("HFormationFelsId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+                    b.HasOne("EWS.Models.Code", "Tektonik")
+                        .WithMany()
+                        .HasForeignKey("TektonikId");
 
-                b.HasOne("EWS.Models.Code", "HQualitaet")
-                    .WithMany()
-                    .HasForeignKey("HQualitaetId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+                    b.Navigation("FormationEndtiefe");
 
-                b.HasOne("EWS.Models.CodeTyp", "HTektonik")
-                    .WithMany()
-                    .HasForeignKey("HTektonikId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+                    b.Navigation("FormationFels");
 
-                b.HasOne("EWS.Models.Code", "Qualitaet")
-                    .WithMany()
-                    .HasForeignKey("QualitaetId");
+                    b.Navigation("Qualitaet");
 
-                b.Navigation("HFormationEndtiefe");
+                    b.Navigation("Tektonik");
+                });
 
-                b.Navigation("HFormationFels");
+            modelBuilder.Entity("EWS.Models.Bohrung", b =>
+                {
+                    b.HasOne("EWS.Models.Code", "Ablenkung")
+                        .WithMany()
+                        .HasForeignKey("AblenkungId");
 
-                b.Navigation("HQualitaet");
+                    b.HasOne("EWS.Models.Code", "Qualitaet")
+                        .WithMany()
+                        .HasForeignKey("QualitaetId");
 
-                b.Navigation("HTektonik");
+                    b.HasOne("EWS.Models.Standort", null)
+                        .WithMany("Bohrungen")
+                        .HasForeignKey("StandortId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                b.Navigation("Qualitaet");
-            });
+                    b.Navigation("Ablenkung");
 
-        modelBuilder.Entity("EWS.Models.Bohrung", b =>
-            {
-                b.HasOne("EWS.Models.CodeTyp", "Ablenkung")
-                    .WithMany()
-                    .HasForeignKey("AblenkungId");
+                    b.Navigation("Qualitaet");
+                });
 
-                b.HasOne("EWS.Models.CodeTyp", "HQualitaet")
-                    .WithMany()
-                    .HasForeignKey("HQualitaetId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+            modelBuilder.Entity("EWS.Models.Code", b =>
+                {
+                    b.HasOne("EWS.Models.CodeTyp", "Codetyp")
+                        .WithMany()
+                        .HasForeignKey("CodetypId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                b.HasOne("EWS.Models.Standort", null)
-                    .WithMany("Bohrungen")
-                    .HasForeignKey("StandortId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+                    b.Navigation("Codetyp");
+                });
 
-                b.Navigation("Ablenkung");
+            modelBuilder.Entity("EWS.Models.Schicht", b =>
+                {
+                    b.HasOne("EWS.Models.Bohrprofil", null)
+                        .WithMany("Schichten")
+                        .HasForeignKey("BohrprofilId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                b.Navigation("HQualitaet");
-            });
+                    b.HasOne("EWS.Models.CodeSchicht", "CodeSchicht")
+                        .WithMany()
+                        .HasForeignKey("CodeSchichtId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-        modelBuilder.Entity("EWS.Models.Code", b =>
-            {
-                b.HasOne("EWS.Models.CodeTyp", "Codetyp")
-                    .WithMany()
-                    .HasForeignKey("CodetypId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+                    b.HasOne("EWS.Models.Code", "Qualitaet")
+                        .WithMany()
+                        .HasForeignKey("QualitaetId");
 
-                b.Navigation("Codetyp");
-            });
+                    b.Navigation("CodeSchicht");
 
-        modelBuilder.Entity("EWS.Models.Schicht", b =>
-            {
-                b.HasOne("EWS.Models.Bohrprofil", null)
-                    .WithMany("Schichten")
-                    .HasForeignKey("BohrprofilId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+                    b.Navigation("Qualitaet");
+                });
 
-                b.HasOne("EWS.Models.CodeSchicht", "CodeSchicht")
-                    .WithMany()
-                    .HasForeignKey("CodeSchichtId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+            modelBuilder.Entity("EWS.Models.Vorkommnis", b =>
+                {
+                    b.HasOne("EWS.Models.Bohrprofil", null)
+                        .WithMany("Vorkommnisse")
+                        .HasForeignKey("BohrprofilId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                b.HasOne("EWS.Models.CodeTyp", "HQualitaet")
-                    .WithMany()
-                    .HasForeignKey("HQualitaetId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+                    b.HasOne("EWS.Models.Code", "Qualitaet")
+                        .WithMany()
+                        .HasForeignKey("QualitaetId");
 
-                b.HasOne("EWS.Models.Code", "Qualitaet")
-                    .WithMany()
-                    .HasForeignKey("QualitaetId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+                    b.HasOne("EWS.Models.Code", "Typ")
+                        .WithMany()
+                        .HasForeignKey("TypId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                b.Navigation("CodeSchicht");
+                    b.Navigation("Qualitaet");
 
-                b.Navigation("HQualitaet");
+                    b.Navigation("Typ");
+                });
 
-                b.Navigation("Qualitaet");
-            });
+            modelBuilder.Entity("EWS.Models.Bohrprofil", b =>
+                {
+                    b.Navigation("Schichten");
 
-        modelBuilder.Entity("EWS.Models.Vorkommnis", b =>
-            {
-                b.HasOne("EWS.Models.Bohrprofil", null)
-                    .WithMany("Vorkomnisse")
-                    .HasForeignKey("BohrprofilId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+                    b.Navigation("Vorkommnisse");
+                });
 
-                b.HasOne("EWS.Models.Code", "HQualitaet")
-                    .WithMany()
-                    .HasForeignKey("HQualitaetId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
+            modelBuilder.Entity("EWS.Models.Bohrung", b =>
+                {
+                    b.Navigation("Bohrprofile");
+                });
 
-                b.HasOne("EWS.Models.CodeTyp", "HTyp")
-                    .WithMany()
-                    .HasForeignKey("HTypId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
-
-                b.Navigation("HQualitaet");
-
-                b.Navigation("HTyp");
-            });
-
-        modelBuilder.Entity("EWS.Models.Bohrprofil", b =>
-            {
-                b.Navigation("Schichten");
-
-                b.Navigation("Vorkomnisse");
-            });
-
-        modelBuilder.Entity("EWS.Models.Bohrung", b =>
-            {
-                b.Navigation("Bohrprofile");
-            });
-
-        modelBuilder.Entity("EWS.Models.Standort", b =>
-            {
-                b.Navigation("Bohrungen");
-            });
+            modelBuilder.Entity("EWS.Models.Standort", b =>
+                {
+                    b.Navigation("Bohrungen");
+                });
 #pragma warning restore 612, 618
+        }
     }
 }
