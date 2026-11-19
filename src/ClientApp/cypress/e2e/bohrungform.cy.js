@@ -43,6 +43,10 @@ const calendarDay = (day) => cy.get("[role=grid]").contains("[role=gridcell]", n
 // Clicking near the left edge selects the day section, then each digit fills day, month and year in turn.
 const typeDate = (input, digits) => input.scrollIntoView().click(20, 10).type(digits);
 
+// The zoom buttons sit in the map's top-left corner and the Bohrung marker in its centre,
+// so click somewhere in between to set a new position.
+const clickMapPosition = () => bohrungForm().find(".detail-map").scrollIntoView().click(150, 100);
+
 const openStoredBohrprofil = () => {
   cy.contains("form[name=bohrung-form] td", "12345678")
     .parent("tr")
@@ -101,7 +105,7 @@ describe("Bohrung form date picker", () => {
     calendarDay(15).click();
     bohrungForm().find("input[name=x_coordinate]").should("have.value", "2623182.0");
 
-    bohrungForm().find(".detail-map").scrollIntoView().click(20, 20);
+    clickMapPosition();
 
     bohrungForm().find("input[name=x_coordinate]").should("not.have.value", "2623182.0");
     bohrungForm()
@@ -112,7 +116,7 @@ describe("Bohrung form date picker", () => {
 
   it("shows the stored name and date again after a map click and a visit to a Bohrprofil", () => {
     bohrungForm().find("input[name=bezeichnung]").click({ force: true }).type(" Nord");
-    bohrungForm().find(".detail-map").scrollIntoView().click(20, 20);
+    clickMapPosition();
     bohrungForm().find("input[name=x_coordinate]").should("not.have.value", "2623182.0");
 
     openStoredBohrprofil();
