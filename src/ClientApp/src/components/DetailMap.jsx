@@ -1,134 +1,83 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useEffectEvent, useRef, useState } from "react";
 import Map from "ol/Map";
 import View from "ol/View";
 import VectorSource from "ol/source/Vector";
 import Feature from "ol/Feature";
-import { Vector } from "ol/layer";
 import { Point } from "ol/geom";
-import { Style, Circle, Fill, Stroke } from "ol/style";
+import { unByKey } from "ol/Observable";
 import { lv95Projection } from "./lv95Projection";
-import { loadBasemapLayer } from "./basemapLayer";
+import { createBohrungenLayer } from "./bohrungenLayer";
+import { useOlMap } from "./useOlMap";
 import "ol/ol.css";
+
+function createMap(bohrungenLayer) {
+  return new Map({
+    layers: [bohrungenLayer],
+    view: new View({
+      projection: lv95Projection,
+      maxZoom: 14,
+      zoom: 1,
+      extent: lv95Projection.getExtent(),
+    }),
+  });
+}
+
+function createBohrungFeature(bohrung) {
+  return new Feature({
+    geometry: new Point([bohrung.geometrie?.coordinates[0], bohrung.geometrie?.coordinates[1]]),
+  });
+}
+
+function getExtentToShow(bohrungenLayer, hasBohrungGeometrie, currentStandort) {
+  // Fit map to extent of Bohrungen if at least one was passed to the DetailMap component
+  if (hasBohrungGeometrie) {
+    return bohrungenLayer.getSource().getExtent();
+  }
+
+  // If no Bohrungen were passed to the DetailMap component, but the current Standort already contains at least one Bohrung, fit extent to first Bohrung of Standort.
+  if (currentStandort?.bohrungen?.some((bohrung) => bohrung?.geometrie)) {
+    return createBohrungFeature(currentStandort.bohrungen[0]).getGeometry().getExtent();
+  }
+
+  // If current Standort contains no Bohrungen fit extent to Kanton Solothurn.
+  return lv95Projection.getExtent();
+}
 
 export default function DetailMap(props) {
   const { bohrungen, currentStandort, currentForm, setCurrentBohrung, readOnly } = props;
-  const [map, setMap] = useState();
-  const [bohrungenLayer, setBohrungenLayer] = useState();
-  const [geometrie, setGeometrie] = useState();
+  const [bohrungenLayer] = useState(createBohrungenLayer);
+  const { map, mapElement } = useOlMap(() => createMap(bohrungenLayer));
+  // Once the Bohrung was moved from this map, the view stays where the user placed it.
+  const isBohrungMovedRef = useRef(false);
+  const isBohrungEditable = currentForm === "bohrung" && !readOnly;
 
-  const mapElement = useRef();
-
-  const defaultStyle = new Style({
-    image: new Circle({
-      radius: 4,
-      stroke: new Stroke({
-        color: [25, 118, 210, 1],
-        width: 2,
-      }),
-      fill: new Fill({
-        color: [25, 118, 210, 0.3],
-      }),
-    }),
+  const moveBohrung = useEffectEvent((coordinate) => {
+    isBohrungMovedRef.current = true;
+    setCurrentBohrung({
+      ...bohrungen[0],
+      geometrie: { type: "Point", coordinates: coordinate },
+      "Standort Id": bohrungen[0].standortId,
+    });
   });
 
-  // Initialize map on first render
   useEffect(() => {
-    // Create map and feature layer
-    const initialBohrungenLayer = new Vector({
-      zIndex: 1,
-      source: new VectorSource(),
-      style: defaultStyle,
-    });
+    if (!isBohrungEditable) return undefined;
+    const clickKey = map.on("singleclick", (event) => moveBohrung(event.coordinate));
+    return () => unByKey(clickKey);
+  }, [map, isBohrungEditable]);
 
-    const initialMap = new Map({
-      target: mapElement.current,
-      layers: [initialBohrungenLayer],
-      view: new View({
-        projection: lv95Projection,
-        maxZoom: 14,
-        zoom: 1,
-        extent: lv95Projection.getExtent(),
-      }),
-    });
+  useEffect(() => {
+    const hasBohrungGeometrie = bohrungen.some((bohrung) => bohrung?.geometrie);
+    const features = hasBohrungGeometrie ? bohrungen.map(createBohrungFeature) : [];
+    bohrungenLayer.setSource(new VectorSource({ features }));
 
-    // Allow editing of geometry if map is displayed in bohrung form.
-    if (currentForm === "bohrung" && !readOnly) {
-      initialMap.on("singleclick", function (evt) {
-        setGeometrie({ type: "Point", coordinates: evt.coordinate });
+    if (!isBohrungMovedRef.current) {
+      map.getView().fit(getExtentToShow(bohrungenLayer, hasBohrungGeometrie, currentStandort), {
+        padding: [30, 30, 30, 30],
+        maxZoom: 10,
       });
     }
-
-    // Save map and vector layer references to state
-    setMap(initialMap);
-    setBohrungenLayer(initialBohrungenLayer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Handle asynchronous calls to layer sources
-  // Baselayer
-  useEffect(() => {
-    map && loadBasemapLayer().then((basemapLayer) => map.addLayer(basemapLayer));
-  }, [map]);
-
-  // BohrungenLayer
-  useEffect(() => {
-    if (bohrungen && bohrungenLayer) {
-      let parsedFeatures;
-      if (bohrungen.length && bohrungen.some((bohrung) => bohrung?.geometrie)) {
-        parsedFeatures = bohrungen.map(
-          (f) =>
-            new Feature({
-              geometry: new Point([f.geometrie?.coordinates[0], f.geometrie?.coordinates[1]]),
-            }),
-        );
-      } else {
-        parsedFeatures = [];
-      }
-      bohrungenLayer.setSource(
-        new VectorSource({
-          features: parsedFeatures,
-        }),
-      );
-      let currentExtent;
-
-      // Fit map to extent of Bohrungen if at least one was passed to the DetailMap component
-      if (bohrungen.length && bohrungen.some((bohrung) => bohrung?.geometrie)) {
-        currentExtent = bohrungenLayer.getSource().getExtent();
-
-        // If no Bohrungen were passed to the DetailMap component, but the current Standort already contains at least one Bohrung, fit extent to first Bohrung of Standort.
-      } else if (currentStandort?.bohrungen?.some((bohrung) => bohrung?.geometrie)) {
-        const bohrungPoint = new Point([
-          currentStandort?.bohrungen[0].geometrie?.coordinates[0],
-          currentStandort?.bohrungen[0].geometrie?.coordinates[1],
-        ]);
-        currentExtent = bohrungPoint.getExtent();
-
-        // If current Standort contains no Bohrungen fit extent to Kanton Solothurn.
-      } else {
-        currentExtent = map.getView().getProjection().getExtent();
-      }
-      // Only update map extent if geometry of Bohrung was not changed from the DetailMap component
-      if (!geometrie) {
-        map.getView().fit(currentExtent, {
-          padding: [30, 30, 30, 30],
-          maxZoom: 10,
-        });
-      }
-    }
-  }, [bohrungen, bohrungenLayer, currentStandort, geometrie, map]);
-
-  // Update currentBohrung on geometry change
-  useEffect(() => {
-    if (geometrie) {
-      const updatedBohrung = {
-        ...bohrungen[0],
-        geometrie: geometrie,
-        "Standort Id": bohrungen[0].standortId,
-      };
-      setCurrentBohrung(updatedBohrung);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [geometrie]);
+  }, [bohrungen, bohrungenLayer, currentStandort, map]);
 
   return (
     <div>

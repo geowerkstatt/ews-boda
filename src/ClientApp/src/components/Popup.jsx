@@ -5,16 +5,8 @@ import PreviewIcon from "@mui/icons-material/Preview";
 import { UserRolesMap } from "../UserRolesMap";
 
 function Popup(props) {
-  const {
-    popupElement,
-    closePopup,
-    selectedFeature,
-    standorte,
-    popupVisible,
-    currentUser,
-    setCurrentStandort,
-    setOpenStandortForm,
-  } = props;
+  const { popupElement, closePopup, selectedFeature, standorte, currentUser, setCurrentStandort, setOpenStandortForm } =
+    props;
 
   const standort = selectedFeature && standorte.find((s) => s.id === selectedFeature.get("standortId"));
   const readOnly = standort?.freigabeAfu && currentUser?.role === UserRolesMap.Extern;
@@ -26,7 +18,7 @@ function Popup(props) {
 
   return (
     <div ref={popupElement} id="popup">
-      {popupVisible && selectedFeature && (
+      {selectedFeature && (
         <Card sx={{ minWidth: 275 }}>
           <CardContent>
             <Typography variant="h6">

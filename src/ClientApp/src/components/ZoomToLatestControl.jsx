@@ -1,17 +1,15 @@
 import React from "react";
-import ReactDOMServer from "react-dom/server";
 import { Control } from "ol/control";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { createMapControlIconFactory } from "./mapControlIcon";
 
+const createIcon = createMapControlIconFactory(<ArrowBackIcon />);
+
+/** Map control that fits the view to the extent of the latest search result, as set by `setExtent`. */
 export class ZoomToLatest extends Control {
-  constructor(handleZoomToLatestExtend) {
+  constructor() {
     const button = document.createElement("button");
-
-    const htmlIcon = ReactDOMServer.renderToStaticMarkup(<ArrowBackIcon />);
-    const icon = new DOMParser().parseFromString(htmlIcon, "text/html").getElementsByTagName("svg")[0];
-    icon.setAttribute("style", "padding-right: 2px; padding-bottom: 2px");
-
-    button.appendChild(icon);
+    button.appendChild(createIcon());
     button.setAttribute("type", "button");
     button.setAttribute("title", "Extent aktuelle Suche");
 
@@ -23,6 +21,24 @@ export class ZoomToLatest extends Control {
       element: element,
     });
 
-    button.addEventListener("click", handleZoomToLatestExtend, false);
+    this.extent = undefined;
+    button.addEventListener("click", () => this.zoomToExtent(), false);
+  }
+
+  hasExtent() {
+    return this.extent !== undefined;
+  }
+
+  setExtent(extent) {
+    this.extent = extent;
+  }
+
+  zoomToExtent() {
+    if (!this.extent) return;
+    const view = this.getMap().getView();
+    view.fit(this.extent, {
+      padding: [30, 30, 30, 30],
+      maxZoom: 10,
+    });
   }
 }
