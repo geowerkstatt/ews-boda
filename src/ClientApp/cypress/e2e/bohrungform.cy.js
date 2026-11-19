@@ -6,6 +6,10 @@ import userInRoleSachbearbeiterAfu from "../fixtures/user_in_role_sachbearbeiter
 
 // "Ergonomic Metal Tuna" has Freigabe AfU, so it is read-only for users in role 'Extern'.
 const openBohrungForm = (user, bohrungResponse = bohrung) => {
+  // Keep the geo.so.ch base map out of these tests. When it loads within the 250 ms OpenLayers waits
+  // before a singleclick, the layer canvases are rebuilt, the clicked canvas leaves the page and
+  // OpenLayers drops the click. The failed request ends as a promise rejection, which e2e.js ignores.
+  cy.intercept("GET", "https://geo.so.ch/api/wmts/1.0.0/WMTSCapabilities.xml", { forceNetworkError: true });
   cy.intercept("/user/self", user);
   cy.intercept("/standort", standorte);
   const standort = standorteGemeinde.find((s) => s.bezeichnung === "Ergonomic Metal Tuna");
@@ -43,9 +47,13 @@ const calendarDay = (day) => cy.get("[role=grid]").contains("[role=gridcell]", n
 // Clicking near the left edge selects the day section, then each digit fills day, month and year in turn.
 const typeDate = (input, digits) => input.scrollIntoView().click(20, 10).type(digits);
 
-// The zoom buttons sit in the map's top-left corner and the Bohrung marker in its centre,
-// so click somewhere in between to set a new position.
-const clickMapPosition = () => bohrungForm().find(".detail-map").scrollIntoView().click(150, 100);
+// OpenLayers ignores clicks until it has rendered its first frame, and it creates the layer canvases
+// only in that render. The zoom buttons sit in the map's top-left corner and the Bohrung marker in its
+// centre, so click somewhere in between to set a new position.
+const clickMapPosition = () => {
+  bohrungForm().find(".detail-map canvas").should("exist");
+  bohrungForm().find(".detail-map").scrollIntoView().click(150, 100);
+};
 
 const openStoredBohrprofil = () => {
   cy.contains("form[name=bohrung-form] td", "12345678")
