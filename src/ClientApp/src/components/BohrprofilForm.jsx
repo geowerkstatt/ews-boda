@@ -27,7 +27,7 @@ import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import DetailMap from "./DetailMap";
 import DateUserInputs from "./DateUserInputs";
 import { CodeTypes } from "./CodeTypes";
@@ -64,7 +64,7 @@ export default function BohrprofilForm(props) {
   const [openSchichtConfirmation, setOpenSchichtConfirmation] = useState(false);
   const [openVorkommnisConfirmation, setOpenVorkommnisConfirmation] = useState(false);
   const [selectedDate, setSelectedDate] = useRecordDate(currentBohrprofil);
-  const datePicker = useDatePickerValidation((value) => {
+  const datePicker = useDatePickerValidation(selectedDate, (value) => {
     setSelectedDate(value);
     //setValue only needed to dirty form
     setValue("datum", value, { shouldDirty: true });
@@ -238,27 +238,25 @@ export default function BohrprofilForm(props) {
       <DialogContent>
         <Stack
           direction={{ xs: "column", md: "row" }}
-          justifyContent="space-evenly"
-          alignItems="flex-start"
           spacing={2}
+          sx={{ justifyContent: "space-evenly", alignItems: "flex-start" }}
         >
           <Box sx={{ width: { xs: "100%", md: "50%" } }}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 key={datePicker.key}
                 label="Datum des Bohrprofils"
+                name="datum"
                 disableFuture
                 format="dd.MM.yyyy"
-                value={selectedDate}
                 {...datePicker.pickerProps}
                 disabled={readOnly}
                 slotProps={{
+                  field: datePicker.fieldProps,
                   textField: {
                     sx: { marginRight: "6%", width: "47%" },
                     margin: "normal",
                     variant: "standard",
-                    name: "datum",
-                    ref: register("datum").ref,
                     ...datePicker.textFieldProps,
                   },
                 }}
@@ -272,7 +270,7 @@ export default function BohrprofilForm(props) {
                 <TextField
                   {...field}
                   value={field.value ?? ""}
-                  InputLabelProps={{ shrink: field.value != null }}
+                  slotProps={{ inputLabel: { shrink: field.value != null } }}
                   margin="normal"
                   multiline
                   label="Bemerkungen zum Bohrprofil"
@@ -290,7 +288,7 @@ export default function BohrprofilForm(props) {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  InputLabelProps={{ shrink: field.value != null }}
+                  slotProps={{ inputLabel: { shrink: field.value != null } }}
                   value={field.value ?? ""}
                   sx={{ marginRight: "6%", width: "47%" }}
                   margin="normal"
@@ -308,7 +306,7 @@ export default function BohrprofilForm(props) {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  InputLabelProps={{ shrink: field.value != null }}
+                  slotProps={{ inputLabel: { shrink: field.value != null } }}
                   value={field.value ?? ""}
                   sx={{ width: "47%" }}
                   margin="normal"
@@ -369,7 +367,7 @@ export default function BohrprofilForm(props) {
                 />
               )}
             />
-            <Stack direction="row" justifyContent="space-evenly" spacing={2}>
+            <Stack direction="row" spacing={2} sx={{ justifyContent: "space-evenly" }}>
               <Controller
                 name="tektonikId"
                 control={control}
@@ -430,7 +428,7 @@ export default function BohrprofilForm(props) {
                 <TextField
                   {...field}
                   value={field.value ?? ""}
-                  InputLabelProps={{ shrink: field.value != null }}
+                  slotProps={{ inputLabel: { shrink: field.value != null } }}
                   margin="normal"
                   multiline
                   label="Bemerkungen zur Qualitätsangabe"

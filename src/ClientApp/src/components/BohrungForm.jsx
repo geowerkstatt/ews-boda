@@ -25,7 +25,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import DetailMap from "./DetailMap";
@@ -68,7 +68,7 @@ export default function BohrungForm(props) {
     currentBohrung,
     (bohrung) => Boolean(bohrung) && bohrung !== bohrungFromMapClick,
   );
-  const datePicker = useDatePickerValidation((value) => {
+  const datePicker = useDatePickerValidation(selectedDate, (value) => {
     setSelectedDate(value);
     //setValue only needed to dirty form
     setValue("datum", value, { shouldDirty: true });
@@ -239,9 +239,8 @@ export default function BohrungForm(props) {
       <DialogContent>
         <Stack
           direction={{ xs: "column", sm: "column", md: "row" }}
-          justifyContent="space-evenly"
-          alignItems="flex-start"
           spacing={2}
+          sx={{ justifyContent: "space-evenly", alignItems: "flex-start" }}
         >
           <Box sx={{ width: { xs: "100%", sm: "100%", md: "50%" } }}>
             <Controller
@@ -273,7 +272,7 @@ export default function BohrungForm(props) {
                   {...field}
                   value={field.value ?? ""}
                   margin="normal"
-                  InputLabelProps={{ shrink: field.value != null }}
+                  slotProps={{ inputLabel: { shrink: field.value != null } }}
                   multiline
                   label="Bemerkung zur Bohrung"
                   type="text"
@@ -287,18 +286,17 @@ export default function BohrungForm(props) {
               <DatePicker
                 key={datePicker.key}
                 label="Datum des Bohrbeginns"
+                name="datum"
                 disableFuture
                 format="dd.MM.yyyy"
-                value={selectedDate}
                 {...datePicker.pickerProps}
                 disabled={readOnly}
                 slotProps={{
+                  field: datePicker.fieldProps,
                   textField: {
                     sx: { marginRight: "6%", width: "47%" },
                     margin: "normal",
                     variant: "standard",
-                    name: "datum",
-                    ref: register("datum").ref,
                     ...datePicker.textFieldProps,
                   },
                 }}
@@ -312,7 +310,7 @@ export default function BohrungForm(props) {
                 <TextField
                   {...field}
                   value={field.value ?? ""}
-                  InputLabelProps={{ shrink: field.value != null }}
+                  slotProps={{ inputLabel: { shrink: field.value != null } }}
                   sx={{ width: "47%" }}
                   margin="normal"
                   label="Durchmesser Bohrloch [mm]"
@@ -322,7 +320,7 @@ export default function BohrungForm(props) {
                 />
               )}
             />
-            <Stack direction="row" justifyContent="space-evenly" spacing={2}>
+            <Stack direction="row" spacing={2} sx={{ justifyContent: "space-evenly" }}>
               <Controller
                 name="ablenkungId"
                 control={control}
@@ -382,7 +380,7 @@ export default function BohrungForm(props) {
                 <TextField
                   {...field}
                   value={field.value ?? ""}
-                  InputLabelProps={{ shrink: field.value != null }}
+                  slotProps={{ inputLabel: { shrink: field.value != null } }}
                   fullWidth
                   margin="normal"
                   multiline
@@ -400,7 +398,7 @@ export default function BohrungForm(props) {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  InputLabelProps={{ shrink: field.value != null }}
+                  slotProps={{ inputLabel: { shrink: field.value != null } }}
                   value={field.value ?? ""}
                   margin="normal"
                   label="Autor der geologischen Aufnahme"
@@ -434,7 +432,7 @@ export default function BohrungForm(props) {
                   {...field}
                   sx={{ marginRight: "6%", width: "47%" }}
                   margin="normal"
-                  InputLabelProps={{ shrink: field.value != null }}
+                  slotProps={{ inputLabel: { shrink: field.value != null } }}
                   value={field.value ?? ""}
                   onChange={(value) => field.onChange(value)}
                   label="X-Koordinate der Bohrung"
@@ -463,7 +461,7 @@ export default function BohrungForm(props) {
                   {...field}
                   sx={{ width: "47%" }}
                   margin="normal"
-                  InputLabelProps={{ shrink: field.value != null }}
+                  slotProps={{ inputLabel: { shrink: field.value != null } }}
                   value={field.value ?? ""}
                   onChange={(value) => field.onChange(value)}
                   label="Y-Koordinate der Bohrung"

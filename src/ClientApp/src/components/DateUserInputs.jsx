@@ -7,7 +7,7 @@ export default function DateUserInputs(props) {
     <React.Fragment>
       <TextField
         value={formObject?.userErstellung ?? ""}
-        InputLabelProps={{ shrink: formObject?.userErstellung != null }}
+        slotProps={{ inputLabel: { shrink: formObject?.userErstellung != null } }}
         sx={{ marginRight: "6%", width: "47%" }}
         disabled
         margin="normal"
@@ -17,7 +17,7 @@ export default function DateUserInputs(props) {
       />
       <TextField
         value={formObject?.erstellungsdatum ? new Date(formObject.erstellungsdatum).toLocaleDateString() : ""}
-        InputLabelProps={{ shrink: formObject?.erstellungsdatum != null }}
+        slotProps={{ inputLabel: { shrink: formObject?.erstellungsdatum != null } }}
         disabled
         sx={{ width: "47%" }}
         margin="normal"
@@ -28,7 +28,7 @@ export default function DateUserInputs(props) {
       <React.Fragment>
         <TextField
           value={formObject?.userMutation ?? ""}
-          InputLabelProps={{ shrink: formObject?.userMutation != null }}
+          slotProps={{ inputLabel: { shrink: formObject?.userMutation != null } }}
           sx={{ marginRight: "6%", width: "47%" }}
           disabled
           margin="normal"
@@ -39,7 +39,7 @@ export default function DateUserInputs(props) {
         <TextField
           name="mutationsdatum"
           value={formObject?.mutationsdatum ? new Date(formObject.mutationsdatum).toLocaleDateString() : ""}
-          InputLabelProps={{ shrink: formObject?.mutationsdatum != null }}
+          slotProps={{ inputLabel: { shrink: formObject?.mutationsdatum != null } }}
           disabled
           sx={{ width: "47%" }}
           margin="normal"

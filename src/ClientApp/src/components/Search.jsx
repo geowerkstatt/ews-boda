@@ -3,7 +3,22 @@ import { Controller, useForm } from "react-hook-form";
 import { Autocomplete, Box, Button, TextField, Typography } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+
+const renderSearchDatePicker =
+  (label) =>
+  ({ field }) => (
+    <DatePicker
+      label={label}
+      name={field.name}
+      inputRef={field.ref}
+      disableFuture
+      format="dd.MM.yyyy"
+      value={field.value}
+      onChange={field.onChange}
+      slotProps={{ textField: { margin: "normal", variant: "standard" } }}
+    />
+  );
 
 export default function Search(props) {
   const { getStandorte, showSearchResults, gemeinden, setSearchResultsPage } = props;
@@ -90,33 +105,13 @@ export default function Search(props) {
           name="erstellungsDatum"
           control={control}
           defaultValue={null}
-          render={({ field }) => (
-            <DatePicker
-              label="Erstellungsdatum"
-              disableFuture
-              format="dd.MM.yyyy"
-              value={field.value}
-              onChange={(value) => field.onChange(value)}
-              slotProps={{ textField: { ...field, margin: "normal", variant: "standard" } }}
-            />
-          )}
+          render={renderSearchDatePicker("Erstellungsdatum")}
         />
-      </LocalizationProvider>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
         <Controller
           name="mutationsDatum"
           control={control}
           defaultValue={null}
-          render={({ field }) => (
-            <DatePicker
-              label="Mutationsdatum"
-              disableFuture
-              format="dd.MM.yyyy"
-              value={field.value}
-              onChange={(value) => field.onChange(value)}
-              slotProps={{ textField: { ...field, margin: "normal", variant: "standard" } }}
-            />
-          )}
+          render={renderSearchDatePicker("Mutationsdatum")}
         />
       </LocalizationProvider>
       <Box sx={{ flexGrow: 1 }}></Box>
