@@ -3,14 +3,9 @@ import ReactDOMServer from "react-dom/server";
 import AllOutIcon from "@mui/icons-material/AllOut";
 import Map from "ol/Map";
 import View from "ol/View";
-import TileLayer from "ol/layer/Tile";
-import WMTS from "ol/source/WMTS";
 import VectorSource from "ol/source/Vector";
 import Feature from "ol/Feature";
 import Overlay from "ol/Overlay";
-import { optionsFromCapabilities } from "ol/source/WMTS";
-import { WMTSCapabilities } from "ol/format";
-import { Projection, addProjection } from "ol/proj";
 import { Vector } from "ol/layer";
 import { Point } from "ol/geom";
 import { Style, Circle, Fill, Stroke } from "ol/style";
@@ -19,6 +14,8 @@ import { click } from "ol/events/condition";
 import { ZoomToExtent, defaults as defaultControls } from "ol/control";
 import { ZoomToLatest } from "./ZoomToLatestControl.jsx";
 import Popup from "./Popup";
+import { lv95Projection } from "./lv95Projection";
+import { loadBasemapLayer } from "./basemapLayer";
 import "ol/ol.css";
 
 export default function MainMap(props) {
@@ -76,14 +73,6 @@ export default function MainMap(props) {
 
   // Initialize map on first render
   useEffect(() => {
-    // Add custom projection for LV95
-    const projection = new Projection({
-      code: "EPSG:2056",
-      extent: [2572670, 1211017, 2664529, 1263980],
-      units: "m",
-    });
-    addProjection(projection);
-
     // Add controls
     const htmlIcon = ReactDOMServer.renderToStaticMarkup(<AllOutIcon />);
     const icon = new DOMParser().parseFromString(htmlIcon, "text/html").getElementsByTagName("svg")[0];
@@ -93,7 +82,7 @@ export default function MainMap(props) {
       new ZoomToLatest(handleZoomToLatestExtend),
       new ZoomToExtent({
         label: icon,
-        extent: projection.getExtent(),
+        extent: lv95Projection.getExtent(),
       }),
     ]);
 
@@ -109,7 +98,7 @@ export default function MainMap(props) {
       target: mapElement.current,
       layers: [initialBohrungenLayer],
       view: new View({
-        projection: projection,
+        projection: lv95Projection,
         maxZoom: 14,
         zoom: 2,
       }),
@@ -134,8 +123,7 @@ export default function MainMap(props) {
     // Add info popup
     const initialPopup = new Overlay({
       element: popupElement.current,
-      autoPan: true,
-      autoPanAnimation: { duration: 250 },
+      autoPan: { animation: { duration: 250 } },
     });
 
     initialMap.addOverlay(initialPopup);
@@ -151,23 +139,7 @@ export default function MainMap(props) {
   // Handle asynchronous calls to layer sources
   // Baselayer
   useEffect(() => {
-    const parser = new WMTSCapabilities();
-    const url = "https://geo.so.ch/api/wmts/1.0.0/WMTSCapabilities.xml";
-    fetch(url)
-      .then(function (response) {
-        return response.text();
-      })
-      .then(function (text) {
-        const result = parser.read(text);
-        const options = optionsFromCapabilities(result, {
-          layer: "ch.so.agi.hintergrundkarte_sw",
-        });
-        const landeskarte = new TileLayer({
-          source: new WMTS(options),
-          zIndex: 0,
-        });
-        map && map.addLayer(landeskarte);
-      });
+    map && loadBasemapLayer().then((basemapLayer) => map.addLayer(basemapLayer));
   }, [map]);
 
   // BohrungenLayer
