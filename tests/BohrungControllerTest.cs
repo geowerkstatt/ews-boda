@@ -73,7 +73,7 @@ public class BohrungControllerTest
         // Setup standort for manipulating bohrungen
         standort = new Standort { Bezeichnung = "THUNDER-V", UserErstellung = "BohrungControllerTest" };
         var result = await standortController.CreateAsync(standort);
-        Assert.IsInstanceOfType(result, typeof(CreatedAtActionResult));
+        Assert.IsInstanceOfType<CreatedAtActionResult>(result);
     }
 
     [TestCleanup]
@@ -81,7 +81,7 @@ public class BohrungControllerTest
     {
         // Cleanup standort with associated bohrungen
         await standortController.DeleteAsync(standort.Id);
-        Assert.IsInstanceOfType(await standortController.GetByIdAsync(standort.Id), typeof(NotFoundResult));
+        Assert.IsInstanceOfType<NotFoundResult>(await standortController.GetByIdAsync(standort.Id));
 
         await context.DisposeAsync();
     }
@@ -132,21 +132,21 @@ public class BohrungControllerTest
             HQualitaet = 3,
         };
 
-        Assert.IsInstanceOfType(await bohrungController.CreateAsync(bohrung), typeof(CreatedAtActionResult));
+        Assert.IsInstanceOfType<CreatedAtActionResult>(await bohrungController.CreateAsync(bohrung));
         bohrung = await context.Bohrungen.FindAsync(bohrung.Id);
         Assert.AreEqual("PERFECTBOOK", bohrung.Bezeichnung);
         await AssertStandort(null, null);
 
         // Edit
         bohrung.Bezeichnung = "RESERVEOLIVE";
-        Assert.IsInstanceOfType(await bohrungController.EditAsync(bohrung), typeof(OkResult));
+        Assert.IsInstanceOfType<OkResult>(await bohrungController.EditAsync(bohrung));
         bohrung = await context.Bohrungen.FindAsync(bohrung.Id);
         Assert.AreEqual("RESERVEOLIVE", bohrung.Bezeichnung);
         await AssertStandort(null, null);
 
         // Delete
         await bohrungController.DeleteAsync(bohrung.Id);
-        Assert.IsInstanceOfType((await bohrungController.GetByIdAsync(bohrung.Id)).Result, typeof(NotFoundResult));
+        Assert.IsInstanceOfType<NotFoundResult>((await bohrungController.GetByIdAsync(bohrung.Id)).Result);
         await AssertStandort("", ""); // Got cleared upon deletion
     }
 
@@ -163,7 +163,7 @@ public class BohrungControllerTest
             HQualitaet = 3,
         };
 
-        Assert.IsInstanceOfType(await bohrungController.CreateAsync(bohrung), typeof(CreatedAtActionResult));
+        Assert.IsInstanceOfType<CreatedAtActionResult>(await bohrungController.CreateAsync(bohrung));
         bohrung = await context.Bohrungen.FindAsync(bohrung.Id);
         Assert.AreEqual("LIONMAGIC", bohrung.Bezeichnung);
         await AssertStandort("Langendorf", "1950");
@@ -172,7 +172,7 @@ public class BohrungControllerTest
         bohrung.Bezeichnung = "WINDHAIR";
         bohrung.Geometrie = new Point(2605164, 1228521); // Gemeinde Bellach
 
-        Assert.IsInstanceOfType(await bohrungController.EditAsync(bohrung), typeof(OkResult));
+        Assert.IsInstanceOfType<OkResult>(await bohrungController.EditAsync(bohrung));
         bohrung = await context.Bohrungen.FindAsync(bohrung.Id);
         Assert.AreEqual("WINDHAIR", bohrung.Bezeichnung);
         await AssertStandort("Bellach", "730");
@@ -187,19 +187,19 @@ public class BohrungControllerTest
             HQualitaet = 3,
         };
 
-        Assert.IsInstanceOfType(await bohrungController.CreateAsync(secondBohrung), typeof(CreatedAtActionResult));
+        Assert.IsInstanceOfType<CreatedAtActionResult>(await bohrungController.CreateAsync(secondBohrung));
         secondBohrung = await context.Bohrungen.FindAsync(secondBohrung.Id);
         Assert.AreEqual("VESUVIUSTAFFY", secondBohrung.Bezeichnung);
         await AssertStandort("Bellach", "730,731");
 
         // Remove first bohrung
         await bohrungController.DeleteAsync(bohrung.Id);
-        Assert.IsInstanceOfType((await bohrungController.GetByIdAsync(bohrung.Id)).Result, typeof(NotFoundResult));
+        Assert.IsInstanceOfType<NotFoundResult>((await bohrungController.GetByIdAsync(bohrung.Id)).Result);
         await AssertStandort("Bellach", "731");
 
         // Delete remaining bohrung
         await bohrungController.DeleteAsync(secondBohrung.Id);
-        Assert.IsInstanceOfType((await bohrungController.GetByIdAsync(bohrung.Id)).Result, typeof(NotFoundResult));
+        Assert.IsInstanceOfType<NotFoundResult>((await bohrungController.GetByIdAsync(bohrung.Id)).Result);
         await AssertStandort("", "");
     }
 

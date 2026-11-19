@@ -33,7 +33,7 @@ public class VorkommnisControllerTest
         var newVorkommnis = new Vorkommnis { Bemerkung = "Many yellow oysters on the shovel." };
         var response = await controller.CreateAsync(newVorkommnis).ConfigureAwait(false) as ObjectResult;
 
-        Assert.IsInstanceOfType(response, typeof(ObjectResult));
+        Assert.IsInstanceOfType<ObjectResult>(response);
         Assert.AreEqual(StatusCodes.Status400BadRequest, response.StatusCode);
         Assert.AreEqual("An error occurred while saving the entity changes.", ((ProblemDetails)response.Value!).Detail);
     }
@@ -49,7 +49,7 @@ public class VorkommnisControllerTest
             HTyp = 2,
         };
         var response = await controller.CreateAsync(newVorkommnis).ConfigureAwait(false);
-        Assert.IsInstanceOfType(response, typeof(CreatedAtActionResult));
+        Assert.IsInstanceOfType<CreatedAtActionResult>(response);
         await controller.DeleteAsync(newVorkommnis.Id).ConfigureAwait(false);
     }
 
@@ -68,7 +68,7 @@ public class VorkommnisControllerTest
             QualitaetBemerkung = "It only worked on full moon nights.",
         };
         var response = await controller.CreateAsync(newVorkommnis).ConfigureAwait(false);
-        Assert.IsInstanceOfType(response, typeof(CreatedAtActionResult));
+        Assert.IsInstanceOfType<CreatedAtActionResult>(response);
         await controller.DeleteAsync(newVorkommnis.Id).ConfigureAwait(false);
     }
 
@@ -89,7 +89,7 @@ public class VorkommnisControllerTest
         var vorkommnisToDelete = context.Vorkommnisse.Single(s => s.Tiefe == 4699345.79f);
         var response = await controller.DeleteAsync(vorkommnisToDelete.Id).ConfigureAwait(false);
 
-        Assert.IsInstanceOfType(response, typeof(OkResult));
+        Assert.IsInstanceOfType<OkResult>(response);
         Assert.AreEqual(14000, context.Vorkommnisse.Count());
     }
 
@@ -99,7 +99,7 @@ public class VorkommnisControllerTest
         var controller = new VorkommnisController(context) { ControllerContext = GetControllerContext(UserRole.Administrator) };
         var response = await controller.DeleteAsync(97736145).ConfigureAwait(false);
 
-        Assert.IsInstanceOfType(response, typeof(NotFoundResult));
+        Assert.IsInstanceOfType<NotFoundResult>(response);
         Assert.AreEqual(14000, context.Vorkommnisse.Count());
     }
 
@@ -111,7 +111,7 @@ public class VorkommnisControllerTest
         vorkommnisToEdit.Bemerkung = editedBemerkung;
         var response = await controller.EditAsync(vorkommnisToEdit).ConfigureAwait(false);
         Assert.AreEqual(context.Vorkommnisse.Single(s => s.Id == 90096).Bemerkung, editedBemerkung);
-        Assert.IsInstanceOfType(response, typeof(OkResult));
+        Assert.IsInstanceOfType<OkResult>(response);
     }
 
     [TestMethod]
@@ -122,6 +122,6 @@ public class VorkommnisControllerTest
             Id = 97736145,
         };
         var response = await controller.EditAsync(inexistentVorkommnis).ConfigureAwait(false);
-        Assert.IsInstanceOfType(response, typeof(NotFoundResult));
+        Assert.IsInstanceOfType<NotFoundResult>(response);
     }
 }

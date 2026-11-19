@@ -30,7 +30,7 @@ public class ExportControllerTest
         controller.ControllerContext.HttpContext = httpContext;
         var response = await controller.GetAsync(CancellationToken.None).ConfigureAwait(false);
 
-        Assert.IsInstanceOfType(response, typeof(ContentResult));
+        Assert.IsInstanceOfType<ContentResult>(response);
         Assert.AreEqual("text/csv; charset=utf-8", response.ContentType);
         Assert.AreEqual("attachment; filename=data_export.csv", httpContext.Response.Headers["Content-Disposition"].ToString());
 
