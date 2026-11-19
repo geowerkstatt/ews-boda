@@ -16,7 +16,8 @@ const isPartiallyFilled = (sections) =>
  * An incomplete, impossible or out of range input reaches `onChange` as an invalid date and is reported
  * through `onError`; `hasError` is true until the input is corrected, so the form can block saving.
  * Typing into an empty field is the exception: MUI X keeps the value `null` until every section is
- * filled, so the sections are read after each key press and a partly filled field counts as an error.
+ * filled, so the sections are read after each key press and when the field loses focus (covering edits
+ * made with the mouse), and a partly filled field counts as an error.
  *
  * Pasting text that does not match the format makes MUI X call `onChange(null)`, which would silently
  * remove the date. Such a paste is rejected: the change is not passed on and the picker is remounted
@@ -50,7 +51,7 @@ export function useDatePickerValidation(value, onChange) {
     });
   };
 
-  const handleKeyUp = () => {
+  const checkPartialInput = () => {
     setHasPartialInput(isPartiallyFilled(fieldRef.current?.getSections() ?? []));
   };
 
@@ -84,7 +85,8 @@ export function useDatePickerValidation(value, onChange) {
       error: hasError,
       helperText: helperText(),
       onPaste: handlePaste,
-      onKeyUp: handleKeyUp,
+      onKeyUp: checkPartialInput,
+      onBlur: checkPartialInput,
     },
   };
 }
