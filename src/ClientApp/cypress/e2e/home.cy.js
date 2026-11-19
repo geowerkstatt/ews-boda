@@ -18,8 +18,7 @@ describe("Home page tests", () => {
     cy.visit("/");
     cy.get("div[name=home-container]").should("not.contain", "Standorte");
 
-    // use click 'force: true' because element is covered by another element.
-    cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
+    cy.selectGemeinde("Hein", "Heinrichswil-Winistorf");
     cy.get("button[name=submit-button]").should("be.visible").click();
     cy.get("div[name=home-container]").should("contain", "Standorte");
     cy.get("tbody").children().should("have.length", 4);
@@ -72,7 +71,7 @@ describe("Home page tests", () => {
     cy.get("div[name=home-container]").should("not.contain", "Standorte");
 
     // get search results
-    cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
+    cy.selectGemeinde("Hein", "Heinrichswil-Winistorf");
     cy.get("button[name=submit-button]").should("be.visible").click();
     cy.get("div[name=home-container]").should("contain", "Standorte");
     cy.get("tbody").children().should("have.length", 4);
@@ -104,7 +103,7 @@ describe("Home page tests", () => {
     cy.get("div[name=home-container]").should("not.contain", "Standorte");
 
     // get search results
-    cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
+    cy.selectGemeinde("Hein", "Heinrichswil-Winistorf");
     cy.get("button[name=submit-button]").should("be.visible").click();
     cy.get("div[name=home-container]").should("contain", "Standorte");
     cy.get("tbody").children().should("have.length", 4);
@@ -128,7 +127,7 @@ describe("Home page tests", () => {
     cy.intercept("PUT", "/standort").as("editStandortFreigabe");
 
     cy.visit("/");
-    cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
+    cy.selectGemeinde("Hein", "Heinrichswil-Winistorf");
     cy.get("button[name=submit-button]").should("be.visible").click({ force: true });
 
     // check Freigabe AfU
@@ -157,7 +156,7 @@ describe("Home page tests", () => {
       cy.intercept("/standort*", standorteGemeinde);
       cy.intercept("/user/self", userInRoleExtern);
       cy.visit("/");
-      cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
+      cy.selectGemeinde("Hein", "Heinrichswil-Winistorf");
       cy.get("button[name=submit-button]").should("be.visible").click();
       cy.contains("td", "Generic Steel Pants").siblings().find("[aria-label='edit standort']").click();
       cy.get('[type="checkbox"]').should("not.exist");
@@ -169,7 +168,7 @@ describe("Home page tests", () => {
 
       cy.intercept("/user/self", userInRoleSachbearbeiterAfu);
       cy.visit("/");
-      cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
+      cy.selectGemeinde("Hein", "Heinrichswil-Winistorf");
       cy.get("button[name=submit-button]").should("be.visible").click();
       cy.contains("td", "Generic Steel Pants").siblings().find("[aria-label='edit standort']").click();
       cy.get('[type="checkbox"]').should("exist");
@@ -180,7 +179,7 @@ describe("Home page tests", () => {
       cy.intercept("/standort/" + standort.id, standort);
       cy.intercept("/user/self", userInRoleAdministrator);
       cy.visit("/");
-      cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
+      cy.selectGemeinde("Hein", "Heinrichswil-Winistorf");
       cy.get("button[name=submit-button]").should("be.visible").click();
       cy.contains("td", "Generic Steel Pants").siblings().find("[aria-label='edit standort']").click();
       cy.get('[type="checkbox"]').should("exist");
@@ -192,7 +191,7 @@ describe("Home page tests", () => {
       cy.intercept("/standort*", standorteGemeinde);
       cy.intercept("/user/self", userInRoleExtern);
       cy.visit("/");
-      cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
+      cy.selectGemeinde("Hein", "Heinrichswil-Winistorf");
       cy.get("button[name=submit-button]").should("be.visible").click();
       cy.get("[data-cy='edit-standort-35978-button']").should("not.be.disabled");
     });
@@ -203,7 +202,7 @@ describe("Home page tests", () => {
       cy.intercept("/standort*", standorteGemeinde);
       cy.intercept("/user/self", userInRoleExtern);
       cy.visit("/");
-      cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
+      cy.selectGemeinde("Hein", "Heinrichswil-Winistorf");
       cy.get("button[name=submit-button]").should("be.visible").click();
       cy.get("[data-cy='delete-standort-35978-button']").should("be.disabled");
     });
@@ -214,7 +213,7 @@ describe("Home page tests", () => {
       cy.intercept("/standort*", standorteGemeinde);
       cy.intercept("/user/self", userInRoleSachbearbeiterAfu);
       cy.visit("/");
-      cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
+      cy.selectGemeinde("Hein", "Heinrichswil-Winistorf");
       cy.get("button[name=submit-button]").should("be.visible").click();
       cy.get("[data-cy='edit-standort-35978-button']").should("not.be.disabled");
       cy.get("[data-cy='delete-standort-35978-button']").should("not.be.disabled");
@@ -223,7 +222,7 @@ describe("Home page tests", () => {
       cy.intercept("/standort*", standorteGemeinde);
       cy.intercept("/user/self", userInRoleAdministrator);
       cy.visit("/");
-      cy.get("div[name=gemeinde] input").should("be.visible").click({ force: true }).type("Hein{downarrow}{enter}");
+      cy.selectGemeinde("Hein", "Heinrichswil-Winistorf");
       cy.get("button[name=submit-button]").should("be.visible").click();
       cy.get("[data-cy='edit-standort-35978-button']").should("not.be.disabled");
       cy.get("[data-cy='delete-standort-35978-button']").should("not.be.disabled");
