@@ -33,7 +33,7 @@ public class SchichtControllerTest
         var newSchicht = new Schicht { Bemerkung = "Multiple red lobsters on the playground." };
         var response = await controller.CreateAsync(newSchicht).ConfigureAwait(false) as ObjectResult;
 
-        Assert.IsInstanceOfType(response, typeof(ObjectResult));
+        Assert.IsInstanceOfType<ObjectResult>(response);
         Assert.AreEqual(StatusCodes.Status400BadRequest, response.StatusCode);
         Assert.AreEqual("An error occurred while saving the entity changes.", ((ProblemDetails)response.Value!).Detail);
     }
@@ -50,7 +50,7 @@ public class SchichtControllerTest
             HQualitaet = 11,
         };
         var response = await controller.CreateAsync(newSchicht).ConfigureAwait(false);
-        Assert.IsInstanceOfType(response, typeof(CreatedAtActionResult));
+        Assert.IsInstanceOfType<CreatedAtActionResult>(response);
         await controller.DeleteAsync(newSchicht.Id).ConfigureAwait(false);
     }
 
@@ -68,7 +68,7 @@ public class SchichtControllerTest
             QualitaetBemerkung = "It only worked on full moon nights.",
         };
         var response = await controller.CreateAsync(newSchicht).ConfigureAwait(false);
-        Assert.IsInstanceOfType(response, typeof(CreatedAtActionResult));
+        Assert.IsInstanceOfType<CreatedAtActionResult>(response);
         await controller.DeleteAsync(newSchicht.Id).ConfigureAwait(false);
     }
 
@@ -89,7 +89,7 @@ public class SchichtControllerTest
         var schichtToDelete = context.Schichten.Single(s => s.Tiefe == 7799345.79f);
         var response = await controller.DeleteAsync(schichtToDelete.Id).ConfigureAwait(false);
 
-        Assert.IsInstanceOfType(response, typeof(OkResult));
+        Assert.IsInstanceOfType<OkResult>(response);
         Assert.AreEqual(14000, context.Schichten.Count());
     }
 
@@ -99,7 +99,7 @@ public class SchichtControllerTest
         var controller = new SchichtController(context) { ControllerContext = GetControllerContext(UserRole.Administrator) };
         var response = await controller.DeleteAsync(1600433).ConfigureAwait(false);
 
-        Assert.IsInstanceOfType(response, typeof(NotFoundResult));
+        Assert.IsInstanceOfType<NotFoundResult>(response);
         Assert.AreEqual(14000, context.Schichten.Count());
     }
 
@@ -111,7 +111,7 @@ public class SchichtControllerTest
         schichtToEdit.Bemerkung = editedBemerkung;
         var response = await controller.EditAsync(schichtToEdit).ConfigureAwait(false);
         Assert.AreEqual(context.Schichten.Single(s => s.Id == 70013).Bemerkung, editedBemerkung);
-        Assert.IsInstanceOfType(response, typeof(OkResult));
+        Assert.IsInstanceOfType<OkResult>(response);
     }
 
     [TestMethod]
@@ -122,6 +122,6 @@ public class SchichtControllerTest
             Id = 737445,
         };
         var response = await controller.EditAsync(inexistentSchicht).ConfigureAwait(false);
-        Assert.IsInstanceOfType(response, typeof(NotFoundResult));
+        Assert.IsInstanceOfType<NotFoundResult>(response);
     }
 }
