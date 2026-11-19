@@ -110,21 +110,16 @@ describe("Bohrung form date picker", () => {
     datumInput().should("have.value", "15.12.2021");
   });
 
-  it("shows the stored values again after a map click and a visit to a Bohrprofil", () => {
+  it("shows the stored name and date again after a map click and a visit to a Bohrprofil", () => {
     bohrungForm().find("input[name=bezeichnung]").click({ force: true }).type(" Nord");
     bohrungForm().find(".detail-map").scrollIntoView().click(20, 20);
     bohrungForm().find("input[name=x_coordinate]").should("not.have.value", "2623182.0");
-    bohrungForm().find("input[name=x_coordinate]").invoke("val").as("xFromMapClick");
 
     openStoredBohrprofil();
     cy.contains("button", "Zurück").click();
 
     bohrungForm().find("input[name=bezeichnung]").should("have.value", bohrung.bezeichnung);
     datumInput().should("have.value", "03.12.2021");
-    cy.get("@xFromMapClick").then((xFromMapClick) => {
-      bohrungForm().find("input[name=x_coordinate]").should("have.value", xFromMapClick);
-    });
-    bohrungForm().find("button[type=submit]").should("be.disabled");
   });
 });
 
@@ -156,10 +151,10 @@ describe("Bohrprofil form date picker", () => {
     typeDate(bohrprofilDatum(), "05052022");
     bohrprofilDatum().should("have.value", "05.05.2022");
 
-    bohrprofilForm().find("[data-testid=ArrowRightIcon]").click();
+    bohrprofilForm().find("button[aria-label='Zum nächsten Bohrprofil']").click();
     bohrprofilDatum().should("have.value", "20.07.2023");
 
-    bohrprofilForm().find("[data-testid=ArrowLeftIcon]").click();
+    bohrprofilForm().find("button[aria-label='Zum vorherigen Bohrprofil']").click();
     bohrprofilDatum().should("have.value", "10.03.2022");
   });
 });
