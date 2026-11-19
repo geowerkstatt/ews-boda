@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
@@ -17,20 +17,17 @@
   <ItemGroup>
     <PackageReference Include="Bogus" Version="35.6.5" />
     <PackageReference Include="NetTopologySuite.IO.GeoJSON4STJ" Version="4.0.0" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="8.0.11" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.34" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="8.0.34" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.34" />
-    <!-- Aligns Relational with EF Core; Npgsql.EntityFrameworkCore.PostgreSQL alone resolves an older 8.0.x -->
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.34" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.34">
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="10.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.15" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="10.0.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.15" />
+    <!-- Aligns Relational with EF Core; Npgsql.EntityFrameworkCore.PostgreSQL alone resolves an older 10.0.x -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.15">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <!-- NetTopologySuite.IO.GeoJSON4STJ 4.0.0 only requires System.Text.Json >= 6.0.3, which has
-         CVE-2024-43485 (GHSA-8g4q-xg66-9fp4, fixed in 8.0.5). Drop this once that package requires a fixed version. -->
-    <PackageReference Include="System.Text.Json" Version="8.0.6" />
   </ItemGroup>
 
   <ItemGroup>
