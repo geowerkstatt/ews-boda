@@ -2,7 +2,9 @@
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "plugins": ["react", "jsx-a11y", "import"],
   "categories": {
-    "correctness": "warn"
+    "correctness": "error",
+    "suspicious": "error",
+    "perf": "error"
   },
   "env": {
     "browser": true,
@@ -17,14 +19,13 @@
     "no-undef": "error",
     "react/jsx-no-undef": "error",
     "react/rules-of-hooks": "error",
-    "react/exhaustive-deps": "warn",
+    "react/exhaustive-deps": "error",
     "no-unused-expressions": [
-      "warn",
+      "error",
       { "allowShortCircuit": true, "allowTernary": true, "allowTaggedTemplates": true }
     ],
-    "jsx-a11y/no-autofocus": "off",
-    "react/immutability": "off",
-    "react/set-state-in-effect": "off"
+    "jsx-a11y/no-autofocus": ["error", { "ignoreNonDOM": true }],
+    "import/no-unassigned-import": ["error", { "allow": ["**/*.css"] }]
   },
   "overrides": [
     {

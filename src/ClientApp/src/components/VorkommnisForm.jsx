@@ -48,10 +48,10 @@ export default function VorkommnisForm(props) {
     const getCodes = async () => {
       const qualitaetResponse = await fetch("/code?codetypid=" + CodeTypes.Vorkommnis_hquali);
       const typResponse = await fetch("/code?codetypid=" + CodeTypes.Vorkommnis_htyp);
-      const qualitaetCodes = await qualitaetResponse.json();
-      const typCodes = await typResponse.json();
-      setQualitaetCodes(qualitaetCodes);
-      setTypCodes(typCodes);
+      const fetchedQualitaetCodes = await qualitaetResponse.json();
+      const fetchedTypCodes = await typResponse.json();
+      setQualitaetCodes(fetchedQualitaetCodes);
+      setTypCodes(fetchedTypCodes);
     };
     getCodes();
   }, []);

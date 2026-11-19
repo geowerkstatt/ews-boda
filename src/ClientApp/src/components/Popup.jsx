@@ -16,7 +16,7 @@ function Popup(props) {
     setOpenStandortForm,
   } = props;
 
-  const standort = selectedFeature && standorte.find((s) => s.id === selectedFeature.values_.standortId);
+  const standort = selectedFeature && standorte.find((s) => s.id === selectedFeature.get("standortId"));
   const readOnly = standort?.freigabeAfu && currentUser?.role === UserRolesMap.Extern;
 
   const onEditStandort = () => {
@@ -37,11 +37,11 @@ function Popup(props) {
                 </IconButton>
               </Tooltip>
             </Typography>
-            <Typography color="text.secondary">Bohrung: {selectedFeature.values_.bezeichnung}</Typography>
-            <Typography color="text.secondary">Gemeinde: {selectedFeature.values_.gemeinde}</Typography>
-            <Typography color="text.secondary">Grundbuchnummer: {selectedFeature.values_.grundbuchNr}</Typography>
+            <Typography color="text.secondary">Bohrung: {selectedFeature.get("bezeichnung")}</Typography>
+            <Typography color="text.secondary">Gemeinde: {selectedFeature.get("gemeinde")}</Typography>
+            <Typography color="text.secondary">Grundbuchnummer: {selectedFeature.get("grundbuchNr")}</Typography>
             <Typography color="text.secondary">
-              Bohrbeginn: {new Date(selectedFeature.values_.datum).toLocaleDateString()}
+              Bohrbeginn: {new Date(selectedFeature.get("datum")).toLocaleDateString()}
             </Typography>
           </CardContent>
           <CardActions>

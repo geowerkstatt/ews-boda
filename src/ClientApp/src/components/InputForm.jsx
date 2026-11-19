@@ -42,6 +42,7 @@ export default function InputForm(props) {
   const [currentSchicht, setCurrentSchicht] = useState(null);
   const [currentVorkommnis, setCurrentVorkommnis] = useState(null);
   const [finalStepIsSchicht, setFinalStepIsSchicht] = useState(false);
+  const [activeStep, setActiveStep] = useState(0);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -53,10 +54,7 @@ export default function InputForm(props) {
 
   // Add Bohrung
   async function addBohrung(data) {
-    const bohrungToAdd = currentBohrung;
-    Object.entries(data).forEach(([key, value]) => {
-      bohrungToAdd[key] = value;
-    });
+    const bohrungToAdd = { ...currentBohrung, ...data };
     bohrungToAdd.datum = new Date(Date.parse(bohrungToAdd.datum));
     const response = await fetch("/bohrung", {
       method: "POST",
@@ -85,10 +83,7 @@ export default function InputForm(props) {
 
   // Edit Bohrung
   async function editBohrung(data) {
-    const updatedBohrung = currentBohrung;
-    Object.entries(data).forEach(([key, value]) => {
-      updatedBohrung[key] = value;
-    });
+    const updatedBohrung = { ...currentBohrung, ...data };
     const response = await fetch("/bohrung", {
       method: "PUT",
       cache: "no-cache",
@@ -137,10 +132,7 @@ export default function InputForm(props) {
 
   // Add Bohrprofil
   async function addBohrprofil(data) {
-    const bohrprofilToAdd = currentBohrprofil;
-    Object.entries(data).forEach(([key, value]) => {
-      bohrprofilToAdd[key] = value;
-    });
+    const bohrprofilToAdd = { ...currentBohrprofil, ...data };
     const response = await fetch("/bohrprofil", {
       method: "POST",
       cache: "no-cache",
@@ -162,10 +154,7 @@ export default function InputForm(props) {
 
   // Edit Bohrprofil
   async function editBohrprofil(data) {
-    const updatedBohrprofil = currentBohrprofil;
-    Object.entries(data).forEach(([key, value]) => {
-      updatedBohrprofil[key] = value;
-    });
+    const updatedBohrprofil = { ...currentBohrprofil, ...data };
     const response = await fetch("/bohrprofil", {
       method: "PUT",
       cache: "no-cache",
@@ -211,10 +200,7 @@ export default function InputForm(props) {
 
   // Add Schicht
   async function addSchicht(data) {
-    const schichtToAdd = currentSchicht;
-    Object.entries(data).forEach(([key, value]) => {
-      schichtToAdd[key] = value;
-    });
+    const schichtToAdd = { ...currentSchicht, ...data };
     const response = await fetch("/schicht", {
       method: "POST",
       cache: "no-cache",
@@ -236,10 +222,7 @@ export default function InputForm(props) {
 
   // Edit Schicht
   async function editSchicht(data) {
-    const updatedSchicht = currentSchicht;
-    Object.entries(data).forEach(([key, value]) => {
-      updatedSchicht[key] = value;
-    });
+    const updatedSchicht = { ...currentSchicht, ...data };
     const response = await fetch("/schicht", {
       method: "PUT",
       cache: "no-cache",
@@ -272,10 +255,7 @@ export default function InputForm(props) {
 
   // Add Vorkommnis
   async function addVorkommnis(data) {
-    const vorkommnisToAdd = currentVorkommnis;
-    Object.entries(data).forEach(([key, value]) => {
-      vorkommnisToAdd[key] = value;
-    });
+    const vorkommnisToAdd = { ...currentVorkommnis, ...data };
     const response = await fetch("/vorkommnis", {
       method: "POST",
       cache: "no-cache",
@@ -297,10 +277,7 @@ export default function InputForm(props) {
 
   // Edit Vorkommnis
   async function editVorkommnis(data) {
-    const updatedVorkommnis = currentVorkommnis;
-    Object.entries(data).forEach(([key, value]) => {
-      updatedVorkommnis[key] = value;
-    });
+    const updatedVorkommnis = { ...currentVorkommnis, ...data };
     const response = await fetch("/vorkommnis", {
       method: "PUT",
       cache: "no-cache",
@@ -418,7 +395,6 @@ export default function InputForm(props) {
     },
   ];
 
-  const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps = steps.length;
 
   return (
