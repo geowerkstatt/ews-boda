@@ -33,6 +33,7 @@ import DateUserInputs from "./DateUserInputs";
 import { CodeTypes } from "./CodeTypes";
 import ConfirmationDialog from "./ConfirmationDialog";
 import { useRecordDate } from "./useRecordDate";
+import { useDatePickerValidation } from "./useDatePickerValidation";
 
 export default function BohrprofilForm(props) {
   const {
@@ -63,6 +64,11 @@ export default function BohrprofilForm(props) {
   const [openSchichtConfirmation, setOpenSchichtConfirmation] = useState(false);
   const [openVorkommnisConfirmation, setOpenVorkommnisConfirmation] = useState(false);
   const [selectedDate, setSelectedDate] = useRecordDate(currentBohrprofil);
+  const datePicker = useDatePickerValidation((value) => {
+    setSelectedDate(value);
+    //setValue only needed to dirty form
+    setValue("datum", value, { shouldDirty: true });
+  });
 
   const currentBohrprofilIndex =
     currentBohrung.bohrprofile?.indexOf(currentBohrung.bohrprofile.find((b) => b.id === currentBohrprofil.id)) || 0;
@@ -106,6 +112,8 @@ export default function BohrprofilForm(props) {
   const currentInteraction = currentBohrprofil?.id ? "edit" : "add";
 
   const onSubmit = (formData) => {
+    if (datePicker.hasError) return;
+
     // Save date as UTC date ignoring the current timezone
     formData.datum = null;
     if (selectedDate !== null) {
@@ -237,15 +245,12 @@ export default function BohrprofilForm(props) {
           <Box sx={{ width: { xs: "100%", md: "50%" } }}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
+                key={datePicker.key}
                 label="Datum des Bohrprofils"
                 disableFuture
                 format="dd.MM.yyyy"
                 value={selectedDate}
-                onChange={(value) => {
-                  setSelectedDate(value);
-                  //setValue only needed to dirty form
-                  setValue("datum", value, { shouldDirty: true });
-                }}
+                {...datePicker.pickerProps}
                 disabled={readOnly}
                 slotProps={{
                   textField: {
@@ -254,6 +259,7 @@ export default function BohrprofilForm(props) {
                     variant: "standard",
                     name: "datum",
                     ref: register("datum").ref,
+                    ...datePicker.textFieldProps,
                   },
                 }}
               />
@@ -585,7 +591,7 @@ export default function BohrprofilForm(props) {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleBack}>{!isDirty || readOnly ? "Schliessen" : "Abbrechen"}</Button>
-        <Button type="submit" disabled={!isDirty || readOnly}>
+        <Button type="submit" disabled={!isDirty || readOnly || datePicker.hasError}>
           Bohrprofil speichern
         </Button>
       </DialogActions>

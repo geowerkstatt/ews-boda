@@ -99,6 +99,59 @@ describe("Bohrung form date picker", () => {
       });
   });
 
+  it("blocks saving while the typed date is incomplete", () => {
+    typeDate(datumInput(), "{ctrl+a}{del}15");
+
+    datumInput().should("have.value", "15.MM.YYYY").and("have.attr", "aria-invalid", "true");
+    bohrungForm().should("contain", "Geben Sie ein gültiges Datum im Format TT.MM.JJJJ ein");
+    bohrungForm().find("button[type=submit]").should("be.disabled");
+
+    typeDate(datumInput(), "15062020");
+
+    datumInput().should("have.value", "15.06.2020").and("have.attr", "aria-invalid", "false");
+    bohrungForm().should("not.contain", "Geben Sie ein gültiges Datum");
+    bohrungForm().find("button[type=submit]").should("not.be.disabled");
+  });
+
+  it("blocks saving an impossible date", () => {
+    typeDate(datumInput(), "31022021");
+
+    datumInput().should("have.value", "31.02.2021").and("have.attr", "aria-invalid", "true");
+    bohrungForm().should("contain", "Geben Sie ein gültiges Datum im Format TT.MM.JJJJ ein");
+    bohrungForm().find("button[type=submit]").should("be.disabled");
+  });
+
+  it("blocks saving a date in the future", () => {
+    typeDate(datumInput(), "01012030");
+
+    datumInput().should("have.value", "01.01.2030").and("have.attr", "aria-invalid", "true");
+    bohrungForm().should("contain", "Das Datum darf nicht in der Zukunft liegen");
+    bohrungForm().find("button[type=submit]").should("be.disabled");
+  });
+
+  it("keeps the stored date when pasted text cannot be read", () => {
+    typeDate(datumInput(), "{ctrl+a}");
+    datumInput().trigger("paste", { clipboardData: { getData: () => "15062020" } });
+
+    bohrungForm().should("contain", "Das eingefügte Datum muss im Format TT.MM.JJJJ sein");
+    datumInput().should("have.value", "03.12.2021");
+    bohrungForm().find("button[type=submit]").should("be.disabled");
+  });
+
+  it("saves a cleared date as no date", () => {
+    cy.intercept("PUT", "/bohrung", { statusCode: 200 }).as("editBohrung");
+
+    typeDate(datumInput(), "{ctrl+a}{del}");
+
+    cy.contains("button", "Bohrung speichern").scrollIntoView().should("not.be.disabled").click();
+    cy.wait("@editBohrung")
+      .its("request.body")
+      .then((body) => {
+        const sentBohrung = typeof body === "string" ? JSON.parse(body) : body;
+        expect(sentBohrung.datum).to.equal(null);
+      });
+  });
+
   it("keeps edited fields when the position is changed in the map", () => {
     bohrungForm().find("input[name=bezeichnung]").click({ force: true }).type(" Nord");
     openCalendarButton().click();

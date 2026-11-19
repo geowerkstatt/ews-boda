@@ -33,6 +33,7 @@ import DateUserInputs from "./DateUserInputs";
 import ConfirmationDialog from "./ConfirmationDialog";
 import { CodeTypes } from "./CodeTypes";
 import { useRecordDate } from "./useRecordDate";
+import { useDatePickerValidation } from "./useDatePickerValidation";
 import { getDistance } from "ol/sphere";
 import { transform } from "ol/proj";
 import { register as registerProjection } from "ol/proj/proj4";
@@ -67,6 +68,11 @@ export default function BohrungForm(props) {
     currentBohrung,
     (bohrung) => Boolean(bohrung) && bohrung !== bohrungFromMapClick,
   );
+  const datePicker = useDatePickerValidation((value) => {
+    setSelectedDate(value);
+    //setValue only needed to dirty form
+    setValue("datum", value, { shouldDirty: true });
+  });
 
   const setCurrentBohrungFromMap = (bohrung) => {
     setBohrungFromMapClick(bohrung);
@@ -122,6 +128,8 @@ export default function BohrungForm(props) {
   const currentInteraction = currentBohrung?.id ? "edit" : "add";
 
   const onSubmit = (formData) => {
+    if (datePicker.hasError) return;
+
     // Save date as UTC date ignoring the current timezone
     formData.datum = null;
     if (selectedDate !== null) {
@@ -277,15 +285,12 @@ export default function BohrungForm(props) {
             />
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
+                key={datePicker.key}
                 label="Datum des Bohrbeginns"
                 disableFuture
                 format="dd.MM.yyyy"
                 value={selectedDate}
-                onChange={(value) => {
-                  setSelectedDate(value);
-                  //setValue only needed to dirty form
-                  setValue("datum", value, { shouldDirty: true });
-                }}
+                {...datePicker.pickerProps}
                 disabled={readOnly}
                 slotProps={{
                   textField: {
@@ -294,6 +299,7 @@ export default function BohrungForm(props) {
                     variant: "standard",
                     name: "datum",
                     ref: register("datum").ref,
+                    ...datePicker.textFieldProps,
                   },
                 }}
               />
@@ -557,7 +563,7 @@ export default function BohrungForm(props) {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleBack}>{!isDirty || readOnly ? "Schliessen" : "Abbrechen"}</Button>
-        <Button type="submit" disabled={!isDirty || readOnly}>
+        <Button type="submit" disabled={!isDirty || readOnly || datePicker.hasError}>
           Bohrung speichern
         </Button>
       </DialogActions>
