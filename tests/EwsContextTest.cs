@@ -31,6 +31,17 @@ public class EwsContextTest
         context.Dispose();
     }
 
+    /// <summary>
+    /// Fails when the model differs from the migrations snapshot, which makes
+    /// <c>Database.Migrate()</c> throw from EF Core 9 on.
+    /// Fix by adding a migration (<c>dotnet ef migrations add</c>).
+    /// </summary>
+    [TestMethod]
+    public void ModelHasNoPendingChanges()
+    {
+        Assert.IsFalse(context.Database.HasPendingModelChanges(), "The model has changes that are not captured in a migration.");
+    }
+
     [TestMethod]
     public async Task CascadeDelete()
     {
