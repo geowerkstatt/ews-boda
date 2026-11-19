@@ -28,7 +28,10 @@ import { UserRolesMap } from "../UserRolesMap";
 
 export const drawerWidth = 240;
 
-const mdTheme = createTheme();
+// The collapsed drawer shows only the icons, which needs the labels to start 56px in.
+const mdTheme = createTheme({
+  components: { MuiListItemIcon: { styleOverrides: { root: { minWidth: 56 } } } },
+});
 
 export function Layout(props) {
   const { currentUser } = props;

@@ -6,7 +6,7 @@ export default function SnackbarMessage(props) {
   return (
     <Snackbar
       open={showSuccessAlert}
-      ClickAwayListenerProps={{ mouseEvent: false, touchEvent: false }}
+      slotProps={{ clickAwayListener: { mouseEvent: false, touchEvent: false } }}
       onClose={() => setShowSuccessAlert(false)}
     >
       <Alert onClose={() => setShowSuccessAlert(false)} severity={variant} sx={{ width: "100%" }}>

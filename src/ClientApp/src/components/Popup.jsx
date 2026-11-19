@@ -37,10 +37,10 @@ function Popup(props) {
                 </IconButton>
               </Tooltip>
             </Typography>
-            <Typography color="text.secondary">Bohrung: {selectedFeature.get("bezeichnung")}</Typography>
-            <Typography color="text.secondary">Gemeinde: {selectedFeature.get("gemeinde")}</Typography>
-            <Typography color="text.secondary">Grundbuchnummer: {selectedFeature.get("grundbuchNr")}</Typography>
-            <Typography color="text.secondary">
+            <Typography color="textSecondary">Bohrung: {selectedFeature.get("bezeichnung")}</Typography>
+            <Typography color="textSecondary">Gemeinde: {selectedFeature.get("gemeinde")}</Typography>
+            <Typography color="textSecondary">Grundbuchnummer: {selectedFeature.get("grundbuchNr")}</Typography>
+            <Typography color="textSecondary">
               Bohrbeginn: {new Date(selectedFeature.get("datum")).toLocaleDateString()}
             </Typography>
           </CardContent>

@@ -100,9 +100,8 @@ export default function VorkommnisForm(props) {
       <DialogContent>
         <Stack
           direction={{ xs: "column", md: "row" }}
-          justifyContent="space-evenly"
-          alignItems="flex-start"
           spacing={2}
+          sx={{ justifyContent: "space-evenly", alignItems: "flex-start" }}
         >
           <Box sx={{ width: { xs: "100%", md: "50%" } }}>
             <Controller
@@ -157,7 +156,7 @@ export default function VorkommnisForm(props) {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  InputLabelProps={{ shrink: field.value != null }}
+                  slotProps={{ inputLabel: { shrink: field.value != null } }}
                   value={field.value ?? ""}
                   margin="normal"
                   multiline
@@ -195,7 +194,7 @@ export default function VorkommnisForm(props) {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  InputLabelProps={{ shrink: field.value != null }}
+                  slotProps={{ inputLabel: { shrink: field.value != null } }}
                   value={field.value ?? ""}
                   margin="normal"
                   multiline

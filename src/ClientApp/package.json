@@ -6,10 +6,10 @@
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@fontsource/roboto": "^5.0.8",
-    "@mui/icons-material": "^5.15.7",
-    "@mui/material": "^5.15.7",
-    "@mui/x-date-pickers": "^6.19.2",
-    "date-fns": "^3.3.1",
+    "@mui/icons-material": "^9.5.0",
+    "@mui/material": "^9.5.0",
+    "@mui/x-date-pickers": "^9.18.0",
+    "date-fns": "^4.4.0",
     "ol": "^6.15.1",
     "proj4": "^2.10.0",
     "react": "^18.2.0",
@@ -37,9 +37,11 @@
   },
   "browserslist": {
     "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+      "chrome >= 117",
+      "edge >= 121",
+      "firefox >= 121",
+      "safari >= 17",
+      "ios_saf >= 17"
     ],
     "development": [
       "last 1 chrome version",

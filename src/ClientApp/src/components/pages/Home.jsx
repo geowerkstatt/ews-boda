@@ -156,7 +156,7 @@ export function Home(props) {
       <Toolbar />
       <Container name="home-container" maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
         <Grid container spacing={3}>
-          <Grid sx={{ display: "flex", flexDirection: "column" }} item xs={12} sm={12} md={4} lg={3}>
+          <Grid sx={{ display: "flex", flexDirection: "column" }} size={{ xs: 12, md: 4, lg: 3 }}>
             <Tooltip title="Standort hinzufügen">
               <Button
                 sx={{
@@ -195,7 +195,7 @@ export function Home(props) {
             </Paper>
           </Grid>
 
-          <Grid item xs={12} sm={12} md={8} lg={9}>
+          <Grid size={{ xs: 12, md: 8, lg: 9 }}>
             <Paper
               sx={{
                 p: 2,
@@ -213,7 +213,7 @@ export function Home(props) {
               />
             </Paper>
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={12}>
             {showSearchResults && standorte.length > 0 && (
               <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
                 <SearchResults
