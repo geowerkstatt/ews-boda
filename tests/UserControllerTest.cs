@@ -31,7 +31,7 @@ public class UserControllerTest
     public async Task GetUsers()
     {
         var response = await controller.GetAsync().ConfigureAwait(false);
-        Assert.IsInstanceOfType(response, typeof(ActionResult<IEnumerable<User>>));
+        Assert.IsInstanceOfType<ActionResult<IEnumerable<User>>>(response);
 
         var users = response.Value;
         Assert.IsNotNull(users);
@@ -67,7 +67,7 @@ public class UserControllerTest
 
         var response = await controller.DeleteAsync(addedUser.Id).ConfigureAwait(false);
 
-        Assert.IsInstanceOfType(response, typeof(OkResult));
+        Assert.IsInstanceOfType<OkResult>(response);
         Assert.IsNull(context.Users.SingleOrDefault(s => s.Id == addedUser.Id));
     }
 
@@ -76,7 +76,7 @@ public class UserControllerTest
     {
         var response = await controller.DeleteAsync(1234567).ConfigureAwait(false);
 
-        Assert.IsInstanceOfType(response, typeof(NotFoundResult));
+        Assert.IsInstanceOfType<NotFoundResult>(response);
         Assert.AreEqual(6000, context.Standorte.Count());
     }
 
@@ -103,14 +103,14 @@ public class UserControllerTest
     {
         var inexistentUser = new User { Id = 1234567 };
         var response = await controller.EditAsync(inexistentUser).ConfigureAwait(false);
-        Assert.IsInstanceOfType(response, typeof(NotFoundResult));
+        Assert.IsInstanceOfType<NotFoundResult>(response);
     }
 
     [TestMethod]
     public async Task AddUserForNotAllowed()
     {
         var response = await controller.CreateAsync(new User { Id = 1234567 }).ConfigureAwait(false);
-        Assert.IsInstanceOfType(response, typeof(BadRequestObjectResult));
+        Assert.IsInstanceOfType<BadRequestObjectResult>(response);
         Assert.AreEqual("Creating new users is not supported.", ((BadRequestObjectResult)response).Value);
     }
 
