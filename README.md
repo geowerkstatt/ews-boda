@@ -12,8 +12,9 @@ Folgende Komponenten müssen auf dem Entwicklungsrechner installiert sein:
 
 * Git
 * Docker
-* Visual Studio 2022 oder Visual Studio Code
-* Node.js 22 LTS or higher
+* .NET 10 SDK
+* Visual Studio 2026 oder Visual Studio Code
+* Node.js 24 LTS or higher
 * Optional, um die Onlinehilfe zu erstellen:
   * [DocFX](https://github.com/dotnet/docfx)
 
