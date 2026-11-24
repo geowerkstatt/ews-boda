@@ -15,7 +15,7 @@ export function Footer() {
     <footer>
       <Typography
         variant="body2"
-        color="text.secondary"
+        color="textSecondary"
         align="center"
         sx={{
           position: "fixed",

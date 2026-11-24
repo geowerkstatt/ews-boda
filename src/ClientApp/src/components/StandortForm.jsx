@@ -116,9 +116,8 @@ export default function StandortForm(props) {
       <DialogContent>
         <Stack
           direction={{ xs: "column", sm: "column", md: "row" }}
-          justifyContent="space-evenly"
-          alignItems="flex-start"
           spacing={2}
+          sx={{ justifyContent: "space-evenly", alignItems: "flex-start" }}
         >
           <Box sx={{ width: { xs: "100%", sm: "100%", md: "50%" } }}>
             <Controller
@@ -172,9 +171,7 @@ export default function StandortForm(props) {
                 value={currentStandort?.grundbuchNr ?? ""}
                 fullWidth
                 type="text"
-                inputProps={{
-                  maxLength: 40,
-                }}
+                slotProps={{ htmlInput: { maxLength: 40 } }}
                 disabled
                 margin="normal"
                 label="Grundbuchnummer"
@@ -211,7 +208,7 @@ export default function StandortForm(props) {
               <React.Fragment>
                 <TextField
                   value={currentStandort?.afuUser ?? ""}
-                  InputLabelProps={{ shrink: afuFreigabe }}
+                  slotProps={{ inputLabel: { shrink: afuFreigabe } }}
                   sx={{ marginRight: "6%", width: "47%" }}
                   disabled
                   margin="normal"
@@ -224,7 +221,7 @@ export default function StandortForm(props) {
                 <TextField
                   name="afuDatum"
                   value={currentStandort?.afuDatum ? new Date(currentStandort.afuDatum).toLocaleDateString() : ""}
-                  InputLabelProps={{ shrink: afuFreigabe }}
+                  slotProps={{ inputLabel: { shrink: afuFreigabe } }}
                   disabled
                   sx={{ width: "47%" }}
                   margin="normal"

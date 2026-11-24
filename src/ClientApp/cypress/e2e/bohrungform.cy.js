@@ -40,12 +40,21 @@ const openBohrungForm = (user, bohrungResponse = bohrung) => {
 
 const bohrungForm = () => cy.get("form[name=bohrung-form]");
 const bohrprofilForm = () => cy.get("form[name=bohrprofil-form]");
+// The picker shows its value in editable sections and keeps it as text in a hidden input beside them.
 const datumInput = (form = bohrungForm()) => form.find("input[name=datum]");
+const datumField = (form = bohrungForm()) => datumInput(form).parent();
+const shouldShowDatum = (value, { invalid }) => {
+  datumInput().should("have.value", value);
+  datumField().should("have.attr", "aria-invalid", String(invalid));
+};
 const openCalendarButton = () => bohrungForm().find("button[aria-label^='Choose date']");
 const calendarDay = (day) => cy.get("[role=grid]").contains("[role=gridcell]", new RegExp(`^${day}$`));
 
 // Clicking near the left edge selects the day section, then each digit fills day, month and year in turn.
-const typeDate = (input, digits) => input.scrollIntoView().click(20, 10).type(digits);
+const typeDate = (field, keys) => {
+  field.scrollIntoView().click(20, 10);
+  cy.focused().type(keys);
+};
 
 // OpenLayers ignores clicks until it has rendered its first frame, and it creates the layer canvases
 // only in that render. The zoom buttons sit in the map's top-left corner and the Bohrung marker in its
@@ -95,7 +104,7 @@ describe("Bohrung form date picker", () => {
   it("saves a date typed with the keyboard as UTC date", () => {
     cy.intercept("PUT", "/bohrung", { statusCode: 200 }).as("editBohrung");
 
-    typeDate(datumInput(), "15062020");
+    typeDate(datumField(), "15062020");
     datumInput().should("have.value", "15.06.2020");
 
     cy.contains("button", "Bohrung speichern").scrollIntoView().should("not.be.disabled").click();
@@ -104,6 +113,59 @@ describe("Bohrung form date picker", () => {
       .then((body) => {
         const sentBohrung = typeof body === "string" ? JSON.parse(body) : body;
         expect(sentBohrung.datum).to.equal("2020-06-15T00:00:00.000Z");
+      });
+  });
+
+  it("blocks saving while the typed date is incomplete", () => {
+    typeDate(datumField(), "{ctrl+a}{del}15");
+
+    shouldShowDatum("15.MM.YYYY", { invalid: true });
+    bohrungForm().should("contain", "Geben Sie ein gültiges Datum im Format TT.MM.JJJJ ein");
+    bohrungForm().find("button[type=submit]").should("be.disabled");
+
+    typeDate(datumField(), "15062020");
+
+    shouldShowDatum("15.06.2020", { invalid: false });
+    bohrungForm().should("not.contain", "Geben Sie ein gültiges Datum");
+    bohrungForm().find("button[type=submit]").should("not.be.disabled");
+  });
+
+  it("blocks saving an impossible date", () => {
+    typeDate(datumField(), "31022021");
+
+    shouldShowDatum("31.02.2021", { invalid: true });
+    bohrungForm().should("contain", "Geben Sie ein gültiges Datum im Format TT.MM.JJJJ ein");
+    bohrungForm().find("button[type=submit]").should("be.disabled");
+  });
+
+  it("blocks saving a date in the future", () => {
+    typeDate(datumField(), "01012030");
+
+    shouldShowDatum("01.01.2030", { invalid: true });
+    bohrungForm().should("contain", "Das Datum darf nicht in der Zukunft liegen");
+    bohrungForm().find("button[type=submit]").should("be.disabled");
+  });
+
+  it("keeps the stored date when pasted text cannot be read", () => {
+    typeDate(datumField(), "{ctrl+a}");
+    cy.focused().trigger("paste", { clipboardData: { getData: () => "15062020" } });
+
+    bohrungForm().should("contain", "Das eingefügte Datum muss im Format TT.MM.JJJJ sein");
+    datumInput().should("have.value", "03.12.2021");
+    bohrungForm().find("button[type=submit]").should("be.disabled");
+  });
+
+  it("saves a cleared date as no date", () => {
+    cy.intercept("PUT", "/bohrung", { statusCode: 200 }).as("editBohrung");
+
+    typeDate(datumField(), "{ctrl+a}{del}");
+
+    cy.contains("button", "Bohrung speichern").scrollIntoView().should("not.be.disabled").click();
+    cy.wait("@editBohrung")
+      .its("request.body")
+      .then((body) => {
+        const sentBohrung = typeof body === "string" ? JSON.parse(body) : body;
+        expect(sentBohrung.datum).to.equal(null);
       });
   });
 
@@ -160,7 +222,7 @@ describe("Bohrprofil form date picker", () => {
 
   it("shows the date of each Bohrprofil when navigating, replacing a typed date", () => {
     bohrprofilDatum().should("have.value", "10.03.2022");
-    typeDate(bohrprofilDatum(), "05052022");
+    typeDate(datumField(bohrprofilForm()), "05052022");
     bohrprofilDatum().should("have.value", "05.05.2022");
 
     bohrprofilForm().find("button[aria-label='Zum nächsten Bohrprofil']").click();
