@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <AnalysisLevel>8.0-recommended</AnalysisLevel>
+    <AnalysisLevel>10.0-recommended</AnalysisLevel>
     <NoWarn>CS1591,CS8618,CS8620</NoWarn>
     <VersionPrefix>1.0</VersionPrefix>
     <Product>ews-boda</Product>
@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(MSBuildProjectExtension)' != '.dcproj' ">
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
+    <PackageReference Include="StyleCop.Analyzers" Version="1.3.180">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
