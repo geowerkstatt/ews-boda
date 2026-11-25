@@ -13,6 +13,7 @@ register(proj4);
 /**
  * Swiss LV95 projection. Its extent is Kanton Solothurn rather than the whole of Switzerland,
  * because the maps use it as the default view and as the target of the zoom-to-extent control.
+ * The geo.so.ch basemap only has tiles inside this extent, so the map views are constrained to it.
  */
 export const lv95Projection = getProjection("EPSG:2056");
 lv95Projection.setExtent([2572670, 1211017, 2664529, 1263980]);
