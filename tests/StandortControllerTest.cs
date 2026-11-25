@@ -317,7 +317,7 @@ public class StandortControllerTest
         var newStandort = new Standort { Bemerkung = "Various green toads blocking the road." };
         var response = await controller.CreateAsync(newStandort).ConfigureAwait(false) as ObjectResult;
 
-        Assert.IsInstanceOfType(response, typeof(ObjectResult));
+        Assert.IsInstanceOfType<ObjectResult>(response);
         Assert.AreEqual(StatusCodes.Status400BadRequest, response.StatusCode);
         Assert.AreEqual("An error occurred while saving the entity changes.", ((ProblemDetails)response.Value!).Detail);
     }
@@ -331,7 +331,7 @@ public class StandortControllerTest
             UserErstellung = "Marky Mark Tribute Band Member",
         };
         var response = await controller.CreateAsync(newStandort).ConfigureAwait(false);
-        Assert.IsInstanceOfType(response, typeof(CreatedAtActionResult));
+        Assert.IsInstanceOfType<CreatedAtActionResult>(response);
         await controller.DeleteAsync(newStandort.Id).ConfigureAwait(false);
     }
 
@@ -347,7 +347,7 @@ public class StandortControllerTest
             Bezeichnung = TestStandortBezeichnung,
         };
         var response = await controller.CreateAsync(newStandort).ConfigureAwait(false);
-        Assert.IsInstanceOfType(response, typeof(CreatedAtActionResult));
+        Assert.IsInstanceOfType<CreatedAtActionResult>(response);
         await controller.DeleteAsync(newStandort.Id).ConfigureAwait(false);
     }
 
@@ -367,7 +367,7 @@ public class StandortControllerTest
         var standortToDelete = context.Standorte.Single(s => s.Bezeichnung == TestStandortBezeichnung);
         var response = await controller.DeleteAsync(standortToDelete.Id).ConfigureAwait(false);
 
-        Assert.IsInstanceOfType(response, typeof(OkResult));
+        Assert.IsInstanceOfType<OkResult>(response);
         Assert.AreEqual(6000, context.Standorte.Count());
     }
 
@@ -377,7 +377,7 @@ public class StandortControllerTest
         var controller = new StandortController(context) { ControllerContext = GetControllerContext(UserRole.Administrator) };
         var response = await controller.DeleteAsync(1600433).ConfigureAwait(false);
 
-        Assert.IsInstanceOfType(response, typeof(NotFoundResult));
+        Assert.IsInstanceOfType<NotFoundResult>(response);
         Assert.AreEqual(6000, context.Standorte.Count());
     }
 
@@ -388,8 +388,8 @@ public class StandortControllerTest
         var editedBezeichnung = "We love Pasta more than Pesto";
         standortToEdit.Bezeichnung = editedBezeichnung;
         var response = await controller.EditAsync(standortToEdit).ConfigureAwait(false);
-        Assert.AreEqual(context.Standorte.Single(s => s.Id == 31098).Bezeichnung, "We love Pasta more than Pesto");
-        Assert.IsInstanceOfType(response, typeof(OkResult));
+        Assert.AreEqual(editedBezeichnung, context.Standorte.Single(s => s.Id == 31098).Bezeichnung);
+        Assert.IsInstanceOfType<OkResult>(response);
         Assert.AreEqual(6000, context.Standorte.Count());
     }
 
@@ -401,7 +401,7 @@ public class StandortControllerTest
 
         var response = await controller.EditAsync(standortToEdit).ConfigureAwait(false) as ObjectResult;
 
-        Assert.IsInstanceOfType(response, typeof(ObjectResult));
+        Assert.IsInstanceOfType<ObjectResult>(response);
         Assert.AreEqual(StatusCodes.Status400BadRequest, response.StatusCode);
         Assert.AreEqual("An error occurred while saving the entity changes.", ((ProblemDetails)response.Value!).Detail);
     }
@@ -414,7 +414,7 @@ public class StandortControllerTest
             Id = 447375,
         };
         var response = await controller.EditAsync(inexistentStandort).ConfigureAwait(false);
-        Assert.IsInstanceOfType(response, typeof(NotFoundResult));
+        Assert.IsInstanceOfType<NotFoundResult>(response);
     }
 
     [TestMethod]

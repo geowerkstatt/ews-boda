@@ -92,7 +92,7 @@ public class DataServiceTest
     public async Task GetAsyncForMultiplePointsInDifferentGemeindenFails()
     {
         var points = new List<Point> { new(2605532, 1229554), new(2629600, 1246418) };
-        await Assert.ThrowsExceptionAsync<InvalidOperationException>(async () => await dataService.GetAsync(points));
+        await Assert.ThrowsExactlyAsync<InvalidOperationException>(async () => await dataService.GetAsync(points));
     }
 
     [TestMethod]
@@ -126,6 +126,6 @@ public class DataServiceTest
         dataService = new DataService(httpClientFactoryMock.Object, new Mock<ILogger<DataService>>().Object);
 
         var points = new List<Point> { new(int.MaxValue, int.MinValue) };
-        await Assert.ThrowsExceptionAsync<InvalidOperationException>(async () => await dataService.GetAsync(points));
+        await Assert.ThrowsExactlyAsync<InvalidOperationException>(async () => await dataService.GetAsync(points));
     }
 }
