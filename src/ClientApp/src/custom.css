@@ -18,7 +18,14 @@
 }
 
 .ol-control button {
+  color: white;
   background-color: rgb(25, 118, 210);
+}
+
+.ol-control button:hover,
+.ol-control button:focus {
+  color: white;
+  background-color: rgb(21, 101, 192);
 }
 
 .ol-control:hover {
